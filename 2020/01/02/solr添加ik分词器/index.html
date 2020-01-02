@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>solr添加ik分词器 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="查找solr服务器web地址find &#x2F; -name WEB-INF [root@bigdata-3 lib]# pwd&#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH-6.2.0-1.cdh6.2.0.p0.967373&#x2F;lib&#x2F;solr&#x2F;server&#x2F;solr-webapp&#x2F;webapp&#x2F;WEB-INF&#x2F;lib &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH-6.2.0-1.cdh6.2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="solr添加ik分词器">
+<meta property="og:url" content="http://yoursite.com/2020/01/02/solr%E6%B7%BB%E5%8A%A0ik%E5%88%86%E8%AF%8D%E5%99%A8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="查找solr服务器web地址find &#x2F; -name WEB-INF [root@bigdata-3 lib]# pwd&#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH-6.2.0-1.cdh6.2.0.p0.967373&#x2F;lib&#x2F;solr&#x2F;server&#x2F;solr-webapp&#x2F;webapp&#x2F;WEB-INF&#x2F;lib &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH-6.2.0-1.cdh6.2">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-01-02T02:37:24.171Z">
+<meta property="article:modified_time" content="2020-01-02T02:37:24.171Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-solr添加ik分词器" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/02/solr%E6%B7%BB%E5%8A%A0ik%E5%88%86%E8%AF%8D%E5%99%A8/" class="article-date">
+  <time datetime="2020-01-02T02:37:24.171Z" itemprop="datePublished">2020-01-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      solr添加ik分词器
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="查找solr服务器web地址"><a href="#查找solr服务器web地址" class="headerlink" title="查找solr服务器web地址"></a>查找solr服务器web地址</h3><p>find / -name WEB-INF</p>
+<p>[root@bigdata-3 lib]# pwd<br>/opt/cloudera/parcels/CDH-6.2.0-1.cdh6.2.0.p0.967373/lib/solr/server/solr-webapp/webapp/WEB-INF/lib</p>
+<p>/opt/cloudera/parcels/CDH-6.2.0-1.cdh6.2.0.p0.967373/lib/solr/server/solr-webapp/webapp/WEB-INF/lib</p>
+<p>/opt/cloudera/parcels/CDH/lib/solr/server/solr-webapp/webapp/WEB-INF/lib</p>
+<h3 id="添加ik-jar包到指定位置-并修改权限"><a href="#添加ik-jar包到指定位置-并修改权限" class="headerlink" title="添加ik jar包到指定位置 并修改权限"></a>添加ik jar包到指定位置 并修改权限</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-rwxr-xr-x 1 root root 1184820 May  7 10:29 ik-analyzer-7.5.0.jar</span><br><span class="line">[root@bigdata-3 lib]#</span><br></pre></td></tr></table></figure>
+
+<h3 id="WEB-INF-创建classes-我们把IKAnalyzer-cfg-xml、stopword-dic拷贝到需要使用分词器的core的conf下面，"><a href="#WEB-INF-创建classes-我们把IKAnalyzer-cfg-xml、stopword-dic拷贝到需要使用分词器的core的conf下面，" class="headerlink" title="WEB-INF 创建classes  我们把IKAnalyzer.cfg.xml、stopword.dic拷贝到需要使用分词器的core的conf下面，"></a>WEB-INF 创建classes  我们把IKAnalyzer.cfg.xml、stopword.dic拷贝到需要使用分词器的core的conf下面，</h3><p>将resources目录下的5个配置文件放入solr服务的Jetty或Tomcat的webapp/WEB-INF/classes/目录下；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">① IKAnalyzer.cfg.xml</span><br><span class="line">② ext.dic</span><br><span class="line">③ stopword.dic</span><br><span class="line">④ ik.conf</span><br><span class="line">⑤ dynamicdic.txt</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置文档："><a href="#配置文档：" class="headerlink" title="配置文档："></a>配置文档：</h3><p><a href="https://github.com/magese/ik-analyzer-solr7" target="_blank" rel="noopener">https://github.com/magese/ik-analyzer-solr7</a></p>
+<h3 id="后面开发人员执行。。。。"><a href="#后面开发人员执行。。。。" class="headerlink" title="后面开发人员执行。。。。"></a>后面开发人员执行。。。。</h3><p>和core的schema.xml文件一个目录。<br>修改core的schema.xml:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;fieldType name&#x3D;&quot;text_ik&quot; class&#x3D;&quot;solr.TextField&quot;&gt;   </span><br><span class="line"></span><br><span class="line">        &lt;analyzer type&#x3D;&quot;index&quot; isMaxWordLength&#x3D;&quot;false&quot; class&#x3D;&quot;org.wltea.analyzer.lucene.IKAnalyzer&quot;&#x2F;&gt;  </span><br><span class="line"></span><br><span class="line">        &lt;analyzer type&#x3D;&quot;query&quot; isMaxWordLength&#x3D;&quot;true&quot; class&#x3D;&quot;org.wltea.analyzer.lucene.IKAnalyzer&quot;&#x2F;&gt;  </span><br><span class="line"></span><br><span class="line">&lt;&#x2F;fieldType&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置测试字段："><a href="#配置测试字段：" class="headerlink" title="配置测试字段："></a>配置测试字段：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;field name&#x3D;&quot;quesContent&quot; type&#x3D;&quot;text_ik&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://my.oschina.net/u/2293326/blog/515883" target="_blank" rel="noopener">https://my.oschina.net/u/2293326/blog/515883</a></p>
+<p><a href="https://github.com/magese/ik-analyzer-solr7" target="_blank" rel="noopener">https://github.com/magese/ik-analyzer-solr7</a></p>
+<p><a href="https://blog.csdn.net/u011967615/article/details/69400263" target="_blank" rel="noopener">https://blog.csdn.net/u011967615/article/details/69400263</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">scp cdh85-42:&#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;solr&#x2F;server&#x2F;solr-webapp&#x2F;webapp&#x2F;WEB-INF&#x2F;lib&#x2F;ik-analyzer-*.jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;solr&#x2F;server&#x2F;solr-webapp&#x2F;webapp&#x2F;WEB-INF&#x2F;lib&#x2F;</span><br><span class="line">mkdir &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;solr&#x2F;server&#x2F;solr-webapp&#x2F;webapp&#x2F;WEB-INF&#x2F;classes&#x2F;</span><br><span class="line">scp cdh85-42:&#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;solr&#x2F;server&#x2F;solr-webapp&#x2F;webapp&#x2F;WEB-INF&#x2F;classes&#x2F;* &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;solr&#x2F;server&#x2F;solr-webapp&#x2F;webapp&#x2F;WEB-INF&#x2F;classes&#x2F;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/01/02/solr%E6%B7%BB%E5%8A%A0ik%E5%88%86%E8%AF%8D%E5%99%A8/" data-id="ck4w5linx00093jdihavvf1n0" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/01/02/anaconda3-5.2.0+python3.6.5+tensorflow1.11.0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          anaconda3-5.2.0+python3.6.5+tensorflow1.11.0
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/12/23/%E4%B8%AD%E6%96%87%E6%B5%8B%E8%AF%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">中文测试</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/02/%E6%9C%89%E9%81%93markdown%E7%A6%BB%E7%BA%BF%E6%B5%8B%E8%AF%95/">有道markdown离线测试</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/02/HBase%20%E5%B7%A5%E5%85%B7%E5%92%8C%E5%AE%9E%E7%94%A8%E7%A8%8B%E5%BA%8F/">HBase 工具和实用程序</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/02/JanusGraph%20Server%E6%90%AD%E5%BB%BA%20hbase+%20solr/">JanusGraph Server搭建 hbase+ solr</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/02/solr%20%20command/">solr  command</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/02/anaconda3-5.2.0+python3.6.5+tensorflow1.11.0/">anaconda3-5.2.0+python3.6.5+tensorflow1.11.0</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

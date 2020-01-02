@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>数据平台规划方案 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="大数据平台现状 总可用节点：36个（各节点内存512G，CPU 56核）    总可用内存：9.38T（平均每个节点开放260G）    总可用CPU：1120个（平均每个节点开放31个）     包含了文件存储、计算、数据库等集群服务。 现有集群职能包括：  离线OLAP数据调度同步（原始数据）      各产品线离线生产任务（雷达、探针、定制产品、回溯测试等业务）    离线OLTP数据更新（">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据平台规划方案">
+<meta property="og:url" content="http://yoursite.com/2018/09/25/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E8%A7%84%E5%88%92%E6%96%B9%E6%A1%88/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="大数据平台现状 总可用节点：36个（各节点内存512G，CPU 56核）    总可用内存：9.38T（平均每个节点开放260G）    总可用CPU：1120个（平均每个节点开放31个）     包含了文件存储、计算、数据库等集群服务。 现有集群职能包括：  离线OLAP数据调度同步（原始数据）      各产品线离线生产任务（雷达、探针、定制产品、回溯测试等业务）    离线OLTP数据更新（">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-09-25T05:14:58.474Z">
+<meta property="article:modified_time" content="2018-09-21T09:20:09.408Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-数据平台规划方案" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/09/25/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E8%A7%84%E5%88%92%E6%96%B9%E6%A1%88/" class="article-date">
+  <time datetime="2018-09-25T05:14:58.474Z" itemprop="datePublished">2018-09-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      数据平台规划方案
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="大数据平台现状"><a href="#大数据平台现状" class="headerlink" title="大数据平台现状"></a>大数据平台现状</h2><ul>
+<li>总可用节点：36个（各节点内存512G，CPU 56核）   </li>
+<li>总可用内存：9.38T（平均每个节点开放260G）   </li>
+<li>总可用CPU：1120个（平均每个节点开放31个）   </li>
+</ul>
+<p>包含了文件存储、计算、数据库等集群服务。</p>
+<p><strong>现有集群职能包括：</strong></p>
+<ul>
+<li>离线OLAP数据调度同步（原始数据）     </li>
+<li>各产品线离线生产任务（雷达、探针、定制产品、回溯测试等业务）   </li>
+<li>离线OLTP数据更新（HBase数据更新）   </li>
+<li>线下模型、数据测试（商户定制与联合建模）   </li>
+<li>模型训练、迭代与更新（评分卡、推荐、联合模型等）   </li>
+<li>基础数据实时流（底层实时数据处理）   </li>
+<li>各产品线实时流计算（雷达、探针等上层业务）   </li>
+<li>日常数据分析任务（大量数据分析、行业分析等需求）   </li>
+<li>OLTP数据库服务（HBase）   </li>
+<li>监控报表任务（BI、数据监控等）   </li>
+<li>数据仓库（数据整合、清洗、调度等）   </li>
+<li>宝付大数据平台相关任务（Spark、Hive、Impala等）   </li>
+</ul>
+<p>由于当前集群职能繁多，网络带宽、磁盘IO等为集群共享，<strong>会因大型离线任务占用大量网络或磁盘IO峰值，对线上业务会造成短暂延迟。且集群环境较为复杂，有较多对线上业务造成影响的风险。</strong></p>
+<h2 id="规划方案"><a href="#规划方案" class="headerlink" title="规划方案"></a>规划方案</h2><p>鉴于后续业务发展，大数据平台的使用人数和执行任务将会快速上升，为了避免对线上业务的直接影响，提议部署一个次规模（20个节点内）的生产集群（以下简称在线集群）承接部分职能，减轻现有集群（以下简称离线离线计算集群）的压力，同时规划与隔离不同等级的任务。</p>
+<p>在线集群<strong>主要职能为OLTP数据库服务（HBase）</strong>，将业务主库迁移至在线集群可保证业务不受任何大规模计算任务（或者计算量比较集中的情况）所带来的延迟影响。</p>
+<p>除此之外，<strong>在线集群将不会进行其他任何程序与任务以保证线上服务的稳定性。</strong></p>
+<p>将业务主库分离出去之后，离线计算集群的HBase将作为中间件为流式计算等系统提供服务（同时兼业务备库使用，在需要重启等情况下可以相互切换）。</p>
+<p>此时离线计算集群的定位为执行大规模、密集的数据分析、计算、模型等计算资源消耗巨大的任务，在线集群的定位为稳定的业务数据服务。</p>
+<p>由于离线计算集群承载了大部分任务，随着业务发展，后续会有更多计算需求产生（如设备指纹与爬虫数据的分析与计算），<strong>需要离线计算集群能够方便、快速的进行横向扩容。</strong></p>
+<h2 id="迁移方案"><a href="#迁移方案" class="headerlink" title="迁移方案"></a>迁移方案</h2><p>将使用新采购机器（50台）在新机房部署两个集群（在线+离线计算），<strong>使用的节点个数待定。</strong></p>
+<p><strong>在线集群的HBase服务对部署参数、分区配置策略进行优化调整，同时确认跨集群数据同步方案与程序。</strong></p>
+<p>集群准备就绪后：</p>
+<p>1.同步老机房线上所有业务数据至新机房的在线集群。<br>2.将老机房集群上数据同步、生产调度任务等相关程序、脚本和配置迁移至新机房的离线计算集群。<br>3.老机房业务与任务确认迁移完成后，停机下线（分批）调整至新机房并入离线计算集群中，在线集群视情况调整一些新机器扩容。   </p>
+<p><strong>以上步骤需要整理详细操作过程和确认完成时间点。</strong></p>
+<h2 id="离线计算集群资源池"><a href="#离线计算集群资源池" class="headerlink" title="离线计算集群资源池"></a>离线计算集群资源池</h2><p>当前离线计算集群的资源池划分为宝付的production、development，新颜的production、development，在集群承载了比较多的职能的时候此划分方案已经不满足需求，建议对新颜的资源池进行更详细的划分：</p>
+<ul>
+<li>stream：流式计算系统使用，占比10%   </li>
+<li>model：模型训练与标签系统使用，占比30%   </li>
+<li>experiment：联合建模与商户线下测试使用，占比20%   </li>
+<li>production：离线生产任务使用，占比20%   </li>
+<li>development：测试任务与日常分析使用，占比20%</li>
+</ul>
+<p>以上分配占比仅为预估，需要根据实际情况（包括新采购需求添加之后的集群情况）重新调整。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/09/25/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E8%A7%84%E5%88%92%E6%96%B9%E6%A1%88/" data-id="ck4w5linz000a3jdi8ry1ad2e" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/09/28/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          hbase新集群配置项整理
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/02/%E6%9C%89%E9%81%93markdown%E7%A6%BB%E7%BA%BF%E6%B5%8B%E8%AF%95/">有道markdown离线测试</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/02/HBase%20%E5%B7%A5%E5%85%B7%E5%92%8C%E5%AE%9E%E7%94%A8%E7%A8%8B%E5%BA%8F/">HBase 工具和实用程序</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/02/JanusGraph%20Server%E6%90%AD%E5%BB%BA%20hbase+%20solr/">JanusGraph Server搭建 hbase+ solr</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/02/solr%20%20command/">solr  command</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/02/anaconda3-5.2.0+python3.6.5+tensorflow1.11.0/">anaconda3-5.2.0+python3.6.5+tensorflow1.11.0</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

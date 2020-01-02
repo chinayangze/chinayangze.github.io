@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/page/2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-Linux中文编码转换" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/28/Linux%E4%B8%AD%E6%96%87%E7%BC%96%E7%A0%81%E8%BD%AC%E6%8D%A2/" class="article-date">
+  <time datetime="2019-04-28T10:00:25.841Z" itemprop="datePublished">2019-04-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/28/Linux%E4%B8%AD%E6%96%87%E7%BC%96%E7%A0%81%E8%BD%AC%E6%8D%A2/">Linux中文编码转换</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>linux shell 配置文件中默认的字符集编码为UTF－8</p>
+<p>accii 文件显示中文乱码 </p>
+<p>用iconv进行转换就可以了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iconv -f GBK -t UTF-8 1.csv &gt; 3.csv</span><br></pre></td></tr></table></figure>
+
+
+<p>查了下iconv命令用法如下：</p>
+<p>iconv [选项…] [文件…]</p>
+<p>有如下选项可用:</p>
+<p>输入/输出格式规范：<br>-f, –from-code=名称 原始文本编码<br>-t, –to-code=名称 输出编码</p>
+<p>信息：<br>-l, –list 列举所有已知的字符集</p>
+<p>输出控制：<br>-c 从输出中忽略无效的字符<br>-o, –output=FILE 输出文件<br>-s, –silent 关闭警告<br>–verbose 打印进度信息</p>
+<p>iconv -f utf-8 -t gb2312 /server_test/reports/software_.txt &gt; /server_test/reports/software_asserts.txt</p>
+<p>中文字符集编码有 gb2312 , cp936 ,GBK，GB18030</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/04/28/Linux%E4%B8%AD%E6%96%87%E7%BC%96%E7%A0%81%E8%BD%AC%E6%8D%A2/" data-id="ck4w5linl00013jdi9ttt08qq" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-cdh6_hbase新集群配置项整理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/10/22/cdh6_hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/" class="article-date">
+  <time datetime="2018-10-22T07:19:28.435Z" itemprop="datePublished">2018-10-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/22/cdh6_hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/">cdh6_hbase新集群配置项整理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>hbase-conf:</p>
+<ul>
+<li>RS堆栈大小: 32G   </li>
+<li></li>
+<li>hbase.bucketcache.size=64 =64 * 1024M: 堆外缓存大小，单位为M</li>
+<li></li>
+<li>dfs.replication=3on=3: hdfs副本数   </li>
+<li></li>
+<li>hbase.hregion.max.filesize=20G=20G: Region大小   </li>
+<li></li>
+<li>hbase.hregion.memstore.flush.size=256=256M: Memstore刷新大小   </li>
+<li></li>
+<li>hbase.regionserver.global.memstore.upperLimit=0.t=0.55: 整个RS中Memstore最大比例   </li>
+<li>#- hbase.regionserver.global.memstore.lowerLimit=0.t=0.5: 整个RS中Memstore最小比例       默认0.95</li>
+<li></li>
+<li>hbase.bucketcache.ioengine=off=offheap: 使用堆外缓存</li>
+<li>#- hbase.bucketcache.percentage.in.combinebinedcache=0.9: 堆外读缓存所占比例，剩余为堆内元数据缓存大小   </li>
+<li></li>
+<li>hfile.block.cache.size=0.2=0.2: 校验项,+upperLimit需要小于0.8   </li>
+<li></li>
+<li>hbase.master.handler.count=256=256: Master处理客户端请求最大线程数   </li>
+<li></li>
+<li>hbase.regionserver.handler.count=256=256: RS处理客户端请求最大线程数   </li>
+<li></li>
+<li>hbase.hstore.blockingStoreFiles=100: storefile个数达到该值则block写入</li>
+<li></li>
+<li>hbase.hregion.memstore.block.multiplier=3:r=3: 强制刷新Memstore大小的倍数   </li>
+<li></li>
+<li>hbase.client.retries.number: 3 : 3   </li>
+<li><ul>
+<li>hbase.rpc.timeout: 50: 5000   </li>
+</ul>
+</li>
+</ul>
+<p>hbase-jvm:</p>
+<p>HBASE_OFFHEAPSIZE=??G<br>HBASE_OPTS=”-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256m -XX:+UseParNewGC -XX:MaxTenuringThreshold=15  -XX:+CMSParallelRemarkEnabled -XX:+UseCMSCompactAtFullCollection -XX:+CMSClassUnloadingEnabled -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSFullGCsBeforeCompaction=0 -XX:CMSInitiatingOccupancyFraction=70 -XX:+PrintTenuringDistribution -XX:SurvivorRatio=2 -XX:+UseConcMarkSweepGC -XX:-DisableExplicitGC $HBASE_OPTS”</p>
+<p>-XX:+UseG1GC<br>-XX:InitiatingHeapOccupancyPercent=65<br>-XX:-ResizePLAB<br>-XX:MaxGCPauseMillis=90<br>-XX:+UnlockDiagnosticVMOptions<br>-XX:+G1SummarizeConcMark<br>-XX:+ParallelRefProcEnabled<br>-XX:G1HeapRegionSize=32m<br>-XX:G1HeapWastePercent=20<br>-XX:ConcGCThreads=4<br>-XX:ParallelGCThreads=16<br>-XX:MaxTenuringThreshold=1<br>-XX:G1MixedGCCountTarget=64<br>-XX:+UnlockExperimentalVMOptions<br>-XX:G1NewSizePercent=2<br>-XX:G1OldCSetRegionThresholdPercent=5</p>
+<p>HDFS:</p>
+<ul>
+<li></li>
+<li>dfs.datanode.handler.count 64<br>64</li>
+<li></li>
+<li>dfs.datanode.max.xcievers,</li>
+<li>,</li>
+<li></li>
+<li>dfs.datanode.max.transfer.threads  12  12288</li>
+<li></li>
+<li>dfs.namenode.handler.count 256 256</li>
+<li></li>
+<li>dfs.namenode.service.handler.count 256 256</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/10/22/cdh6_hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/" data-id="ck4w5linv00073jdie1h51wsj" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-hbase新集群配置项整理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/09/28/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/" class="article-date">
+  <time datetime="2018-09-28T07:51:41.716Z" itemprop="datePublished">2018-09-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/28/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/">hbase新集群配置项整理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="机器概况"><a href="#机器概况" class="headerlink" title="机器概况"></a>机器概况</h3><ul>
+<li>总内存:256G   </li>
+<li>可分配内存:256*0.75=192G   </li>
+<li>总硬盘:1.8T*12=21.6T   </li>
+<li>可用硬盘空间:21.6T*0.85=18.36T   </li>
+</ul>
+<h3 id="内存规划"><a href="#内存规划" class="headerlink" title="内存规划"></a>内存规划</h3><h4 id="Disk-Java-Heap-Ratio"><a href="#Disk-Java-Heap-Ratio" class="headerlink" title="Disk / Java Heap Ratio"></a>Disk / Java Heap Ratio</h4><p><strong>Disk / Java Heap Ratio=Disk Size / Java Heap = RegionSize / MemstoreSize * ReplicationFactor * HeapFractionForMemstore * 2</strong><br>一台RegionServer上1bytes的Java内存大小需要搭配多大的硬盘大小最合理。</p>
+<p>公式解释：   </p>
+<ul>
+<li>硬盘容量维度下Region个数： Disk Size / (RegionSize ＊ReplicationFactor)       </li>
+<li>Java Heap维度下Region个： Java Heap * HeapFractionForMemstore / (MemstoreSize / 2 )    </li>
+<li>硬盘维度和Java Headp维度理论相等：Disk Size / (RegionSize ＊ReplicationFactor)  ＝ Java Heap * HeapFractionForMemstore / (MemstoreSize / 2 ) ＝&gt; Disk Size / Java Heap = RegionSize / MemstoreSize * ReplicationFactor * HeapFractionForMemstore * 2   </li>
+</ul>
+<p>默认配置：   </p>
+<ul>
+<li>RegionSize: hbase.hregion.max.filesize=10G   </li>
+<li>MemstoreSize: hbase.hregion.memstore.flush.size=128M   </li>
+<li>ReplicationFactor: dfs.replication=3   </li>
+<li>HeapFractionForMemstore: hbase.regionserver.global.memstore.lowerLimit = 0.4   </li>
+</ul>
+<p>计算为：10G / 128M * 3 * 0.4 * 2 = 192，即RegionServer上1bytes的Java内存大小需要搭配192bytes的硬盘大小最合理。   </p>
+<p>默认配置为例，新集群可用内存为192G，即对应的硬盘空间需要为192G * 192 = 36T</p>
+<p><strong>默认配置下1:192，硬盘空间不足，可以将内存减少，通过修改HBase配置将多余的内存资源分配给HBase读缓存的BucketCache，这样就可以保证Java Heap并没有实际浪费。</strong></p>
+<h4 id="读缓存BucketCache"><a href="#读缓存BucketCache" class="headerlink" title="读缓存BucketCache"></a>读缓存BucketCache</h4><p>BucketCache模式下HBase的内存布局如图所示：</p>
+<p><img src="/Users/xiaohei/Downloads/hbase.png" alt="image"></p>
+<p>该模式主要应用于线上读多写少型应用，整个RegionServer内存（Java进程内存）分为两部分：JVM内存和堆外内存。   </p>
+<ul>
+<li>读缓存CombinedBlockCache = LRUBlockCache + 堆外内存BucketCache，用于缓存读到的Block数据</li>
+<li>LRUBlockCache，用于缓存元数据Block   </li>
+<li>BucketCache用于缓存实际用户数据Block   </li>
+<li>写缓存MemStore，缓存用户写入KeyValue数据</li>
+<li>其他部分用于RegionServer正常运行所必须的内存</li>
+</ul>
+<h4 id="配置说明"><a href="#配置说明" class="headerlink" title="配置说明"></a>配置说明</h4><p><img src="/Users/xiaohei/Downloads/hbase1.png" alt="image"></p>
+<p>RegionServer 堆栈大小为192G<br>Java_Heap大小为72G</p>
+<ul>
+<li>dfs.replication=3: hdfs副本数   </li>
+<li>hbase.hregion.max.filesize=18G: Region大小   </li>
+<li>hbase.hregion.memstore.flush.size=256M: Memstore刷新大小   </li>
+<li>hbase.regionserver.global.memstore.upperLimit=0.58: 整个RS中Memstore最大比例   </li>
+<li>hbase.regionserver.global.memstore.lowerLimit=0.53: 整个RS中Memstore最小比例   </li>
+<li>hbase.bucketcache.ioengine=offheap: 使用堆外缓存</li>
+<li>hbase.bucketcache.size=(118+16) * 1024M: 堆外缓存大小，单位为M</li>
+<li>hbase.bucketcache.percentage.in.combinedcache=0.88: 堆外读缓存所占比例，剩余为堆内元数据缓存大小   </li>
+<li>hfile.block.cache.size=0.2: 校验项   </li>
+<li>hbase.regionserver.handler.count=100: RS处理客户端请求最大线程数   </li>
+<li>hbase.hstore.blockingStoreFiles=100: storefile个数达到该值则block写入</li>
+<li>hbase.hregion.memstore.block.multiplier=3: 强制刷新Memstore大小的倍数</li>
+</ul>
+<p><strong>校验项</strong></p>
+<ul>
+<li>LRUBlockCache + MemStore &lt; 80% * JVM_HEAP -&gt; (16+40)/72=0.77 &lt;= 0.8</li>
+<li>RegionSize / MemstoreSize * ReplicationFactor * HeapFractionForMemstore * 2 -&gt; 18 * 1024 / 256 * 3 * 0.58 * 2 = 250 -&gt; 72G * 250 = 18T &lt;= 18T</li>
+<li>Memstore可能的最大大小 -&gt; 341 * 256 / 1024 = 85.25G &gt; 41.76G</li>
+<li>hfile.block.cache.size + hbase.regionserver.global.memstore.upperLimit = 0.78 &lt;= 0.8</li>
+</ul>
+<p><strong>可能存在的风险：Memstore数量同时存在160个以上且写满，将会出现RegionServer级别的强制刷写，造成节点阻塞。</strong></p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><h4 id="hbase-env-sh-的-HBase-客户端环境高级配置代码段"><a href="#hbase-env-sh-的-HBase-客户端环境高级配置代码段" class="headerlink" title="hbase-env.sh 的 HBase 客户端环境高级配置代码段"></a>hbase-env.sh 的 HBase 客户端环境高级配置代码段</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HBASE_OFFHEAPSIZE=??G</span><br><span class="line">HBASE_OPTS="-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256m -XX:+UseParNewGC -XX:MaxTenuringThreshold=15  -XX:+CMSParallelRemarkEnabled -XX:+UseCMSCompactAtFullCollection -XX:+CMSClassUnloadingEnabled -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSFullGCsBeforeCompaction=0 -XX:CMSInitiatingOccupancyFraction=70 -XX:+PrintTenuringDistribution -XX:SurvivorRatio=2 -XX:+UseConcMarkSweepGC -XX:-DisableExplicitGC $HBASE_OPTS"</span><br></pre></td></tr></table></figure>
+
+<h4 id="hbase-site-xml-的-RegionServer-高级配置代码段（安全阀）"><a href="#hbase-site-xml-的-RegionServer-高级配置代码段（安全阀）" class="headerlink" title="hbase-site.xml 的 RegionServer 高级配置代码段（安全阀）"></a>hbase-site.xml 的 RegionServer 高级配置代码段（安全阀）</h4><p>手动split region</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span><span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.regionserver.wal.codec<span class="tag">&lt;/<span class="name">name</span>&gt;</span><span class="tag">&lt;<span class="name">value</span>&gt;</span>org.apache.hadoop.hbase.regionserver.wal.IndexedWALEditCodec<span class="tag">&lt;/<span class="name">value</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span><span class="tag">&lt;<span class="name">property</span>&gt;</span><span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.region.server.rpc.scheduler.factory.class<span class="tag">&lt;/<span class="name">name</span>&gt;</span><span class="tag">&lt;<span class="name">value</span>&gt;</span>org.apache.hadoop.hbase.ipc.PhoenixRpcSchedulerFactory<span class="tag">&lt;/<span class="name">value</span>&gt;</span><span class="tag">&lt;<span class="name">description</span>&gt;</span>Factory to create the Phoenix RPC Scheduler that uses separate queues for index and metadata updates<span class="tag">&lt;/<span class="name">description</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span><span class="tag">&lt;<span class="name">property</span>&gt;</span><span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.rpc.controllerfactory.class<span class="tag">&lt;/<span class="name">name</span>&gt;</span><span class="tag">&lt;<span class="name">value</span>&gt;</span>org.apache.hadoop.hbase.ipc.controller.ServerRpcControllerFactory<span class="tag">&lt;/<span class="name">value</span>&gt;</span><span class="tag">&lt;<span class="name">description</span>&gt;</span>Factory to create the Phoenix RPC Scheduler that uses separate queues for index and metadata updates<span class="tag">&lt;/<span class="name">description</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span><span class="tag">&lt;<span class="name">property</span>&gt;</span><span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.regionserver.thread.compaction.large<span class="tag">&lt;/<span class="name">name</span>&gt;</span><span class="tag">&lt;<span class="name">value</span>&gt;</span>5<span class="tag">&lt;/<span class="name">value</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span><span class="tag">&lt;<span class="name">property</span>&gt;</span><span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.regionserver.region.split.policy<span class="tag">&lt;/<span class="name">name</span>&gt;</span><span class="tag">&lt;<span class="name">value</span>&gt;</span>org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy<span class="tag">&lt;/<span class="name">value</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/09/28/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/" data-id="ck4w5linr00043jdi0vek21l9" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-数据平台规划方案" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/09/25/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E8%A7%84%E5%88%92%E6%96%B9%E6%A1%88/" class="article-date">
+  <time datetime="2018-09-25T05:14:58.474Z" itemprop="datePublished">2018-09-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/25/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E8%A7%84%E5%88%92%E6%96%B9%E6%A1%88/">数据平台规划方案</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="大数据平台现状"><a href="#大数据平台现状" class="headerlink" title="大数据平台现状"></a>大数据平台现状</h2><ul>
+<li>总可用节点：36个（各节点内存512G，CPU 56核）   </li>
+<li>总可用内存：9.38T（平均每个节点开放260G）   </li>
+<li>总可用CPU：1120个（平均每个节点开放31个）   </li>
+</ul>
+<p>包含了文件存储、计算、数据库等集群服务。</p>
+<p><strong>现有集群职能包括：</strong></p>
+<ul>
+<li>离线OLAP数据调度同步（原始数据）     </li>
+<li>各产品线离线生产任务（雷达、探针、定制产品、回溯测试等业务）   </li>
+<li>离线OLTP数据更新（HBase数据更新）   </li>
+<li>线下模型、数据测试（商户定制与联合建模）   </li>
+<li>模型训练、迭代与更新（评分卡、推荐、联合模型等）   </li>
+<li>基础数据实时流（底层实时数据处理）   </li>
+<li>各产品线实时流计算（雷达、探针等上层业务）   </li>
+<li>日常数据分析任务（大量数据分析、行业分析等需求）   </li>
+<li>OLTP数据库服务（HBase）   </li>
+<li>监控报表任务（BI、数据监控等）   </li>
+<li>数据仓库（数据整合、清洗、调度等）   </li>
+<li>宝付大数据平台相关任务（Spark、Hive、Impala等）   </li>
+</ul>
+<p>由于当前集群职能繁多，网络带宽、磁盘IO等为集群共享，<strong>会因大型离线任务占用大量网络或磁盘IO峰值，对线上业务会造成短暂延迟。且集群环境较为复杂，有较多对线上业务造成影响的风险。</strong></p>
+<h2 id="规划方案"><a href="#规划方案" class="headerlink" title="规划方案"></a>规划方案</h2><p>鉴于后续业务发展，大数据平台的使用人数和执行任务将会快速上升，为了避免对线上业务的直接影响，提议部署一个次规模（20个节点内）的生产集群（以下简称在线集群）承接部分职能，减轻现有集群（以下简称离线离线计算集群）的压力，同时规划与隔离不同等级的任务。</p>
+<p>在线集群<strong>主要职能为OLTP数据库服务（HBase）</strong>，将业务主库迁移至在线集群可保证业务不受任何大规模计算任务（或者计算量比较集中的情况）所带来的延迟影响。</p>
+<p>除此之外，<strong>在线集群将不会进行其他任何程序与任务以保证线上服务的稳定性。</strong></p>
+<p>将业务主库分离出去之后，离线计算集群的HBase将作为中间件为流式计算等系统提供服务（同时兼业务备库使用，在需要重启等情况下可以相互切换）。</p>
+<p>此时离线计算集群的定位为执行大规模、密集的数据分析、计算、模型等计算资源消耗巨大的任务，在线集群的定位为稳定的业务数据服务。</p>
+<p>由于离线计算集群承载了大部分任务，随着业务发展，后续会有更多计算需求产生（如设备指纹与爬虫数据的分析与计算），<strong>需要离线计算集群能够方便、快速的进行横向扩容。</strong></p>
+<h2 id="迁移方案"><a href="#迁移方案" class="headerlink" title="迁移方案"></a>迁移方案</h2><p>将使用新采购机器（50台）在新机房部署两个集群（在线+离线计算），<strong>使用的节点个数待定。</strong></p>
+<p><strong>在线集群的HBase服务对部署参数、分区配置策略进行优化调整，同时确认跨集群数据同步方案与程序。</strong></p>
+<p>集群准备就绪后：</p>
+<p>1.同步老机房线上所有业务数据至新机房的在线集群。<br>2.将老机房集群上数据同步、生产调度任务等相关程序、脚本和配置迁移至新机房的离线计算集群。<br>3.老机房业务与任务确认迁移完成后，停机下线（分批）调整至新机房并入离线计算集群中，在线集群视情况调整一些新机器扩容。   </p>
+<p><strong>以上步骤需要整理详细操作过程和确认完成时间点。</strong></p>
+<h2 id="离线计算集群资源池"><a href="#离线计算集群资源池" class="headerlink" title="离线计算集群资源池"></a>离线计算集群资源池</h2><p>当前离线计算集群的资源池划分为宝付的production、development，新颜的production、development，在集群承载了比较多的职能的时候此划分方案已经不满足需求，建议对新颜的资源池进行更详细的划分：</p>
+<ul>
+<li>stream：流式计算系统使用，占比10%   </li>
+<li>model：模型训练与标签系统使用，占比30%   </li>
+<li>experiment：联合建模与商户线下测试使用，占比20%   </li>
+<li>production：离线生产任务使用，占比20%   </li>
+<li>development：测试任务与日常分析使用，占比20%</li>
+</ul>
+<p>以上分配占比仅为预估，需要根据实际情况（包括新采购需求添加之后的集群情况）重新调整。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/09/25/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E8%A7%84%E5%88%92%E6%96%B9%E6%A1%88/" data-id="ck4w5linz000a3jdi8ry1ad2e" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/02/%E6%9C%89%E9%81%93markdown%E7%A6%BB%E7%BA%BF%E6%B5%8B%E8%AF%95/">有道markdown离线测试</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/02/HBase%20%E5%B7%A5%E5%85%B7%E5%92%8C%E5%AE%9E%E7%94%A8%E7%A8%8B%E5%BA%8F/">HBase 工具和实用程序</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/02/JanusGraph%20Server%E6%90%AD%E5%BB%BA%20hbase+%20solr/">JanusGraph Server搭建 hbase+ solr</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/02/solr%20%20command/">solr  command</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/02/anaconda3-5.2.0+python3.6.5+tensorflow1.11.0/">anaconda3-5.2.0+python3.6.5+tensorflow1.11.0</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
