@@ -1,6 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>00.组件版本和配置策略</title>
+    <url>/2020/01/06/00.%E7%BB%84%E4%BB%B6%E7%89%88%E6%9C%AC%E5%92%8C%E9%85%8D%E7%BD%AE%E7%AD%96%E7%95%A5/</url>
+    <content><![CDATA[<p>tags: version</p>
+<h1 id="00-组件版本和配置策略"><a href="#00-组件版本和配置策略" class="headerlink" title="00.组件版本和配置策略"></a>00.组件版本和配置策略</h1><h2 id="组件版本"><a href="#组件版本" class="headerlink" title="组件版本"></a>组件版本</h2><ul>
+<li>Kubernetes 1.10.4</li>
+<li>Docker 18.03.1-ce</li>
+<li>Etcd 3.3.7</li>
+<li>Flanneld 0.10.0</li>
+<li>插件：<ul>
+<li>Coredns<ul>
+<li>Dashboard</li>
+<li>Heapster (influxdb、grafana)</li>
+<li>Metrics-Server</li>
+<li>EFK (elasticsearch、fluentd、kibana)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>镜像仓库：<ul>
+<li>docker registry<ul>
+<li>harbor</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="主要配置策略"><a href="#主要配置策略" class="headerlink" title="主要配置策略"></a>主要配置策略</h2><p>kube-apiserver：</p>
+<ul>
+<li>使用 keepalived 和 haproxy 实现 3 节点高可用；</li>
+<li>关闭非安全端口 8080 和匿名访问；</li>
+<li>在安全端口 6443 接收 https 请求；</li>
+<li>严格的认证和授权策略 (x509、token、RBAC)；</li>
+<li>开启 bootstrap token 认证，支持 kubelet TLS bootstrapping；</li>
+<li>使用 https 访问 kubelet、etcd，加密通信；</li>
+</ul>
+<p>kube-controller-manager：</p>
+<ul>
+<li>3 节点高可用；</li>
+<li>关闭非安全端口，在安全端口 10252 接收 https 请求；</li>
+<li>使用 kubeconfig 访问 apiserver 的安全端口；</li>
+<li>自动 approve kubelet 证书签名请求 (CSR)，证书过期后自动轮转；</li>
+<li>各 controller 使用自己的 ServiceAccount 访问 apiserver；</li>
+</ul>
+<p>kube-scheduler：</p>
+<ul>
+<li>3 节点高可用；</li>
+<li>使用 kubeconfig 访问 apiserver 的安全端口；</li>
+</ul>
+<p>kubelet：</p>
+<ul>
+<li>使用 kubeadm 动态创建 bootstrap token，而不是在 apiserver 中静态配置；</li>
+<li>使用 TLS bootstrap 机制自动生成 client 和 server 证书，过期后自动轮转；</li>
+<li>在 KubeletConfiguration 类型的 JSON 文件配置主要参数；</li>
+<li>关闭只读端口，在安全端口 10250 接收 https 请求，对请求进行认证和授权，拒绝匿名访问和非授权访问；</li>
+<li>使用 kubeconfig 访问 apiserver 的安全端口；</li>
+</ul>
+<p>kube-proxy：</p>
+<ul>
+<li>使用 kubeconfig 访问 apiserver 的安全端口；</li>
+<li>在 KubeProxyConfiguration 类型的 JSON 文件配置主要参数；</li>
+<li>使用 ipvs 代理模式；</li>
+</ul>
+<p>集群插件：</p>
+<ul>
+<li>DNS：使用功能、性能更好的 coredns；</li>
+<li>Dashboard：支持登录认证；</li>
+<li>Metric：heapster、metrics-server，使用 https 访问 kubelet 安全端口；</li>
+<li>Log：Elasticsearch、Fluend、Kibana；</li>
+<li>Registry 镜像库：docker-registry、harbor；</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
     <title>06-1.部署高可用组件</title>
     <url>/2020/01/06/06-1.%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BB%84%E4%BB%B6/</url>
     <content><![CDATA[<h1 id="06-1-部署高可用组件"><a href="#06-1-部署高可用组件" class="headerlink" title="06-1.部署高可用组件"></a>06-1.部署高可用组件</h1><p>本文档讲解使用 keepalived 和 haproxy 实现 kube-apiserver 高可用的步骤：</p>
