@@ -196,6 +196,86 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.yh-021.com/2020/01/06/06-1.%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BB%84%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="yh">
+      <meta itemprop="description" content="上海有汇网络科技">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="有汇">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/06/06-1.%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BB%84%E4%BB%B6/" class="post-title-link" itemprop="url">06-1.部署高可用组件</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-01-06 16:46:15 / 修改时间：16:46:14" itemprop="dateCreated datePublished" datetime="2020-01-06T16:46:15+08:00">2020-01-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="06-1-部署高可用组件"><a href="#06-1-部署高可用组件" class="headerlink" title="06-1.部署高可用组件"></a>06-1.部署高可用组件</h1><p>本文档讲解使用 keepalived 和 haproxy 实现 kube-apiserver 高可用的步骤：</p>
+<ul>
+<li>keepalived 提供 kube-apiserver 对外服务的 VIP；</li>
+<li>haproxy 监听 VIP，后端连接所有 kube-apiserver 实例，提供健康检查和负载均衡功能；</li>
+</ul>
+<p>运行 keepalived 和 haproxy 的节点称为 LB 节点。由于 keepalived 是一主多备运行模式，故至少两个 LB 节点。</p>
+<p>本文档复用 master 节点的三台机器，haproxy 监听的端口(8443) 需要与 kube-apiserver 的端口 6443 不同，避免冲突。</p>
+<p>keepalived 在运行过程中周期检查本机的 haproxy 进程状态，如果检测到 haproxy 进程异常，则触发重新选主的过程，VIP 将飘移到新选出来的主节点，从而实现 VIP 的高可用。</p>
+<p>所有组件（如 kubeclt、apiserver、controller-manager、scheduler 等）都通过 VIP 和 haproxy 监听的 8443 端口访问 kube-apiserver 服务。</p>
+<h2 id="安装软件包"><a href="#安装软件包" class="headerlink" title="安装软件包"></a>安装软件包</h2><pre><code>source /opt/k8s/bin/environment.sh
+for node_ip in ${NODE_IPS[@]}
+  do
+    echo &quot;&gt;&gt;&gt; ${node_ip}&quot;
+    ssh root@${node_ip} &quot;yum install -y keepalived haproxy&quot;
+  done</code></pre><h2 id="配置和下发-haproxy-配置文件"><a href="#配置和下发-haproxy-配置文件" class="headerlink" title="配置和下发 haproxy 配置文件"></a>配置和下发 haproxy 配置文件</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/06/06-1.%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BB%84%E4%BB%B6/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.yh-021.com/2020/01/02/%E6%9C%89%E9%81%93markdown%E7%A6%BB%E7%BA%BF%E6%B5%8B%E8%AF%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -881,88 +961,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.yh-021.com/2019/05/30/distcp%20%E6%96%87%E4%BB%B6%E8%BF%81%E7%A7%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="yh">
-      <meta itemprop="description" content="上海有汇网络科技">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="有汇">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/30/distcp%20%E6%96%87%E4%BB%B6%E8%BF%81%E7%A7%BB/" class="post-title-link" itemprop="url">distcp 文件迁移</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-30 16:38:14" itemprop="dateCreated datePublished" datetime="2019-05-30T16:38:14+08:00">2019-05-30</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line">for DB in `cat db_name.txt`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"> hadoop distcp -D mapreduce.job.queuename=bf_yarn_pool.production -D ipc.client.fallback-<span class="keyword">to</span>-simple-auth-allowed=<span class="literal">true</span> -i -overwrite hdfs://<span class="number">192.168</span><span class="number">.81</span><span class="number">.30</span>:<span class="number">8020</span>/<span class="keyword">user</span>/hive/warehouse/$DB.db hdfs://<span class="number">172.20</span><span class="number">.85</span><span class="number">.39</span>:<span class="number">8020</span>/<span class="keyword">user</span>/hive/warehouse/$DB.db</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">hadoop distcp \</span><br><span class="line">-Dmapred.jobtracker.maxtasks.per.job&#x3D;1800000 \   #任务最大map数（数据分成多map任务）</span><br><span class="line">-Dmapred.job.max.map.running&#x3D;4000 \              #最大map并发</span><br><span class="line">-Ddistcp.bandwidth&#x3D;150000000 \                   #带宽</span><br><span class="line">-Ddfs.replication&#x3D;2 \                            #复制因子，两副本</span><br><span class="line">-Ddistcp.skip.dir&#x3D;$skipPath \                    #过滤的目录（不拷贝的目录）</span><br><span class="line">-Dmapred.map.max.attempts&#x3D;9 \                    #每个task最大尝试次数</span><br><span class="line">-Dmapred.fairscheduler.pool&#x3D;distcp \             #指定任务运行的pool</span><br><span class="line">-pugp \                                          #保留属性（用户，组，权限）</span><br><span class="line">-i \                                             #忽略失败的task</span><br><span class="line">-skipcrccheck \                                  #忽略CRC校验（防止源，目标集群hdfs版本不一致导致任务失败。）</span><br><span class="line">hdfs:&#x2F;&#x2F;clusterA:9000&#x2F;AAA&#x2F;data  \                 #源地址</span><br><span class="line">hdfs:&#x2F;&#x2F;clusterB:9000&#x2F;BBB&#x2F;data                    #目标地址</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<p> hadoop distcp  -D mapreduce.job.queuename=xy_yarn_pool.development -D ipc.client.fallback-to-simple-auth-allowed=true -i -overwrite hdfs://192.168.81.30:8020/user/xy_app_spark/tables/fi_gw_express_order_idcard1_encrypt/pk_year=2018/pk_month=2018-10 hdfs://172.20.85.39:8020/user/hive/warehouse/credit_mining.db/fi_gw_express_order_idcard1_encrypt/pk_year=2018/pk_month=2018-10</p>
-<p>  hadoop distcp  -D mapreduce.job.queuename=xy_yarn_pool.development -D ipc.client.fallback-to-simple-auth-allowed=true -i -overwrite hdfs://192.168.81.30:8020/user/xy_app_spark/tables/fi_gw_express_order_idcard1_encrypt/pk_year=2018/pk_month=2018-11 hdfs://172.20.85.39:8020/user/hive/warehouse/credit_mining.db/fi_gw_express_order_idcard1_encrypt/pk_year=2018/pk_month=2018-11</p>
-<p>  hadoop distcp  -D mapreduce.job.queuename=xy_yarn_pool.development -D ipc.client.fallback-to-simple-auth-allowed=true -i -overwrite hdfs://192.168.81.30:8020/user/xy_app_spark/tables/fo_payment_encrypt/pk_year=2018/pk_month=2018-10 hdfs://172.20.85.39:8020/user/hive/warehouse/credit_mining.db/fo_payment_encrypt/pk_year=2018/pk_month=2018-10</p>
-<p>  hadoop distcp  -D mapreduce.job.queuename=xy_yarn_pool.development -D ipc.client.fallback-to-simple-auth-allowed=true -i -overwrite hdfs://192.168.81.30:8020/user/xy_app_spark/tables/fo_payment_encrypt/pk_year=2018/pk_month=2018-11 hdfs://172.20.85.39:8020/user/hive/warehouse/credit_mining.db/fo_payment_encrypt/pk_year=2018/pk_month=2018-11</p>
-<p>  hadoop distcp  -D mapreduce.job.queuename=xy_yarn_pool.development -D ipc.client.fallback-to-simple-auth-allowed=true -i -overwrite hdfs://192.168.81.30:8020//user/hive/warehouse/xy_ods.db/t_serve_business_order_real_time_v2_encrypt hdfs://172.20.85.39:8020/user/hive/warehouse/xy_ods.db/t_serve_business_order_real_time_v2_encrypt</p>
-<p> hadoop distcp  -D mapreduce.job.queuename=xy_yarn_pool.development -D ipc.client.fallback-to-simple-auth-allowed=true -i hdfs://192.168.81.30:8020/user/hive/warehouse/xy_ods_db.db/credit_logprocessor_rocord hdfs://172.20.85.39:8020/user/hive/warehouse/xy_ods_db.db/credit_logprocessor_rocord</p>
-<p>hadoop distcp  -D mapreduce.job.queuename=xy_yarn_pool.development -D ipc.client.fallback-to-simple-auth-allowed=true -i -overwrite hdfs://192.168.81.30:8020/user/hive/warehouse/xy_ods_db.db/credit_logprocessor_rocord/pk_day=2018-11-11 hdfs://172.20.85.39:8020/user/hive/warehouse/xy_ods_db.db/credit_logprocessor_rocord/pk_day=2018-11-11</p>
-<p>hadoop distcp  -D mapreduce.job.queuename=xy_yarn_pool.development -D ipc.client.fallback-to-simple-auth-allowed=true -i -overwrite hdfs://192.168.81.30:8020/user/hive/warehouse/xy_ods.db/ods_verification_cardno_d_incr/pk_year=2017 hdfs://172.20.85.39:8020/user/hive/warehouse/xy_ods.db/ods_verification_cardno_d_incr/pk_year=2017</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/05/30/distcp%20%E6%96%87%E4%BB%B6%E8%BF%81%E7%A7%BB/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1035,7 +1033,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">15</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
