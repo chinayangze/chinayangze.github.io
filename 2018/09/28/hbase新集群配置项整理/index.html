@@ -50,14 +50,17 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="hbase新集群配置项整理">
 <meta property="og:url" content="http://www.yh-021.com/2018/09/28/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/index.html">
-<meta property="og:site_name" content="小杨笔记">
+<meta property="og:site_name" content="上海有汇">
 <meta property="og:description" content="机器概况 总内存:256G    可分配内存:256*0.75&#x3D;192G    总硬盘:1.8T*12&#x3D;21.6T    可用硬盘空间:21.6T*0.85&#x3D;18.36T     内存规划Disk &#x2F; Java Heap RatioDisk &#x2F; Java Heap Ratio&#x3D;Disk Size &#x2F; Java Heap &#x3D; RegionSize &#x2F; MemstoreSize * Replicati">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://www.yh-021.com/Users/xiaohei/Downloads/hbase.png">
 <meta property="og:image" content="http://www.yh-021.com/Users/xiaohei/Downloads/hbase1.png">
 <meta property="article:published_time" content="2018-09-28T07:51:41.716Z">
 <meta property="article:modified_time" content="2018-09-28T07:51:33.685Z">
-<meta property="article:author" content="xiao yang">
+<meta property="article:author" content="yh">
+<meta property="article:tag" content="有汇">
+<meta property="article:tag" content="上海有汇">
+<meta property="article:tag" content="有汇科技">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://www.yh-021.com/Users/xiaohei/Downloads/hbase.png">
 
@@ -73,7 +76,7 @@
   };
 </script>
 
-  <title>hbase新集群配置项整理 | 小杨笔记</title>
+  <title>hbase新集群配置项整理 | 上海有汇</title>
   
 
 
@@ -117,11 +120,11 @@
     <div>
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">小杨笔记</span>
+        <span class="site-title">上海有汇</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-        <p class="site-subtitle">分享知识 分享快乐</p>
+        <p class="site-subtitle">有识之士 渊渟泽汇</p>
   </div>
 
   <div class="site-nav-toggle">
@@ -201,13 +204,13 @@
     <link itemprop="mainEntityOfPage" href="http://www.yh-021.com/2018/09/28/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="xiao yang">
-      <meta itemprop="description" content="小杨的个人博客">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="yh">
+      <meta itemprop="description" content="上海有汇网络科技">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小杨笔记">
+      <meta itemprop="name" content="上海有汇">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -383,8 +386,10 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">xiao yang</p>
-  <div class="site-description" itemprop="description">小杨的个人博客</div>
+    <img class="site-author-image" itemprop="image" alt="yh"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">yh</p>
+  <div class="site-description" itemprop="description">上海有汇网络科技</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
@@ -397,6 +402,14 @@
       </div>
   </nav>
 </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chinayangze" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chinayangze" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:info@yh-021.com" title="E-Mail → mailto:info@yh-021.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
 
 
   <div class="links-of-blogroll motion-element">
@@ -406,7 +419,7 @@
     </div>
     <ul class="links-of-blogroll-list">
         <li class="links-of-blogroll-item">
-          <a href="http://www.ask3.cn/" title="http:&#x2F;&#x2F;www.ask3.cn" rel="noopener" target="_blank">博客</a>
+          <a href="http://www.ask3.cn/" title="http:&#x2F;&#x2F;www.ask3.cn" rel="noopener" target="_blank">软件学习网</a>
         </li>
     </ul>
   </div>
@@ -432,7 +445,7 @@
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">xiao yang</span>
+  <span class="author" itemprop="copyrightHolder">yh</span>
 </div>
 
         
