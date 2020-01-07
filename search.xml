@@ -1,6 +1,222 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Typora轻便简洁的Markdown编辑器</title>
+    <url>/2020/01/07/Typora%E8%BD%BB%E4%BE%BF%E7%AE%80%E6%B4%81%E7%9A%84Markdown%E7%BC%96%E8%BE%91%E5%99%A8/</url>
+    <content><![CDATA[<p>Typora是一款轻便简洁的Markdown编辑器，支持即时渲染技术，这也是与其他Markdown编辑器最显著的区别。即时渲染使得你写Markdown就想是写Word文档一样流畅自如，不像其他编辑器的有编辑栏和显示栏。</p>
+<h1>对文字的特殊标注</h1>
+<p>标题</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 一阶标题  或者快捷键Ctrl+1</span></span><br><span class="line"><span class="comment">## 二阶标题 或者快捷键Ctrl+2</span></span><br><span class="line"><span class="comment">### 三阶标题    或者快捷键Ctrl+3</span></span><br><span class="line"><span class="comment">#### 四阶标题   或者快捷键Ctrl+4</span></span><br><span class="line"><span class="comment">##### 五阶标题  或者快捷键Ctrl+5</span></span><br><span class="line"><span class="comment">###### 六阶标题 或者快捷键Ctrl+6</span></span><br></pre></td></tr></table></figure>
+<p>下划线</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">u</span>&gt;</span>下划线的内容<span class="tag">&lt;/<span class="name">u</span>&gt;</span> 或按快捷键Ctrl+U</span><br></pre></td></tr></table></figure>
+<p>字体加粗</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">**加粗内容**    或按快捷键Ctrl+B</span><br></pre></td></tr></table></figure>
+<p>斜体</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">*倾斜内容*  或按快捷键Ctrl+I</span><br></pre></td></tr></table></figure>
+<p>删除线</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">~~删除线的内容~~  或按快捷键Alt+Shift+5</span><br></pre></td></tr></table></figure>
+<p>文字高亮</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x3D;&#x3D;我是最重要的&#x3D;&#x3D;</span><br></pre></td></tr></table></figure>
+<p>角标</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">x^2^    H~2~O</span><br></pre></td></tr></table></figure>
+<p>文本居中</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">center</span>&gt;</span>这是要居中的文本内容<span class="tag">&lt;/<span class="name">center</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>list<br>
+有序</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">数字+英文小数点(.)+空格</span><br></pre></td></tr></table></figure>
+<p>1.策划目标<br>
+2.战前准备<br>
+3.开始行动<br>
+无序</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">+ 、- 、* 创建无序列，任意数字开始+空格创建有序列表</span><br></pre></td></tr></table></figure>
+<p>猪<br>
+兔<br>
+马<br>
+Todolist</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">-</span> <span class="selector-attr">[ ]</span> 参加会议</span><br><span class="line"><span class="selector-tag">-</span> <span class="selector-attr">[x]</span> 中超足球赛</span><br></pre></td></tr></table></figure>
+<p>[ ] 参加会议<br>
+[x] 中超足球赛<br>
+Table</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">快捷键Ctrl+T弹出对话框</span><br></pre></td></tr></table></figure>
+<p>分割线</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">***+回车  </span><br><span class="line">---+回车</span><br></pre></td></tr></table></figure>
+<h1>插入</h1>
+<p>图片</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">![图片内容](http:<span class="comment">//t10.baidu.com/it/u=1069603383,3074552113&amp;fm=170&amp;s=771B15C75C12D8D61C3C69FB0300501F&amp;w=640&amp;h=426&amp;img.JPEG)</span></span><br><span class="line"> 也可使用快捷键Ctrl+K</span><br><span class="line">PS：也可将图片直接拖拽进来，自动生成链接</span><br></pre></td></tr></table></figure>
+<p>链接<br>
+内行式</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">[<span class="meta">百度一下，你就知道</span>](https:<span class="comment">//www.baidu.com/)</span></span><br></pre></td></tr></table></figure>
+<p>参考式</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">[百度一下，你就知道][]https:<span class="comment">//www.baidu.com/          # 第二个括号内可任意填写(不显)</span></span><br><span class="line"><span class="string">``</span><span class="string">`</span></span><br><span class="line"><span class="string">[百度一下，你就知道][]https://www.baidu.com/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">快速链接</span></span><br><span class="line"><span class="string">`</span><span class="string">``</span></span><br><span class="line">&lt;http:<span class="comment">//www.baidu.com&gt;</span></span><br><span class="line">PS：按住Ctrl点击链接可直接打开。</span><br><span class="line"><span class="string">``</span><span class="string">`</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#数学公式（简）</span></span><br><span class="line"><span class="string">`</span><span class="string">``</span></span><br><span class="line">Typora支持加入用LaTeX写成的数学公式，并且在软件界面下用MathJax直接渲染。</span><br><span class="line"><span class="string">``</span><span class="string">`</span></span><br><span class="line"><span class="string">*1.行内公式(inline math)，可以在偏好设置中单独打开，由一个美元符号将公式围起来；name=\prod \frac&#123;1&#125;&#123;i^2&#125;$</span></span><br><span class="line"><span class="string">*2.行外公式，直接按Ctrl+Shift+M；(双$+回车也可做到)</span></span><br><span class="line"><span class="string">`</span><span class="string">``</span></span><br><span class="line">注：上标和下标可以使用数学表达式来获取</span><br><span class="line"><span class="string">``</span><span class="string">`</span></span><br><span class="line"><span class="string">#其余</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">引用</span></span><br><span class="line"><span class="string">`</span><span class="string">``</span></span><br><span class="line">&gt;+空格    或按快捷键Ctrl+Shift+Q</span><br><span class="line"><span class="string">``</span><span class="string">`</span></span><br><span class="line"><span class="string">注释</span></span><br><span class="line"><span class="string">要添加注释的文字</span></span><br><span class="line"><span class="string">`</span><span class="string">``</span></span><br><span class="line">这是我们的标号[^<span class="number">1</span>]</span><br><span class="line">[^<span class="number">1</span>]:标号的含义</span><br><span class="line"><span class="string">``</span><span class="string">`</span></span><br><span class="line"><span class="string">表情</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">`</span><span class="string">``</span></span><br><span class="line">:单词:</span><br><span class="line"><span class="string">``</span><span class="string">`</span></span><br><span class="line"><span class="string">目录</span></span><br><span class="line"><span class="string">`</span><span class="string">``</span></span><br><span class="line">[TOC]</span><br><span class="line"><span class="string">``</span><span class="string">`</span></span><br><span class="line"><span class="string">Typora快捷键整合</span></span><br><span class="line"><span class="string">`</span><span class="string">``</span></span><br><span class="line">Ctrl+<span class="number">1</span>  一阶标题    Ctrl+B  字体加粗</span><br><span class="line">Ctrl+<span class="number">2</span>  二阶标题    Ctrl+I  字体倾斜</span><br><span class="line">Ctrl+<span class="number">3</span>  三阶标题    Ctrl+U  下划线</span><br><span class="line">Ctrl+<span class="number">4</span>  四阶标题    Ctrl+Home   返回Typora顶部</span><br><span class="line">Ctrl+<span class="number">5</span>  五阶标题    Ctrl+End    返回Typora底部</span><br><span class="line">Ctrl+<span class="number">6</span>  六阶标题    Ctrl+T  创建表格</span><br><span class="line">Ctrl+L  选中某句话   Ctrl+K  创建超链接</span><br><span class="line">Ctrl+D  选中某个单词  Ctrl+F  搜索</span><br><span class="line">Ctrl+E  选中相同格式的文字   Ctrl+H  搜索并替换</span><br><span class="line">Alt+Shift+<span class="number">5</span> 删除线 Ctrl+Shift+I    插入图片</span><br><span class="line">Ctrl+Shift+M    公式块 Ctrl+Shift+Q    引用</span><br><span class="line"></span><br><span class="line">注：一些实体符号需要在实体符号之前加”\”才能够显示</span><br><span class="line"><span class="string">``</span><span class="string">`</span></span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>为hexo添加hexo-admin组件</title>
+    <url>/2020/01/07/%E4%B8%BAhexo%E6%B7%BB%E5%8A%A0hexo-admin%E7%BB%84%E4%BB%B6/</url>
+    <content><![CDATA[<h4 id="准备工作">准备工作</h4>
+<blockquote>
+<p>已安装好<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">hexo</a>，选择好自己的<a href="https://hexo.io/themes/" target="_blank" rel="noopener">主题</a>(我选择的主题是<a href="https://github.com/Molunerfinn/hexo-theme-melody" target="_blank" rel="noopener">melody</a>)，并部署到<a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>等静态托管服务器上。</p>
+</blockquote>
+<h4 id="插件介绍">插件介绍</h4>
+<blockquote>
+<p><a href="https://github.com/jaredly/hexo-admin" target="_blank" rel="noopener"><strong>hexo-admin</strong></a> 是一个Hexo博客引擎的管理用户界面插件。这个插件最初是作为本地编辑器设计的，在本地运行<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">hexo</a>使用<strong>hexo-admin</strong>编写文章，然后通过<code>hexo g</code>或<code>hexo d</code>（<code>hexo g</code>是本地渲染，<code>hexo d</code>是将渲染的静态页面发布到<a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>）将生成的静态页面发布到<a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>等静态服务器。如果你使用的是非静态托管服务器，比如自己买的主机搭建的<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">hexo</a>，那么一定要设置<a href="https://github.com/jaredly/hexo-admin" target="_blank" rel="noopener"><strong>hexo-admin</strong></a>  的密码，否则谁都可以编辑你的文章。</p>
+</blockquote>
+<h4 id="插件安装">插件安装</h4>
+<ol>
+<li>
+<p>首先进入hexo创建的博客项目的根目录下，执行</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm install --save hexo-admin</span><br></pre></td></tr></table></figure>
+<p>mac可能需要root权限，前面加个<code>sudo</code> 就可以了。如果报错缺少组件，则缺少什么安装什么，<code>npm install</code> 加缺少的组件。</p>
+</li>
+<li>
+<p>运行下列命令启动<a href="https://github.com/jaredly/hexo-admin" target="_blank" rel="noopener"><strong>hexo-admin</strong></a> ：</p>
+<p>hexo server -d<br>
+打开 <a href="http://localhost:4000/admin/" target="_blank" rel="noopener">http://localhost:4000/admin/</a>  就可以访问到hexo-admin管理页面了。</p>
+</li>
+</ol>
+<h4 id="密码保护">密码保护</h4>
+<p>打开<code>setting</code>，点击<code>Setup authentification here</code>输入用户名，密码，密钥，下面会自动生成配置文件，复制加在<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">hexo</a>根目录下的<code>_config.yml</code>中：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">admin:</span><br><span class="line">  username: myfavoritename</span><br><span class="line">  password_hash: be121740bf988b2225a313fa1f107ca1</span><br><span class="line">  secret: a secret something</span><br></pre></td></tr></table></figure>
+<p>重启<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">hexo</a>，就可以看到登录页面了</p>
+<h4 id="发布文章">发布文章</h4>
+<p>进入后台之后点击<code>Deploy</code>，里面的Deploy按钮是用来执行发布脚本的，所以我们先在博客根目录下新建个目录<code>admin_script</code>，然后在目录中新建一个脚本<code>hexo-g.sh</code>，里面写下下面代码然后保存，</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure>
+<p>然后给hexo-g.sh加入可执行权限</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">chmod</span> +<span class="selector-tag">x</span> <span class="selector-tag">hexo-d</span><span class="selector-class">.sh</span></span><br></pre></td></tr></table></figure>
+<p>然后在<code>_config.yml</code>中的admin下添加</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">admin:</span><br><span class="line">  username: myfavoritename</span><br><span class="line">  password_hash: be121740bf988b2225a313fa1f107ca1</span><br><span class="line">  secret: a secret something</span><br><span class="line">  deployCommand: .&#x2F;admin_script&#x2F;hexo-d.sh</span><br></pre></td></tr></table></figure>
+<p>设置发布执行的脚本，点击<code>Deploy</code>就会执行这个命令并提交到<a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>上。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Shell数组</title>
+    <url>/2020/01/07/Shell%E6%95%B0%E7%BB%84/</url>
+    <content><![CDATA[<p>Shell在编程方面比Windows批处理强大很多，无论是在循环、运算。</p>
+<p>bash支持一维数组（不支持多维数组），并且没有限定数组的大小。类似与C语言，数组元素的下标由0开始编号。获取数组中的元素要利用下标，下标可以是整数或算术表达式，其值应大于或等于0。<br>
+定义数组</p>
+<p>在Shell中，用括号来表示数组，数组元素用“空格”符号分割开。定义数组的一般形式为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">array_name&#x3D;(value1 ... valuen)</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">array_name&#x3D;(value0 value1 value2 value3)</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">array_name&#x3D;(</span><br><span class="line">value0</span><br><span class="line">value1</span><br><span class="line">value2</span><br><span class="line">value3</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>还可以单独定义数组的各个分量：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">array_name[0]&#x3D;value0</span><br><span class="line">array_name[1]&#x3D;value1</span><br><span class="line">array_name[2]&#x3D;value2</span><br></pre></td></tr></table></figure>
+<p>可以不使用连续的下标，而且下标的范围没有限制。</p>
+<h4 id="读取数组">读取数组</h4>
+<p>读取数组元素值的一般格式是：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$&#123;array_name[index]&#125;</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">valuen&#x3D;$&#123;array_name[2]&#125;</span><br></pre></td></tr></table></figure>
+<p>举个例子：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;sh</span><br><span class="line">NAME[0]&#x3D;&quot;Zara&quot;</span><br><span class="line">NAME[1]&#x3D;&quot;Qadir&quot;</span><br><span class="line">NAME[2]&#x3D;&quot;Mahnaz&quot;</span><br><span class="line">NAME[3]&#x3D;&quot;Ayan&quot;</span><br><span class="line">NAME[4]&#x3D;&quot;Daisy&quot;</span><br><span class="line">echo &quot;First Index: $&#123;NAME[0]&#125;&quot;</span><br><span class="line">echo &quot;Second Index: $&#123;NAME[1]&#125;&quot;</span><br></pre></td></tr></table></figure>
+<p>运行脚本，输出：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$.&#x2F;test.sh</span><br><span class="line">First Index: Zara</span><br><span class="line">Second Index: Qadir</span><br></pre></td></tr></table></figure>
+<p>使用@ 或 * 可以获取数组中的所有元素，例如：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$&#123;array_name[*]&#125;</span><br><span class="line">$&#123;array_name[@]&#125;</span><br></pre></td></tr></table></figure>
+<p>举个例子：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;sh</span><br><span class="line">NAME[0]&#x3D;&quot;Zara&quot;</span><br><span class="line">NAME[1]&#x3D;&quot;Qadir&quot;</span><br><span class="line">NAME[2]&#x3D;&quot;Mahnaz&quot;</span><br><span class="line">NAME[3]&#x3D;&quot;Ayan&quot;</span><br><span class="line">NAME[4]&#x3D;&quot;Daisy&quot;</span><br><span class="line">echo &quot;First Method: $&#123;NAME[*]&#125;&quot;</span><br><span class="line">echo &quot;Second Method: $&#123;NAME[@]&#125;&quot;</span><br></pre></td></tr></table></figure>
+<p>运行脚本，输出：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$.&#x2F;test.sh</span><br><span class="line">First Method: Zara Qadir Mahnaz Ayan Daisy</span><br><span class="line">Second Method: Zara Qadir Mahnaz Ayan Daisy</span><br></pre></td></tr></table></figure>
+<h4 id="获取数组的长度">获取数组的长度</h4>
+<p>获取数组长度的方法与获取字符串长度的方法相同，例如：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 取得数组元素的个数</span><br><span class="line">length&#x3D;$&#123;#array_name[@]&#125;</span><br><span class="line"># 或者</span><br><span class="line">length&#x3D;$&#123;#array_name[*]&#125;</span><br><span class="line"># 取得数组单个元素的长度</span><br><span class="line">lengthn&#x3D;$&#123;#array_name[n]&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>liunx查看内存</title>
+    <url>/2020/01/07/liunx%E6%9F%A5%E7%9C%8B%E5%86%85%E5%AD%98/</url>
+    <content><![CDATA[<h3 id="监控内存">监控内存</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">top -d 1</span><br></pre></td></tr></table></figure>
+<p>然后使用<code>shift + m</code>以内存排列。<a href="https://www.orchome.com/100" target="_blank" rel="noopener">top命令详解</a></p>
+<h3 id="查看内存的使用">查看内存的使用</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">free -g</span><br><span class="line">free -m</span><br></pre></td></tr></table></figure>
+<p>可参考：<a href="https://www.orchome.com/296" target="_blank" rel="noopener">free命令详解</a></p>
+<h3 id="查看内存">查看内存</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">grep MemTotal &#x2F;proc&#x2F;meminfo</span><br><span class="line">grep MemTotal &#x2F;proc&#x2F;meminfo | cut -f2 -d:</span><br><span class="line">free -m |grep &quot;Mem&quot; | awk &#39;&#123;print $2&#125;’</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>kubernetes命令大全</title>
+    <url>/2020/01/07/kubernetes%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8/</url>
+    <content><![CDATA[<h2 id="状态查询">状态查询</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 查看集群信息</span><br><span class="line">kubectl cluster-info</span><br><span class="line"></span><br><span class="line">systemctl status kube-apiserver</span><br><span class="line">systemctl status kubelet</span><br><span class="line">systemctl status kube-proxy</span><br><span class="line">systemctl status kube-scheduler</span><br><span class="line">systemctl status kube-controller-manager</span><br><span class="line">systemctl status docker</span><br></pre></td></tr></table></figure>
+<h2 id="node相关">node相关</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 查看namespaces</span><br><span class="line">kubectl get namespaces</span><br><span class="line"></span><br><span class="line"># 为节点增加lable</span><br><span class="line">kubectl label nodes 10.126.72.31 points&#x3D;test</span><br><span class="line"></span><br><span class="line"># 查看节点和lable</span><br><span class="line">kubectl get nodes --show-labels</span><br><span class="line"></span><br><span class="line"># 查看状态</span><br><span class="line">kubectl get componentstatuses</span><br><span class="line"></span><br><span class="line"># Node的隔离与恢复</span><br><span class="line">## 隔离</span><br><span class="line">kubectl cordon k8s-node1</span><br><span class="line"></span><br><span class="line">## 恢复</span><br><span class="line">kubectl uncordon k8s-node1</span><br></pre></td></tr></table></figure>
+<h2 id="查询">查询</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 查看nodes节点</span><br><span class="line">kubectl get nodes</span><br><span class="line"></span><br><span class="line"># 通过yaml文件查询</span><br><span class="line">kubectl get -f xxx-yaml&#x2F;</span><br><span class="line"></span><br><span class="line"># 查询资源</span><br><span class="line">kubectl get resourcequota</span><br><span class="line"></span><br><span class="line"># endpoints端</span><br><span class="line">kubectl get endpoints</span><br><span class="line"></span><br><span class="line"># 查看pods</span><br><span class="line"></span><br><span class="line"># 查看指定空间&#96;kube-system&#96;的pods</span><br><span class="line">kubectl get po -n kube-system</span><br><span class="line"></span><br><span class="line"># 查看所有空间的</span><br><span class="line">kubectl get pods -o wide --all-namespaces</span><br><span class="line"></span><br><span class="line"># 其他的写法</span><br><span class="line">kubectl get pod -o wide --namespace&#x3D;kube-system</span><br><span class="line"></span><br><span class="line"># 获取svc</span><br><span class="line">kubectl get svc --all-namespaces</span><br><span class="line"></span><br><span class="line"># 其他写法</span><br><span class="line">kubectl get services --all-namespaces</span><br><span class="line"></span><br><span class="line"># 通过lable查询</span><br><span class="line">kubectl get pods -l app&#x3D;nginx -o yaml|grep podIP</span><br><span class="line"></span><br><span class="line"># 当我们发现一个pod迟迟无法创建时，描述一个pods</span><br><span class="line">kubectl describe pod xxx</span><br></pre></td></tr></table></figure>
+<h2 id="删除所有pod">删除所有pod</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 删除所有pods</span><br><span class="line">kubectl delete pods --all</span><br><span class="line"></span><br><span class="line"># 删除所有包含某个lable的pod和serivce</span><br><span class="line">kubectl delete pods,services -l name&#x3D;&lt;lable-name&gt;</span><br><span class="line"></span><br><span class="line"># 删除ui server,然后重建</span><br><span class="line">kubectl delete deployments kubernetes-dashboard --namespace&#x3D;kube-system</span><br><span class="line">kubectl delete services kubernetes-dashboard --namespace&#x3D;kube-system</span><br><span class="line"></span><br><span class="line"># 强制删除部署</span><br><span class="line">kubectl delete deployment kafka-1</span><br><span class="line"></span><br><span class="line"># 删除rc</span><br><span class="line">kubectl delete rs --all &amp;&amp; kubectl delete rc --all</span><br><span class="line"></span><br><span class="line">## 强制删除Terminating状态的pod</span><br><span class="line">kubectl delete deployment kafka-1 --grace-period&#x3D;0 --force</span><br></pre></td></tr></table></figure>
+<h2 id="滚动">滚动</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 升级</span><br><span class="line">kubectl apply -f xxx.yaml --record</span><br><span class="line"></span><br><span class="line"># 回滚</span><br><span class="line">kubectl rollout undo deployment javademo</span><br><span class="line"></span><br><span class="line"># 查看滚动升级记录</span><br><span class="line">kubectl rollout history deployment &#123;名称&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="查看日志">查看日志</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 查看指定镜像的日志</span><br><span class="line">kubectl logs -f kube-dns-699984412-vz1q6 -n kube-system</span><br><span class="line"></span><br><span class="line">kubectl logs --tail&#x3D;10 nginx  </span><br><span class="line"></span><br><span class="line">#指定其中一个查看日志</span><br><span class="line">kubectl logs kube-dns-699984412-n5zkz -c kubedns --namespace&#x3D;kube-system</span><br><span class="line">kubectl logs kube-dns-699984412-vz1q6 -c dnsmasq --namespace&#x3D;kube-system</span><br><span class="line">kubectl logs kube-dns-699984412-mqb14 -c sidecar --namespace&#x3D;kube-system</span><br><span class="line"></span><br><span class="line"># 看日志</span><br><span class="line">journalctl -f</span><br></pre></td></tr></table></figure>
+<h2 id="扩展">扩展</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 扩展副本</span><br><span class="line">kubectl scale rc xxxx --replicas&#x3D;3</span><br><span class="line">kubectl scale rc mysql --replicas&#x3D;1</span><br><span class="line">kubectl scale --replicas&#x3D;3 -f foo.yaml</span><br></pre></td></tr></table></figure>
+<h2 id="执行">执行</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 启动</span><br><span class="line">nohup kubectl proxy --address&#x3D;&#39;10.1.70.247&#39; --port&#x3D;8001 --accept-hosts&#x3D;&#39;^*$&#39; &gt;&#x2F;dev&#x2F;null 2&gt;&amp;1 &amp;</span><br><span class="line"></span><br><span class="line"># 进入镜像</span><br><span class="line">kubectl exec kube-dns-699984412-vz1q6 -n kube-system -c kubedns ifconfig</span><br><span class="line">kubectl exec kube-dns-699984412-vz1q6 -n kube-system -c kubedns ifconfig &#x2F;bin&#x2F;bash</span><br><span class="line"></span><br><span class="line"># 执行镜像内命令</span><br><span class="line">kubectl exec kube-dns-4140740281-pfjhr -c etcd --namespace&#x3D;kube-system etcdctl get &#x2F;skydns&#x2F;local&#x2F;cluster&#x2F;default&#x2F;redis-master</span><br></pre></td></tr></table></figure>
+<h2 id="无限循环命令">无限循环命令</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">while true; do sleep 1; done</span><br></pre></td></tr></table></figure>
+<h2 id="资源管理">资源管理</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 暂停资源更新（资源变更不会生效）</span><br><span class="line">kubectl rollout pause deployment xxx</span><br><span class="line"></span><br><span class="line"># 恢复资源更新</span><br><span class="line">kubectl rollout resume deployment xxx</span><br><span class="line"></span><br><span class="line"># 设置内存、cpu限制</span><br><span class="line">kubectl set resources deployment xxx -c&#x3D;xxx --limits&#x3D;cpu&#x3D;200m,memory&#x3D;512Mi --requests&#x3D;cpu&#x3D;1m,memory&#x3D;1Mi</span><br><span class="line"></span><br><span class="line"># 设置storageclass为默认</span><br><span class="line">kubectl patch storageclass &lt;your-class-name&gt; -p &#39;&#123;&quot;metadata&quot;: &#123;&quot;annotations&quot;:&#123;&quot;storageclass.kubernetes.io&#x2F;is-default-class&quot;:&quot;true&quot;&#125;&#125;&#125;&#39;</span><br></pre></td></tr></table></figure>
+<h2 id="其他">其他</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 创建和删除</span><br><span class="line">kubectl create -f dashboard-controller.yaml</span><br><span class="line">kubectl delete -f dashboard-dashboard.yaml</span><br><span class="line"></span><br><span class="line"># 查看指定pods的环境变量</span><br><span class="line">kubectl exec xxx env</span><br><span class="line"></span><br><span class="line"># 判断dns是否通</span><br><span class="line">kubectl exec busybox -- nslookup kube-dns.kube-system</span><br><span class="line"></span><br><span class="line"># kube-proxy状态</span><br><span class="line">systemctl status kube-proxy -l</span><br><span class="line"></span><br><span class="line"># token的</span><br><span class="line">kubectl get serviceaccount&#x2F;kube-dns --namespace&#x3D;kube-system -o yaml|grep token</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>数据平台规划方案</title>
+    <url>/2020/01/07/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E8%A7%84%E5%88%92%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<h2 id="大数据平台现状">大数据平台现状</h2>
+<ul>
+<li>总可用节点：36个（各节点内存512G，CPU 56核）</li>
+<li>总可用内存：9.38T（平均每个节点开放260G）</li>
+<li>总可用CPU：1120个（平均每个节点开放31个）</li>
+</ul>
+<p>包含了文件存储、计算、数据库等集群服务。</p>
+<p><strong>现有集群职能包括：</strong></p>
+<ul>
+<li>离线OLAP数据调度同步（原始数据）</li>
+<li>各产品线离线生产任务（雷达、探针、定制产品、回溯测试等业务）</li>
+<li>离线OLTP数据更新（HBase数据更新）</li>
+<li>线下模型、数据测试（商户定制与联合建模）</li>
+<li>模型训练、迭代与更新（评分卡、推荐、联合模型等）</li>
+<li>基础数据实时流（底层实时数据处理）</li>
+<li>各产品线实时流计算（雷达、探针等上层业务）</li>
+<li>日常数据分析任务（大量数据分析、行业分析等需求）</li>
+<li>OLTP数据库服务（HBase）</li>
+<li>监控报表任务（BI、数据监控等）</li>
+<li>数据仓库（数据整合、清洗、调度等）</li>
+<li>宝付大数据平台相关任务（Spark、Hive、Impala等）</li>
+</ul>
+<p>由于当前集群职能繁多，网络带宽、磁盘IO等为集群共享，<strong>会因大型离线任务占用大量网络或磁盘IO峰值，对线上业务会造成短暂延迟。且集群环境较为复杂，有较多对线上业务造成影响的风险。</strong></p>
+<h2 id="规划方案">规划方案</h2>
+<p>鉴于后续业务发展，大数据平台的使用人数和执行任务将会快速上升，为了避免对线上业务的直接影响，提议部署一个次规模（20个节点内）的生产集群（以下简称在线集群）承接部分职能，减轻现有集群（以下简称离线离线计算集群）的压力，同时规划与隔离不同等级的任务。</p>
+<p>在线集群<strong>主要职能为OLTP数据库服务（HBase）</strong>，将业务主库迁移至在线集群可保证业务不受任何大规模计算任务（或者计算量比较集中的情况）所带来的延迟影响。</p>
+<p>除此之外，<strong>在线集群将不会进行其他任何程序与任务以保证线上服务的稳定性。</strong></p>
+<p>将业务主库分离出去之后，离线计算集群的HBase将作为中间件为流式计算等系统提供服务（同时兼业务备库使用，在需要重启等情况下可以相互切换）。</p>
+<p>此时离线计算集群的定位为执行大规模、密集的数据分析、计算、模型等计算资源消耗巨大的任务，在线集群的定位为稳定的业务数据服务。</p>
+<p>由于离线计算集群承载了大部分任务，随着业务发展，后续会有更多计算需求产生（如设备指纹与爬虫数据的分析与计算），<strong>需要离线计算集群能够方便、快速的进行横向扩容。</strong></p>
+<h2 id="迁移方案">迁移方案</h2>
+<p>将使用新采购机器（50台）在新机房部署两个集群（在线+离线计算），<strong>使用的节点个数待定。</strong></p>
+<p><strong>在线集群的HBase服务对部署参数、分区配置策略进行优化调整，同时确认跨集群数据同步方案与程序。</strong></p>
+<p>集群准备就绪后：</p>
+<p>1.同步老机房线上所有业务数据至新机房的在线集群。<br>
+2.将老机房集群上数据同步、生产调度任务等相关程序、脚本和配置迁移至新机房的离线计算集群。<br>
+3.老机房业务与任务确认迁移完成后，停机下线（分批）调整至新机房并入离线计算集群中，在线集群视情况调整一些新机器扩容。</p>
+<p><strong>以上步骤需要整理详细操作过程和确认完成时间点。</strong></p>
+<h2 id="离线计算集群资源池">离线计算集群资源池</h2>
+<p>当前离线计算集群的资源池划分为宝付的production、development，新颜的production、development，在集群承载了比较多的职能的时候此划分方案已经不满足需求，建议对新颜的资源池进行更详细的划分：</p>
+<ul>
+<li>stream：流式计算系统使用，占比10%</li>
+<li>model：模型训练与标签系统使用，占比30%</li>
+<li>experiment：联合建模与商户线下测试使用，占比20%</li>
+<li>production：离线生产任务使用，占比20%</li>
+<li>development：测试任务与日常分析使用，占比20%</li>
+</ul>
+<p>以上分配占比仅为预估，需要根据实际情况（包括新采购需求添加之后的集群情况）重新调整。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>12.清理集群</title>
     <url>/2020/01/07/12.%E6%B8%85%E7%90%86%E9%9B%86%E7%BE%A4/</url>
     <content><![CDATA[<p>tags: clean</p>
@@ -4279,59 +4495,6 @@ for node_ip in ${NODE_IPS[@]}
 </ol>
 </li>
 </ul>
-]]></content>
-  </entry>
-  <entry>
-    <title>数据平台规划方案</title>
-    <url>/2020/01/07/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E8%A7%84%E5%88%92%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<h2 id="大数据平台现状">大数据平台现状</h2>
-<ul>
-<li>总可用节点：36个（各节点内存512G，CPU 56核）</li>
-<li>总可用内存：9.38T（平均每个节点开放260G）</li>
-<li>总可用CPU：1120个（平均每个节点开放31个）</li>
-</ul>
-<p>包含了文件存储、计算、数据库等集群服务。</p>
-<p><strong>现有集群职能包括：</strong></p>
-<ul>
-<li>离线OLAP数据调度同步（原始数据）</li>
-<li>各产品线离线生产任务（雷达、探针、定制产品、回溯测试等业务）</li>
-<li>离线OLTP数据更新（HBase数据更新）</li>
-<li>线下模型、数据测试（商户定制与联合建模）</li>
-<li>模型训练、迭代与更新（评分卡、推荐、联合模型等）</li>
-<li>基础数据实时流（底层实时数据处理）</li>
-<li>各产品线实时流计算（雷达、探针等上层业务）</li>
-<li>日常数据分析任务（大量数据分析、行业分析等需求）</li>
-<li>OLTP数据库服务（HBase）</li>
-<li>监控报表任务（BI、数据监控等）</li>
-<li>数据仓库（数据整合、清洗、调度等）</li>
-<li>宝付大数据平台相关任务（Spark、Hive、Impala等）</li>
-</ul>
-<p>由于当前集群职能繁多，网络带宽、磁盘IO等为集群共享，<strong>会因大型离线任务占用大量网络或磁盘IO峰值，对线上业务会造成短暂延迟。且集群环境较为复杂，有较多对线上业务造成影响的风险。</strong></p>
-<h2 id="规划方案">规划方案</h2>
-<p>鉴于后续业务发展，大数据平台的使用人数和执行任务将会快速上升，为了避免对线上业务的直接影响，提议部署一个次规模（20个节点内）的生产集群（以下简称在线集群）承接部分职能，减轻现有集群（以下简称离线离线计算集群）的压力，同时规划与隔离不同等级的任务。</p>
-<p>在线集群<strong>主要职能为OLTP数据库服务（HBase）</strong>，将业务主库迁移至在线集群可保证业务不受任何大规模计算任务（或者计算量比较集中的情况）所带来的延迟影响。</p>
-<p>除此之外，<strong>在线集群将不会进行其他任何程序与任务以保证线上服务的稳定性。</strong></p>
-<p>将业务主库分离出去之后，离线计算集群的HBase将作为中间件为流式计算等系统提供服务（同时兼业务备库使用，在需要重启等情况下可以相互切换）。</p>
-<p>此时离线计算集群的定位为执行大规模、密集的数据分析、计算、模型等计算资源消耗巨大的任务，在线集群的定位为稳定的业务数据服务。</p>
-<p>由于离线计算集群承载了大部分任务，随着业务发展，后续会有更多计算需求产生（如设备指纹与爬虫数据的分析与计算），<strong>需要离线计算集群能够方便、快速的进行横向扩容。</strong></p>
-<h2 id="迁移方案">迁移方案</h2>
-<p>将使用新采购机器（50台）在新机房部署两个集群（在线+离线计算），<strong>使用的节点个数待定。</strong></p>
-<p><strong>在线集群的HBase服务对部署参数、分区配置策略进行优化调整，同时确认跨集群数据同步方案与程序。</strong></p>
-<p>集群准备就绪后：</p>
-<p>1.同步老机房线上所有业务数据至新机房的在线集群。<br>
-2.将老机房集群上数据同步、生产调度任务等相关程序、脚本和配置迁移至新机房的离线计算集群。<br>
-3.老机房业务与任务确认迁移完成后，停机下线（分批）调整至新机房并入离线计算集群中，在线集群视情况调整一些新机器扩容。</p>
-<p><strong>以上步骤需要整理详细操作过程和确认完成时间点。</strong></p>
-<h2 id="离线计算集群资源池">离线计算集群资源池</h2>
-<p>当前离线计算集群的资源池划分为宝付的production、development，新颜的production、development，在集群承载了比较多的职能的时候此划分方案已经不满足需求，建议对新颜的资源池进行更详细的划分：</p>
-<ul>
-<li>stream：流式计算系统使用，占比10%</li>
-<li>model：模型训练与标签系统使用，占比30%</li>
-<li>experiment：联合建模与商户线下测试使用，占比20%</li>
-<li>production：离线生产任务使用，占比20%</li>
-<li>development：测试任务与日常分析使用，占比20%</li>
-</ul>
-<p>以上分配占比仅为预估，需要根据实际情况（包括新采购需求添加之后的集群情况）重新调整。</p>
 ]]></content>
   </entry>
   <entry>
