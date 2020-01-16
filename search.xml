@@ -24,7 +24,7 @@
 <p>导致不能关掉 Auto-TLS</p>
 <p>解决办法：</p>
 <p>1.cm后台关掉</p>
-<p><img src="../images/image-20200116110246330.png" alt="image-20200116110246330"></p>
+<p>![image-20200116134011607](CDH6 新加节点，不能关掉 Auto-TLS 的解决办法/image-20200116134011607.png)</p>
 <ol start="2">
 <li>备份cm_init.txt， 然后清空这个文件的内容</li>
 </ol>
@@ -5025,13 +5025,13 @@ for node_ip in ${NODE_IPS[@]}
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">solrctl config [--create &lt;name&gt; &lt;baseConfig&gt; [-p &lt;name&gt;&#x3D;&lt;value&gt;]...]</span><br><span class="line">               [--delete &lt;name&gt;]</span><br></pre></td></tr></table></figure>
 <ul>
 <li>
-<p>–create <name> <baseConfig>: Creates a new config based on an existing config. The config is created with the specified <name>, using <baseConfig> as the template. For more information about config templates, see Config Templates.</p>
+<p>–create <name> <baseConfig>: Creates a new config based on an existing config. The config is created with the specified <name>, using <baseConfig> as the template. For more information about config templates, see Config Templates.</baseConfig></name></baseConfig></name></p>
 </li>
 <li>
-<p>-p <name>=<value>: Overrides a <baseConfig> setting. The only config property that you can override is immutable, so the possible options are -p immutable=true and -p immutable=false. If you are copying an immutable config, such as a template, use -p immutable=false to make sure that you can edit the new config.</p>
+<p>-p <name>=<value>: Overrides a <baseConfig> setting. The only config property that you can override is immutable, so the possible options are -p immutable=true and -p immutable=false. If you are copying an immutable config, such as a template, use -p immutable=false to make sure that you can edit the new config.</baseConfig></value></name></p>
 </li>
 <li>
-<p>–delete <name>: Deletes the specified config. You cannot delete an immutable config without accessing ZooKeeper directly as the solr super user.</p>
+<p>–delete <name>: Deletes the specified config. You cannot delete an immutable config without accessing ZooKeeper directly as the solr super user.</name></p>
 </li>
 <li>
 <p>example:</p>
@@ -5045,12 +5045,12 @@ for node_ip in ${NODE_IPS[@]}
 <p>The solrctl instancedir command syntax is as follows:</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">solrctl instancedir [--generate &lt;path&gt; [-schemaless]]</span><br><span class="line">                    [--create &lt;name&gt; &lt;path&gt;]</span><br><span class="line">                    [--update &lt;name&gt; &lt;path&gt;]</span><br><span class="line">                    [--get &lt;name&gt; &lt;path&gt;]</span><br><span class="line">                    [--delete &lt;name&gt;]</span><br><span class="line">                    [--list]</span><br></pre></td></tr></table></figure>
 <ul>
-<li>–generate <path>: Generates an instance directory template on the local filesystem at <path>. The configuration files are located in the conf subdirectory under <path>.</li>
+<li>–generate <path></path>: Generates an instance directory template on the local filesystem at <path></path>. The configuration files are located in the conf subdirectory under <path></path>.</li>
 <li>-schemaless: Generates a schemaless instance directory template. For more information on schemaless support, see Schemaless Mode Overview and Best Practices.</li>
-<li>–create <name> <path>: Uploads a copy of the instance directory from <path> on the local filesystem to ZooKeeper. If an instance directory with the specified <name> already exists, this command fails. Use --update to modify existing instance directories.</li>
-<li>–update <name> <path>: Overwrites an existing instance directory in ZooKeeper using the specified files on the local filesystem. This command is analogous to first running --delete <name> followed by --create <name> <path>.</li>
-<li>–get <name> <path>: Downloads the specified instance directory from ZooKeeper to the specified path on the local filesystem. You can then edit the configuration and then re-upload it using --update.</li>
-<li>–delete <name>: Deletes the specified instance directory from ZooKeeper.</li>
+<li>–create <name> <path></path>: Uploads a copy of the instance directory from <path></path> on the local filesystem to ZooKeeper. If an instance directory with the specified <name> already exists, this command fails. Use --update to modify existing instance directories.</name></name></li>
+<li>–update <name> <path></path>: Overwrites an existing instance directory in ZooKeeper using the specified files on the local filesystem. This command is analogous to first running --delete <name> followed by --create <name> <path></path>.</name></name></name></li>
+<li>–get <name> <path></path>: Downloads the specified instance directory from ZooKeeper to the specified path on the local filesystem. You can then edit the configuration and then re-upload it using --update.</name></li>
+<li>–delete <name>: Deletes the specified instance directory from ZooKeeper.</name></li>
 <li>–list: Lists existing instance directories as well as configs created by the solrctl config command.</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">solrctl instancedir --get test_collection_config  &#x2F;tmp&#x2F;test_collection_config</span><br><span class="line"></span><br><span class="line"> cd &#x2F;tmp&#x2F;test_collection_config&#x2F;conf&#x2F;</span><br><span class="line">vim managed-schema</span><br><span class="line"></span><br><span class="line">solrctl instancedir --update test_collection_config  &#x2F;tmp&#x2F;test_collection_config</span><br></pre></td></tr></table></figure>
@@ -5167,7 +5167,7 @@ for node_ip in ${NODE_IPS[@]}
 <p><strong>默认配置下1:192，硬盘空间不足，可以将内存减少，通过修改HBase配置将多余的内存资源分配给HBase读缓存的BucketCache，这样就可以保证Java Heap并没有实际浪费。</strong></p>
 <h4 id="读缓存BucketCache">读缓存BucketCache</h4>
 <p>BucketCache模式下HBase的内存布局如图所示：</p>
-<p><img src="/Users/xiaohei/Downloads/hbase.png" alt="image"></p>
+<p><img src="/2020/01/07/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/xiaohei/Downloads/hbase.png" alt="image"></p>
 <p>该模式主要应用于线上读多写少型应用，整个RegionServer内存（Java进程内存）分为两部分：JVM内存和堆外内存。</p>
 <ul>
 <li>读缓存CombinedBlockCache = LRUBlockCache + 堆外内存BucketCache，用于缓存读到的Block数据</li>
@@ -5177,7 +5177,7 @@ for node_ip in ${NODE_IPS[@]}
 <li>其他部分用于RegionServer正常运行所必须的内存</li>
 </ul>
 <h4 id="配置说明">配置说明</h4>
-<p><img src="/Users/xiaohei/Downloads/hbase1.png" alt="image"></p>
+<p><img src="/2020/01/07/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/xiaohei/Downloads/hbase1.png" alt="image"></p>
 <p>RegionServer 堆栈大小为192G<br>
 Java_Heap大小为72G</p>
 <ul>

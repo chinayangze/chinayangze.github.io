@@ -53,8 +53,8 @@
 <meta property="og:site_name" content="有汇">
 <meta property="og:description" content="机器概况  总内存:256G 可分配内存:256*0.75&#x3D;192G 总硬盘:1.8T*12&#x3D;21.6T 可用硬盘空间:21.6T*0.85&#x3D;18.36T  内存规划 Disk &#x2F; Java Heap Ratio Disk &#x2F; Java Heap Ratio&#x3D;Disk Size &#x2F; Java Heap &#x3D; RegionSize &#x2F; MemstoreSize * ReplicationFactor">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://www.yh-021.com/Users/xiaohei/Downloads/hbase.png">
-<meta property="og:image" content="http://www.yh-021.com/Users/xiaohei/Downloads/hbase1.png">
+<meta property="og:image" content="http://www.yh-021.com/2020/01/07/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/xiaohei/Downloads/hbase.png">
+<meta property="og:image" content="http://www.yh-021.com/2020/01/07/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/xiaohei/Downloads/hbase1.png">
 <meta property="article:published_time" content="2020-01-07T01:42:12.439Z">
 <meta property="article:modified_time" content="2018-09-28T07:51:33.685Z">
 <meta property="article:author" content="yh">
@@ -62,7 +62,7 @@
 <meta property="article:tag" content="上海有汇">
 <meta property="article:tag" content="有汇科技">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://www.yh-021.com/Users/xiaohei/Downloads/hbase.png">
+<meta name="twitter:image" content="http://www.yh-021.com/2020/01/07/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/xiaohei/Downloads/hbase.png">
 
 <link rel="canonical" href="http://www.yh-021.com/2020/01/07/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/">
 
@@ -274,7 +274,7 @@
 <p><strong>默认配置下1:192，硬盘空间不足，可以将内存减少，通过修改HBase配置将多余的内存资源分配给HBase读缓存的BucketCache，这样就可以保证Java Heap并没有实际浪费。</strong></p>
 <h4 id="读缓存BucketCache">读缓存BucketCache</h4>
 <p>BucketCache模式下HBase的内存布局如图所示：</p>
-<p><img src="/Users/xiaohei/Downloads/hbase.png" alt="image"></p>
+<p><img src="/2020/01/07/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/xiaohei/Downloads/hbase.png" alt="image"></p>
 <p>该模式主要应用于线上读多写少型应用，整个RegionServer内存（Java进程内存）分为两部分：JVM内存和堆外内存。</p>
 <ul>
 <li>读缓存CombinedBlockCache = LRUBlockCache + 堆外内存BucketCache，用于缓存读到的Block数据</li>
@@ -284,7 +284,7 @@
 <li>其他部分用于RegionServer正常运行所必须的内存</li>
 </ul>
 <h4 id="配置说明">配置说明</h4>
-<p><img src="/Users/xiaohei/Downloads/hbase1.png" alt="image"></p>
+<p><img src="/2020/01/07/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/xiaohei/Downloads/hbase1.png" alt="image"></p>
 <p>RegionServer 堆栈大小为192G<br>
 Java_Heap大小为72G</p>
 <ul>
