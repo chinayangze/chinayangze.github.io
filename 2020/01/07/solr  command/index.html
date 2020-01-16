@@ -260,13 +260,13 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">solrctl config [--create &lt;name&gt; &lt;baseConfig&gt; [-p &lt;name&gt;&#x3D;&lt;value&gt;]...]</span><br><span class="line">               [--delete &lt;name&gt;]</span><br></pre></td></tr></table></figure>
 <ul>
 <li>
-<p>–create <name> <baseConfig>: Creates a new config based on an existing config. The config is created with the specified <name>, using <baseConfig> as the template. For more information about config templates, see Config Templates.</baseConfig></name></baseConfig></name></p>
+<p>–create <name> <baseConfig>: Creates a new config based on an existing config. The config is created with the specified <name>, using <baseConfig> as the template. For more information about config templates, see Config Templates.</p>
 </li>
 <li>
-<p>-p <name>=<value>: Overrides a <baseConfig> setting. The only config property that you can override is immutable, so the possible options are -p immutable=true and -p immutable=false. If you are copying an immutable config, such as a template, use -p immutable=false to make sure that you can edit the new config.</baseConfig></value></name></p>
+<p>-p <name>=<value>: Overrides a <baseConfig> setting. The only config property that you can override is immutable, so the possible options are -p immutable=true and -p immutable=false. If you are copying an immutable config, such as a template, use -p immutable=false to make sure that you can edit the new config.</p>
 </li>
 <li>
-<p>–delete <name>: Deletes the specified config. You cannot delete an immutable config without accessing ZooKeeper directly as the solr super user.</name></p>
+<p>–delete <name>: Deletes the specified config. You cannot delete an immutable config without accessing ZooKeeper directly as the solr super user.</p>
 </li>
 <li>
 <p>example:</p>
@@ -280,12 +280,12 @@
 <p>The solrctl instancedir command syntax is as follows:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">solrctl instancedir [--generate &lt;path&gt; [-schemaless]]</span><br><span class="line">                    [--create &lt;name&gt; &lt;path&gt;]</span><br><span class="line">                    [--update &lt;name&gt; &lt;path&gt;]</span><br><span class="line">                    [--get &lt;name&gt; &lt;path&gt;]</span><br><span class="line">                    [--delete &lt;name&gt;]</span><br><span class="line">                    [--list]</span><br></pre></td></tr></table></figure>
 <ul>
-<li>–generate <path></path>: Generates an instance directory template on the local filesystem at <path></path>. The configuration files are located in the conf subdirectory under <path></path>.</li>
+<li>–generate <path>: Generates an instance directory template on the local filesystem at <path>. The configuration files are located in the conf subdirectory under <path>.</li>
 <li>-schemaless: Generates a schemaless instance directory template. For more information on schemaless support, see Schemaless Mode Overview and Best Practices.</li>
-<li>–create <name> <path></path>: Uploads a copy of the instance directory from <path></path> on the local filesystem to ZooKeeper. If an instance directory with the specified <name> already exists, this command fails. Use --update to modify existing instance directories.</name></name></li>
-<li>–update <name> <path></path>: Overwrites an existing instance directory in ZooKeeper using the specified files on the local filesystem. This command is analogous to first running --delete <name> followed by --create <name> <path></path>.</name></name></name></li>
-<li>–get <name> <path></path>: Downloads the specified instance directory from ZooKeeper to the specified path on the local filesystem. You can then edit the configuration and then re-upload it using --update.</name></li>
-<li>–delete <name>: Deletes the specified instance directory from ZooKeeper.</name></li>
+<li>–create <name> <path>: Uploads a copy of the instance directory from <path> on the local filesystem to ZooKeeper. If an instance directory with the specified <name> already exists, this command fails. Use --update to modify existing instance directories.</li>
+<li>–update <name> <path>: Overwrites an existing instance directory in ZooKeeper using the specified files on the local filesystem. This command is analogous to first running --delete <name> followed by --create <name> <path>.</li>
+<li>–get <name> <path>: Downloads the specified instance directory from ZooKeeper to the specified path on the local filesystem. You can then edit the configuration and then re-upload it using --update.</li>
+<li>–delete <name>: Deletes the specified instance directory from ZooKeeper.</li>
 <li>–list: Lists existing instance directories as well as configs created by the solrctl config command.</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">solrctl instancedir --get test_collection_config  &#x2F;tmp&#x2F;test_collection_config</span><br><span class="line"></span><br><span class="line"> cd &#x2F;tmp&#x2F;test_collection_config&#x2F;conf&#x2F;</span><br><span class="line">vim managed-schema</span><br><span class="line"></span><br><span class="line">solrctl instancedir --update test_collection_config  &#x2F;tmp&#x2F;test_collection_config</span><br></pre></td></tr></table></figure>
@@ -432,7 +432,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-count">46</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
