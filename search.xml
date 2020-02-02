@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>插入图片模板</title>
+    <url>/2020/01/16/%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E6%A8%A1%E6%9D%BF/</url>
+    <content><![CDATA[<p><img src="/images/image-20200116143338485.png" alt="image-20200116143338485"></p>
+]]></content>
+  </entry>
+  <entry>
     <title>typora + hexo博客中插入图片</title>
     <url>/2020/01/16/typora%20+%20hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/</url>
     <content><![CDATA[<p>在使用了hexo搭建了博客后，最大的问题便是如何使用一款markdown工具来编辑博客了，我采取的就是Typora，这工具免费简单易用没广告，而且把图片保存到本地还是很方便的，因此大家只要稍微了解点markdown语法就可以上手使用了。</p>

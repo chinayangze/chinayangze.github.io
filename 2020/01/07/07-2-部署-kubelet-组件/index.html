@@ -19,7 +19,7 @@
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    hostname: new URL('http://www.yh-021.com').hostname,
+    hostname: new URL('http://www.ask3.cn').hostname,
     root: '/',
     scheme: 'Muse',
     version: '7.7.0',
@@ -49,22 +49,22 @@
   <meta name="description" content="tags: worker, kubelet 07-2.部署 kubelet 组件 kublet 运行在每个 worker 节点上，接收 kube-apiserver 发送的请求，管理 Pod 容器，执行交互式命令，如 exec、run、logs 等。 kublet 启动时自动向 kube-apiserver 注册节点信息，内置的 cadvisor 统计和监控节点的资源使用情况。 为确保安全，本文档">
 <meta property="og:type" content="article">
 <meta property="og:title" content="07-2.部署 kubelet 组件">
-<meta property="og:url" content="http://www.yh-021.com/2020/01/07/07-2-%E9%83%A8%E7%BD%B2-kubelet-%E7%BB%84%E4%BB%B6/index.html">
-<meta property="og:site_name" content="有汇">
+<meta property="og:url" content="http://www.ask3.cn/2020/01/07/07-2-%E9%83%A8%E7%BD%B2-kubelet-%E7%BB%84%E4%BB%B6/index.html">
+<meta property="og:site_name" content="爱思考">
 <meta property="og:description" content="tags: worker, kubelet 07-2.部署 kubelet 组件 kublet 运行在每个 worker 节点上，接收 kube-apiserver 发送的请求，管理 Pod 容器，执行交互式命令，如 exec、run、logs 等。 kublet 启动时自动向 kube-apiserver 注册节点信息，内置的 cadvisor 统计和监控节点的资源使用情况。 为确保安全，本文档">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://img.orchome.com/group1/M00/00/02/dr5oXFuiOhaAUnECAAIXh1n8zAg265.png">
 <meta property="og:image" content="https://img.orchome.com/group1/M00/00/02/dr5oXFuiOmuAISyfAAiaZ-dFVNs239.png">
 <meta property="article:published_time" content="2020-01-07T03:07:20.000Z">
 <meta property="article:modified_time" content="2020-01-07T08:39:20.617Z">
-<meta property="article:author" content="yh">
-<meta property="article:tag" content="有汇">
+<meta property="article:author" content="datasir">
+<meta property="article:tag" content="软件学习网，有汇">
 <meta property="article:tag" content="上海有汇">
 <meta property="article:tag" content="有汇科技">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://img.orchome.com/group1/M00/00/02/dr5oXFuiOhaAUnECAAIXh1n8zAg265.png">
 
-<link rel="canonical" href="http://www.yh-021.com/2020/01/07/07-2-%E9%83%A8%E7%BD%B2-kubelet-%E7%BB%84%E4%BB%B6/">
+<link rel="canonical" href="http://www.ask3.cn/2020/01/07/07-2-%E9%83%A8%E7%BD%B2-kubelet-%E7%BB%84%E4%BB%B6/">
 
 
 <script id="page-configurations">
@@ -76,7 +76,7 @@
   };
 </script>
 
-  <title>07-2.部署 kubelet 组件 | 有汇</title>
+  <title>07-2.部署 kubelet 组件 | 爱思考</title>
   
 
 
@@ -120,11 +120,11 @@
     <div>
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">有汇</span>
+        <span class="site-title">爱思考</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-        <p class="site-subtitle">有识之士 渊渟泽汇</p>
+        <p class="site-subtitle">分享知识，分享快乐</p>
   </div>
 
   <div class="site-nav-toggle">
@@ -201,16 +201,16 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.yh-021.com/2020/01/07/07-2-%E9%83%A8%E7%BD%B2-kubelet-%E7%BB%84%E4%BB%B6/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/07-2-%E9%83%A8%E7%BD%B2-kubelet-%E7%BB%84%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="yh">
-      <meta itemprop="description" content="上海有汇网络科技">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="上海有汇网络科技，软件学习网">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="有汇">
+      <meta itemprop="name" content="爱思考">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -891,17 +891,17 @@ $ curl -sSL --cacert /etc/kubernetes/cert/ca.pem --cert ./admin.pem --key ./admi
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="yh"
+    <img class="site-author-image" itemprop="image" alt="datasir"
       src="/images/avatar.jpg">
-  <p class="site-author-name" itemprop="name">yh</p>
-  <div class="site-description" itemprop="description">上海有汇网络科技</div>
+  <p class="site-author-name" itemprop="name">datasir</p>
+  <div class="site-description" itemprop="description">上海有汇网络科技，软件学习网</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -916,7 +916,7 @@ $ curl -sSL --cacert /etc/kubernetes/cert/ca.pem --cert ./admin.pem --key ./admi
         <a href="https://github.com/chinayangze" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chinayangze" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:info@yh-021.com" title="E-Mail → mailto:info@yh-021.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="mailto:info@ask3.cn" title="E-Mail → mailto:info@ask3.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
   </div>
 
@@ -928,7 +928,10 @@ $ curl -sSL --cacert /etc/kubernetes/cert/ca.pem --cert ./admin.pem --key ./admi
     </div>
     <ul class="links-of-blogroll-list">
         <li class="links-of-blogroll-item">
-          <a href="http://www.ask3.cn/" title="http:&#x2F;&#x2F;www.ask3.cn" rel="noopener" target="_blank">软件学习网</a>
+          <a href="https://www.okcoin.cn/" title="https:&#x2F;&#x2F;www.okcoin.cn" rel="noopener" target="_blank">比特币行情</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://tmi.yokogawa.com/cn/products/digital-power-analyzers" title="http:&#x2F;&#x2F;tmi.yokogawa.com&#x2F;cn&#x2F;products&#x2F;digital-power-analyzers" rel="noopener" target="_blank">数字功率分析仪</a>
         </li>
     </ul>
   </div>
@@ -954,7 +957,7 @@ $ curl -sSL --cacert /etc/kubernetes/cert/ca.pem --cert ./admin.pem --key ./admi
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">yh</span>
+  <span class="author" itemprop="copyrightHolder">datasir</span>
 </div>
 
         
