@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Linux查找含有某字符串的所有文件</title>
+    <url>/2020/02/25/Linux%E6%9F%A5%E6%89%BE%E5%90%AB%E6%9C%89%E6%9F%90%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>如果你想在当前目录下 查找&quot;hello,world!&quot;字符串,可以这样:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">grep -rn &quot;hello,world!&quot; *</span><br></pre></td></tr></table></figure>
+<p><code>*</code> : 表示当前目录所有文件，也可以是某个文件名</p>
+<ul>
+<li>-r 是递归查找</li>
+<li>-n 是显示行号</li>
+<li>-R 查找所有文件包含子目录</li>
+<li>-i 忽略大小写</li>
+</ul>
+<h4 id="下面是一些有意思的命令行参数：">下面是一些有意思的命令行参数：</h4>
+<p>grep -i pattern files ：不区分大小写地搜索。默认情况区分大小写，<br>
+grep -l pattern files ：只列出匹配的文件名，<br>
+grep -L pattern files ：列出不匹配的文件名，<br>
+grep -w pattern files ：只匹配整个单词，而不是字符串的一部分（如匹配‘magic’，而不是‘magical’），</p>
+<p>grep -C number pattern files ：匹配的上下文分别显示[number]行，<br>
+grep pattern1 | pattern2 files ：显示匹配 pattern1 或 pattern2 的行，<br>
+grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 pattern2 的行。</p>
+<h4 id="这里还有些用于搜索的特殊符号：">这里还有些用于搜索的特殊符号：</h4>
+<p>&lt; 和 &gt; 分别标注单词的开始与结尾。</p>
+<h4 id="例如：">例如：</h4>
+<p>grep man  *会匹配 ‘Batman’、‘manic’、‘man’等，<br>
+grep '\ 匹配‘manic’和‘man’，但不是‘Batman’，<br>
+grep ‘’ 只匹配‘man’，而不是‘Batman’或‘manic’等其他的字符串。</p>
+<p><code>'^'</code>：指匹配的字符串在行首，<br>
+<code>'$'</code>：指匹配的字符串在行尾，</p>
+<h2 id="xargs配合grep查找">xargs配合grep查找</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">find -type f -name &#39;*.php&#39;|xargs grep &#39;GroupRecord&#39;</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
     <title>插入图片模板</title>
     <url>/2020/01/16/%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E6%A8%A1%E6%9D%BF/</url>
     <content><![CDATA[<p><img src="/images/image-20200116143338485.png" alt="image-20200116143338485"></p>

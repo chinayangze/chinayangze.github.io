@@ -46,12 +46,12 @@
   };
 </script>
 
-  <meta name="description" content="上海有汇网络科技，软件学习网">
+  <meta name="description" content="小杨随笔">
 <meta property="og:type" content="website">
 <meta property="og:title" content="爱思考">
 <meta property="og:url" content="http://www.ask3.cn/page/5/index.html">
 <meta property="og:site_name" content="爱思考">
-<meta property="og:description" content="上海有汇网络科技，软件学习网">
+<meta property="og:description" content="小杨随笔">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="datasir">
 <meta property="article:tag" content="软件学习网，有汇">
@@ -196,12 +196,108 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/" class="post-title-link" itemprop="url">hbase新集群配置项整理</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-07 09:42:12" itemprop="dateCreated datePublished" datetime="2020-01-07T09:42:12+08:00">2020-01-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-09-28 15:51:33" itemprop="dateModified" datetime="2018-09-28T15:51:33+08:00">2018-09-28</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="机器概况">机器概况</h3>
+<ul>
+<li>总内存:256G</li>
+<li>可分配内存:256*0.75=192G</li>
+<li>总硬盘:1.8T*12=21.6T</li>
+<li>可用硬盘空间:21.6T*0.85=18.36T</li>
+</ul>
+<h3 id="内存规划">内存规划</h3>
+<h4 id="Disk-Java-Heap-Ratio">Disk / Java Heap Ratio</h4>
+<p><strong>Disk / Java Heap Ratio=Disk Size / Java Heap = RegionSize / MemstoreSize * ReplicationFactor * HeapFractionForMemstore * 2</strong><br>
+一台RegionServer上1bytes的Java内存大小需要搭配多大的硬盘大小最合理。</p>
+<p>公式解释：</p>
+<ul>
+<li>硬盘容量维度下Region个数： Disk Size / (RegionSize ＊ReplicationFactor)</li>
+<li>Java Heap维度下Region个： Java Heap * HeapFractionForMemstore / (MemstoreSize / 2 )</li>
+<li>硬盘维度和Java Headp维度理论相等：Disk Size / (RegionSize ＊ReplicationFactor)  ＝ Java Heap * HeapFractionForMemstore / (MemstoreSize / 2 ) ＝&gt; Disk Size / Java Heap = RegionSize / MemstoreSize * ReplicationFactor * HeapFractionForMemstore * 2</li>
+</ul>
+<p>默认配置：</p>
+<ul>
+<li>RegionSize: hbase.hregion.max.filesize=10G</li>
+<li>MemstoreSize: hbase.hregion.memstore.flush.size=128M</li>
+<li>ReplicationFactor: dfs.replication=3</li>
+<li>HeapFractionForMemstore: hbase.regionserver.global.memstore.lowerLimit = 0.4</li>
+</ul>
+<p>计算为：10G / 128M * 3 * 0.4 * 2 = 192，即RegionServer上1bytes的Java内存大小需要搭配192bytes的硬盘大小最合理。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/HBase%20%E5%B7%A5%E5%85%B7%E5%92%8C%E5%AE%9E%E7%94%A8%E7%A8%8B%E5%BA%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="上海有汇网络科技，软件学习网">
+      <meta itemprop="description" content="小杨随笔">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -282,7 +378,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="上海有汇网络科技，软件学习网">
+      <meta itemprop="description" content="小杨随笔">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -363,7 +459,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="上海有汇网络科技，软件学习网">
+      <meta itemprop="description" content="小杨随笔">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -441,7 +537,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="上海有汇网络科技，软件学习网">
+      <meta itemprop="description" content="小杨随笔">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -568,7 +664,7 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="上海有汇网络科技，软件学习网">
+      <meta itemprop="description" content="小杨随笔">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -650,7 +746,7 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="上海有汇网络科技，软件学习网">
+      <meta itemprop="description" content="小杨随笔">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -719,7 +815,7 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="上海有汇网络科技，软件学习网">
+      <meta itemprop="description" content="小杨随笔">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -856,14 +952,14 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
     <img class="site-author-image" itemprop="image" alt="datasir"
       src="/images/avatar.jpg">
   <p class="site-author-name" itemprop="name">datasir</p>
-  <div class="site-description" itemprop="description">上海有汇网络科技，软件学习网</div>
+  <div class="site-description" itemprop="description">小杨随笔</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-count">48</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
