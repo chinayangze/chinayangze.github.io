@@ -1,6 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Linux(CentOS7)修改mysql默认数据文件目录</title>
+    <url>/2020/02/28/Linux(CentOS7)%E4%BF%AE%E6%94%B9mysql%E9%BB%98%E8%AE%A4%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95/</url>
+    <content><![CDATA[<p>默认情况下<code>mysql</code>的数据路径应该在</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cd /var/lib/mysql</span></span><br></pre></td></tr></table></figure>
+<p>现在我们要将它转移到<code>/data</code></p>
+<ol>
+<li>停掉mysql服务</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># service mysql stop</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>将原数据目录转移到<code>data</code>目录下</li>
+</ol>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"># mv /<span class="keyword">var</span>/lib/mysql /<span class="keyword">data</span>/</span><br></pre></td></tr></table></figure>
+<ol>
+<li>修改<code># vi /etc/my.cnf</code>文件,增加以下行</li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">datadir = <span class="regexp">/data/my</span>sql</span><br><span class="line">socket = <span class="regexp">/data/my</span>sql/mysql.sock</span><br></pre></td></tr></table></figure>
+<ol>
+<li>修改<code># vi /etc/init.d/mysql</code>文件,增加以下行</li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">datadir = <span class="regexp">/data/my</span>sql</span><br></pre></td></tr></table></figure>
+<ol>
+<li>如果你的 <code># vi /usr/bin/mysqld_safe</code>里面也有指定mysql的数据目录，那么也请按照上面修改</li>
+<li>重启<code>mysql</code></li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># service mysql restart</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>如果没有成功，重启报错：</li>
+</ol>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">尴尬。。忘了提示，差不多就是说找不到/<span class="keyword">var</span>/lib/mysql/mysql.sock</span><br></pre></td></tr></table></figure>
+<p>给mysql.sock做个链接</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"># ln -s /<span class="keyword">data</span>/mysql/mysql.sock /<span class="keyword">var</span>/lib/mysql/mysql.sock</span><br></pre></td></tr></table></figure>
+<p>如果提示该链接已经存在，辣就到<code># /var/lib/mysql/</code> <code># rm mysql.sock</code>再进行以上操作。</p>
+<ol>
+<li>再重启<code>mysql</code>，祝你成功。</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
     <title>hexo 常用命令</title>
     <url>/2020/02/25/hexo%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<p>hexo 常用命令 ：</p>
