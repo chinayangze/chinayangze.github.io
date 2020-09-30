@@ -1,6 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>IPFS音乐播放器</title>
+    <url>/2020/09/30/IPFS%E9%9F%B3%E4%B9%90%E6%92%AD%E6%94%BE%E5%99%A8/</url>
+    <content><![CDATA[<h1>IPFS音乐播放器</h1>
+<h2 id="IPFS相关">IPFS相关</h2>
+<h3 id="IPFS第一次亲密接触">IPFS第一次亲密接触</h3>
+<ul>
+<li>什么是IPFS</li>
+<li>IPFS对比HTTP/FTP等协议的优势</li>
+<li>IPFS应用场景</li>
+</ul>
+<p>-移动数据 交易 路由 网络</p>
+<ul>
+<li>定义数据 命名</li>
+<li>使用数据</li>
+</ul>
+<p>具体场景;<br>
+挂载全球文件<br>
+版本管理功能<br>
+数据库<br>
+加密平台<br>
+各种类型cdn<br>
+永久访问的链接</p>
+<h3 id="ipfs入门">ipfs入门</h3>
+<ul>
+<li>官网地址：<a href="https://ipfs.io/" target="_blank" rel="noopener">https://ipfs.io</a></li>
+<li>下载安装：<a href="https://dist.ipfs.io/#go-ipfs" target="_blank" rel="noopener">https://dist.ipfs.io/#go-ipfs</a></li>
+<li>节点初始化
+<ul>
+<li><code>ipfs init</code></li>
+<li>如果出现<code>Error: cannot acquire lock: can't lock file</code>删除其后边给出的repo.lock文件即可</li>
+</ul>
+</li>
+<li>节点配置
+<ul>
+<li><code>ipfs id</code> 查看当前节点id等信息</li>
+<li><code>ipfs config show</code> ipfs配置信息</li>
+</ul>
+</li>
+<li>节点服务器daemon
+<ul>
+<li><code>ipfs daemon</code></li>
+</ul>
+</li>
+<li>修改IPFS默认路径</li>
+<li>开放API请求
+<ul>
+<li>ipfs config --json Addresses.API ‘&quot;/ip4/0.0.0.0/tcp/5001&quot;’</li>
+</ul>
+</li>
+<li>开放公共网关
+<ul>
+<li>ipfs config --json Addresses.Gateway ‘&quot;/ip4/0.0.0.0/tcp/8080&quot;’</li>
+</ul>
+</li>
+</ul>
+<h3 id="发布数据">发布数据</h3>
+<ul>
+<li>
+<p>上传文件</p>
+<p><code>ipfs add haha.txt</code>文本</p>
+<p><code>ipfs add cat.jpg</code>图片</p>
+<p><code>ipfs add -q cat.jpg</code> 只输出hash结果</p>
+<p>hash记录返回的文件路径信息</p>
+</li>
+<li>
+<p>上传/查看目录</p>
+<p>添加目录: <code>ipfs add -r dir</code></p>
+<p>查看目录: <code>ipfs ls Qmej3u92BHJVkkiC8F5uL1J4a98no76TnXmQxHGXCHGE7t</code></p>
+</li>
+<li>
+<p>发布网站</p>
+<p>把包含index.html的文件夹add到ipfs网络即可</p>
+</li>
+</ul>
+<h3 id="获取数据">获取数据</h3>
+<p>命令行获取 cat/get</p>
+<p><code>ipfs cat QmaoahyA1UejtgPifPvjpsviePsDnJn8vHrYAN9nfF7w9N</code> 查看文本</p>
+<p><code>ipfs cat QmaoahyA1UejtgPifPvjpsviePsDnJn8vHrYAN9nfF7w9N &gt; new-haha.txt</code> 保存文本</p>
+<p><code>ipfs cat Qmd286K6pohQcTKYqnS1YhWrCiS4gz7Xi34sdwMe9USZ7u &gt; new-cat.jpg</code>保存图片</p>
+<p><code>ipfs get QmZSwQghczB41omjfJipFPQ3FovYyLvXR9oa4Y9LQS7Urp -o tomcat.jpg</code>获取并保存文件</p>
+<p><code>ipfs get QmZSwQghczB41omjfJipFPQ3FovYyLvXR9oa4Y9LQS7Urp -Cao tomcat-go</code> 压缩并下载文件</p>
+<p><code>ipfs get QmYtrQVXatZGm1WRKZ29vUt5tFa24xnTvhv6D71DSNVttZ -o ipfs-day01</code>获取文件夹</p>
+<p>浏览器访问获取</p>
+<ol>
+<li>
+<p>在http://localhost:5001/webui下搜索hash值，可以raw查看原数据，download下载文件</p>
+</li>
+<li>
+<p>在8080端口访问：<a href="http://localhost:8080/ipfs/Qmd286K6pohQcTKYqnS1YhWrCiS4gz7Xi34sdwMe9USZ7u" target="_blank" rel="noopener">http://localhost:8080/ipfs/Qmd286K6pohQcTKYqnS1YhWrCiS4gz7Xi34sdwMe9USZ7u</a></p>
+</li>
+<li>
+<p>在ipfs.io访问：<a href="https://ipfs.io/ipfs/Qmd286K6pohQcTKYqnS1YhWrCiS4gz7Xi34sdwMe9USZ7u" target="_blank" rel="noopener">https://ipfs.io/ipfs/Qmd286K6pohQcTKYqnS1YhWrCiS4gz7Xi34sdwMe9USZ7u</a></p>
+<p>不需要翻墙的网关：<a href="https://ipfs.infura.io/ipfs/Qmd286K6pohQcTKYqnS1YhWrCiS4gz7Xi34sdwMe9USZ7u" target="_blank" rel="noopener">https://ipfs.infura.io/ipfs/Qmd286K6pohQcTKYqnS1YhWrCiS4gz7Xi34sdwMe9USZ7u</a></p>
+</li>
+</ol>
+<blockquote>
+<p>文本数据<br>
+图片数据<br>
+音频数据</p>
+</blockquote>
+<h3 id="files文件-文件夹操作">files文件/文件夹操作</h3>
+<p><code>ipfs files cp &lt;文件/文件夹的hash&gt; &lt;目标文件/文件夹&gt;</code> 拷贝文件</p>
+<p><code>ipfs files ls -l</code> 查看目录</p>
+<p><code>ipfs files mkdir</code> 创建目录</p>
+<p><code>ipfs files cp</code> 拷贝</p>
+<p><code>ipfs files mv</code> 移动</p>
+<p><code>ipfs files stat</code> 状态</p>
+<p><code>ipfs files read</code> 读取</p>
+<h2 id="React音乐播放器">React音乐播放器</h2>
+<h3 id="音乐列表数据">音乐列表数据</h3>
+<ul>
+<li>音乐名称/歌手等文本信息</li>
+<li>专辑图片展示</li>
+</ul>
+<h3 id="播放音频数据">播放音频数据</h3>
+<ul>
+<li>
+<p>网易音乐api地址：</p>
+<p><a href="https://github.com/Binaryify/NeteaseCloudMusicApi" target="_blank" rel="noopener">https://github.com/Binaryify/NeteaseCloudMusicApi</a></p>
+</li>
+<li>
+<p>ipfs-api：<a href="https://github.com/ipfs/js-ipfs-api" target="_blank" rel="noopener">https://github.com/ipfs/js-ipfs-api</a></p>
+<ul>
+<li>初始化环境端口号开启服务：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Show the ipfs config API port to check it is correct</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> ipfs config Addresses.API</span></span><br><span class="line">/ip4/127.0.0.1/tcp/5001</span><br><span class="line"><span class="meta">#</span><span class="bash"> Set it <span class="keyword">if</span> it does not match the above output</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> ipfs config Addresses.API /ip4/127.0.0.1/tcp/5001</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Restart the daemon after changing the config</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Run the daemon</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> ipfs daemon</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>cat获取数据</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ipfs.files.cat(&quot;QmY4NqRyr9SebC3P6W3pzg22UK3QsJNDKGzDHqQZsEyPi3&quot;, function (err, file) &#123;</span><br><span class="line">    if (err) &#123;</span><br><span class="line">        throw err</span><br><span class="line">    &#125;</span><br><span class="line">    const json &#x3D; file.toString(&#39;utf8&#39;);</span><br><span class="line">    console.log(json)</span><br><span class="line">    that.setState(&#123;</span><br><span class="line">        songInfo: JSON.parse(json)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>add 添加数据</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> ipfsAPI = <span class="built_in">require</span>(<span class="string">'ipfs-api'</span>)</span><br><span class="line"><span class="keyword">const</span> ipfs = ipfsAPI(<span class="string">'localhost'</span>, <span class="string">'5001'</span>, &#123;<span class="attr">protocol</span>: <span class="string">'http'</span>&#125;)</span><br><span class="line"><span class="keyword">const</span> buffer = Buffer.from(<span class="string">'hello ipfs-api!'</span>)</span><br><span class="line">ipfs.add(buffer)</span><br><span class="line">    .then( <span class="function"><span class="params">rsp</span> =&gt;</span> <span class="built_in">console</span>.log(rsp[<span class="number">0</span>].hash))</span><br><span class="line">	.catch(<span class="function"><span class="params">e</span> =&gt;</span> <span class="built_in">console</span>.error(e))</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>设置cors</p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "GET", "POST", "OPTIONS"]'</span><br><span class="line">ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'</span><br><span class="line">ipfs config --json API.HTTPHeaders.Access-Control-Allow-Credentials '["true"]'</span><br><span class="line">ipfs config --json API.HTTPHeaders.Access-Control-Allow-Headers '["Authorization"]'</span><br><span class="line">ipfs config --json API.HTTPHeaders.Access-Control-Expose-Headers '["Location"]'</span><br></pre></td></tr></table></figure>
+<h3 id="ipns">ipns</h3>
+<ul>
+<li>绑定ipfs节点, 把一个文件/文件夹的hash发布到自己的ID下</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ipfs name publish QmSx37PT8iV2XxzfHLMRYSxZEt87uE3jdQwCyz7otd5ktP</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看节点绑定的ipfs路径</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ipfs name resolve [peerId]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>离线客户端框架： <a href="https://github.com/electron/electron" target="_blank" rel="noopener">https://github.com/electron/electron</a></li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>hbase常用命令操作实战</title>
+    <url>/2020/09/11/hbase%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E5%AE%9E%E6%88%98/</url>
+    <content><![CDATA[<h2 id="hbase-hbck2">hbase-hbck2</h2>
+<p>从官网下载hbck2 执行文件</p>
+<p><a href="http://hbase.apache.org/downloads.html" target="_blank" rel="noopener">http://hbase.apache.org/downloads.html</a></p>
+<p>或 wget  <a href="https://www.apache.org/dyn/closer.lua/hbase/hbase-operator-tools-1.0.0/hbase-operator-tools-1.0.0-bin.tar.gz" target="_blank" rel="noopener">https://www.apache.org/dyn/closer.lua/hbase/hbase-operator-tools-1.0.0/hbase-operator-tools-1.0.0-bin.tar.gz</a></p>
+<p>cdh官网的使用帮助</p>
+<p><a href="https://docs.cloudera.com/documentation/enterprise/6/6.3/topics/admin_hbase_hbck.html#concept_hkk_q25_llb" target="_blank" rel="noopener">https://docs.cloudera.com/documentation/enterprise/6/6.3/topics/admin_hbase_hbck.html#concept_hkk_q25_llb</a></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /opt/hbase-operator-tools-1.0.0/hbase-hbck2</span><br><span class="line"></span><br><span class="line">hbase hbck -j hbase-hbck2-1.0.0.jar -s  assigns 1588230740</span><br><span class="line"></span><br><span class="line">hbase hbck -j hbase-hbck2-1.0.0.jar -s  assigns hbase:namespace,,1594264903686.db55eec81d86ac0ae26eba718518ce26</span><br><span class="line"></span><br><span class="line">hbase hbck -j hbase-hbck2-1.0.0.jar -s addFsRegionsMissingInMeta default:test n1:tbl_2 n2</span><br></pre></td></tr></table></figure>
+<h2 id="hbase-shell-实战">hbase shell  实战</h2>
+<p>移动表的数据到另外一个服务器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 语法：move &#39;encodeRegionName&#39;, &#39;ServerName&#39;&#96;&#96;</span><br><span class="line"># encodeRegionName指的regioName后面的编码，ServerName指的是master-status的Region Servers列表</span><br><span class="line">move &#39;61a647884b761a785daf3b38049aaa27&#39;,&#39;bigdata-5.baofoo.cn,16020,1595233360076&#39;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="如何查看HBase的HFile">如何查看HBase的HFile</h3>
+<p><a href="https://www.jianshu.com/p/49043e99795a" target="_blank" rel="noopener">https://www.jianshu.com/p/49043e99795a</a></p>
+<h3 id="跨集群备份数据">跨集群备份数据</h3>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">正则查询快照</span></span><br><span class="line">list_snapshots 'snapshot.*_20200902'</span><br><span class="line">echo "list_snapshots 'snapshot.*_`date -d "1 days ago" +%Y%m%d`' " |sudo -u hbase hbase shell </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">同步快照到备份集群</span></span><br><span class="line">curl "http://cdh85-49:20550/" &gt; hbase_tbls.txt</span><br><span class="line">cat hbase_tbls.txt | tr ':' '-' | while read tb; do </span><br><span class="line">sudo -u hbase hbase org.apache.hadoop.hbase.snapshot.ExportSnapshot \</span><br><span class="line">-snapshot "snapshot_$&#123;tb&#125;_20200902" \</span><br><span class="line">-copy-from hdfs://cdh85-49:8020/hbase \</span><br><span class="line">-copy-to hdfs://cdh85-106:8020/hbase ;</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">还原快照</span></span><br><span class="line">cat hbase_tbls.txt | tr ':' '-' | while read tb; do </span><br><span class="line">echo  "restore_snapshot 'snapshot_$&#123;tb&#125;_20200902'" | sudo -u hbase hbase shell ;  </span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<h3 id="定时备份-批量脚本程序">定时备份  批量脚本程序</h3>
+<h3 id="hbase-snapshots-sh-root-cdh85-55">hbase <a href="http://snapshots.sh/" target="_blank" rel="noopener">snapshots.sh</a> root@cdh85-55</h3>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">PRG="$&#123;0&#125;"</span><br><span class="line">BASEDIR=`dirname $&#123;PRG&#125;`</span><br><span class="line">BASEDIR=`cd $&#123;BASEDIR&#125;/;pwd`</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 0. 列出所有hbase表 准备做快照</span></span></span><br><span class="line">echo "######################### job start: `date '+%Y-%m%-d %H:%M:%S'`"</span><br><span class="line">echo "######################### 0.list hbase tables;"</span><br><span class="line">curl "http://bigdata-5.baofoo.cn:20550/" &gt; $&#123;BASEDIR&#125;/tbls.txt</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 1. 生成新的当日的快照  快照命名方式  snapshot_NAMESPARCE-TABLE_YYYYMMDD</span></span></span><br><span class="line">echo "######################### 1.create hbase table snapshots;"</span><br><span class="line">cat  $&#123;BASEDIR&#125;/tbls.txt | while read tbls; do</span><br><span class="line">echo  "######################### create '$&#123;tbls&#125;' snapshot:`date '+%Y-%m%-d %H:%M:%S'`" </span><br><span class="line">echo  "snapshot '$&#123;tbls&#125;','snapshot_$&#123;tbls&#125;_`date +%Y%m%d`' " | awk -F, '&#123; gsub(":","-",$2) ;print $1","$2&#125;' | sudo -u hbase hbase shell ;  done</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 2.删除指定hbase集群快照， 入参 &#123; $1:n , 表示n天前的快照，比如 0：当天 1：一天前 2：两天前&#125;</span></span></span><br><span class="line">echo "######################### 2.delete hbase history snapshots;"</span><br><span class="line">find_snapshot_list()&#123;</span><br><span class="line">echo "list_snapshots 'snapshot.*_`date -d "$&#123;1&#125; days ago" +%Y%m%d`' " |sudo -u hbase hbase shell  ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">delete_snapshot_list()&#123;</span><br><span class="line">find_snapshot_list $1 | grep "\\[.*\\]"  | sed 's/[]["]//g' | tr ',' '\n' | while read word; do</span><br><span class="line">echo  "delete_snapshot '$&#123;word&#125;'" |sudo -u hbase hbase shell</span><br><span class="line">done</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash">删除1天前快照</span></span><br><span class="line">delete_snapshot_list 0</span><br><span class="line"></span><br><span class="line">echo "######################### job end: `date '+%Y-%m%-d %H:%M:%S'`"</span><br><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">cd /root/hbase_snapshots/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 0. 列出所有hbase表 准备做快照</span></span></span><br><span class="line">echo "######################### job start: `date '+%Y-%m%-d %H:%M:%S'`"</span><br><span class="line">echo "######################### 0.list hbase tables;"</span><br><span class="line">curl "http://cdh85-49:20550/" &gt; tbls.txt</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 1. 生成新的当日的快照  快照命名方式  snapshot_NAMESPARCE-TABLE_YYYYMMDD</span></span></span><br><span class="line">echo "######################### 1.create hbase table snapshots;"</span><br><span class="line">cat tbls.txt | while read tbls; do</span><br><span class="line">echo  "######################### create '$&#123;tbls&#125;' snapshot:`date '+%Y-%m%-d %H:%M:%S'`" </span><br><span class="line">echo  "snapshot '$&#123;tbls&#125;','snapshot_$&#123;tbls&#125;_`date +%Y%m%d`'; sleep 1; " | awk -F, '&#123; gsub(":","-",$2) ;print $1","$2&#125;' | sudo -u hbase hbase shell ;  done</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 2.删除指定hbase集群快照， 入参 &#123; $1:n , 表示n天前的快照，比如 0：当天 1：一天前 2：两天前&#125;</span></span></span><br><span class="line">echo "######################### 2.delete hbase history snapshots;"</span><br><span class="line">find_snapshot_list()&#123;</span><br><span class="line">echo "list_snapshots 'snapshot.*_`date -d "$&#123;1&#125; days ago" +%Y%m%d`' " |sudo -u hbase hbase shell  ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">delete_snapshot_list()&#123;</span><br><span class="line">find_snapshot_list $1 | grep "\\[.*\\]"  | sed 's/[]["]//g' | tr ',' '\n' | while read word; do</span><br><span class="line">echo  "delete_snapshot '$&#123;word&#125;'" |sudo -u hbase hbase shell</span><br><span class="line">done</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash">删除1天前快照</span></span><br><span class="line">delete_snapshot_list 1</span><br><span class="line"></span><br><span class="line">echo "######################### job end: `date '+%Y-%m%-d %H:%M:%S'`"</span><br><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 0. 列出所有hbase表 准备做快照</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="built_in">echo</span> <span class="string">"list"</span> | sudo -u hbase hbase shell |grep <span class="string">"\\[.*\\]"</span> &gt; a.log</span></span><br><span class="line">curl "http://bigdata-5.baofoo.cn:20550/" &gt; hbase_tbls.txt</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 1. 删除当前集群历史快照</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="built_in">echo</span> <span class="string">"delete_all_snapshot 'snapshot.*' "</span> |sudo -u hbase hbase --config  /etc/hbase/conf.cloudera.hbase shell  ;</span></span><br><span class="line"><span class="meta">#</span><span class="bash">cat a.log   | sed <span class="string">'s/[]["]//g'</span> | tr <span class="string">','</span> <span class="string">'\n'</span> | <span class="keyword">while</span> <span class="built_in">read</span> word; <span class="keyword">do</span> <span class="built_in">echo</span>  <span class="string">"delete_snapshot   'snapshot_<span class="variable">$&#123;word&#125;</span>_`date -d '1 days ago' +%Y%m%d`' "</span> | awk -F<span class="string">"   "</span> <span class="string">'&#123; gsub(":","-",$2) ;print $1" "$2&#125;'</span> |sudo -u hbase hbase --config  /etc/hbase/conf.cloudera.hbase shell  ; <span class="keyword">done</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 2. 生成新的当日的快照  快照命名方式  snapshot_NAMESPARCE-TABLE_YYYYMMDD</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">cat a.log   | sed <span class="string">'s/[]["]//g'</span> | tr <span class="string">','</span> <span class="string">'\n'</span> | <span class="keyword">while</span> <span class="built_in">read</span> word; <span class="keyword">do</span> \</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="built_in">echo</span>  <span class="string">"snapshot '<span class="variable">$&#123;word&#125;</span>' ,  'snapshot_<span class="variable">$&#123;word&#125;</span>_`date +%Y%m%d`' "</span> | awk -F, <span class="string">'&#123; gsub(":","-",$2) ;print $1","$2&#125;'</span> | sudo -u hbase hbase --config  /etc/hbase/conf.cloudera.hbase shell ;  <span class="keyword">done</span></span></span><br><span class="line"></span><br><span class="line">cat hbase_tbls.txt | while read word; do \</span><br><span class="line">echo  "snapshot '$&#123;word&#125;' ,  'snapshot_$&#123;word&#125;_`date +%Y%m%d`' " | awk -F, '&#123; gsub(":","-",$2) ;print $1","$2&#125;' | sudo -u hbase hbase --config  /etc/hbase/conf.cloudera.hbase shell ;  done</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#  3. 删除备份集群历史快照</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">cat a.log |sed <span class="string">'s/"//g'</span>   | sed <span class="string">'s/[][]//g'</span> | tr <span class="string">','</span> <span class="string">'\n'</span> | <span class="keyword">while</span> <span class="built_in">read</span> word; <span class="keyword">do</span> <span class="built_in">echo</span>  <span class="string">"delete_snapshot   'snapshot_<span class="variable">$&#123;word&#125;</span>_`date -d '1 days ago' +%Y%m%d`' "</span> | awk -F<span class="string">"   "</span> <span class="string">'&#123; gsub(":","-",$2) ;print $1" "$2&#125;'</span> |sudo -u hbase hbase --config  /etc/hbase/conf.cloudera.hbase2 shell  ; <span class="keyword">done</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="built_in">echo</span> <span class="string">" delete_all_snapshot 'snapshot.*' "</span> |sudo -u hbase hbase --config  /etc/hbase/conf.cloudera.hbase2 shell  </span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 4. 同步快照到备份集群</span></span></span><br><span class="line">cat a.log |sed 's/"//g'   | sed 's/[][]//g' | tr ',' '\n' | tr ':' '-'  | while read word;do </span><br><span class="line">sudo -u hbase hbase org.apache.hadoop.hbase.snapshot.ExportSnapshot \</span><br><span class="line">-Dmapreduce.job.queuename=bf_yarn_pool.development \</span><br><span class="line">--snapshot 'snapshot_$&#123;word&#125;_`date +%Y%m%d`'  \</span><br><span class="line">--copy-from hdfs://ns1/hbase3  \</span><br><span class="line">--copy-to hdfs://ns1/hbase9 \</span><br><span class="line">--chuser hbase -chgroup hbase --overwrite</span><br><span class="line">;</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 查找历史快照，   入参 2个 &#123; $1:n , 表示n天前的快照，比如 0：当天 1：一天前 2：两天前；$2: hbase config路径&#125;</span></span></span><br><span class="line"></span><br><span class="line">find_snapshot_list()&#123;</span><br><span class="line">echo "list_snapshots 'snapshot.*_`date -d "$&#123;1&#125; days ago" +%Y%m%d`' " |sudo -u hbase hbase --config  $2 shell  ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 查找一天前快照 hbase1集群</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">find_snapshot_list 1 /etc/hbase/conf.cloudera.hbase</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 删除指定hbase集群快照， 入参 2个，&#123; $1:n , 表示n天前的快照，比如 0：当天 1：一天前 2：两天前；$2: hbase config路径 &#125;</span></span></span><br><span class="line">delete_snapshot_list()&#123;</span><br><span class="line">find_snapshot_list $1 $2 | grep "\\[.*\\]"  | sed 's/[]["]//g' | tr ',' '\n' | while read word; do</span><br><span class="line">echo  "delete_snapshot '$&#123;word&#125;'" |sudo -u hbase hbase --config $2  shell</span><br><span class="line">done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">delete_snapshot_list 1 /etc/hbase/conf.cloudera.hbase</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cat a.log   | sed 's/[]["]//g' | tr ',' '\n' | while read word; do echo   '$&#123;word&#125;' ;done</span><br></pre></td></tr></table></figure>
+<h3 id="hbase-restore-snapshot-sh"><a href="http://hbase-restore-snapshot.sh/" target="_blank" rel="noopener">hbase-restore-snapshot.sh</a></h3>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">PRG="$&#123;0&#125;"</span><br><span class="line">BASEDIR=`dirname $&#123;PRG&#125;`</span><br><span class="line">BASEDIR=`cd $&#123;BASEDIR&#125;/;pwd`</span><br><span class="line"></span><br><span class="line">usage()&#123;</span><br><span class="line">read -p "DO YOU WANT RESTORE ALL HBASE TABLES? PLEASE INPUT[yes OR no]:" yn</span><br><span class="line">case $yn in</span><br><span class="line">        [Yy]* ) continue;;</span><br><span class="line">        [Nn]* ) exit 1;;</span><br><span class="line">        * ) echo "Please answer yes or no.";exit 2;;</span><br><span class="line">esac</span><br><span class="line">&#125;</span><br><span class="line">usage</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 0. 列出所有hbase表 准备还原快照</span></span></span><br><span class="line">echo "######################### job start: `date '+%Y-%m%-d %H:%M:%S'`"</span><br><span class="line">echo "######################### 0.list hbase tables;"</span><br><span class="line">curl "http://bigdata-3.baofoo.cn:20550/" &gt; $&#123;BASEDIR&#125;/tbls.txt</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 1.disable  hbase tables.</span></span></span><br><span class="line">echo "######################### 1.disable hbase  table; "</span><br><span class="line">cat  $&#123;BASEDIR&#125;/tbls.txt | while read tbls; do </span><br><span class="line">echo  "######################### disable '$&#123;tbls&#125;' " </span><br><span class="line">echo  "disable '$&#123;tbls&#125;'  " | sudo -u hbase hbase shell ;  done</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 2.恢复指定hbase集群快照， 入参 &#123; $1:n , 表示n天前的快照，比如 0：当天 1：一天前 2：两天前&#125;</span></span></span><br><span class="line">echo "######################### 2.restore_snapshot "</span><br><span class="line">find_snapshot_list()&#123;</span><br><span class="line">echo "list_snapshots 'snapshot.*_`date -d "$&#123;1&#125; days ago" +%Y%m%d`' " |sudo -u hbase hbase shell  ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">restore_snapshot_()&#123;</span><br><span class="line">find_snapshot_list $1 | grep "\\[.*\\]"  | sed 's/[]["]//g' | tr ',' '\n' | while read word; do</span><br><span class="line">echo "######################### 2.restore_snapshot '$&#123;word&#125;'; "</span><br><span class="line">echo  "restore_snapshot  '$&#123;word&#125;'" |sudo -u hbase hbase shell</span><br><span class="line">done</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash">恢复1天前快照</span></span><br><span class="line">restore_snapshot_ 1</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 3.enable  hbase tables.</span></span></span><br><span class="line">echo "######################### 3.enable hbase  table; "</span><br><span class="line">cat  $&#123;BASEDIR&#125;/tbls.txt | while read tbls; do </span><br><span class="line">echo  "######################### enable '$&#123;tbls&#125;' " </span><br><span class="line">echo  "enable '$&#123;tbls&#125;'  "| sudo -u hbase hbase shell ;  done</span><br><span class="line"></span><br><span class="line">echo "######################### job end: `date '+%Y-%m%-d %H:%M:%S'`"</span><br></pre></td></tr></table></figure>
+<h3 id="hbase-restore-snashot-1-sh">hbase_restore_snashot_1.sh</h3>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">PRG="$&#123;0&#125;"</span><br><span class="line">BASEDIR=`dirname $&#123;PRG&#125;`</span><br><span class="line">BASEDIR=`cd $&#123;BASEDIR&#125;/;pwd`</span><br><span class="line"></span><br><span class="line">usage()&#123;</span><br><span class="line">echo "RESTORE ALL HBASE TABLES,steps:1.disable hbase tables;2.restore_snapshot;3.enable hbase tables."</span><br><span class="line">read -p "DO YOU WANT RESTORE ALL HBASE TABLES? PLEASE INPUT[yes OR no]:" yn</span><br><span class="line">case $yn in</span><br><span class="line">        [Yy]* ) continue;;</span><br><span class="line">        [Nn]* ) exit 1;;</span><br><span class="line">        * ) echo "Please answer yes or no.";exit 2;;</span><br><span class="line">esac</span><br><span class="line">&#125;</span><br><span class="line">usage</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 0. 列出所有hbase表 准备还原快照</span></span></span><br><span class="line">echo "######################### job start: `date '+%Y-%m%-d %H:%M:%S'`"</span><br><span class="line">echo "######################### 0.list hbase tables;"</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#curl "http://bigdata-3.baofoo.cn:20550/" &gt; $&#123;BASEDIR&#125;/tbls.txt</span></span></span><br><span class="line">curl "http://cdh85-49:20550/" &gt; $&#123;BASEDIR&#125;/tbls.txt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 1.disable  hbase tables;  2.restore_snapshot;   3.enable hbase tables;</span></span></span><br><span class="line"></span><br><span class="line">cat  $&#123;BASEDIR&#125;/tbls.txt | while read tbls; do </span><br><span class="line">echo  "######################### 1. disable '$&#123;tbls&#125;' ：`date '+%Y-%m%-d %H:%M:%S'` " </span><br><span class="line">echo  "disable '$&#123;tbls&#125;'" | sudo -u hbase hbase shell ;  </span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">deal_date=`date -d <span class="string">"0 days ago"</span> +%Y%m%d`</span></span><br><span class="line">deal_date=`date -d "1 days ago" +%Y%m%d`</span><br><span class="line">tbls_r=`echo $&#123;tbls&#125;|tr ':' '-'`</span><br><span class="line">echo  "######################### 2. restore_snapshot 'snapshot_$&#123;tbls_r&#125;_$&#123;deal_date&#125;'：`date '+%Y-%m%-d %H:%M:%S'`  "</span><br><span class="line">echo  "restore_snapshot 'snapshot_$&#123;tbls_r&#125;_$&#123;deal_date&#125;'" | sudo -u hbase hbase shell ;  </span><br><span class="line"></span><br><span class="line">echo  "######################### 3. enable '$&#123;tbls&#125;' ：`date '+%Y-%m%-d %H:%M:%S'` " </span><br><span class="line">echo  "enable '$&#123;tbls&#125;' " | sudo -u hbase hbase shell ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">done</span><br></pre></td></tr></table></figure>]]></content>
+  </entry>
+  <entry>
     <title>CDH-HBase 使用 HBCK2 运维</title>
     <url>/2020/08/27/CDH-HBase%20%E4%BD%BF%E7%94%A8%20HBCK2%20%E8%BF%90%E7%BB%B4/</url>
     <content><![CDATA[<h4 id="前言">前言</h4>
