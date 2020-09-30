@@ -196,6 +196,110 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/08/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/08/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">CDH集群部署</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-01-08 13:57:22 / 修改时间：13:57:21" itemprop="dateCreated datePublished" datetime="2020-01-08T13:57:22+08:00">2020-01-08</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、集群规划">一、集群规划</h2>
+<p>如果你正准备从0开始搭建一套CDH集群应用于生产环境，那么此时需要做的事情应该是 <strong>结合当前的数据、业务、硬件、节点、服务等对集群做合理的规划</strong>，而不是马上动手去安装软件。</p>
+<p>合理的集群规划应该做到以下几点：</p>
+<ul>
+<li>充分了解当前的数据现状</li>
+<li>与业务方深入沟通，了解将会在集群上运行的业务，集群将会为业务提供什么服务</li>
+<li>结合数据现状与业务，合理预估未来的数据量增长</li>
+<li>盘点当前可用的硬件资源，包括机柜机架、服务器、交换机等</li>
+<li>当前硬件资源不充足的情况下，根据数据评估情况作出采购建议</li>
+<li>根据业务属性与组成，合理规划集群的部署架构</li>
+<li>根据可用硬件资源，对集群节点的服务角色进行合理划分</li>
+</ul>
+<p>以上步骤完成之后才是动手进行安装与部署。</p>
+<p>你将会对集群的架构模式、应用方向与业务场景了然于胸，并确保这个集群（或者是集群组）能够<strong>提供稳定、高效、高性能的服务</strong>，为业务保驾护航。</p>
+<p>并有能力能够提供 <strong>集群建设目标</strong>：</p>
+<ul>
+<li>
+<p>性能需求</p>
+</li>
+<li>
+<ul>
+<li>简单查询100G数据量时，耗时上限</li>
+<li>复杂查询（join）时，耗时上限</li>
+<li>历史数据导入时，耗时上限</li>
+<li>增量数据导入时，耗时上限</li>
+</ul>
+</li>
+<li>
+<p>可靠性需求：每月宕机次数（&lt;1），每月宕机时间（&lt;10min）</p>
+</li>
+<li>
+<p>可用性：每台机器每月的宕机时间</p>
+</li>
+<li>
+<p>容错性：机器故障，数据不丢失</p>
+</li>
+</ul>
+<h3 id="1-1-硬件规划">1.1 硬件规划</h3>
+<p>硬件规划决定集群将使用多少硬件资源，以及什么配置的硬件资源。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/08/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/Typora%E8%BD%BB%E4%BE%BF%E7%AE%80%E6%B4%81%E7%9A%84Markdown%E7%BC%96%E8%BE%91%E5%99%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -935,105 +1039,6 @@ $
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/09-5.%E9%83%A8%E7%BD%B2%20EFK%20%E6%8F%92%E4%BB%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/09-5.%E9%83%A8%E7%BD%B2%20EFK%20%E6%8F%92%E4%BB%B6/" class="post-title-link" itemprop="url">09-5.部署 EFK 插件</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-01-07 11:09:50 / 修改时间：16:58:04" itemprop="dateCreated datePublished" datetime="2020-01-07T11:09:50+08:00">2020-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>tags: addons, EFK, fluentd, elasticsearch, kibana</p>
-<h1>09-5.部署 EFK 插件</h1>
-<p>EFK 对应的目录：<code>kubernetes/cluster/addons/fluentd-elasticsearch</code></p>
-<pre><code>$ cd /opt/k8s/kubernetes/cluster/addons/fluentd-elasticsearch
-$ ls *.yaml
-es-service.yaml  es-statefulset.yaml  fluentd-es-configmap.yaml  fluentd-es-ds.yaml  kibana-deployment.yaml  kibana-service.yaml
-</code></pre>
-<h2 id="修改定义文件">修改定义文件</h2>
-<pre><code>$ cp es-statefulset.yaml{,.orig}
-$ diff es-statefulset.yaml{,.orig}
-76c76
-&lt;       - image: longtds/elasticsearch:v5.6.4
----
-&gt;       - image: k8s.gcr.io/elasticsearch:v5.6.4
-
-$ cp fluentd-es-ds.yaml{,.orig}
-$ diff fluentd-es-ds.yaml{,.orig}
-79c79
-&lt;         image: netonline/fluentd-elasticsearch:v2.0.4
----
-&gt;         image: k8s.gcr.io/fluentd-elasticsearch:v2.0.4
-</code></pre>
-<h2 id="给-Node-设置标签">给 Node 设置标签</h2>
-<p>DaemonSet <code>fluentd-es</code> 只会调度到设置了标签 <code>beta.kubernetes.io/fluentd-ds-ready=true</code> 的 Node，需要在期望运行 fluentd 的 Node 上设置该标签；</p>
-<pre><code>$ kubectl get nodes
-NAME         STATUS    ROLES     AGE       VERSION
-kube-node1   Ready     &lt;none&gt;    3d        v1.10.4
-kube-node2   Ready     &lt;none&gt;    3d        v1.10.4
-kube-node3   Ready     &lt;none&gt;    3d        v1.10.4
-
-$ kubectl label nodes kube-node3 beta.kubernetes.io/fluentd-ds-ready=true
-node &quot;kube-node3&quot; labeled
-</code></pre>
-<h2 id="执行定义文件">执行定义文件</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/07/09-5.%E9%83%A8%E7%BD%B2%20EFK%20%E6%8F%92%E4%BB%B6/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1106,7 +1111,7 @@ node &quot;kube-node3&quot; labeled
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-count">54</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
