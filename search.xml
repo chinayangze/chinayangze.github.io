@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>hive建表create table xxx as select的问题</title>
+    <url>/2020/10/14/hive%E5%BB%BA%E8%A1%A8create%20table%20xxx%20as%20select%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1>hive建表create table xxx as select的问题</h1>
+<p>create table xxx as select的方式创建的表默认存储格式是text，所以要注意了假如as select的是其他格式的比如RCFile，<strong>则可能会导致一行变多行的情况</strong>（因为RCFile格式的可能字段包含换行符等），所以必须要加上<br>
+create table xxx stored as RCFile as select…<br>
+所以使用这种方式建表注意加上指定的存储格式。</p>
+<p>测试示例：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">exists</span> decision_model.member_close_reason;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> decision_model.member_close_reason <span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> <span class="string">'mongodb_member'</span> <span class="keyword">as</span> intype, *</span><br><span class="line"><span class="keyword">from</span> mongo_baofoo_log.log_update_member_state</span><br><span class="line">;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> decision_model.member_close_reason <span class="keyword">where</span> intype &lt;&gt; <span class="string">'mongodb_member'</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="C:%5CUsers%5Cze_yang%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201014132306707.png" alt="image-20201014132306707"></p>
+<p>正确的应该加上指定的存储格式。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">exists</span> decision_model.member_close_reason;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> decision_model.member_close_reason </span><br><span class="line">    <span class="keyword">row</span> <span class="keyword">format</span> <span class="keyword">delimited</span> </span><br><span class="line">    <span class="keyword">fields</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">'|'</span> </span><br><span class="line">    <span class="keyword">STORED</span> <span class="keyword">AS</span> RCFile </span><br><span class="line"><span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> <span class="string">'mongodb_member'</span> <span class="keyword">as</span> intype, *</span><br><span class="line"><span class="keyword">from</span> mongo_baofoo_log.log_update_member_state </span><br><span class="line">;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> decision_model.member_close_reason <span class="keyword">where</span> intype &lt;&gt; <span class="string">'mongodb_member'</span>;</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
     <title>解决spark streaming长时间运行日志不断增长问题</title>
     <url>/2020/10/12/%E8%A7%A3%E5%86%B3spark%20streaming%E9%95%BF%E6%97%B6%E9%97%B4%E8%BF%90%E8%A1%8C%E6%97%A5%E5%BF%97%E4%B8%8D%E6%96%AD%E5%A2%9E%E9%95%BF%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h1>解决spark streaming长时间运行日志不断增长问题</h1>
