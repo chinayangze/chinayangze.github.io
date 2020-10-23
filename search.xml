@@ -1,6 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>typora + hexo博客中插入图片</title>
+    <url>/2020/10/23/typora%20+%20hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/</url>
+    <content><![CDATA[<p>在使用了hexo搭建了博客后，最大的问题便是如何使用一款markdown工具来编辑博客了，我采取的就是Typora，这工具免费简单易用没广告，而且把图片保存到本地还是很方便的，因此大家只要稍微了解点markdown语法就可以上手使用了。</p>
+<p>关于图片和图片路径的设置，有以下教程。</p>
+<p>事先声明，所有博客文件均保存在 hexo/_posts/文件夹下</p>
+<p>首先在 hexo &gt; source目录下建一个文件夹叫images，用来保存博客中的图片。</p>
+<p>然后打开Typora的 文件 &gt; 偏好设置，进行如下设置。</p>
+<p><img src="/images/image-20200116142728587.png" alt="image-20200116142728587"></p>
+<p>这样的话所有的博客中的图片都将会保存到 /source/images/该博客md文件名/图片名称</p>
+<p>但是仅仅这样设置还不够，这样设置在typora中倒是能看图片了，但是使用的却是相对于当前md文件的相对路径，可是如果启动hexo，是要用服务器访问的，而服务器显然无法根据这个相对路径正确访问到图片，因此还需要在typora中进行进一步设置。</p>
+<p>在typora菜单栏点击 格式-&gt;图像-&gt;设置图片根目录，将hexo/source作为其根目录即可。</p>
+<p><strong>一定要先设置了图片根目录后再插入图片，否则图片路径会不正确喔！</strong></p>
+<p><strong>根目录设置：</strong></p>
+<p>在文章头部插入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">typora-root-url: ..</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>然后图片地址换成绝对路径</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![image-20200116142728587](&#x2F;images&#x2F;image-20200116142728587.png)</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>hive数据导出，并指定分隔符，元素包含引号等</title>
+    <url>/2020/10/23/hive%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%87%BA%EF%BC%8C%E5%B9%B6%E6%8C%87%E5%AE%9A%E5%88%86%E9%9A%94%E7%AC%A6%EF%BC%8C%E5%85%83%E7%B4%A0%E5%8C%85%E5%90%AB%E5%BC%95%E5%8F%B7%E7%AD%89/</url>
+    <content><![CDATA[<h3 id="hive数据导出，并指定分隔符，元素包含引号等">hive数据导出，并指定分隔符，元素包含引号等</h3>
+<p>语法格式</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">beeline -n username -p password -u jdbc:hive2://host:10000 --verbose=<span class="literal">true</span>  --showHeader=<span class="literal">false</span> --outputformat=tsv2  --color=<span class="literal">true</span>  -e <span class="string">"select * from <span class="variable">$&#123;database&#125;</span>.<span class="variable">$&#123;tablename&#125;</span>"</span> &gt; <span class="variable">$&#123;tableName&#125;</span>.csv</span><br></pre></td></tr></table></figure>
+<p>通过 outputformat 指定输出格式</p>
+<blockquote>
+<p>–outputformat=[table/vertical/csv/tsv/dsv/csv2/tsv2] == 指定输出格式</p>
+<p>–delimiterForDSV=&quot;*&quot; ‘&amp;’ 前提（–outputformat=dsv） 指定分隔符</p>
+</blockquote>
+<p>不同格式对应的分隔符如下表：</p>
+<table>
+<thead>
+<tr>
+<th>格式</th>
+<th>分隔符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>table</td>
+<td>表格式</td>
+</tr>
+<tr>
+<td>vertical</td>
+<td>如下所示</td>
+</tr>
+<tr>
+<td>csv</td>
+<td>‘,’ 逗号(元素包含引号)</td>
+</tr>
+<tr>
+<td>tsv</td>
+<td>‘\t’ 制表符(元素包含逗号)</td>
+</tr>
+<tr>
+<td>dsv</td>
+<td>默认‘|’ 竖线分割，可通过delimiterForDSV指定分隔符</td>
+</tr>
+<tr>
+<td>csv2</td>
+<td>‘,’ 逗号(不含引号)</td>
+</tr>
+<tr>
+<td>tsv2</td>
+<td>‘\t’ 制表符(不含引号)</td>
+</tr>
+</tbody>
+</table>
+<p>说明：</p>
+<blockquote>
+<p>csv格式 == 查询元素有’'单引号</p>
+<p>csv2格式没有单引号</p>
+<p>tsv，tsv2同上</p>
+</blockquote>
+<h3 id="实例">实例</h3>
+<p><strong>impala  ,   ‘|’ 竖线分割 (元素不包含引号)</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">impala-shell -i cdh85-43:21000 -u yarn -l <span class="comment">--auth_creds_ok_in_clear   -B -o /opt/Z2007931000018_S3_N_20200311_00000001.TXT  --output_delimiter='|' -q " select c1,c3,c4,c5,c6,c7,COALESCE(c8,0),COALESCE(c9,0), COALESCE(c10,0),COALESCE(c11,0),'156' from baofoo_rm_regulator.hadoop_pbc_trans_order_aggregate"</span></span><br></pre></td></tr></table></figure>
+<p><strong>hive      ‘|’ 竖线分割 (元素包含双引号)</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">beeline -u "jdbc:hive2://172.20.15.12:10000/" -n yarn -p <span class="comment">--outputformat=dsv --showHeader=false -e ' set mapreduce.job.queuename=bf_yarn_pool.production; SELECT  concat("\"", self_acc_name,"\"") ,  concat("\"",self_acc_no ,"\"") ,  concat("\"",bank_acc_name ,"\"") ,  concat("\"",join_code ,"\"") ,  concat("\"",`date` ,"\"") ,  concat("\"", `time`,"\"") ,  concat("\"", cur,"\"") ,  concat("\"",cast(amt as string) ,"\"") ,  concat("\"",cast(usd_amt as string) ,"\"") ,  concat("\"",lend_flag ,"\"") ,  concat("\"",prof_type ,"\"") ,  concat("\"", part_acc_name,"\"") ,  concat("\"",part_acc_no ,"\"") ,  concat("\"", acc_flag,"\"") ,  concat("\"",tran_flag ,"\"") ,  concat("\"",open_bank_name ,"\"") ,  concat("\"",ip_code ,"\"") ,  concat("\"",purpose ,"\"") ,  concat("\"",bord_flag ,"\"") ,  concat("\"",trade_order ,"\"") ,  concat("\"",trans_no ,"\"") FROM BAOFOO_STAT.tb_con_txn_2019_2020 ' &gt; tb_con_txn_2019_2020.csv</span></span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>插入图片模板</title>
+    <url>/2020/10/14/%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E6%A8%A1%E6%9D%BF/</url>
+    <content><![CDATA[<hr>
+<h2 id="typora-root-url-…">typora-root-url:…</h2>
+<p><img src="/images/image-20200116143338485.png" alt="image-20200116143338485"></p>
+]]></content>
+  </entry>
+  <entry>
     <title>hive建表create table xxx as select的问题</title>
     <url>/2020/10/14/hive%E5%BB%BA%E8%A1%A8create%20table%20xxx%20as%20select%E7%9A%84%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h1>hive建表create table xxx as select的问题</h1>
@@ -619,27 +710,6 @@ grep ‘’ 只匹配‘man’，而不是‘Batman’或‘manic’等其他的
 <code>'$'</code>：指匹配的字符串在行尾，</p>
 <h2 id="xargs配合grep查找">xargs配合grep查找</h2>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">find -type f -name &#39;*.php&#39;|xargs grep &#39;GroupRecord&#39;</span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
-    <title>插入图片模板</title>
-    <url>/2020/01/16/%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E6%A8%A1%E6%9D%BF/</url>
-    <content><![CDATA[<p><img src="/images/image-20200116143338485.png" alt="image-20200116143338485"></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>typora + hexo博客中插入图片</title>
-    <url>/2020/01/16/typora%20+%20hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/</url>
-    <content><![CDATA[<p>在使用了hexo搭建了博客后，最大的问题便是如何使用一款markdown工具来编辑博客了，我采取的就是Typora，这工具免费简单易用没广告，而且把图片保存到本地还是很方便的，因此大家只要稍微了解点markdown语法就可以上手使用了。</p>
-<p>关于图片和图片路径的设置，有以下教程。</p>
-<p>事先声明，所有博客文件均保存在 hexo/_posts/文件夹下</p>
-<p>首先在 hexo &gt; source目录下建一个文件夹叫images，用来保存博客中的图片。</p>
-<p>然后打开Typora的 文件 &gt; 偏好设置，进行如下设置。</p>
-<p><img src="/images/image-20200116142728587.png" alt="image-20200116142728587"></p>
-<p>这样的话所有的博客中的图片都将会保存到 /source/images/该博客md文件名/图片名称</p>
-<p>但是仅仅这样设置还不够，这样设置在typora中倒是能看图片了，但是使用的却是相对于当前md文件的相对路径，可是如果启动hexo，是要用服务器访问的，而服务器显然无法根据这个相对路径正确访问到图片，因此还需要在typora中进行进一步设置。</p>
-<p>在typora菜单栏点击 格式-&gt;图像-&gt;设置图片根目录，将hexo/source作为其根目录即可。</p>
-<p><strong>一定要先设置了图片根目录后再插入图片，否则图片路径会不正确喔！</strong></p>
 ]]></content>
   </entry>
   <entry>
