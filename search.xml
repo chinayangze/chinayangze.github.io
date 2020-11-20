@@ -24,7 +24,7 @@
 <p>[DISK]/dfs/dn2</p>
 <p>[ARCHIVE]/dfs/dn3</p>
 </blockquote>
-<p><strong>分层存储，官网并没有要求重启datanode，而且也没有说明要分组设置。只是刷新集群配置。其实并没有生效，给以后重启data留下了隐患。</strong></p>
+<p><strong>分层存储，官网并没有要求重启datanode，而且也没有说明要分组设置。只是刷新集群配置。其实并没有生效，给以后重启datanode留下了隐患。</strong></p>
 ]]></content>
   </entry>
   <entry>
