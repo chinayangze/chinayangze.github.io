@@ -1,6 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>xargs命令</title>
+    <url>/2020/11/23/xargs%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<p>xargs可以将输入内容（通常通过命令行管道传递），转成后续命令的参数，通常用途有：</p>
+<ol>
+<li>命令组合：尤其是一些命令不支持管道输入，比如<code>ls</code>。</li>
+<li>避免参数过长：xargs可以通过<code>-nx</code>来将参数分组，避免参数过长。</li>
+</ol>
+<p>使用语法如下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Usage: xargs [OPTION]... COMMAND INITIAL-ARGS...</span><br><span class="line">Run COMMAND with arguments INITIAL-ARGS and more arguments read from input.</span><br></pre></td></tr></table></figure>
+<h2 id="入门例子">入门例子</h2>
+<p>首先，创建测试文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">touch a.js b.js c.js</span><br></pre></td></tr></table></figure>
+<p>接着，运行如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls *.js | xargs ls -al</span><br></pre></td></tr></table></figure>
+<p>输出如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-rw-r--r--  1 a  wheel  0 12 18 16:18 a.js</span><br><span class="line">-rw-r--r--  1 a  wheel  0 12 18 16:18 b.js</span><br><span class="line">-rw-r--r--  1 a  wheel  0 12 18 16:18 c.js</span><br></pre></td></tr></table></figure>
+<p>命令解释：</p>
+<ol>
+<li>首先，<code>ls *.js</code>的输出为<code>a.js b.js c.js</code>。</li>
+<li>通过管道，将<code>a.js b.js c.js</code>作为<code>xargs</code>的输入参数。</li>
+<li><code>xargs</code>命令收到输入参数后，对参数进行解析，以空格/换行作为分隔符，拆分成多个参数，这里变成<code>a.js</code>、<code>b.js</code>、<code>c.js</code>。</li>
+<li><code>xargs</code>将拆分后的参数，传递给后续的命令，作为后续命令的参数，也就是说，组成这样的命令<code>ls -al a.js b.js c.js</code>。</li>
+</ol>
+<p>可以加上<code>-t</code>参数，在执行后面的命令前，先将命令打印出来。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls *.js | xargs -t ls -al</span><br></pre></td></tr></table></figure>
+<p>输出如下，可以看到多了一行内容<code>ls -al a.js b.js c.js</code>，这就是实际运行的命令。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -al a.js b.js c.js</span><br><span class="line">-rw-r--r--  1 a  wheel  0 12 18 16:18 a.js</span><br><span class="line">-rw-r--r--  1 a  wheel  0 12 18 16:18 b.js</span><br><span class="line">-rw-r--r--  1 a  wheel  0 12 18 16:18 c.js</span><br></pre></td></tr></table></figure>
+<h2 id="例子：参数替换">例子：参数替换</h2>
+<p>有的时候，我们需要用到原始的参数，可以通过参数<code>-i</code>或<code>-I</code>实现。参数说明如下</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-I R                         same as --replace=R (R must be specified)</span><br><span class="line">-i,--replace=[R]             Replace R <span class="keyword">in</span> initial arguments with names</span><br><span class="line">                             <span class="built_in">read</span> from standard input. If R is</span><br><span class="line">                             unspecified, assume &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>例子如下，将所有的<code>.js</code>结尾的文件，都加上<code>.backup</code>后缀。<code>-I '{}'</code>表示将后面命令行的<code>{}</code>替换成前面解析出来的参数。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls *.js | xargs -t -I <span class="string">'&#123;&#125;'</span> mv &#123;&#125; &#123;&#125;.backup</span><br></pre></td></tr></table></figure>
+<p>展开后的命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mv a.js a.js.backup</span><br><span class="line">mv b.js b.js.backup</span><br><span class="line">mv c.js c.js.backup</span><br></pre></td></tr></table></figure>
+<h2 id="例子：参数分组">例子：参数分组</h2>
+<p>命令行对参数最大长度有限制，xargs通过<code>-nx</code>对参数进行分组来解决这个问题。</p>
+<p>首先，创建4个文件用来做实验。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">touch a.js b.js c.js d.js</span><br></pre></td></tr></table></figure>
+<p>然后运行如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls *.js | xargs -t -n2 ls -al</span><br></pre></td></tr></table></figure>
+<p>输出如下，<code>-n2</code>表示，将参数以2个为一组，传给后面的命令。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -al a.js b.js </span><br><span class="line">-rw-r--r-- 1 root root 0 Dec 18 16:52 a.js</span><br><span class="line">-rw-r--r-- 1 root root 0 Dec 18 16:52 b.js</span><br><span class="line">ls -al c.js d.js </span><br><span class="line">-rw-r--r-- 1 root root 0 Dec 18 16:52 c.js</span><br><span class="line">-rw-r--r-- 1 root root 0 Dec 18 16:52 d.js</span><br></pre></td></tr></table></figure>
+<h2 id="例子：特殊文件名">例子：特殊文件名</h2>
+<p>有的时候，文件名可能存在特殊字符，比如下面的文件名中存在空格。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">touch &#39;hello 01.css&#39; &#39;hello 02.css&#39;</span><br></pre></td></tr></table></figure>
+<p>运行之前的命令会报错，因为<code>xargs</code>是以空格/换行作为分隔符，于是就会出现预期之外的行为。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 命令</span></span><br><span class="line">find . -name <span class="string">'*.css'</span> | xargs -t ls -al</span><br><span class="line"></span><br><span class="line"><span class="comment">#输出</span></span><br><span class="line">ls -al ./hello 01.css ./hello 02.css <span class="comment"># 展开后的命令</span></span><br><span class="line">ls: cannot access ./hello: No such file or directory</span><br><span class="line">ls: cannot access 01.css: No such file or directory</span><br><span class="line">ls: cannot access ./hello: No such file or directory</span><br><span class="line">ls: cannot access 02.css: No such file or directory</span><br></pre></td></tr></table></figure>
+<p><code>xargs</code>是这样解决这个问题的。</p>
+<ol>
+<li><code>-print0</code>：告诉<code>find</code>命令，在输出文件名之后，跟上<code>NULL</code>字符，而不是换行符；</li>
+<li><code>-0</code>：告诉<code>xargs</code>，以<code>NULL</code>作为参数分隔符；</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">'*.css'</span> -print0 | xargs -0 -t ls -al</span><br></pre></td></tr></table></figure>
+<h2 id="例子：日志备份">例子：日志备份</h2>
+<p>将7天前的日志备份到特定目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -mtime +7 | xargs -I <span class="string">'&#123;&#125;'</span> mv &#123;&#125; /tmp/otc-svr-logs/</span><br></pre></td></tr></table></figure>]]></content>
+  </entry>
+  <entry>
     <title>could only be written to 0 of the 1 minReplication nodes</title>
     <url>/2020/11/20/could%20only%20be%20written%20to%200%20of%20the%201%20minReplication%20nodes/</url>
     <content><![CDATA[<p>重启dn导致集群不能写入数据，几百个任务都失败了， 经过一个通宵的折腾，记录一下这次重大事故。</p>
