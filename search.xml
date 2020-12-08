@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>修改Kudu表名,和映射在impala的表名</title>
+    <url>/2020/12/08/%E4%BF%AE%E6%94%B9Kudu%E8%A1%A8%E5%90%8D,%E5%92%8C%E6%98%A0%E5%B0%84%E5%9C%A8impala%E7%9A%84%E8%A1%A8%E5%90%8D/</url>
+    <content><![CDATA[<h1>修改Kudu表名,和映射在impala的表名</h1>
+<p>kudu的表名和impala的表名是两码事</p>
+<h2 id="修改kudu表名">修改kudu表名</h2>
+<h4 id="方法一、在linux中kudu节点执行">方法一、在linux中kudu节点执行</h4>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">kudu table rename_table 172.20.85.113:7051 impala::kd_baofoo_cm.cm_entry_tmp impala::kd_baofoo_cm.cm_entry</span><br></pre></td></tr></table></figure>
+<h4 id="方法二、在presto中执行">方法二、在presto中执行</h4>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER TABLE kudu.default.&quot;impala::kd_baofoo_cm.cm_entry&quot; RENAME TO kudu.default.&quot;impala::kd_baofoo_cm.cm_entry_tmp&quot;</span><br></pre></td></tr></table></figure>
+<p>修改了kudu的表名后 在impala查询kudu会报错，需要修改</p>
+<h2 id="修改映射的impala表名">修改映射的impala表名</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">alter table kd_baofoo_cm.cm_entry set tblproperties(&#39;kudu.table_name&#39;&#x3D;&#39;impala::kd_baofoo_cm.cm_entry_tmp&#39;);</span><br><span class="line">alter table kd_baofoo_cm.cm_entry rename to kd_baofoo_cm.cm_entry_tmp;</span><br></pre></td></tr></table></figure>
+<h2 id="其他参考：改成外部表，删除重建。">其他参考：改成外部表，删除重建。</h2>
+<p>1.将表从内部切换到外部，并删除。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">alter table kd_baofoo_cm.cm_entry  set tblproperties(&#39;EXTERNAL&#39;&#x3D;&#39;true&#39;);</span><br><span class="line">drop table kd_baofoo_cm.cm_entry</span><br></pre></td></tr></table></figure>
+<p>2.将kudu中的表映射到impala中：</p>
+<p>CREATE EXTERNAL TABLE kd_baofoo_cm.cm_entry_tmp<br>
+STORED AS KUDU<br>
+TBLPROPERTIES (<br>
+‘kudu.master_addresses’ = ‘cdh85-111:7051,cdh85-112:7051,cdh85-113:7051’,<br>
+‘kudu.table_name’ = ‘impala::kd_baofoo_cm.cm_entry_tmp’<br>
+);</p>
+]]></content>
+  </entry>
+  <entry>
     <title>解决hdfs文件大小为0</title>
     <url>/2020/11/23/%E8%A7%A3%E5%86%B3hdfs%E6%96%87%E4%BB%B6%E5%A4%A7%E5%B0%8F%E4%B8%BA0/</url>
     <content><![CDATA[<p><strong>问题： 存在文件大小为0，处于打开状态的文件，程序读取这些文件会报错</strong></p>
