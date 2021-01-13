@@ -1,6 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>HDFS ACL权限设置</title>
+    <url>/2021/01/13/HDFS%20ACL%E6%9D%83%E9%99%90%E8%AE%BE%E7%BD%AE/</url>
+    <content><![CDATA[<h1>HDFS ACL权限设置</h1>
+<p>今天主要给大家说一下HDFS文件权限的问题。当一个<code>普通用户</code>去访问<code>HDFS文件</code>时，可能会报<code>Permission denied</code>的错误。那么你会怎么做呢？</p>
+<p>像修改linux文件似的，可能的做法有：</p>
+<ul>
+<li>修改文件所有者</li>
+<li>直接将文件赋予全部的权限，即rwx权限。</li>
+</ul>
+<p>上面的做法虽然可以达到目的，但是相对来说对权限的把握不是很精准，不适用于生产环境。</p>
+<p><strong>本文主要讲解HDFS的ACL(Access Control List)权限，通过hdfs超级用户，来为普通用户分配权限。</strong></p>
+<h3 id="一、背景"><strong>一、背景</strong></h3>
+<p>如下图所示，</p>
+<p><img src="/images/image-20210113155315046.png" alt="image-20210113155315046"></p>
+<p>目录没有权限，所以创建失败了。</p>
+<p>这里就用到了HDFS的ACL权限设置。</p>
+<h3 id="二、前提条件"><strong>二、前提条件</strong></h3>
+<p>需要确定<code>hdfs-site.xml</code>文件的两个配置项为<code>true</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.permissions.enabled&lt;<span class="regexp">/name&gt;</span></span><br><span class="line"><span class="regexp">    &lt;value&gt;true&lt;/</span>value&gt;</span><br><span class="line">&lt;<span class="regexp">/property&gt;</span></span><br><span class="line"><span class="regexp">&lt;property&gt;</span></span><br><span class="line"><span class="regexp">    &lt;name&gt;dfs.namenode.acls.enabled&lt;/</span>name&gt;</span><br><span class="line">    &lt;value&gt;<span class="literal">true</span>&lt;<span class="regexp">/value&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>property&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="三、语法"><strong>三、语法</strong></h3>
+<h4 id="1-setfacl"><strong>1. setfacl</strong></h4>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">Usage: hdfs dfs -setfacl -R|[--<span class="keyword">set</span> &lt;acl_spec&gt; &lt;path&gt;]</span><br></pre></td></tr></table></figure>
+<p>设置文件和目录的访问控制列表（ACL）。</p>
+<p>选项：</p>
+<ul>
+<li>-b: 删除基本ACL条目以外的所有条目。保留用户，组和其他条目以与权限位兼容。</li>
+<li>-k: 删除默认ACL。default</li>
+<li>-R: 以递归方式将操作应用于所有文件和目录。<strong>常用。</strong></li>
+<li>-m: 修改ACL。新条目将添加到ACL，并保留现有条目。<strong>常用。</strong></li>
+<li>-x: 删除指定的ACL条目。保留其他ACL条目。<strong>常用。</strong></li>
+<li>–set: 完全替换ACL，丢弃所有现有条目。 acl_spec必须包含用户，组和其他条目，以便与权限位兼容。</li>
+<li>acl_spec: 逗号分隔的ACL条目列表。</li>
+<li>path: 要修改的文件或目录。</li>
+</ul>
+<p>示例：</p>
+<ul>
+<li>hdfs dfs -setfacl -m user:xy_hpt:rw- /user/hive/warehouse/file_record</li>
+<li>hdfs dfs -setfacl -x user:hadoop /file</li>
+<li>hdfs dfs -setfacl -b /file</li>
+<li>hdfs dfs -setfacl -k /dir</li>
+<li>hdfs dfs -setfacl --set user::rw-,user:hadoop:rw-,group::r–,other::r-- /file</li>
+<li>hdfs dfs -setfacl -R -m user:hadoop:r-x /dir</li>
+<li>hdfs dfs -setfacl -m default:user:hadoop:r-x /dir</li>
+</ul>
+<h4 id="2-getfacl"><strong>2. getfacl</strong></h4>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">Usage: hdfs dfs -getfacl [-R] &lt;path&gt;</span><br></pre></td></tr></table></figure>
+<p>显示文件和目录的访问控制列表（ACL）。如果目录具有默认ACL，则getfacl还会显示默认ACL。</p>
+<p>选项：</p>
+<ul>
+<li>-R: 以递归方式列出所有文件和目录的ACL。</li>
+<li>path: 要列出的文件或目录。</li>
+</ul>
+<p>示例：</p>
+<ul>
+<li>hdfs dfs -getfacl /file</li>
+<li>hdfs dfs -getfacl -R /dir</li>
+</ul>
+<h3 id="四、为hue用户赋予权限"><strong>四、为hue用户赋予权限</strong></h3>
+<p>使用hdfs超级用户来设置acl：使用-m参数</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">sudo -u hdfs hdfs dfs -setfacl -m user:hue:rwx /user/hive/warehouse</span><br></pre></td></tr></table></figure>
+<p>查看文件目录的acl权限：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">hdfs dfs -getfacl /user/hive/warehouse</span><br></pre></td></tr></table></figure>
+<p>文件acl权限如下图所示：</p>
+<p><img src="/images/image-20210113155726266.png" alt="image-20210113155726266"></p>
+<p>现在<code>hue用户</code>就对<code>/user/hive/warehouse这个目录有了</code>rwx全部权限`了。</p>
+<p><strong>备注：</strong></p>
+<p>不过是仅限于hive这个目录，对于里面的子文件不是hue用户创建的，hue用户还是无权访问。 如果需要访问递归的子文件，可以使用<code>-R</code>参数，再次授权。</p>
+<h3 id="五、总结"><strong>五、总结</strong></h3>
+<p>其实这次分享的知识点很简单，但是却很实用。就安全的角度来看，比起<code>chmod 777</code>来说，也比较严谨。</p>
+<p>还是希望大家多多练习本文讲述的两个命令：</p>
+<ul>
+<li>setfacl</li>
+<li>getfacl</li>
+</ul>
+<p>看看这两个命令的其它参数具体什么意思。</p>
+<p>关于HDFS shell其它命令，可以查看官网链接：<a href="http://hadoop.apache.org/docs/r2.6.5/hadoop-project-dist/hadoop-common/FileSystemShell.html" target="_blank" rel="noopener">http://hadoop.apache.org/docs/r2.6.5/hadoop-project-dist/hadoop-common/FileSystemShell.html</a></p>
+]]></content>
+  </entry>
+  <entry>
     <title>修改Kudu表名,和映射在impala的表名</title>
     <url>/2020/12/08/%E4%BF%AE%E6%94%B9Kudu%E8%A1%A8%E5%90%8D,%E5%92%8C%E6%98%A0%E5%B0%84%E5%9C%A8impala%E7%9A%84%E8%A1%A8%E5%90%8D/</url>
     <content><![CDATA[<h1>修改Kudu表名,和映射在impala的表名</h1>

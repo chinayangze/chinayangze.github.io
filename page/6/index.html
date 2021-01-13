@@ -54,9 +54,22 @@
 <meta property="og:description" content="小杨随笔">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="datasir">
-<meta property="article:tag" content="软件学习网，有汇">
-<meta property="article:tag" content="上海有汇">
-<meta property="article:tag" content="有汇科技">
+<meta property="article:tag" content="爱思考">
+<meta property="article:tag" content="软件学习网">
+<meta property="article:tag" content="软件学习">
+<meta property="article:tag" content="hadoop">
+<meta property="article:tag" content="spark">
+<meta property="article:tag" content="hive">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="cdh">
+<meta property="article:tag" content="hbase">
+<meta property="article:tag" content="kudu">
+<meta property="article:tag" content="impala">
+<meta property="article:tag" content="flink">
+<meta property="article:tag" content="hdfs">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="presto">
+<meta property="article:tag" content="大数据运维">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://www.ask3.cn/page/6/">
@@ -192,6 +205,120 @@
             
 
   <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/00.%E7%BB%84%E4%BB%B6%E7%89%88%E6%9C%AC%E5%92%8C%E9%85%8D%E7%BD%AE%E7%AD%96%E7%95%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/00.%E7%BB%84%E4%BB%B6%E7%89%88%E6%9C%AC%E5%92%8C%E9%85%8D%E7%BD%AE%E7%AD%96%E7%95%A5/" class="post-title-link" itemprop="url">00.组件版本和配置策略</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-01-07 11:00:00 / 修改时间：16:03:31" itemprop="dateCreated datePublished" datetime="2020-01-07T11:00:00+08:00">2020-01-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>tags: version</p>
+<h1>00.组件版本和配置策略</h1>
+<h2 id="组件版本">组件版本</h2>
+<ul>
+<li>Kubernetes 1.10.4</li>
+<li>Docker 18.03.1-ce</li>
+<li>Etcd 3.3.7</li>
+<li>Flanneld 0.10.0</li>
+<li>插件：
+<ul>
+<li>Coredns
+<ul>
+<li>Dashboard</li>
+<li>Heapster (influxdb、grafana)</li>
+<li>Metrics-Server</li>
+<li>EFK (elasticsearch、fluentd、kibana)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>镜像仓库：
+<ul>
+<li>docker registry
+<ul>
+<li>harbor</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="主要配置策略">主要配置策略</h2>
+<p>kube-apiserver：</p>
+<ul>
+<li>使用 keepalived 和 haproxy 实现 3 节点高可用；</li>
+<li>关闭非安全端口 8080 和匿名访问；</li>
+<li>在安全端口 6443 接收 https 请求；</li>
+<li>严格的认证和授权策略 (x509、token、RBAC)；</li>
+<li>开启 bootstrap token 认证，支持 kubelet TLS bootstrapping；</li>
+<li>使用 https 访问 kubelet、etcd，加密通信；</li>
+</ul>
+<p>kube-controller-manager：</p>
+<ul>
+<li>3 节点高可用；</li>
+<li>关闭非安全端口，在安全端口 10252 接收 https 请求；</li>
+<li>使用 kubeconfig 访问 apiserver 的安全端口；</li>
+<li>自动 approve kubelet 证书签名请求 (CSR)，证书过期后自动轮转；</li>
+<li>各 controller 使用自己的 ServiceAccount 访问 apiserver；</li>
+</ul>
+<p>kube-scheduler：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/00.%E7%BB%84%E4%BB%B6%E7%89%88%E6%9C%AC%E5%92%8C%E9%85%8D%E7%BD%AE%E7%AD%96%E7%95%A5/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
         
   
   
@@ -956,133 +1083,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/cdh6_hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/cdh6_hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/" class="post-title-link" itemprop="url">cdh6_hbase新集群配置项整理</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-01-07 09:42:12" itemprop="dateCreated datePublished" datetime="2020-01-07T09:42:12+08:00">2020-01-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2018-10-22 15:19:28" itemprop="dateModified" datetime="2018-10-22T15:19:28+08:00">2018-10-22</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>hbase-conf:</p>
-<ul>
-<li>RS堆栈大小: 32G</li>
-<li></li>
-<li>hbase.bucketcache.size=64 =64 * 1024M: 堆外缓存大小，单位为M</li>
-<li></li>
-<li>dfs.replication=3on=3: hdfs副本数</li>
-<li></li>
-<li>hbase.hregion.max.filesize=20G=20G: Region大小</li>
-<li></li>
-<li>hbase.hregion.memstore.flush.size=256=256M: Memstore刷新大小</li>
-<li></li>
-<li>hbase.regionserver.global.memstore.upperLimit=0.t=0.55: 整个RS中Memstore最大比例</li>
-<li></li>
-</ul>
-<h2 id="hbase-regionserver-global-memstore-lowerLimit-0-t-0-5-整个RS中Memstore最小比例-默认0-95">#- hbase.regionserver.global.memstore.lowerLimit=0.t=0.5: 整个RS中Memstore最小比例       默认0.95</h2>
-<ul>
-<li>hbase.bucketcache.ioengine=off=offheap: 使用堆外缓存</li>
-<li></li>
-</ul>
-<h2 id="hbase-bucketcache-percentage-in-combinebinedcache-0-9-堆外读缓存所占比例，剩余为堆内元数据缓存大小">#- hbase.bucketcache.percentage.in.combinebinedcache=0.9: 堆外读缓存所占比例，剩余为堆内元数据缓存大小</h2>
-<ul>
-<li>hfile.block.cache.size=0.2=0.2: 校验项,+upperLimit需要小于0.8</li>
-<li></li>
-<li>hbase.master.handler.count=256=256: Master处理客户端请求最大线程数</li>
-<li></li>
-<li>hbase.regionserver.handler.count=256=256: RS处理客户端请求最大线程数</li>
-<li></li>
-<li>hbase.hstore.blockingStoreFiles=100: storefile个数达到该值则block写入</li>
-<li></li>
-<li>hbase.hregion.memstore.block.multiplier=3:r=3: 强制刷新Memstore大小的倍数</li>
-<li></li>
-<li>hbase.client.retries.number: 3 : 3</li>
-<li></li>
-<li>hbase.rpc.timeout: 50: 5000</li>
-</ul>
-<p>hbase-jvm:</p>
-<p>HBASE_OFFHEAPSIZE=??G<br>
-HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256m -XX:+UseParNewGC -XX:MaxTenuringThreshold=15  -XX:+CMSParallelRemarkEnabled -XX:+UseCMSCompactAtFullCollection -XX:+CMSClassUnloadingEnabled -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSFullGCsBeforeCompaction=0 -XX:CMSInitiatingOccupancyFraction=70 -XX:+PrintTenuringDistribution -XX:SurvivorRatio=2 -XX:+UseConcMarkSweepGC -XX:-DisableExplicitGC $HBASE_OPTS&quot;</p>
-<p>-XX:+UseG1GC<br>
--XX:InitiatingHeapOccupancyPercent=65<br>
--XX:-ResizePLAB<br>
--XX:MaxGCPauseMillis=90<br>
--XX:+UnlockDiagnosticVMOptions<br>
--XX:+G1SummarizeConcMark<br>
--XX:+ParallelRefProcEnabled<br>
--XX:G1HeapRegionSize=32m<br>
--XX:G1HeapWastePercent=20<br>
--XX:ConcGCThreads=4<br>
--XX:ParallelGCThreads=16<br>
--XX:MaxTenuringThreshold=1<br>
--XX:G1MixedGCCountTarget=64<br>
--XX:+UnlockExperimentalVMOptions<br>
--XX:G1NewSizePercent=2<br>
--XX:G1OldCSetRegionThresholdPercent=5</p>
-<p>HDFS:</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/07/cdh6_hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1155,7 +1155,7 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1204,7 +1204,7 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
