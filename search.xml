@@ -9,11 +9,13 @@
 <p>–结果</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO: ----- TestDFSIO ----- : write</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:             Date &amp; time: Tue Jan 19 15:29:04 CST 2021</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:         Number of files: 10</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:  Total MBytes processed: 10000</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:       Throughput mb&#x2F;sec: 23.96</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:  Average IO rate mb&#x2F;sec: 32.37</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:   IO rate std deviation: 29.51</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:      Test exec time sec: 68</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:</span><br></pre></td></tr></table></figure>
 <p>结果说明：</p>
+<blockquote>
 <p>Total MBytes processed ： 总共需要写入的数据量 ＝＝》 256*1000</p>
 <p>Throughput mb/sec ：总共需要写入的数据量/（每个map任务实际写入数据的执行时间之和（这个时间会远小于Test exec time sec））＝＝》256000/(map1写时间+map2写时间+…)</p>
 <p>Average IO rate mb/sec ：（每个map需要写入的数据量/每个map任务实际写入数据的执行时间）之和/任务数＝＝》(1000/map1写时间＋1000/map2写时间+…)/256，所以这个值跟上面一个值总是存在差异。</p>
 <p>IO rate std deviation ：上一个值的标准差</p>
 <p>Test exec time sec ：整个job的执行时间</p>
+</blockquote>
 <p>testDFSIO的参数如下：</p>
 <table>
 <thead>
@@ -53,7 +55,7 @@
 </tr>
 </tbody>
 </table>
-<p>备注：</p>
+<p><strong>备注</strong>：</p>
 <p>如果不到/tmp目录执行 会报TestDFSIO_results.log没有写入权限</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ava.io.FileNotFoundException: TestDFSIO_results.log (Permission denied)</span><br><span class="line">	at java.io.FileOutputStream.open0(Native Method)</span><br><span class="line">	at java.io.FileOutputStream.open(FileOutputStream.java:270)</span><br><span class="line">	at java.io.FileOutputStream.&lt;init&gt;(FileOutputStream.java:213)</span><br><span class="line">	at org.apache.hadoop.fs.TestDFSIO.analyzeResult(TestDFSIO.java:1068)</span><br><span class="line">	at org.apache.hadoop.fs.TestDFSIO.run(TestDFSIO.java:891)</span><br><span class="line">	at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:76)</span><br><span class="line">	at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:90)</span><br><span class="line">	at org.apache.hadoop.fs.TestDFSIO.main(TestDFSIO.java:742)</span><br></pre></td></tr></table></figure>
 <p>如果不关闭压缩，会报part-00000不存在，因为默认启用了snappy压缩 ，文件是part-00000.snappy</p>
