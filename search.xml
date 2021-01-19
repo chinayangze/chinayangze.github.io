@@ -1,6 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>hdfs性能测试</title>
+    <url>/2021/01/19/hdfs%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<h2 id="hdfs性能测试">hdfs性能测试</h2>
+<p>hadoop自带TestDFSIO测试</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;tmp</span><br><span class="line">sudo -u hdfs hadoop jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hadoop-mapreduce&#x2F;hadoop-mapreduce-client-jobclient-3.0.0-cdh6.0.1-tests.jar  TestDFSIO -D mapreduce.job.queuename&#x3D;bf_yarn_pool.production -D test.build.data&#x3D;&#x2F;tmp&#x2F;benchmark -D mapreduce.output.fileoutputformat.compress&#x3D;false -write -nrFiles 10 -fileSize 1000</span><br></pre></td></tr></table></figure>
+<p>–结果</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO: ----- TestDFSIO ----- : write</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:             Date &amp; time: Tue Jan 19 15:29:04 CST 2021</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:         Number of files: 10</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:  Total MBytes processed: 10000</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:       Throughput mb&#x2F;sec: 23.96</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:  Average IO rate mb&#x2F;sec: 32.37</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:   IO rate std deviation: 29.51</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:      Test exec time sec: 68</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:</span><br></pre></td></tr></table></figure>
+<p>结果说明：</p>
+<p>Total MBytes processed ： 总共需要写入的数据量 ＝＝》 256*1000</p>
+<p>Throughput mb/sec ：总共需要写入的数据量/（每个map任务实际写入数据的执行时间之和（这个时间会远小于Test exec time sec））＝＝》256000/(map1写时间+map2写时间+…)</p>
+<p>Average IO rate mb/sec ：（每个map需要写入的数据量/每个map任务实际写入数据的执行时间）之和/任务数＝＝》(1000/map1写时间＋1000/map2写时间+…)/256，所以这个值跟上面一个值总是存在差异。</p>
+<p>IO rate std deviation ：上一个值的标准差</p>
+<p>Test exec time sec ：整个job的执行时间</p>
+<p>testDFSIO的参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>read</th>
+<th>读测试。执行该测试之前，需要先做write测试</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>write</td>
+<td>写测试</td>
+</tr>
+<tr>
+<td>nfFiles</td>
+<td>文件个数，默认为1</td>
+</tr>
+<tr>
+<td>fileSize</td>
+<td>文件大小，默认为1MB</td>
+</tr>
+<tr>
+<td>resFile</td>
+<td>结果文件名，默认为” TestDFSIO_results.log”</td>
+</tr>
+<tr>
+<td>bufferSize</td>
+<td>设置缓存大小，默认为1000000</td>
+</tr>
+<tr>
+<td>clean</td>
+<td>清理数据</td>
+</tr>
+<tr>
+<td>seq</td>
+<td>数据是否有序，默认无序</td>
+</tr>
+</tbody>
+</table>
+<p>备注：</p>
+<p>如果不到/tmp目录执行 会报TestDFSIO_results.log没有写入权限</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ava.io.FileNotFoundException: TestDFSIO_results.log (Permission denied)</span><br><span class="line">	at java.io.FileOutputStream.open0(Native Method)</span><br><span class="line">	at java.io.FileOutputStream.open(FileOutputStream.java:270)</span><br><span class="line">	at java.io.FileOutputStream.&lt;init&gt;(FileOutputStream.java:213)</span><br><span class="line">	at org.apache.hadoop.fs.TestDFSIO.analyzeResult(TestDFSIO.java:1068)</span><br><span class="line">	at org.apache.hadoop.fs.TestDFSIO.run(TestDFSIO.java:891)</span><br><span class="line">	at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:76)</span><br><span class="line">	at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:90)</span><br><span class="line">	at org.apache.hadoop.fs.TestDFSIO.main(TestDFSIO.java:742)</span><br></pre></td></tr></table></figure>
+<p>如果不关闭压缩，会报part-00000不存在，因为默认启用了snappy压缩 ，文件是part-00000.snappy</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Caused by: org.apache.hadoop.ipc.RemoteException(java.io.FileNotFoundException): File does not exist: &#x2F;tmp&#x2F;benchmark&#x2F;io_write&#x2F;part-00000</span><br><span class="line">	at org.apache.hadoop.hdfs.server.namenode.INodeFile.valueOf(INodeFile.java:85)</span><br><span class="line">	at org.apache.hadoop.hdfs.server.namenode.INodeFile.valueOf(INodeFile.java:75)</span><br><span class="line">	at org.apache.hadoop.hdfs.server.namenode.FSDirStatAndListingOp.getBlockLocations(FSDirStatAndListingOp.java:152)</span><br><span class="line">	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.getBlockLocations(FSNamesystem.java:1937)</span><br><span class="line">	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.getBlockLocations(NameNodeRpcServer.java:728)</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
     <title>HDFS ACL权限设置</title>
     <url>/2021/01/13/HDFS%20ACL%E6%9D%83%E9%99%90%E8%AE%BE%E7%BD%AE/</url>
     <content><![CDATA[<h1>HDFS ACL权限设置</h1>
