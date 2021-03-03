@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>yarn webUI 看不到日志</title>
+    <url>/2021/03/03/yarn%20webUI%20%E7%9C%8B%E4%B8%8D%E5%88%B0%E6%97%A5%E5%BF%97/</url>
+    <content><![CDATA[<p>yarn webUI 看不到日志</p>
+<p>解决办法：</p>
+<p>Resource Manager webUI No logs available for container</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">1. Please verify once if you could collect logs using "yarn logs" command as below?</span><br><span class="line">&#123;&#123;</span><br><span class="line">yarn logs -applicationId &lt;appID&gt; -appOwner &lt;user&gt;</span><br><span class="line">&#125;&#125;</span><br><span class="line"></span><br><span class="line">2.  please verify the below directories if they have right permissions</span><br><span class="line">&#123;&#123;</span><br><span class="line">hdfs dfs -ls /user/history/done</span><br><span class="line">hdfs dfs -ls  /user/history/done_intermediate</span><br><span class="line">&#125;&#125;</span><br><span class="line"></span><br><span class="line">3. Please verify if "Enable Log Aggregation" has been enabled or not</span><br><span class="line">&#123;&#123;</span><br><span class="line"><span class="meta">ClouderaManager--&gt;</span><span class="bash">Yarn--&gt;Configurations--&gt;<span class="string">"Enable Log Aggregation"</span></span></span><br><span class="line">&#125;&#125;</span><br><span class="line"></span><br><span class="line">4. Verify the permissions for /tmp/logs as below,</span><br><span class="line">&#123;&#123;</span><br><span class="line">hadoop fs -chown mapred:hadoop /tmp/logs</span><br><span class="line">hadoop fs -chown -R :hadoop /tmp/logs/*</span><br><span class="line">&#125;&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>用Hue中的Oozie执行Impala Sheel脚本</title>
+    <url>/2021/03/02/%E7%94%A8Hue%E4%B8%AD%E7%9A%84Oozie%E6%89%A7%E8%A1%8CImpala%20Sheel%E8%84%9A%E6%9C%AC/</url>
+    <content><![CDATA[<h3 id="用Hue中的Oozie执行Impala-Sheel脚本">用Hue中的Oozie执行Impala Sheel脚本</h3>
+<p>在Oozie中不能像执行hive SQL那样直接执行impala SQL脚本。目前没有Impala操作，因此你必须使用调用impala-shell的shell操作。调用impala-shell的shell脚本中还必须包含设置PYTHON EGGS位置的环境变量</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">export PYTHON_EGG_CACHE=.python-eggs   </span><br><span class="line"></span><br><span class="line">impala-shell -i 172.20.15.10:21000 -u hpt -l --auth_creds_ok_in_clear --ldap_password_cmd='echo -n ***' -q 'SET request_pool=development;'</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>hudi</title>
+    <url>/2021/03/02/hudi/</url>
+    <content><![CDATA[<p><strong>注意：<strong>目前Hudi使用的是</strong>hadoop2.7.3</strong>版本，CDH6.3.0 环境使用的是<strong>hadoop3.0.0</strong>， 所以在打包的时候需要加上**-Dhadoop.version=3.0.0** 参数</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mvn clean install -DskipTests -DskipITs -Dcheckstyle.skip&#x3D;true -Drat.skip&#x3D;true -Dhadoop.version&#x3D;3.0.0</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo -u yarn spark-shell  \</span><br><span class="line">  --queue bf_yarn_pool.development \</span><br><span class="line">  --packages org.apache.spark:spark-avro_2.11:2.4.0 \</span><br><span class="line">  --conf 'spark.serializer=org.apache.spark.serializer.KryoSerializer' \</span><br><span class="line">  --jars `ls /opt/hudi/packaging/hudi-spark-bundle/target/hudi-spark-bundle_2.11-*.*.*-SNAPSHOT.jar`</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
     <title>用FsImage查找hadoop集群小文件</title>
     <url>/2021/02/20/%E7%94%A8FsImage%E6%9F%A5%E6%89%BEhadoop%E9%9B%86%E7%BE%A4%E5%B0%8F%E6%96%87%E4%BB%B6/</url>
     <content><![CDATA[<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /tmp</span><br><span class="line">hdfs dfsadmin -fetchImage ./tmp_meta</span><br><span class="line">hdfs oiv -i ./tmp_meta -o ./fsimage.csv -p Delimited</span><br><span class="line">hdfs dfs -mkdir -p /tmp/hdfs_metadata/fsimage</span><br><span class="line">hdfs dfs -copyFromLocal ./fsimage.csv /tmp/hdfs_metadata/fsimage</span><br></pre></td></tr></table></figure>
