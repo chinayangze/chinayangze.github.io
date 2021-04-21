@@ -209,6 +209,74 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/02/%E7%94%A8Hue%E4%B8%AD%E7%9A%84Oozie%E6%89%A7%E8%A1%8CImpala%20Sheel%E8%84%9A%E6%9C%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/02/%E7%94%A8Hue%E4%B8%AD%E7%9A%84Oozie%E6%89%A7%E8%A1%8CImpala%20Sheel%E8%84%9A%E6%9C%AC/" class="post-title-link" itemprop="url">用Hue中的Oozie执行Impala Sheel脚本</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-02 16:52:30" itemprop="dateCreated datePublished" datetime="2021-03-02T16:52:30+08:00">2021-03-02</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="用Hue中的Oozie执行Impala-Sheel脚本">用Hue中的Oozie执行Impala Sheel脚本</h3>
+<p>在Oozie中不能像执行hive SQL那样直接执行impala SQL脚本。目前没有Impala操作，因此你必须使用调用impala-shell的shell操作。调用impala-shell的shell脚本中还必须包含设置PYTHON EGGS位置的环境变量</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export PYTHON_EGG_CACHE=.python-eggs   </span><br><span class="line"></span><br><span class="line">impala-shell -i 172.20.15.10:21000 -u hpt -l --auth_creds_ok_in_clear --ldap_password_cmd='echo -n ***' -q 'SET request_pool=development;'</span><br></pre></td></tr></table></figure>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/02/%E7%94%A8Hue%E4%B8%AD%E7%9A%84Oozie%E6%89%A7%E8%A1%8CImpala%20Sheel%E8%84%9A%E6%9C%AC/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/02/hudi/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -912,79 +980,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/10/29/%E7%A0%B4%E8%A7%A3PyCharm%202018.3.2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/29/%E7%A0%B4%E8%A7%A3PyCharm%202018.3.2/" class="post-title-link" itemprop="url">破解PyCharm 2018.3.2</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-10-29 16:29:48" itemprop="dateCreated datePublished" datetime="2020-10-29T16:29:48+08:00">2020-10-29</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>破解PyCharm 2018.3.2</h1>
-<p><strong>亲测可以用</strong></p>
-<p>破解教程：<a href="https://www.jianshu.com/p/76a30aeb8f9d" target="_blank" rel="noopener">https://www.jianshu.com/p/76a30aeb8f9d</a></p>
-<h4 id="1、key">1、key</h4>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">K71U8DBPNE</span>-eyJsaWNlbnNlSWQiOiJLNzFVOERCUE5FIiwibGljZW5zZWVOYW1lIjoibGFuIHl1IiwiYXNzaWduZWVOYW1lIjoiIiwiYXNzaWduZWVFbWFpbCI6IiIsImxpY2Vuc2VSZXN0cmljdGlvbiI6IkZvciBlZHVjYXRpb25hbCB1c2Ugb25seSIsImNoZWNrQ29uY3VycmVudFVzZSI6ZmFsc2UsInByb2R1Y3RzIjpbeyJjb2RlIjoiSUkiLCJwYWlkVXBUbyI6IjIwMTktMDUtMDQifSx7ImNvZGUiOiJSUzAiLCJwYWlkVXBUbyI6IjIwMTktMDUtMDQifSx7ImNvZGUiOiJXUyIsInBhaWRVcFRvIjoiMjAxOS0wNS0wNCJ9LHsiY29kZSI6IlJEIiwicGFpZFVwVG8iOiIyMDE5LTA1LTA0In0seyJjb2RlIjoiUkMiLCJwYWlkVXBUbyI6IjIwMTktMDUtMDQifSx7ImNvZGUiOiJEQyIsInBhaWRVcFRvIjoiMjAxOS0wNS0wNCJ9LHsiY29kZSI6IkRCIiwicGFpZFVwVG8iOiIyMDE5LTA1LTA0In0seyJjb2RlIjoiUk0iLCJwYWlkVXBUbyI6IjIwMTktMDUtMDQifSx7ImNvZGUiOiJETSIsInBhaWRVcFRvIjoiMjAxOS0wNS0wNCJ9LHsiY29kZSI6IkFDIiwicGFpZFVwVG8iOiIyMDE5LTA1LTA0In0seyJjb2RlIjoiRFBOIiwicGFpZFVwVG8iOiIyMDE5LTA1LTA0In0seyJjb2RlIjoiR08iLCJwYWlkVXBUbyI6IjIwMTktMDUtMDQifSx7ImNvZGUiOiJQUyIsInBhaWRVcFRvIjoiMjAxOS0wNS0wNCJ9LHsiY29kZSI6IkNMIiwicGFpZFVwVG8iOiIyMDE5LTA1LTA0In0seyJjb2RlIjoiUEMiLCJwYWlkVXBUbyI6IjIwMTktMDUtMDQifSx7ImNvZGUiOiJSU1UiLCJwYWlkVXBUbyI6IjIwMTktMDUtMDQifV0sImhhc2giOiI4OTA4Mjg5LzAiLCJncmFjZVBlcmlvZERheXMiOjAsImF1dG9Qcm9sb25nYXRlZCI6ZmFsc2UsImlzQXV0b1Byb2xvbmdhdGVkIjpmYWxzZX0=-<span class="type">Owt3</span>/+<span class="type">LdCpedvF0eQ8635yYt0</span>+<span class="type">ZLtCfIHOKzSrx5hBtbKGYRPFDrdgQAK6lJjexl2emLBcUq729K1</span>+ukY9Js0nx1NH09l9Rw4c7k9wUksLl6RWx7Hcdcma1AHolfSp79NynSMZzQQLFohNyjD+dXfXM5GYd2OTHya0zYjTNMmAJuuRsapJMP9F1z7UTpMpLMxS/<span class="type">JaCWdyX6qIs</span>+funJdPF7bjzYAQBvtbz+6SANBgN36gG1B2xHhccTn6WE8vagwwSNuM70egpahcTktoHxI7uS1JGN9gKAr6nbp+8DbFz3a2wd+<span class="type">XoF3nSJb</span>/d2f/6zJR8yJF8AOyb30kwg3zf5cWw==-<span class="type">MIIEPjCCAiagAwIBAgIBBTANBgkqhkiG9w0BAQsFADAYMRYwFAYDVQQDDA1KZXRQcm9maWxlIENBMB4XDTE1MTEwMjA4MjE0OFoXDTE4MTEwMTA4MjE0OFowETEPMA0GA1UEAwwGcHJvZDN5MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxcQkq</span>+zdxlR2mmRYBPzGbUNdMN6OaXiXzxIWtMEkrJMO/5oUfQJbLLuMSMK0QHFmaI37WShyxZcfRCidwXjot4zmNBKnlyHodDij/78TmVqFl8nOeD5+07B8VEaIu7c3E1N+e1doC6wht4I4+<span class="type">IEmtsPAdoaj5WCQVQbrI8KeT8M9VcBIWX7fD0fhexfg3ZRt0xqwMcXGNp3DdJHiO0rCdU</span>+<span class="type">Itv7EmtnSVq9jBG1usMSFvMowR25mju2JcPFp1</span>+<span class="type">I4ZI</span>+<span class="type">FqgR8gyG8oiNDyNEoAbsR3lOpI7grUYSvkB</span>/xVy/<span class="type">VoklPCK2h0f0GJxFjnye8NT1PAywoyl7RmiAVRE</span>/<span class="type">EKwIDAQABo4GZMIGWMAkGA1UdEwQCMAAwHQYDVR0OBBYEFGEpG9oZGcfLMGNBkY7SgHiMGgTcMEgGA1UdIwRBMD</span>+<span class="type">AFKOetkhnQhI2Qb1t4Lm0oFKLl</span>/<span class="type">GzoRykGjAYMRYwFAYDVQQDDA1KZXRQcm9maWxlIENBggkA0myxg7KDeeEwEwYDVR0lBAwwCgYIKwYBBQUHAwEwCwYDVR0PBAQDAgWgMA0GCSqGSIb3DQEBCwUAA4ICAQC9WZuYgQedSuOc5TOUSrRigMw4</span>/+wuC5EtZBfvdl4HT/8vzMW/oUlIP4YCvA0XKyBaCJ2iX+<span class="type">ZCDKoPfiYXiaSiH</span>+<span class="type">HxAPV6J79vvouxKrWg2XV6ShFtPLP</span>+0gPdGq3x9R3+kJbmAm8w+<span class="type">FOdlWqAfJrLvpzMGNeDU14YGXiZ9bVzmIQbwrBA</span>+<span class="built_in">c</span>/<span class="type">F4tlK</span>/<span class="type">DV07dsNExihqFoibnqDiVNTGombaU2dDup2gwKdL81ua8EIcGNExHe82kjF4zwfadHk3bQVvbfdAwxcDy4xBjs3L4raPLU3yenSzr</span>/<span class="type">OEur1</span>+jfOxnQSmEcMXKXgrAQ9U55gwjcOFKrgOxEdek/<span class="type">Sk1VfOjvS</span>+nuM4eyEruFMfaZHzoQiuw4IqgGc45ohFH0UUyjYcuFxxDSU9lMCv8qdHKm+wnPRb0l9l5vXsCBDuhAGYD6ss+<span class="type">Ga</span>+aDY6f/qXZuUCEUOH3QUNbbCUlviSz6+<span class="type">GiRnt1kA9N2Qachl</span>+2yBfaqUqr8h7Z2gsx5LcIf5kYNsqJ0GavXTVyWh7PYiKX4bs354ZQLUwwa/cG++<span class="number">2</span>+wNWP+<span class="type">HtBhVxMRNTdVhSm38AknZlD</span>+<span class="type">PTAsWGu9GyLmhti2EnVwGybSD2Dxmhxk3IPCkhKAK</span>+pl0eWYGZWG3tJ9mZ7SowcXLWDFAk0lRJnKGFMTggrWjV8GYpw5bq23VmIqqDLgkNzuoog==</span><br></pre></td></tr></table></figure>
-<h4 id="2、破解补丁下载">2、破解补丁下载</h4>
-<p>链接：<a href="https://pan.baidu.com/s/1EvUvweSG58kFToJXB8ugPw" target="_blank" rel="noopener">https://pan.baidu.com/s/1EvUvweSG58kFToJXB8ugPw</a><br>
-提取码：vnkq</p>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/10/29/%E7%A0%B4%E8%A7%A3PyCharm%202018.3.2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1057,7 +1052,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-count">78</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
