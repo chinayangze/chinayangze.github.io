@@ -8,7 +8,7 @@
 <p>linux P盘</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">nohup &#x2F;opt&#x2F;chia-plotter&#x2F;chia-plotter-linux-amd64 -action plotting -plotting-fpk 0x85f80829a93d960313a99ca5482703fea2caae1d07db589344e76eba135db14c8f70d08dadc991805ae917d61626fd8d -plotting-ppk 0x970214947045bd1c6fbb0b3b3499dafab837eb26b58356504aea4d8ee19e9c5c064a5dfdad0cb5f7f047e0030f088a65 -plotting-n 1 -b 8000 -t &#x2F;data1&#x2F;chia -d &#x2F;opt&#x2F;chia  &gt;&gt; plots2.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
 <p>晒一下收益效果：</p>
-<p><img src="C:%5CUsers%5Cze_yang%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210427101445602.png" alt="image-20210427101445602"></p>
+<p><img src="/image-20210427101445602.png" alt="image-20210427101445602"></p>
 <h4 id="相关资料：">相关资料：</h4>
 <p><strong>谋杀SSD磁盘</strong></p>
 <p><a href="https://www.expreview.com/78802.html" target="_blank" rel="noopener">https://www.expreview.com/78802.html</a></p>
