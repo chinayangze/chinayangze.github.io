@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>chia挖矿</title>
+    <url>/2021/04/27/chia%E6%8C%96%E7%9F%BF/</url>
+    <content><![CDATA[<h4 id="用家里的老电脑做一个测试-，p了一块k32的盘">用家里的老电脑做一个测试 ，p了一块k32的盘</h4>
+<p>矿池的具体接入教程描述得非常浅显易懂了，这里我就不做重复搬运了，直接参考 <a href="https://link.zhihu.com/?target=https%3A//www.hpool.com/help/tutorial/Chia%E6%8C%96%E7%9F%BF%E6%95%99%E7%A8%8B">Chia挖矿教程</a></p>
+<p>linux P盘</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">nohup &#x2F;opt&#x2F;chia-plotter&#x2F;chia-plotter-linux-amd64 -action plotting -plotting-fpk 0x85f80829a93d960313a99ca5482703fea2caae1d07db589344e76eba135db14c8f70d08dadc991805ae917d61626fd8d -plotting-ppk 0x970214947045bd1c6fbb0b3b3499dafab837eb26b58356504aea4d8ee19e9c5c064a5dfdad0cb5f7f047e0030f088a65 -plotting-n 1 -b 8000 -t &#x2F;data1&#x2F;chia -d &#x2F;opt&#x2F;chia  &gt;&gt; plots2.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+<p>晒一下收益效果：</p>
+<p><img src="C:%5CUsers%5Cze_yang%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210427101445602.png" alt="image-20210427101445602"></p>
+<h4 id="相关资料：">相关资料：</h4>
+<p><strong>谋杀SSD磁盘</strong></p>
+<p><a href="https://www.expreview.com/78802.html" target="_blank" rel="noopener">https://www.expreview.com/78802.html</a></p>
+<blockquote>
+<p>生成一个K=32文件大概需要6.5小时，生成三个K33两个K32文件总共占了829GB的硬盘空间，而HDD的写入量是840.1GB，但SSD的读写非常厉害，整个P盘过程，SSD读取11.8TB，写入12.06TB，因为SSD的写入次数是有限的，把这个6TB的红盘P满虽然不至于把SSD写死，但磨损也很厉害。</p>
+</blockquote>
+<p><strong>阿里云Chia挖矿，很不划算</strong></p>
+<p><a href="https://zhuanlan.zhihu.com/p/365806867" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/365806867</a></p>
+<blockquote>
+<p>0.1个币提现。因为真的是亏到姥姥家哈哈。4月17到4月24，一共300块钱。估计挖到0.1个币还要再等2天。</p>
+</blockquote>
+]]></content>
+  </entry>
+  <entry>
+    <title>hadoop decommission 卡住</title>
+    <url>/2021/04/27/hadoop%20decommission%20%E5%8D%A1%E4%BD%8F/</url>
+    <content><![CDATA[<p>hadoop decommission 卡住</p>
+<p>hadoop decommission一个节点Datanode，几万个block都同步过去了，但是唯独剩下2个block一直停留在哪，导致该节点几个小时也无法 下线。hadoop UI中显示在Under Replicated Blocks里面有2个块始终无法消除.</p>
+<p>是一个hadoop的bug，<a href="https://issues.apache.org/jira/browse/HDFS-5579" target="_blank" rel="noopener">https://issues.apache.org/jira/browse/HDFS-5579</a></p>
+<p>根据blockid 查找文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hdfs fsck -blockId blk_2050561344</span><br></pre></td></tr></table></figure>]]></content>
+  </entry>
+  <entry>
     <title>hdfs 如何实现退役节点快速下线</title>
     <url>/2021/04/21/hdfs%20%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%80%80%E5%BD%B9%E8%8A%82%E7%82%B9%E5%BF%AB%E9%80%9F%E4%B8%8B%E7%BA%BF/</url>
     <content><![CDATA[<p><strong>hdfs 如何实现退役节点快速下线（也就是退役节点上的数据块快速迁移）</strong></p>
