@@ -209,6 +209,83 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/04/30/CDH%20Disk%20Balancer%20%E7%A3%81%E7%9B%98%E6%95%B0%E6%8D%AE%E5%9D%87%E8%A1%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/30/CDH%20Disk%20Balancer%20%E7%A3%81%E7%9B%98%E6%95%B0%E6%8D%AE%E5%9D%87%E8%A1%A1/" class="post-title-link" itemprop="url">CDH Disk Balancer 磁盘数据均衡</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-30 09:15:38" itemprop="dateCreated datePublished" datetime="2021-04-30T09:15:38+08:00">2021-04-30</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="CDH-Disk-Balancer-磁盘数据均衡">CDH Disk Balancer 磁盘数据均衡</h3>
+<p>1.设置dfs.disk.balancer.enabled  为true , 可以单个datanode设置，重启单个datanode生效。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.disk.balancer.enabled<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/image-20210429175922996.png" alt="image-20210429175922996"></p>
+<p>1.创建均衡任务并生成计划任务配置文件</p>
+<p>sudo -u hdfs hdfs diskbalancer -plan cdh85-73</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@cdh85-73 tmp]# sudo -u hdfs hdfs diskbalancer -plan cdh85-73</span><br><span class="line">21/04/29 17:02:45 INFO planner.GreedyPlanner: Starting plan for Node : cdh85-73:9867</span><br><span class="line">21/04/29 17:02:45 INFO planner.GreedyPlanner: Disk Volume set f4da1504-1dfc-42d0-ac61-020dd7b02620 Type : DISK plan completed.</span><br><span class="line">21/04/29 17:02:45 INFO planner.GreedyPlanner: Compute Plan for Node : cdh85-73:9867 took 7 ms </span><br><span class="line">21/04/29 17:02:46 INFO command.Command: Writing plan to:</span><br><span class="line">21/04/29 17:02:46 INFO command.Command: /system/diskbalancer/2021-Apr-29-17-02-45/cdh85-73.plan.json</span><br><span class="line">Writing plan to:</span><br><span class="line">/system/diskbalancer/2021-Apr-29-17-02-45/cdh85-73.plan.json</span><br></pre></td></tr></table></figure>
+<p>注意： 这个路径是HDFS的路径，不是本地路径</p>
+<p>2.查看配置文件</p>
+<p>[root@cdh85-73 tmp]# hdfs dfs -ls  /system/diskbalancer/2021-Apr-29-16-45-51<br>
+Found 2 items<br>
+-rw-r–r--   3 hdfs supergroup     192586 2021-04-29 16:45 /system/diskbalancer/2021-Apr-29-16-45-51/cdh85-73.before.json<br>
+-rw-r–r--   3 hdfs supergroup       4546 2021-04-29 16:45 /system/diskbalancer/2021-Apr-29-16-45-51/cdh85-73.plan.json</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/04/30/CDH%20Disk%20Balancer%20%E7%A3%81%E7%9B%98%E6%95%B0%E6%8D%AE%E5%9D%87%E8%A1%A1/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/04/27/chia%E6%8C%96%E7%9F%BF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1009,78 +1086,11 @@ B) 如果不为0===》没有成功：请执行 <strong>xfs_repair –L /dev/sdd<
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/10/vi%E6%A8%A1%E5%BC%8F%E4%B8%8B%E6%9F%A5%E6%89%BE%E5%92%8C%E6%9B%BF%E6%8D%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/10/vi%E6%A8%A1%E5%BC%8F%E4%B8%8B%E6%9F%A5%E6%89%BE%E5%92%8C%E6%9B%BF%E6%8D%A2/" class="post-title-link" itemprop="url">vi模式下查找和替换</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-03-10 13:45:30" itemprop="dateCreated datePublished" datetime="2021-03-10T13:45:30+08:00">2021-03-10</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>linux基础命令之：vi模式下查找和替换</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">一、查找</span><br><span class="line">查找命令</span><br><span class="line">/pattern&lt;Enter&gt; ：向下查找pattern匹配字符串</span><br><span class="line">?pattern&lt;Enter&gt;：向上查找pattern匹配字符串</span><br><span class="line">使用了查找命令之后，使用如下两个键快速查找：</span><br><span class="line">n：按照同一方向继续查找</span><br><span class="line">N：按照反方向查找</span><br><span class="line">pattern是需要匹配的字符串，例如：</span><br><span class="line">/hello&lt;Enter&gt;      #查找hello</span><br><span class="line">/hello&lt;Enter&gt;    #查找hello单词（注意前后的空格）</span><br><span class="line">除此之外，pattern还可以使用一些特殊字符，包括（/、^、$、*、.），其中前三个这两个是vi与vim通用的，“/”为转义字符。</span><br><span class="line">/^hello&lt;Enter&gt;    #查找以hello开始的行</span><br><span class="line"><span class="meta">/hello$</span><span class="bash">&lt;Enter&gt;    <span class="comment">#查找以hello结束的行</span></span></span><br><span class="line">//^hello&lt;Enter&gt;    #查找^hello字符串</span><br><span class="line"> </span><br><span class="line">二、替换</span><br><span class="line">1.:[range]s/pattern/string/[c,e,g,i]</span><br><span class="line">range     指的是范围，1,7 指从第一行至第七行，1,$ 指从第一行至最后一行，也就是整篇文章，也可以 % 代表。 % 是目前编辑的文章，# 是前一次编辑的文章。</span><br><span class="line">pattern     就是要被替换掉的字串，可以用 regexp 来表示。</span><br><span class="line">string     将 pattern 由 string 所取代。</span><br><span class="line">c     confirm，每次替换前会询问。</span><br><span class="line">e     不显示 error。</span><br><span class="line">g     globe，不询问，整行替换。</span><br><span class="line">i     ignore 不分大小写。</span><br><span class="line">I     ignore 大小写敏感。</span><br><span class="line"> </span><br><span class="line">2.基本替换</span><br><span class="line">:s/lantian/sky/         #替换当前行第一个 lantian 为 sky</span><br><span class="line">:s/lantian/sky/g     #替换当前行所有 lantian 为 sky</span><br><span class="line">:n,$s/lantian/sky/     #替换第 n 行开始到最后一行中每一行的第一个 lantian 为 sky</span><br><span class="line">:n,$s/lantian/sky/g     #替换第 n 行开始到最后一行中每一行所有 lantian 为 sky</span><br><span class="line"><span class="meta">#</span><span class="bash">（n 为数字，若 n 为 .，表示从当前行开始到最后一行）</span></span><br><span class="line">:%s/lantian/sky/        #（等同于 :g/lantian/s//sky/） 替换每一行的第一个 lantian 为 sky</span><br><span class="line">:%s/lantian/sky/g    #（等同于 :g/lantian/s//sky/g） 替换每一行中所有 lantian 为 sky</span><br><span class="line">可以使用 #或+ 作为分隔符，此时中间出现的 / 不会作为分隔符</span><br><span class="line">:s#lantian/#sky/#         替换当前行第一个 lantian/ 为 sky/</span><br><span class="line">:%s+/oradata/apras/+/user01/apras1+ （</span><br><span class="line">使用+ 来 替换 / ）： /oradata/apras/替换成/user01/apras1/</span><br><span class="line"> </span><br><span class="line">3.删除文本中的^M</span><br><span class="line">问题描述：对于换行，window下用回车换行（0A0D）来表示，linux下是回车（0A）来表示。这样，将window上的文件拷到unix上用时，总会有个^M，请写个用在unix下的过滤windows文件的换行符（0D）的shell或c程序。</span><br><span class="line">使用命令：cat filename1 | tr -d “^V^M” &gt; newfile;</span><br><span class="line">使用命令：sed -e “s/^V^M//” filename &gt; outputfilename</span><br><span class="line">需要注意的是在1、2两种方法中，^V和^M指的是Ctrl+V和Ctrl+M。你必须要手工进行输入，而不是粘贴。</span><br><span class="line">在vi中处理：首先使用vi打开文件，然后按ESC键，接着输入命令：</span><br><span class="line">:%s/^V^M//</span><br><span class="line">:%s/^M$//g</span><br><span class="line">如果上述方法无用，则正确的解决办法是：</span><br><span class="line">tr -d “/r” &lt; src &gt;dest</span><br><span class="line">tr -d “/015″ dest</span><br><span class="line">strings A&gt;B</span><br><span class="line"> </span><br><span class="line">4.其它用法</span><br><span class="line">:s/str1/str2/          #用字符串 str2 替换行中首次出现的字符串 str1</span><br><span class="line">:s/str1/str2/g         #用字符串 str2 替换行中所有出现的字符串 str1</span><br><span class="line">:.,$ s/str1/str2/g     #用字符串 str2 替换正文当前行到末尾所有出现的字符串 str1</span><br><span class="line">:1,$ s/str1/str2/g     #用字符串 str2 替换正文中所有出现的字符串 str1</span><br><span class="line">:g/str1/s//str2/g      #功能同上</span><br><span class="line"> </span><br><span class="line">5.g的总结说明</span><br><span class="line">从上述替换命令可以看到：</span><br><span class="line">g 放在命令末尾，表示对指定行的搜索字符串的每次出现进行替换；不加 g，表示只对指定行的搜索字符串的首次出现进行替换；</span><br><span class="line">g 放在命令开头，表示对正文中所有包含搜索字符串的行进行替换操作。</span><br><span class="line">也就是说命令的开始可以添加影响的行，如果为g表示对所有行；命令的结尾可以使用g来表示是否对每一行的所有字符串都有影响。</span><br></pre></td></tr></table></figure>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/10/vi%E6%A8%A1%E5%BC%8F%E4%B8%8B%E6%9F%A5%E6%89%BE%E5%92%8C%E6%9B%BF%E6%8D%A2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1148,7 +1158,7 @@ B) 如果不为0===》没有成功：请执行 <strong>xfs_repair –L /dev/sdd<
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">80</span>
+          <span class="site-state-item-count">81</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
