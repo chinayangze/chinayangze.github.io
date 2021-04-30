@@ -233,7 +233,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-04-30 09:15:38" itemprop="dateCreated datePublished" datetime="2021-04-30T09:15:38+08:00">2021-04-30</time>
+              <time title="创建时间：2021-04-30 09:32:22" itemprop="dateCreated datePublished" datetime="2021-04-30T09:32:22+08:00">2021-04-30</time>
             </span>
 
           
@@ -250,7 +250,7 @@
           <h3 id="CDH-Disk-Balancer-磁盘数据均衡">CDH Disk Balancer 磁盘数据均衡</h3>
 <p>1.设置dfs.disk.balancer.enabled  为true , 可以单个datanode设置，重启单个datanode生效。</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.disk.balancer.enabled<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p><img src="/images/image-20210429175922996.png" alt="image-20210429175922996"></p>
+<img src="/images/image-20210429175922996.png" alt="image-20210429175922996">
 <p>1.创建均衡任务并生成计划任务配置文件</p>
 <p>sudo -u hdfs hdfs diskbalancer -plan cdh85-73</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@cdh85-73 tmp]# sudo -u hdfs hdfs diskbalancer -plan cdh85-73</span><br><span class="line">21/04/29 17:02:45 INFO planner.GreedyPlanner: Starting plan for Node : cdh85-73:9867</span><br><span class="line">21/04/29 17:02:45 INFO planner.GreedyPlanner: Disk Volume set f4da1504-1dfc-42d0-ac61-020dd7b02620 Type : DISK plan completed.</span><br><span class="line">21/04/29 17:02:45 INFO planner.GreedyPlanner: Compute Plan for Node : cdh85-73:9867 took 7 ms </span><br><span class="line">21/04/29 17:02:46 INFO command.Command: Writing plan to:</span><br><span class="line">21/04/29 17:02:46 INFO command.Command: /system/diskbalancer/2021-Apr-29-17-02-45/cdh85-73.plan.json</span><br><span class="line">Writing plan to:</span><br><span class="line">/system/diskbalancer/2021-Apr-29-17-02-45/cdh85-73.plan.json</span><br></pre></td></tr></table></figure>
