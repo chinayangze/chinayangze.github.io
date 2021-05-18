@@ -1,6 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Windows Server 2019和Win10 安装 Linux 子系统</title>
+    <url>/2021/05/18/Windows%20Server%202019%E5%92%8CWin10%20%E5%AE%89%E8%A3%85%20Linux%20%E5%AD%90%E7%B3%BB%E7%BB%9F/</url>
+    <content><![CDATA[<p><strong>Windows Server</strong>安装参考  <a href="https://blog.51cto.com/professor/2411436" target="_blank" rel="noopener">https://blog.51cto.com/professor/2411436</a></p>
+<p>注意：如果先安装的ConEmu ，可能没有bash  ，刷新一系default tasks，如下图：</p>
+<p><img src="/images/image-20210518154415530.png" alt="image-20210518154415530"></p>
+<p>win10参考之前写的文档：</p>
+<p><strong>Win10 Subsystem Linux : Ubuntu 的root密码</strong></p>
+<p>每次开机都有一个新的root密码。我们可以在终端输入命令 sudo passwd，</p>
+<p>然后输入当前用户的密码，enter，终端会提示我们输入新的密码并确认，</p>
+<p>此时的密码就是root新密码。修改成功后，输入命令 su root，再输入新的密码就ok了。</p>
+<p><strong>win10 linux子系统设置默认用户</strong></p>
+<p><a href="https://blog.csdn.net/ijiabao520/article/details/79285041" target="_blank" rel="noopener">https://blog.csdn.net/ijiabao520/article/details/79285041</a></p>
+<p>lxrun是旧版的，不可使用了。</p>
+<p>在cmd终端输入：</p>
+<p>$ ubuntu1804 config --default-user root</p>
+<p>window终端推荐 ConEmu  超级好用</p>
+<p><a href="https://conemu.github.io/en/" target="_blank" rel="noopener">https://conemu.github.io/en/</a></p>
+<p>添加到右键菜单</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;REUSE &#x2F;REUSE -run &#123;Bash::bash&#125; -cur_console:n</span><br></pre></td></tr></table></figure>
+<p><img src="/images/clipboard.png" alt="img"></p>
+<p><strong>win10下Linux子系统开启ssh服务</strong></p>
+<p>Windows10开启Ubuntu子系统简易步骤  (现在不需要开启开发者模式了)</p>
+<p><a href="https://zhuanlan.zhihu.com/p/34133795" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/34133795</a></p>
+<p><strong>开启win10下Ubuntu子系统的SSH服务</strong></p>
+<p><a href="https://blog.csdn.net/zhouzme/article/details/81087837" target="_blank" rel="noopener">https://blog.csdn.net/zhouzme/article/details/81087837</a></p>
+<p>打开/etc/rc.local文件加入：</p>
+<p>/etc/init.d/ssh start</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>运维和发展线路</title>
+    <url>/2021/05/18/%E8%BF%90%E7%BB%B4%E5%92%8C%E5%8F%91%E5%B1%95%E7%BA%BF%E8%B7%AF/</url>
+    <content><![CDATA[<h2 id="运维和发展的一个线路">运维和发展的一个线路</h2>
+<ul>
+<li>1.搭建服务（部署并运行起来）</li>
+<li>2.用好服务（监控、管理、优化）</li>
+<li>3.自动化（服务直接的关联和协同工作）</li>
+<li>4.产品设计（如何设计一个监控系统）</li>
+</ul>
+<p><strong>云计算的核心竞争力是运维！</strong></p>
+<p>系统架构师（偏管理）：网络  系统  数据库  开发  云计算  自动化  运维管理  服务管理 项目管理  测试  业务<br>
+专注于某一领域<br>
+解决方案架构师</p>
+<h2 id="运维工作内容分类">运维工作内容分类</h2>
+<ul>
+<li>监控运维（7x24运维值班、故障处理）</li>
+<li>应用运维（业务熟悉、服务部署、业务部署、版本管理、灰度发布、应用监控）</li>
+<li>安全运维（整体的安全方案、规范、漏洞监测、安全防护等）</li>
+<li>系统运维（架构层面的分布式缓存、分布式文件系统、日志收集、环境规划（测试、开发、生产）、架构设计、性能优化）</li>
+<li>基础服务运维（包含运维开发）（内部DNS、负载均衡、系统监控、资产管理、运维平台）</li>
+<li>基础设施运维（系统初始化、网络维护）</li>
+<li>机房运维（负责设备上下架、巡检、报修、硬件监控）</li>
+</ul>
+<p>阿里云:<br>
+SLB  LVS + Tengine（Nginx）<br>
+ECS  KVM</p>
+<h2 id="运维标准化">运维标准化</h2>
+<p><strong>物理设备层面：</strong><br>
+1.服务器标签化、设备负责人、设备采购详情、设备摆放标准<br>
+2.网络划分、远程控制卡、网卡端口<br>
+3.服务器机型、硬盘、内存统一，根据业务分类<br>
+4.资产命名规范、编号规范、类型规范<br>
+5.监控标准</p>
+<p><strong>操作系统层面</strong><br>
+1.操作系统版本<br>
+2.系统初始化（配置DNS、NTP、内核参数调优）<br>
+3.基础Agent配备（Zabbix agent、logstash agent、salt minion）<br>
+4.系统监控标准（CPU、内存、硬盘、网络、进程）</p>
+<p><strong>应用服务层面：</strong><br>
+1.Web服务器选型（nginx、Apache）<br>
+2.进程启动用户、端口监听规范、日志收集规范（访问日志、错误日志、运行日志）<br>
+3.配置管理（配置文件规范、脚本规范）<br>
+4.架构规范（Nginx+keepalived、LVS+keepalived等等）<br>
+5.部署规范（位置、包命名等）</p>
+<p><strong>运维操作层面：</strong><br>
+1.机房巡检流程（周期、内容、保修流程）<br>
+2.业务部署流程（先测试、后生产。回滚）<br>
+3.故障处理流程（紧急处理、故障升级、重大故障处理）<br>
+4.工作日志流程（如何编写工作日志）<br>
+5.业务上线流程（1.项目发起人 2.系统安装 3.部署nginx 4.解析域名 5.测试 6.加监控）<br>
+6.业务下线流程（谁发起，数据如何处理）<br>
+7.运维安全规范（密码复杂度、更改周期、VPN使用规范、服务登陆规范、rm命令的参数写在最后面）</p>
+<p>标准化：规范化  流程化  文档化</p>
+<p>目标：文档化</p>
+<h2 id="运维自动化发展-工具化">运维自动化发展-工具化</h2>
+<p><strong>工具化：</strong></p>
+<ul>
+<li>1.shell脚本（功能性（流程）脚本、检查性、报表性）</li>
+<li>2.开源工具：zabbix、elkstack、saltstack、cobbler</li>
+</ul>
+<p><strong>目标：</strong></p>
+<ul>
+<li>1.促进标准化的实施</li>
+<li>2.将重复的操作简单化</li>
+<li>3.将多次操作流程化</li>
+<li>4.减少人为操作的低效和降低故障率</li>
+</ul>
+<p>工具化和标准化是好搭档</p>
+<p><strong>痛点：</strong></p>
+<ul>
+<li>1.你至少要ssh到服务器执行，可能出错</li>
+<li>2.多个脚本有执行顺序的时候，可能出错</li>
+<li>3.权限不好管理，日志没法统计</li>
+<li>4.无法避免手工操作</li>
+</ul>
+<p><strong>例子：</strong></p>
+<p>比如某天我们要对一个数据库从库进行版本停机升级。那么要求评估：<br>
+停机影响：<br>
+3：00  晚上有定时任务连接该数据库，做数据报表统计</p>
+<ul>
+<li>1.凌晨3：00 我们所有系统的定时任务有哪些crontab</li>
+<li>2.这些crontab哪些要连接我们要停止的从库</li>
+<li>3.哪些可以停，哪些不能停（修改到主库），哪些可以后补</li>
+<li>4.这些需要后补的脚本哪个业务的，谁加的，什么时候加的</li>
+</ul>
+<h2 id="运维自动化发展-web化">运维自动化发展-web化</h2>
+<p>运维平台<br>
+例子：Job管理平台</p>
+<ul>
+<li>1.做成web界面</li>
+<li>2.权限控制</li>
+<li>3.日志记录</li>
+<li>4.弱化流程</li>
+<li>5.不用ssh到服务器，减少人为操作造成故障 Web ssh</li>
+</ul>
+<p>DNSWeb管理 bind-DLZ<br>
+负载均衡Web管理<br>
+Job管理平台<br>
+监控平台  zabbix<br>
+操作系统安装平台</p>
+<h2 id="运维自动化发展-服务化（API）">运维自动化发展-服务化（API）</h2>
+<ul>
+<li>DNSWeb管理 bind-DLZ  dns-api</li>
+<li>负载均衡Web管理     slb-api</li>
+<li>Job管理平台    job-api</li>
+<li>监控平台  zabbix  zabbix-api</li>
+<li>操作系统安装平台   cobbler-api</li>
+<li>部署平台    deploy-api</li>
+<li>配置管理    saltstack-api</li>
+</ul>
+<p><strong>智能化实现</strong></p>
+<ul>
+<li>1.调用cobbler-api安装操作系统</li>
+<li>2.调用saltstack-api进行系统初始化</li>
+<li>3.调用dns-api解析主机名</li>
+<li>4.调用zabbix-api将该新上线机器加上监控</li>
+<li>5.再次调用saltstack-api部署软件（安装nginx+php）</li>
+<li>6.调用deploy-api将当前版本的代码部署到服务器上</li>
+<li>7.调用test-api 测试当前服务器运行是否正常</li>
+<li>8.调用slb-api 将该节点加入集群</li>
+</ul>
+<h2 id="运维自动化发展-智能化">运维自动化发展-智能化</h2>
+<p>运维自动化发展层级：</p>
+<ul>
+<li>标准化、工具化</li>
+<li>Web化、平台化</li>
+<li>服务化、API化</li>
+<li>智能化</li>
+</ul>
+<p>智能化的自动化扩容、缩容、服务降级、故障自愈</p>
+<p><strong>自动化扩容</strong><br>
+1.zabbix触发Action<br>
+触发条件和决策：</p>
+<ul>
+<li>1.当某个集群的访问量超过最大支撑量，比如10000</li>
+<li>2.并持续5分钟</li>
+<li>3.不是攻击</li>
+<li>4.资源池有可用资源
+<ul>
+<li>当前网络带宽使用率</li>
+<li>如果是公有云–钱够不够</li>
+</ul>
+</li>
+<li>5.当前后端服务支撑量是否超过阈值  如果超过应该后端先扩容</li>
+<li>6.数据库是否可以支撑当前并发</li>
+<li>7.当前自动化扩展队列，是否有正在扩容的节点</li>
+<li>其他业务相关的</li>
+</ul>
+<p>创建虚拟机之前，先判断Buffer是否有最近X小时已经存在之前已经移除的虚拟机，并查询软件版本是否和当前一致，如果一致，跳过234步，如果不一致，跳过23步</p>
+<p>2.Openstack 创建虚拟机<br>
+3.Saltstack 配置环境<br>
+4.部署系统 部署当前代码<br>
+5.测试服务是否可用(注意间隔和次数)<br>
+6.加入集群<br>
+7.通知(短信、邮件)</p>
+<p><strong>自动化缩容</strong></p>
+<ul>
+<li>1.触发条件和决策</li>
+<li>2.从集群中移除节点</li>
+<li>3.通知</li>
+<li>4.移除的节点存放于Buffer里面</li>
+<li>5.Buffer里面超过1天的虚拟机，自动关闭，存放于xx区</li>
+<li>6.xx区的虚拟机，超过7天的清理删除</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
     <title>CDH Disk Balancer 磁盘数据均衡</title>
     <url>/2021/04/30/CDH%20Disk%20Balancer%20%E7%A3%81%E7%9B%98%E6%95%B0%E6%8D%AE%E5%9D%87%E8%A1%A1/</url>
     <content><![CDATA[<h3 id="CDH-Disk-Balancer-磁盘数据均衡">CDH Disk Balancer 磁盘数据均衡</h3>
