@@ -209,80 +209,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/11/20/could%20only%20be%20written%20to%200%20of%20the%201%20minReplication%20nodes/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/20/could%20only%20be%20written%20to%200%20of%20the%201%20minReplication%20nodes/" class="post-title-link" itemprop="url">could only be written to 0 of the 1 minReplication nodes</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-11-20 15:33:15" itemprop="dateCreated datePublished" datetime="2020-11-20T15:33:15+08:00">2020-11-20</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>重启dn导致集群不能写入数据，几百个任务都失败了， 经过一个通宵的折腾，记录一下这次重大事故。</p>
-<h3 id="报错日志">报错日志</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DataStreamer Exception</span><br><span class="line">20-11-2020 09:48:59 CST mysql2sqoop-1-RD202006060009 INFO - org.apache.hadoop.ipc.RemoteException(java.io.IOException): File &#x2F;user&#x2F;yarn&#x2F;.staging&#x2F;job_1605809645188_1956&#x2F;job.jar could only be written to 0 of the 1 minReplication nodes. There are 66 datanode(s) running and no node(s) are excluded in this operation.</span><br></pre></td></tr></table></figure>
-<h3 id="报错的日志各种误导，走了很多弯路，只说一下，最终解决了这个问题的方法：">报错的日志各种误导，走了很多弯路，只说一下，最终解决了这个问题的方法：</h3>
-<p>网上有人出现这个问题是格式化解决，它们日志是There are 0 datanode(s) running and no node(s) are excluded in this operation.我的hdfs集群是正常的所有节点都在，只是不能写入数据。</p>
-<p>我用的分层策略是One_SSD，查看了DFS Storage Types，发现disk的空间不够。</p>
-<p><img src="/images/image-20201120151830207.png" alt="image-20201120151830207"></p>
-<h3 id="解决步骤">解决步骤</h3>
-<p>ssd磁盘的机器和普通磁盘的机器分2个角色组</p>
-<p>普通组不加[SSD]</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/20/could%20only%20be%20written%20to%200%20of%20the%201%20minReplication%20nodes/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/11/10/python%E6%97%B6%E9%97%B4strftime%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%8E%BB%E9%99%A4%E5%89%8D%E5%AF%BC0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1316,6 +1242,80 @@ create table xxx stored as RCFile as select…<br>
   
   
 
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/09/11/hbase%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E5%AE%9E%E6%88%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/11/hbase%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E5%AE%9E%E6%88%98/" class="post-title-link" itemprop="url">hbase常用命令操作实战</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-11 15:06:49" itemprop="dateCreated datePublished" datetime="2020-09-11T15:06:49+08:00">2020-09-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="hbase-hbck2">hbase-hbck2</h2>
+<p>从官网下载hbck2 执行文件</p>
+<p><a href="http://hbase.apache.org/downloads.html" target="_blank" rel="noopener">http://hbase.apache.org/downloads.html</a></p>
+<p>或 wget  <a href="https://www.apache.org/dyn/closer.lua/hbase/hbase-operator-tools-1.0.0/hbase-operator-tools-1.0.0-bin.tar.gz" target="_blank" rel="noopener">https://www.apache.org/dyn/closer.lua/hbase/hbase-operator-tools-1.0.0/hbase-operator-tools-1.0.0-bin.tar.gz</a></p>
+<p>cdh官网的使用帮助</p>
+<p><a href="https://docs.cloudera.com/documentation/enterprise/6/6.3/topics/admin_hbase_hbck.html#concept_hkk_q25_llb" target="_blank" rel="noopener">https://docs.cloudera.com/documentation/enterprise/6/6.3/topics/admin_hbase_hbck.html#concept_hkk_q25_llb</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/hbase-operator-tools-1.0.0/hbase-hbck2</span><br><span class="line"></span><br><span class="line">hbase hbck -j hbase-hbck2-1.0.0.jar -s  assigns 1588230740</span><br><span class="line"></span><br><span class="line">hbase hbck -j hbase-hbck2-1.0.0.jar -s  assigns hbase:namespace,,1594264903686.db55eec81d86ac0ae26eba718518ce26</span><br><span class="line"></span><br><span class="line">hbase hbck -j hbase-hbck2-1.0.0.jar -s addFsRegionsMissingInMeta default:test n1:tbl_2 n2</span><br></pre></td></tr></table></figure>
+<h2 id="hbase-shell-实战">hbase shell  实战</h2>
+<p>移动表的数据到另外一个服务器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 语法：move &#39;encodeRegionName&#39;, &#39;ServerName&#39;&#96;&#96;</span><br><span class="line"># encodeRegionName指的regioName后面的编码，ServerName指的是master-status的Region Servers列表</span><br><span class="line">move &#39;61a647884b761a785daf3b38049aaa27&#39;,&#39;bigdata-5.baofoo.cn,16020,1595233360076&#39;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/11/hbase%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E5%AE%9E%E6%88%98/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
   </div>
 
   
@@ -1388,7 +1388,7 @@ create table xxx stored as RCFile as select…<br>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-count">97</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

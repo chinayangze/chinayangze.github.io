@@ -209,80 +209,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/07/20/%E6%99%BA%E8%83%BD%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0USDP%E6%93%8D%E4%BD%9C%E9%83%A8%E7%BD%B2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/07/20/%E6%99%BA%E8%83%BD%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0USDP%E6%93%8D%E4%BD%9C%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">智能大数据平台USDP操作部署</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-07-20 13:48:23" itemprop="dateCreated datePublished" datetime="2021-07-20T13:48:23+08:00">2021-07-20</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="智能大数据平台USDP操作部署">智能大数据平台USDP操作部署</h2>
-<p>USDP部署操作指南：<a href="https://mp.weixin.qq.com/s/COnkLXPTWL5OK1PFYooThw?scene=25#wechat_redirect" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/COnkLXPTWL5OK1PFYooThw?scene=25#wechat_redirect</a></p>
-<p>bash <a href="http://repair.sh" target="_blank" rel="noopener">repair.sh</a> initAll   这个步骤大约要30多分钟，重复执行也慢。</p>
-<p>注意：</p>
-<p>1.在repair-host-info-add.properties文件中，仅需配置每次新增的节点信息即可，若存在已修复过的节点信息时，在下次运行“<a href="http://repair.sh" target="_blank" rel="noopener">repair.sh</a> initSingle”指令前，请清除。</p>
-<p>2.jdk 安装在 /opt/module 下面，不允许随意删除，否则 java 环境失效。</p>
-<p>3.数据库密码中不得包含 “@” 。</p>
-<p>4.主机名设置不得包含 “_”，&quot;-&quot; 。</p>
-<p>启动服务  bin/stop-udp-server.sh</p>
-<p>查看日志目录  /var/log/udp</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/07/20/%E6%99%BA%E8%83%BD%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0USDP%E6%93%8D%E4%BD%9C%E9%83%A8%E7%BD%B2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/07/14/%E9%BB%91%E9%B2%A8%E6%B8%B8%E6%88%8F%E6%89%8B%E6%9C%BA%E8%A7%A3BL%E9%94%81%EF%BC%8C%E5%88%B7REC%EF%BC%8CROOT%20%E5%92%8C%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1076,6 +1002,205 @@ ECS  KVM</p>
   
   
 
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/04/21/hdfs%20%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%80%80%E5%BD%B9%E8%8A%82%E7%82%B9%E5%BF%AB%E9%80%9F%E4%B8%8B%E7%BA%BF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/21/hdfs%20%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%80%80%E5%BD%B9%E8%8A%82%E7%82%B9%E5%BF%AB%E9%80%9F%E4%B8%8B%E7%BA%BF/" class="post-title-link" itemprop="url">hdfs 如何实现退役节点快速下线</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-21 17:25:28" itemprop="dateCreated datePublished" datetime="2021-04-21T17:25:28+08:00">2021-04-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>hdfs 如何实现退役节点快速下线（也就是退役节点上的数据块快速迁移）</strong></p>
+<p>参考  <a href="https://www.cnblogs.com/jiangxiaoxian/p/9665588.html" target="_blank" rel="noopener">https://www.cnblogs.com/jiangxiaoxian/p/9665588.html</a></p>
+<p>进度可在HDFS的50070可视化界面的Decommissioning处查看**</p>
+<p>Under replicated blocks	： 有备份的blocks</p>
+<p>Blocks with no live replicas	： 没有存活备份的blocks(存备份的datanode下线了)</p>
+<p>Under Replicated Blocks In files under construction   ： 备份数不够的blocks</p>
+<p>可调整集群参数，对退服进行调优，注意，更改参数需要重启服务。需要修改的参数如下：</p>
+<table>
+<thead>
+<tr>
+<th><strong>组件</strong></th>
+<th><strong>实例</strong></th>
+<th><strong>参数类别</strong></th>
+<th style="text-align:left"><strong>参数名称</strong></th>
+<th><strong>默认值</strong></th>
+<th><strong>修改值</strong></th>
+<th><strong>参数含义</strong></th>
+<th><strong>调整场景</strong></th>
+<th><strong>是否可以默认值调整</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HDFS</td>
+<td>NameNode</td>
+<td>balance/退服性能参数</td>
+<td style="text-align:left">dfs.datanode.balance.bandwidthPerSec</td>
+<td>20971520</td>
+<td>209715200</td>
+<td>【说明】每个DataNode可用于负载均衡的最大带宽量（每秒的字节数）。</td>
+<td>balance-性能调优</td>
+<td>不建议调整默认值</td>
+</tr>
+<tr>
+<td>HDFS</td>
+<td>DataNode</td>
+<td>balance/退服性能参数</td>
+<td style="text-align:left">dfs.datanode.balance.max.concurrent.moves</td>
+<td>5</td>
+<td>30</td>
+<td>允许在DataNode上进行负载均衡的最大线程数。</td>
+<td></td>
+<td>有必要调整</td>
+</tr>
+<tr>
+<td>HDFS</td>
+<td>NameNode</td>
+<td>balance/退服性能参数</td>
+<td style="text-align:left">dfs.namenode.replication.max-streams</td>
+<td>10</td>
+<td>64</td>
+<td>DataNode上复制线程的最大数。</td>
+<td></td>
+<td>C70默认值已调整为64，有必要继续调整</td>
+</tr>
+<tr>
+<td>HDFS</td>
+<td>NameNode</td>
+<td>balance/退服性能参数</td>
+<td style="text-align:left">dfs.namenode.replication.max-streams-hard-limit</td>
+<td>20</td>
+<td>500</td>
+<td>对DataNode上复制线程数的硬限制。</td>
+<td></td>
+<td>C70默认值已调整为128，有必要继续调整</td>
+</tr>
+<tr>
+<td>HDFS</td>
+<td>NameNode</td>
+<td>balance/退服性能参数</td>
+<td style="text-align:left">dfs.namenode.replication.work.multiplier.per.iteration</td>
+<td>10</td>
+<td>500</td>
+<td>高级属性。修改时需谨慎。该参数表示NameNode通过DataNode心跳发送这样一个命令列表时DataNode上并行开始的用于复制的块传输的总量。</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>HDFS</th>
+<th>NameNode</th>
+<th>运行-性能调优</th>
+<th>dfs.namenode.handler.count</th>
+<th>64</th>
+<th>192</th>
+<th>NameNode处理线程数</th>
+<th>大集群，性能调优</th>
+<th>可以调整/更耗内存</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HDFS</td>
+<td>DataNode</td>
+<td>运行-性能调优</td>
+<td>dfs.datanode.handler.count</td>
+<td>8</td>
+<td>24</td>
+<td>DataNode处理线程数</td>
+<td>大集群，性能调优</td>
+<td>可以调整/更耗内存</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>HDFS</th>
+<th>NameNode</th>
+<th>运行-性能调优</th>
+<th>ipc.server.read.threadpool.size</th>
+<th>1</th>
+<th>10</th>
+<th>NameNode处理请求线程池大小</th>
+<th>大集群，性能调优</th>
+<th>可以调整/更耗内存</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/04/21/hdfs%20%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%80%80%E5%BD%B9%E8%8A%82%E7%82%B9%E5%BF%AB%E9%80%9F%E4%B8%8B%E7%BA%BF/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
   </div>
 
   
@@ -1148,7 +1273,7 @@ ECS  KVM</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-count">97</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

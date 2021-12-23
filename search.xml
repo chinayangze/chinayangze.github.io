@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>ClickHouse笔记</title>
-    <url>/2021/12/23/ClickHouse%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>presto 连接clickhouse</title>
     <url>/2021/12/23/presto%20%E8%BF%9E%E6%8E%A5clickhouse/</url>
     <content><![CDATA[<h1>presto 连接clickhouse</h1>
