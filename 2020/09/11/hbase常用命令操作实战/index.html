@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://www.ask3.cn').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="hbase-hbck2 从官网下载hbck2 执行文件 http:&#x2F;&#x2F;hbase.apache.org&#x2F;downloads.html 或 wget  https:&#x2F;&#x2F;www.apache.org&#x2F;dyn&#x2F;closer.lua&#x2F;hbase&#x2F;hbase-operator-tools-1.0.0&#x2F;hbase-operator-tools-1.0.0-bin.tar.gz cdh官网的使用帮助 https">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hbase常用命令操作实战">
+<meta property="og:url" content="http://www.ask3.cn/2020/09/11/hbase%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E5%AE%9E%E6%88%98/index.html">
+<meta property="og:site_name" content="爱思考">
+<meta property="og:description" content="hbase-hbck2 从官网下载hbck2 执行文件 http:&#x2F;&#x2F;hbase.apache.org&#x2F;downloads.html 或 wget  https:&#x2F;&#x2F;www.apache.org&#x2F;dyn&#x2F;closer.lua&#x2F;hbase&#x2F;hbase-operator-tools-1.0.0&#x2F;hbase-operator-tools-1.0.0-bin.tar.gz cdh官网的使用帮助 https">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-11T07:06:49.009Z">
+<meta property="article:modified_time" content="2020-09-11T07:06:49.009Z">
+<meta property="article:author" content="datasir">
+<meta property="article:tag" content="爱思考">
+<meta property="article:tag" content="软件学习网">
+<meta property="article:tag" content="软件学习">
+<meta property="article:tag" content="hadoop">
+<meta property="article:tag" content="spark">
+<meta property="article:tag" content="hive">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="cdh">
+<meta property="article:tag" content="hbase">
+<meta property="article:tag" content="kudu">
+<meta property="article:tag" content="impala">
+<meta property="article:tag" content="flink">
+<meta property="article:tag" content="hdfs">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="presto">
+<meta property="article:tag" content="大数据运维">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.ask3.cn/2020/09/11/hbase%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E5%AE%9E%E6%88%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>hbase常用命令操作实战 | 爱思考</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">爱思考</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">分享知识，分享快乐</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/09/11/hbase%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E5%AE%9E%E6%88%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          hbase常用命令操作实战
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-11 15:06:49" itemprop="dateCreated datePublished" datetime="2020-09-11T15:06:49+08:00">2020-09-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="hbase-hbck2">hbase-hbck2</h2>
+<p>从官网下载hbck2 执行文件</p>
+<p><a href="http://hbase.apache.org/downloads.html" target="_blank" rel="noopener">http://hbase.apache.org/downloads.html</a></p>
+<p>或 wget  <a href="https://www.apache.org/dyn/closer.lua/hbase/hbase-operator-tools-1.0.0/hbase-operator-tools-1.0.0-bin.tar.gz" target="_blank" rel="noopener">https://www.apache.org/dyn/closer.lua/hbase/hbase-operator-tools-1.0.0/hbase-operator-tools-1.0.0-bin.tar.gz</a></p>
+<p>cdh官网的使用帮助</p>
+<p><a href="https://docs.cloudera.com/documentation/enterprise/6/6.3/topics/admin_hbase_hbck.html#concept_hkk_q25_llb" target="_blank" rel="noopener">https://docs.cloudera.com/documentation/enterprise/6/6.3/topics/admin_hbase_hbck.html#concept_hkk_q25_llb</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/hbase-operator-tools-1.0.0/hbase-hbck2</span><br><span class="line"></span><br><span class="line">hbase hbck -j hbase-hbck2-1.0.0.jar -s  assigns 1588230740</span><br><span class="line"></span><br><span class="line">hbase hbck -j hbase-hbck2-1.0.0.jar -s  assigns hbase:namespace,,1594264903686.db55eec81d86ac0ae26eba718518ce26</span><br><span class="line"></span><br><span class="line">hbase hbck -j hbase-hbck2-1.0.0.jar -s addFsRegionsMissingInMeta default:test n1:tbl_2 n2</span><br></pre></td></tr></table></figure>
+<h2 id="hbase-shell-实战">hbase shell  实战</h2>
+<p>移动表的数据到另外一个服务器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 语法：move &#39;encodeRegionName&#39;, &#39;ServerName&#39;&#96;&#96;</span><br><span class="line"># encodeRegionName指的regioName后面的编码，ServerName指的是master-status的Region Servers列表</span><br><span class="line">move &#39;61a647884b761a785daf3b38049aaa27&#39;,&#39;bigdata-5.baofoo.cn,16020,1595233360076&#39;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="如何查看HBase的HFile">如何查看HBase的HFile</h3>
+<p><a href="https://www.jianshu.com/p/49043e99795a" target="_blank" rel="noopener">https://www.jianshu.com/p/49043e99795a</a></p>
+<h3 id="跨集群备份数据">跨集群备份数据</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">正则查询快照</span></span><br><span class="line">list_snapshots 'snapshot.*_20200902'</span><br><span class="line">echo "list_snapshots 'snapshot.*_`date -d "1 days ago" +%Y%m%d`' " |sudo -u hbase hbase shell </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">同步快照到备份集群</span></span><br><span class="line">curl "http://cdh85-49:20550/" &gt; hbase_tbls.txt</span><br><span class="line">cat hbase_tbls.txt | tr ':' '-' | while read tb; do </span><br><span class="line">sudo -u hbase hbase org.apache.hadoop.hbase.snapshot.ExportSnapshot \</span><br><span class="line">-snapshot "snapshot_$&#123;tb&#125;_20200902" \</span><br><span class="line">-copy-from hdfs://cdh85-49:8020/hbase \</span><br><span class="line">-copy-to hdfs://cdh85-106:8020/hbase ;</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">还原快照</span></span><br><span class="line">cat hbase_tbls.txt | tr ':' '-' | while read tb; do </span><br><span class="line">echo  "restore_snapshot 'snapshot_$&#123;tb&#125;_20200902'" | sudo -u hbase hbase shell ;  </span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<h3 id="定时备份-批量脚本程序">定时备份  批量脚本程序</h3>
+<h3 id="hbase-snapshots-sh-root-cdh85-55">hbase <a href="http://snapshots.sh/" target="_blank" rel="noopener">snapshots.sh</a> root@cdh85-55</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">PRG="$&#123;0&#125;"</span><br><span class="line">BASEDIR=`dirname $&#123;PRG&#125;`</span><br><span class="line">BASEDIR=`cd $&#123;BASEDIR&#125;/;pwd`</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 0. 列出所有hbase表 准备做快照</span></span></span><br><span class="line">echo "######################### job start: `date '+%Y-%m%-d %H:%M:%S'`"</span><br><span class="line">echo "######################### 0.list hbase tables;"</span><br><span class="line">curl "http://bigdata-5.baofoo.cn:20550/" &gt; $&#123;BASEDIR&#125;/tbls.txt</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 1. 生成新的当日的快照  快照命名方式  snapshot_NAMESPARCE-TABLE_YYYYMMDD</span></span></span><br><span class="line">echo "######################### 1.create hbase table snapshots;"</span><br><span class="line">cat  $&#123;BASEDIR&#125;/tbls.txt | while read tbls; do</span><br><span class="line">echo  "######################### create '$&#123;tbls&#125;' snapshot:`date '+%Y-%m%-d %H:%M:%S'`" </span><br><span class="line">echo  "snapshot '$&#123;tbls&#125;','snapshot_$&#123;tbls&#125;_`date +%Y%m%d`' " | awk -F, '&#123; gsub(":","-",$2) ;print $1","$2&#125;' | sudo -u hbase hbase shell ;  done</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 2.删除指定hbase集群快照， 入参 &#123; $1:n , 表示n天前的快照，比如 0：当天 1：一天前 2：两天前&#125;</span></span></span><br><span class="line">echo "######################### 2.delete hbase history snapshots;"</span><br><span class="line">find_snapshot_list()&#123;</span><br><span class="line">echo "list_snapshots 'snapshot.*_`date -d "$&#123;1&#125; days ago" +%Y%m%d`' " |sudo -u hbase hbase shell  ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">delete_snapshot_list()&#123;</span><br><span class="line">find_snapshot_list $1 | grep "\\[.*\\]"  | sed 's/[]["]//g' | tr ',' '\n' | while read word; do</span><br><span class="line">echo  "delete_snapshot '$&#123;word&#125;'" |sudo -u hbase hbase shell</span><br><span class="line">done</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash">删除1天前快照</span></span><br><span class="line">delete_snapshot_list 0</span><br><span class="line"></span><br><span class="line">echo "######################### job end: `date '+%Y-%m%-d %H:%M:%S'`"</span><br><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">cd /root/hbase_snapshots/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 0. 列出所有hbase表 准备做快照</span></span></span><br><span class="line">echo "######################### job start: `date '+%Y-%m%-d %H:%M:%S'`"</span><br><span class="line">echo "######################### 0.list hbase tables;"</span><br><span class="line">curl "http://cdh85-49:20550/" &gt; tbls.txt</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 1. 生成新的当日的快照  快照命名方式  snapshot_NAMESPARCE-TABLE_YYYYMMDD</span></span></span><br><span class="line">echo "######################### 1.create hbase table snapshots;"</span><br><span class="line">cat tbls.txt | while read tbls; do</span><br><span class="line">echo  "######################### create '$&#123;tbls&#125;' snapshot:`date '+%Y-%m%-d %H:%M:%S'`" </span><br><span class="line">echo  "snapshot '$&#123;tbls&#125;','snapshot_$&#123;tbls&#125;_`date +%Y%m%d`'; sleep 1; " | awk -F, '&#123; gsub(":","-",$2) ;print $1","$2&#125;' | sudo -u hbase hbase shell ;  done</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 2.删除指定hbase集群快照， 入参 &#123; $1:n , 表示n天前的快照，比如 0：当天 1：一天前 2：两天前&#125;</span></span></span><br><span class="line">echo "######################### 2.delete hbase history snapshots;"</span><br><span class="line">find_snapshot_list()&#123;</span><br><span class="line">echo "list_snapshots 'snapshot.*_`date -d "$&#123;1&#125; days ago" +%Y%m%d`' " |sudo -u hbase hbase shell  ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">delete_snapshot_list()&#123;</span><br><span class="line">find_snapshot_list $1 | grep "\\[.*\\]"  | sed 's/[]["]//g' | tr ',' '\n' | while read word; do</span><br><span class="line">echo  "delete_snapshot '$&#123;word&#125;'" |sudo -u hbase hbase shell</span><br><span class="line">done</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash">删除1天前快照</span></span><br><span class="line">delete_snapshot_list 1</span><br><span class="line"></span><br><span class="line">echo "######################### job end: `date '+%Y-%m%-d %H:%M:%S'`"</span><br><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 0. 列出所有hbase表 准备做快照</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="built_in">echo</span> <span class="string">"list"</span> | sudo -u hbase hbase shell |grep <span class="string">"\\[.*\\]"</span> &gt; a.log</span></span><br><span class="line">curl "http://bigdata-5.baofoo.cn:20550/" &gt; hbase_tbls.txt</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 1. 删除当前集群历史快照</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="built_in">echo</span> <span class="string">"delete_all_snapshot 'snapshot.*' "</span> |sudo -u hbase hbase --config  /etc/hbase/conf.cloudera.hbase shell  ;</span></span><br><span class="line"><span class="meta">#</span><span class="bash">cat a.log   | sed <span class="string">'s/[]["]//g'</span> | tr <span class="string">','</span> <span class="string">'\n'</span> | <span class="keyword">while</span> <span class="built_in">read</span> word; <span class="keyword">do</span> <span class="built_in">echo</span>  <span class="string">"delete_snapshot   'snapshot_<span class="variable">$&#123;word&#125;</span>_`date -d '1 days ago' +%Y%m%d`' "</span> | awk -F<span class="string">"   "</span> <span class="string">'&#123; gsub(":","-",$2) ;print $1" "$2&#125;'</span> |sudo -u hbase hbase --config  /etc/hbase/conf.cloudera.hbase shell  ; <span class="keyword">done</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 2. 生成新的当日的快照  快照命名方式  snapshot_NAMESPARCE-TABLE_YYYYMMDD</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">cat a.log   | sed <span class="string">'s/[]["]//g'</span> | tr <span class="string">','</span> <span class="string">'\n'</span> | <span class="keyword">while</span> <span class="built_in">read</span> word; <span class="keyword">do</span> \</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="built_in">echo</span>  <span class="string">"snapshot '<span class="variable">$&#123;word&#125;</span>' ,  'snapshot_<span class="variable">$&#123;word&#125;</span>_`date +%Y%m%d`' "</span> | awk -F, <span class="string">'&#123; gsub(":","-",$2) ;print $1","$2&#125;'</span> | sudo -u hbase hbase --config  /etc/hbase/conf.cloudera.hbase shell ;  <span class="keyword">done</span></span></span><br><span class="line"></span><br><span class="line">cat hbase_tbls.txt | while read word; do \</span><br><span class="line">echo  "snapshot '$&#123;word&#125;' ,  'snapshot_$&#123;word&#125;_`date +%Y%m%d`' " | awk -F, '&#123; gsub(":","-",$2) ;print $1","$2&#125;' | sudo -u hbase hbase --config  /etc/hbase/conf.cloudera.hbase shell ;  done</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#  3. 删除备份集群历史快照</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">cat a.log |sed <span class="string">'s/"//g'</span>   | sed <span class="string">'s/[][]//g'</span> | tr <span class="string">','</span> <span class="string">'\n'</span> | <span class="keyword">while</span> <span class="built_in">read</span> word; <span class="keyword">do</span> <span class="built_in">echo</span>  <span class="string">"delete_snapshot   'snapshot_<span class="variable">$&#123;word&#125;</span>_`date -d '1 days ago' +%Y%m%d`' "</span> | awk -F<span class="string">"   "</span> <span class="string">'&#123; gsub(":","-",$2) ;print $1" "$2&#125;'</span> |sudo -u hbase hbase --config  /etc/hbase/conf.cloudera.hbase2 shell  ; <span class="keyword">done</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="built_in">echo</span> <span class="string">" delete_all_snapshot 'snapshot.*' "</span> |sudo -u hbase hbase --config  /etc/hbase/conf.cloudera.hbase2 shell  </span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 4. 同步快照到备份集群</span></span></span><br><span class="line">cat a.log |sed 's/"//g'   | sed 's/[][]//g' | tr ',' '\n' | tr ':' '-'  | while read word;do </span><br><span class="line">sudo -u hbase hbase org.apache.hadoop.hbase.snapshot.ExportSnapshot \</span><br><span class="line">-Dmapreduce.job.queuename=bf_yarn_pool.development \</span><br><span class="line">--snapshot 'snapshot_$&#123;word&#125;_`date +%Y%m%d`'  \</span><br><span class="line">--copy-from hdfs://ns1/hbase3  \</span><br><span class="line">--copy-to hdfs://ns1/hbase9 \</span><br><span class="line">--chuser hbase -chgroup hbase --overwrite</span><br><span class="line">;</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 查找历史快照，   入参 2个 &#123; $1:n , 表示n天前的快照，比如 0：当天 1：一天前 2：两天前；$2: hbase config路径&#125;</span></span></span><br><span class="line"></span><br><span class="line">find_snapshot_list()&#123;</span><br><span class="line">echo "list_snapshots 'snapshot.*_`date -d "$&#123;1&#125; days ago" +%Y%m%d`' " |sudo -u hbase hbase --config  $2 shell  ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 查找一天前快照 hbase1集群</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">find_snapshot_list 1 /etc/hbase/conf.cloudera.hbase</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 删除指定hbase集群快照， 入参 2个，&#123; $1:n , 表示n天前的快照，比如 0：当天 1：一天前 2：两天前；$2: hbase config路径 &#125;</span></span></span><br><span class="line">delete_snapshot_list()&#123;</span><br><span class="line">find_snapshot_list $1 $2 | grep "\\[.*\\]"  | sed 's/[]["]//g' | tr ',' '\n' | while read word; do</span><br><span class="line">echo  "delete_snapshot '$&#123;word&#125;'" |sudo -u hbase hbase --config $2  shell</span><br><span class="line">done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">delete_snapshot_list 1 /etc/hbase/conf.cloudera.hbase</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cat a.log   | sed 's/[]["]//g' | tr ',' '\n' | while read word; do echo   '$&#123;word&#125;' ;done</span><br></pre></td></tr></table></figure>
+<h3 id="hbase-restore-snapshot-sh"><a href="http://hbase-restore-snapshot.sh/" target="_blank" rel="noopener">hbase-restore-snapshot.sh</a></h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">PRG="$&#123;0&#125;"</span><br><span class="line">BASEDIR=`dirname $&#123;PRG&#125;`</span><br><span class="line">BASEDIR=`cd $&#123;BASEDIR&#125;/;pwd`</span><br><span class="line"></span><br><span class="line">usage()&#123;</span><br><span class="line">read -p "DO YOU WANT RESTORE ALL HBASE TABLES? PLEASE INPUT[yes OR no]:" yn</span><br><span class="line">case $yn in</span><br><span class="line">        [Yy]* ) continue;;</span><br><span class="line">        [Nn]* ) exit 1;;</span><br><span class="line">        * ) echo "Please answer yes or no.";exit 2;;</span><br><span class="line">esac</span><br><span class="line">&#125;</span><br><span class="line">usage</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 0. 列出所有hbase表 准备还原快照</span></span></span><br><span class="line">echo "######################### job start: `date '+%Y-%m%-d %H:%M:%S'`"</span><br><span class="line">echo "######################### 0.list hbase tables;"</span><br><span class="line">curl "http://bigdata-3.baofoo.cn:20550/" &gt; $&#123;BASEDIR&#125;/tbls.txt</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 1.disable  hbase tables.</span></span></span><br><span class="line">echo "######################### 1.disable hbase  table; "</span><br><span class="line">cat  $&#123;BASEDIR&#125;/tbls.txt | while read tbls; do </span><br><span class="line">echo  "######################### disable '$&#123;tbls&#125;' " </span><br><span class="line">echo  "disable '$&#123;tbls&#125;'  " | sudo -u hbase hbase shell ;  done</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 2.恢复指定hbase集群快照， 入参 &#123; $1:n , 表示n天前的快照，比如 0：当天 1：一天前 2：两天前&#125;</span></span></span><br><span class="line">echo "######################### 2.restore_snapshot "</span><br><span class="line">find_snapshot_list()&#123;</span><br><span class="line">echo "list_snapshots 'snapshot.*_`date -d "$&#123;1&#125; days ago" +%Y%m%d`' " |sudo -u hbase hbase shell  ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">restore_snapshot_()&#123;</span><br><span class="line">find_snapshot_list $1 | grep "\\[.*\\]"  | sed 's/[]["]//g' | tr ',' '\n' | while read word; do</span><br><span class="line">echo "######################### 2.restore_snapshot '$&#123;word&#125;'; "</span><br><span class="line">echo  "restore_snapshot  '$&#123;word&#125;'" |sudo -u hbase hbase shell</span><br><span class="line">done</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash">恢复1天前快照</span></span><br><span class="line">restore_snapshot_ 1</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 3.enable  hbase tables.</span></span></span><br><span class="line">echo "######################### 3.enable hbase  table; "</span><br><span class="line">cat  $&#123;BASEDIR&#125;/tbls.txt | while read tbls; do </span><br><span class="line">echo  "######################### enable '$&#123;tbls&#125;' " </span><br><span class="line">echo  "enable '$&#123;tbls&#125;'  "| sudo -u hbase hbase shell ;  done</span><br><span class="line"></span><br><span class="line">echo "######################### job end: `date '+%Y-%m%-d %H:%M:%S'`"</span><br></pre></td></tr></table></figure>
+<h3 id="hbase-restore-snashot-1-sh">hbase_restore_snashot_1.sh</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">PRG="$&#123;0&#125;"</span><br><span class="line">BASEDIR=`dirname $&#123;PRG&#125;`</span><br><span class="line">BASEDIR=`cd $&#123;BASEDIR&#125;/;pwd`</span><br><span class="line"></span><br><span class="line">usage()&#123;</span><br><span class="line">echo "RESTORE ALL HBASE TABLES,steps:1.disable hbase tables;2.restore_snapshot;3.enable hbase tables."</span><br><span class="line">read -p "DO YOU WANT RESTORE ALL HBASE TABLES? PLEASE INPUT[yes OR no]:" yn</span><br><span class="line">case $yn in</span><br><span class="line">        [Yy]* ) continue;;</span><br><span class="line">        [Nn]* ) exit 1;;</span><br><span class="line">        * ) echo "Please answer yes or no.";exit 2;;</span><br><span class="line">esac</span><br><span class="line">&#125;</span><br><span class="line">usage</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 0. 列出所有hbase表 准备还原快照</span></span></span><br><span class="line">echo "######################### job start: `date '+%Y-%m%-d %H:%M:%S'`"</span><br><span class="line">echo "######################### 0.list hbase tables;"</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#curl "http://bigdata-3.baofoo.cn:20550/" &gt; $&#123;BASEDIR&#125;/tbls.txt</span></span></span><br><span class="line">curl "http://cdh85-49:20550/" &gt; $&#123;BASEDIR&#125;/tbls.txt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 1.disable  hbase tables;  2.restore_snapshot;   3.enable hbase tables;</span></span></span><br><span class="line"></span><br><span class="line">cat  $&#123;BASEDIR&#125;/tbls.txt | while read tbls; do </span><br><span class="line">echo  "######################### 1. disable '$&#123;tbls&#125;' ：`date '+%Y-%m%-d %H:%M:%S'` " </span><br><span class="line">echo  "disable '$&#123;tbls&#125;'" | sudo -u hbase hbase shell ;  </span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">deal_date=`date -d <span class="string">"0 days ago"</span> +%Y%m%d`</span></span><br><span class="line">deal_date=`date -d "1 days ago" +%Y%m%d`</span><br><span class="line">tbls_r=`echo $&#123;tbls&#125;|tr ':' '-'`</span><br><span class="line">echo  "######################### 2. restore_snapshot 'snapshot_$&#123;tbls_r&#125;_$&#123;deal_date&#125;'：`date '+%Y-%m%-d %H:%M:%S'`  "</span><br><span class="line">echo  "restore_snapshot 'snapshot_$&#123;tbls_r&#125;_$&#123;deal_date&#125;'" | sudo -u hbase hbase shell ;  </span><br><span class="line"></span><br><span class="line">echo  "######################### 3. enable '$&#123;tbls&#125;' ：`date '+%Y-%m%-d %H:%M:%S'` " </span><br><span class="line">echo  "enable '$&#123;tbls&#125;' " | sudo -u hbase hbase shell ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/27/CDH-HBase%20%E4%BD%BF%E7%94%A8%20HBCK2%20%E8%BF%90%E7%BB%B4/" rel="prev" title="CDH-HBase 使用 HBCK2 运维">
+      <i class="fa fa-chevron-left"></i> CDH-HBase 使用 HBCK2 运维
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/09/30/IPFS%E9%9F%B3%E4%B9%90%E6%92%AD%E6%94%BE%E5%99%A8/" rel="next" title="IPFS音乐播放器">
+      IPFS音乐播放器 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#hbase-hbck2"><span class="nav-number">1.</span> <span class="nav-text">hbase-hbck2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hbase-shell-实战"><span class="nav-number">2.</span> <span class="nav-text">hbase shell  实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何查看HBase的HFile"><span class="nav-number">2.1.</span> <span class="nav-text">如何查看HBase的HFile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跨集群备份数据"><span class="nav-number">2.2.</span> <span class="nav-text">跨集群备份数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定时备份-批量脚本程序"><span class="nav-number">2.3.</span> <span class="nav-text">定时备份  批量脚本程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hbase-snapshots-sh-root-cdh85-55"><span class="nav-number">2.4.</span> <span class="nav-text">hbase snapshots.sh root@cdh85-55</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hbase-restore-snapshot-sh"><span class="nav-number">2.5.</span> <span class="nav-text">hbase-restore-snapshot.sh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hbase-restore-snashot-1-sh"><span class="nav-number">2.6.</span> <span class="nav-text">hbase_restore_snashot_1.sh</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="datasir"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">datasir</p>
+  <div class="site-description" itemprop="description">小杨随笔</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chinayangze" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chinayangze" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:info@ask3.cn" title="E-Mail → mailto:info@ask3.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.yh-021.com/" title="https:&#x2F;&#x2F;www.yh-021.com" rel="noopener" target="_blank">上海有汇</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备13036234号-3 </a>
+      <img src="/images/beian.png" style="display: inline-block;">
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">datasir</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

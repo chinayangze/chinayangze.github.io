@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://www.ask3.cn').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="06-2.部署 kube-apiserver 组件 本文档讲解使用 keepalived 和 haproxy 部署一个 3 节点高可用 master 集群的步骤，对应的 LB VIP 为环境变量 ${MASTER_VIP}。 准备工作 下载最新版本的二进制文件、安装和配置 flanneld 参考：06-0.部署master节点.md 创建 kubernetes 证书和私钥 创建证书签名请求： so">
+<meta property="og:type" content="article">
+<meta property="og:title" content="06-2.部署 kube-apiserver 组件">
+<meta property="og:url" content="http://www.ask3.cn/2020/01/07/06-2.%E9%83%A8%E7%BD%B2%20kube-apiserver%20%E7%BB%84%E4%BB%B6/index.html">
+<meta property="og:site_name" content="爱思考">
+<meta property="og:description" content="06-2.部署 kube-apiserver 组件 本文档讲解使用 keepalived 和 haproxy 部署一个 3 节点高可用 master 集群的步骤，对应的 LB VIP 为环境变量 ${MASTER_VIP}。 准备工作 下载最新版本的二进制文件、安装和配置 flanneld 参考：06-0.部署master节点.md 创建 kubernetes 证书和私钥 创建证书签名请求： so">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-01-07T03:06:20.000Z">
+<meta property="article:modified_time" content="2020-01-07T08:09:05.379Z">
+<meta property="article:author" content="datasir">
+<meta property="article:tag" content="爱思考">
+<meta property="article:tag" content="软件学习网">
+<meta property="article:tag" content="软件学习">
+<meta property="article:tag" content="hadoop">
+<meta property="article:tag" content="spark">
+<meta property="article:tag" content="hive">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="cdh">
+<meta property="article:tag" content="hbase">
+<meta property="article:tag" content="kudu">
+<meta property="article:tag" content="impala">
+<meta property="article:tag" content="flink">
+<meta property="article:tag" content="hdfs">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="presto">
+<meta property="article:tag" content="大数据运维">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.ask3.cn/2020/01/07/06-2.%E9%83%A8%E7%BD%B2%20kube-apiserver%20%E7%BB%84%E4%BB%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>06-2.部署 kube-apiserver 组件 | 爱思考</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">爱思考</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">分享知识，分享快乐</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/06-2.%E9%83%A8%E7%BD%B2%20kube-apiserver%20%E7%BB%84%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          06-2.部署 kube-apiserver 组件
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-01-07 11:06:20 / 修改时间：16:09:05" itemprop="dateCreated datePublished" datetime="2020-01-07T11:06:20+08:00">2020-01-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1>06-2.部署 kube-apiserver 组件</h1>
+<p>本文档讲解使用 keepalived 和 haproxy 部署一个 3 节点高可用 master 集群的步骤，对应的 LB VIP 为环境变量 ${MASTER_VIP}。</p>
+<h2 id="准备工作">准备工作</h2>
+<p>下载最新版本的二进制文件、安装和配置 flanneld 参考：<a href="https://www.orchome.com/657" target="_blank" rel="noopener">06-0.部署master节点.md</a></p>
+<h2 id="创建-kubernetes-证书和私钥">创建 kubernetes 证书和私钥</h2>
+<p>创建证书签名请求：</p>
+<pre><code>source /opt/k8s/bin/environment.sh
+cat &gt; kubernetes-csr.json &lt;&lt;EOF
+{
+  &quot;CN&quot;: &quot;kubernetes&quot;,
+  &quot;hosts&quot;: [
+    &quot;127.0.0.1&quot;,
+    &quot;172.27.129.105&quot;,
+    &quot;172.27.129.111&quot;,
+    &quot;172.27.129.112&quot;,
+    &quot;${MASTER_VIP}&quot;,
+    &quot;${CLUSTER_KUBERNETES_SVC_IP}&quot;,
+    &quot;kubernetes&quot;,
+    &quot;kubernetes.default&quot;,
+    &quot;kubernetes.default.svc&quot;,
+    &quot;kubernetes.default.svc.cluster&quot;,
+    &quot;kubernetes.default.svc.cluster.local&quot;
+  ],
+  &quot;key&quot;: {
+    &quot;algo&quot;: &quot;rsa&quot;,
+    &quot;size&quot;: 2048
+  },
+  &quot;names&quot;: [
+    {
+      &quot;C&quot;: &quot;CN&quot;,
+      &quot;ST&quot;: &quot;BeiJing&quot;,
+      &quot;L&quot;: &quot;BeiJing&quot;,
+      &quot;O&quot;: &quot;k8s&quot;,
+      &quot;OU&quot;: &quot;4Paradigm&quot;
+    }
+  ]
+}
+EOF
+</code></pre>
+<ul>
+<li>
+<p>hosts 字段指定授权使用该证书的 <strong>IP 或域名列表</strong>，这里列出了 VIP 、apiserver 节点 IP、kubernetes 服务 IP 和域名；</p>
+</li>
+<li>
+<p>域名最后字符不能是 <code>.</code>(如不能为 <code>kubernetes.default.svc.cluster.local.</code>)，否则解析时失败，提示： <code>x509: cannot parse dnsName &quot;kubernetes.default.svc.cluster.local.&quot;</code>；</p>
+</li>
+<li>
+<p>如果使用非 <code>cluster.local</code> 域名，如 <code>opsnull.com</code>，则需要修改域名列表中的最后两个域名为：<code>kubernetes.default.svc.opsnull</code>、<code>kubernetes.default.svc.opsnull.com</code></p>
+</li>
+<li>
+<p>kubernetes 服务 IP 是 apiserver 自动创建的，一般是 <code>--service-cluster-ip-range</code> 参数指定的网段的<strong>第一个IP</strong>，后续可以通过如下命令获取：</p>
+<pre><code>$ kubectl get svc kubernetes
+NAME         CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   10.254.0.1   &lt;none&gt;        443/TCP   1d
+</code></pre>
+</li>
+</ul>
+<p>生成证书和私钥：</p>
+<pre><code>cfssl gencert -ca=/etc/kubernetes/cert/ca.pem \
+  -ca-key=/etc/kubernetes/cert/ca-key.pem \
+  -config=/etc/kubernetes/cert/ca-config.json \
+  -profile=kubernetes kubernetes-csr.json | cfssljson -bare kubernetes
+ls kubernetes*pem
+</code></pre>
+<p>将生成的证书和私钥文件拷贝到 master 节点：</p>
+<pre><code>source /opt/k8s/bin/environment.sh
+for node_ip in ${NODE_IPS[@]}
+  do
+    echo &quot;&gt;&gt;&gt; ${node_ip}&quot;
+    ssh root@${node_ip} &quot;mkdir -p /etc/kubernetes/cert/ &amp;&amp; sudo chown -R k8s /etc/kubernetes/cert/&quot;
+    scp kubernetes*.pem k8s@${node_ip}:/etc/kubernetes/cert/
+  done
+</code></pre>
+<ul>
+<li>k8s 账户可以读写 /etc/kubernetes/cert/ 目录；</li>
+</ul>
+<h2 id="创建加密配置文件">创建加密配置文件</h2>
+<pre><code>source /opt/k8s/bin/environment.sh
+cat &gt; encryption-config.yaml &lt;&lt;EOF
+kind: EncryptionConfig
+apiVersion: v1
+resources:
+  - resources:
+      - secrets
+    providers:
+      - aescbc:
+          keys:
+            - name: key1
+              secret: ${ENCRYPTION_KEY}
+      - identity: {}
+EOF
+</code></pre>
+<p>将加密配置文件拷贝到 master 节点的 <code>/etc/kubernetes</code> 目录下：</p>
+<pre><code>source /opt/k8s/bin/environment.sh
+for node_ip in ${NODE_IPS[@]}
+  do
+    echo &quot;&gt;&gt;&gt; ${node_ip}&quot;
+    scp encryption-config.yaml root@${node_ip}:/etc/kubernetes/
+  done
+</code></pre>
+<p>替换后的 encryption-config.yaml 文件：<a href="https://github.com/opsnull/follow-me-install-kubernetes-cluster/blob/master/systemd/encryption-config.yaml" target="_blank" rel="noopener">encryption-config.yaml</a></p>
+<h2 id="创建-kube-apiserver-systemd-unit-模板文件">创建 kube-apiserver systemd unit 模板文件</h2>
+<pre><code>source /opt/k8s/bin/environment.sh
+cat &gt; kube-apiserver.service.template &lt;&lt;EOF
+[Unit]
+Description=Kubernetes API Server
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+After=network.target
+
+[Service]
+ExecStart=/opt/k8s/bin/kube-apiserver \\
+  --enable-admission-plugins=Initializers,NamespaceLifecycle,NodeRestriction,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota \\
+  --anonymous-auth=false \\
+  --experimental-encryption-provider-config=/etc/kubernetes/encryption-config.yaml \\
+  --advertise-address=##NODE_IP## \\
+  --bind-address=##NODE_IP## \\
+  --insecure-port=0 \\
+  --authorization-mode=Node,RBAC \\
+  --runtime-config=api/all \\
+  --enable-bootstrap-token-auth \\
+  --service-cluster-ip-range=${SERVICE_CIDR} \\
+  --service-node-port-range=${NODE_PORT_RANGE} \\
+  --tls-cert-file=/etc/kubernetes/cert/kubernetes.pem \\
+  --tls-private-key-file=/etc/kubernetes/cert/kubernetes-key.pem \\
+  --client-ca-file=/etc/kubernetes/cert/ca.pem \\
+  --kubelet-client-certificate=/etc/kubernetes/cert/kubernetes.pem \\
+  --kubelet-client-key=/etc/kubernetes/cert/kubernetes-key.pem \\
+  --service-account-key-file=/etc/kubernetes/cert/ca-key.pem \\
+  --etcd-cafile=/etc/kubernetes/cert/ca.pem \\
+  --etcd-certfile=/etc/kubernetes/cert/kubernetes.pem \\
+  --etcd-keyfile=/etc/kubernetes/cert/kubernetes-key.pem \\
+  --etcd-servers=${ETCD_ENDPOINTS} \\
+  --enable-swagger-ui=true \\
+  --allow-privileged=true \\
+  --apiserver-count=3 \\
+  --audit-log-maxage=30 \\
+  --audit-log-maxbackup=3 \\
+  --audit-log-maxsize=100 \\
+  --audit-log-path=/var/log/kube-apiserver-audit.log \\
+  --event-ttl=1h \\
+  --alsologtostderr=true \\
+  --logtostderr=false \\
+  --log-dir=/var/log/kubernetes \\
+  --v=2
+Restart=on-failure
+RestartSec=5
+Type=notify
+User=k8s
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+EOF
+</code></pre>
+<ul>
+<li><code>--experimental-encryption-provider-config</code>：启用加密特性；</li>
+<li><code>--authorization-mode=Node,RBAC</code>： 开启 Node 和 RBAC 授权模式，拒绝未授权的请求；</li>
+<li><code>--enable-admission-plugins</code>：启用 <code>ServiceAccount</code> 和 <code>NodeRestriction</code>；</li>
+<li><code>--service-account-key-file</code>：签名 ServiceAccount Token 的公钥文件，kube-controller-manager 的 <code>--service-account-private-key-file</code> 指定私钥文件，两者配对使用；</li>
+<li><code>--tls-*-file</code>：指定 apiserver 使用的证书、私钥和 CA 文件。<code>--client-ca-file</code> 用于验证 client (kue-controller-manager、kube-scheduler、kubelet、kube-proxy 等)请求所带的证书；</li>
+<li><code>--kubelet-client-certificate</code>、<code>--kubelet-client-key</code>：如果指定，则使用 https 访问 kubelet APIs；需要为证书对应的用户(上面 kubernetes*.pem 证书的用户为 kubernetes) 用户定义 RBAC 规则，否则访问 kubelet API 时提示未授权；</li>
+<li><code>--bind-address</code>： 不能为 <code>127.0.0.1</code>，否则外界不能访问它的安全端口 6443；</li>
+<li><code>--insecure-port=0</code>：关闭监听非安全端口(8080)；</li>
+<li><code>--service-cluster-ip-range</code>： 指定 Service Cluster IP 地址段；</li>
+<li><code>--service-node-port-range</code>： 指定 NodePort 的端口范围；</li>
+<li><code>--runtime-config=api/all=true</code>： 启用所有版本的 APIs，如 autoscaling/v2alpha1；</li>
+<li><code>--enable-bootstrap-token-auth</code>：启用 kubelet bootstrap 的 token 认证；</li>
+<li><code>--apiserver-count=3</code>：指定集群运行模式，多台 kube-apiserver 会通过 leader 选举产生一个工作节点，其它节点处于阻塞状态；</li>
+<li><code>User=k8s</code>：使用 k8s 账户运行；</li>
+</ul>
+<h2 id="为各节点创建和分发-kube-apiserver-systemd-unit-文件">为各节点创建和分发 kube-apiserver systemd unit 文件</h2>
+<p>替换模板文件中的变量，为各节点创建 systemd unit 文件：</p>
+<pre><code>source /opt/k8s/bin/environment.sh
+for (( i=0; i &lt; 3; i++ ))
+  do
+    sed -e &quot;s/##NODE_NAME##/${NODE_NAMES[i]}/&quot; -e &quot;s/##NODE_IP##/${NODE_IPS[i]}/&quot; kube-apiserver.service.template &gt; kube-apiserver-${NODE_IPS[i]}.service 
+  done
+ls kube-apiserver*.service
+</code></pre>
+<ul>
+<li>NODE_NAMES 和 NODE_IPS 为相同长度的 bash 数组，分别为节点名称和对应的 IP；</li>
+</ul>
+<p>分发生成的 systemd unit 文件：</p>
+<pre><code>source /opt/k8s/bin/environment.sh
+for node_ip in ${NODE_IPS[@]}
+  do
+    echo &quot;&gt;&gt;&gt; ${node_ip}&quot;
+    ssh root@${node_ip} &quot;mkdir -p /var/log/kubernetes &amp;&amp; chown -R k8s /var/log/kubernetes&quot;
+    scp kube-apiserver-${node_ip}.service root@${node_ip}:/etc/systemd/system/kube-apiserver.service
+  done
+</code></pre>
+<ul>
+<li>必须先创建日志目录；</li>
+<li>文件重命名为 kube-apiserver.service;</li>
+</ul>
+<h2 id="启动-kube-apiserver-服务">启动 kube-apiserver 服务</h2>
+<pre><code>source /opt/k8s/bin/environment.sh
+for node_ip in ${NODE_IPS[@]}
+  do
+    echo &quot;&gt;&gt;&gt; ${node_ip}&quot;
+    ssh root@${node_ip} &quot;systemctl daemon-reload &amp;&amp; systemctl enable kube-apiserver &amp;&amp; systemctl restart kube-apiserver&quot;
+  done
+</code></pre>
+<h2 id="检查-kube-apiserver-运行状态">检查 kube-apiserver 运行状态</h2>
+<pre><code>source /opt/k8s/bin/environment.sh
+for node_ip in ${NODE_IPS[@]}
+  do
+    echo &quot;&gt;&gt;&gt; ${node_ip}&quot;
+    ssh root@${node_ip} &quot;systemctl status kube-apiserver |grep 'Active:'&quot;
+  done
+</code></pre>
+<p>确保状态为 <code>active (running)</code>，否则到 master 节点查看日志，确认原因：</p>
+<pre><code>journalctl -u kube-apiserver
+</code></pre>
+<h2 id="打印-kube-apiserver-写入-etcd-的数据">打印 kube-apiserver 写入 etcd 的数据</h2>
+<pre><code>source /opt/k8s/bin/environment.sh
+ETCDCTL_API=3 etcdctl \
+    --endpoints=${ETCD_ENDPOINTS} \
+    --cacert=/etc/kubernetes/cert/ca.pem \
+    --cert=/etc/etcd/cert/etcd.pem \
+    --key=/etc/etcd/cert/etcd-key.pem \
+    get /registry/ --prefix --keys-only
+</code></pre>
+<h2 id="检查集群信息">检查集群信息</h2>
+<pre><code>$ kubectl cluster-info
+Kubernetes master is running at https://172.27.129.253:8443
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+
+$ kubectl get all --all-namespaces
+NAMESPACE   NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+default     service/kubernetes   ClusterIP   10.254.0.1   &lt;none&gt;        443/TCP   35m
+
+$ kubectl get componentstatuses
+NAME                 STATUS      MESSAGE                                                                                        ERROR
+controller-manager   Unhealthy   Get https://127.0.0.1:10252/healthz: dial tcp 127.0.0.1:10252: getsockopt: connection refused
+scheduler            Unhealthy   Get https://127.0.0.1:10251/healthz: dial tcp 127.0.0.1:10251: getsockopt: connection refused
+etcd-1               Healthy     {&quot;health&quot;:&quot;true&quot;}
+etcd-0               Healthy     {&quot;health&quot;:&quot;true&quot;}
+etcd-2               Healthy     {&quot;health&quot;:&quot;true&quot;}
+</code></pre>
+<p>注意：</p>
+<ol>
+<li>
+<p>如果执行 kubectl 命令式时输出如下错误信息，则说明使用的 <code>~/.kube/config</code> 文件不对，请切换到正确的账户后再执行该命令：</p>
+<p><code>The connection to the server localhost:8080 was refused - did you specify the right host or port?</code></p>
+</li>
+<li>
+<p>执行 <code>kubectl get componentstatuses</code> 命令时，apiserver 默认向 127.0.0.1 发送请求。当 controller-manager、scheduler 以集群模式运行时，有可能和 kube-apiserver <strong>不在一台机器</strong>上，这时 controller-manager 或 scheduler 的状态为 Unhealthy，但实际上它们工作<strong>正常</strong>。</p>
+</li>
+</ol>
+<h2 id="检查-kube-apiserver-监听的端口">检查 kube-apiserver 监听的端口</h2>
+<pre><code>$ sudo netstat -lnpt|grep kube
+tcp        0      0 172.27.129.105:6443     0.0.0.0:*               LISTEN      13075/kube-apiserve
+</code></pre>
+<ul>
+<li>6443: 接收 https 请求的安全端口，对所有请求做认证和授权；</li>
+<li>由于关闭了非安全端口，故没有监听 8080；</li>
+</ul>
+<h2 id="授予-kubernetes-证书访问-kubelet-API-的权限">授予 kubernetes 证书访问 kubelet API 的权限</h2>
+<p>在执行 kubectl exec、run、logs 等命令时，apiserver 会转发到 kubelet。这里定义 RBAC 规则，授权 apiserver 调用 kubelet API。</p>
+<pre><code>$ kubectl create clusterrolebinding kube-apiserver:kubelet-apis --clusterrole=system:kubelet-api-admin --user kubernetes
+</code></pre>
+<h2 id="参考">参考</h2>
+<ol>
+<li>关于证书域名最后字符不能是 <code>.</code> 的问题，实际和 Go 的版本有关，1.9 不支持这种类型的证书：<a href="https://github.com/kubernetes/ingress-nginx/issues/2188" target="_blank" rel="noopener">https://github.com/kubernetes/ingress-nginx/issues/2188</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/07/06-1.%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BB%84%E4%BB%B6/" rel="prev" title="06-1.部署高可用组件">
+      <i class="fa fa-chevron-left"></i> 06-1.部署高可用组件
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/01/07/06-3.%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%20kube-controller-manager%20%E9%9B%86%E7%BE%A4/" rel="next" title="06-3.部署高可用 kube-controller-manager 集群">
+      06-3.部署高可用 kube-controller-manager 集群 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">1.</span> <span class="nav-text">06-2.部署 kube-apiserver 组件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">1.1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建-kubernetes-证书和私钥"><span class="nav-number">1.2.</span> <span class="nav-text">创建 kubernetes 证书和私钥</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建加密配置文件"><span class="nav-number">1.3.</span> <span class="nav-text">创建加密配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建-kube-apiserver-systemd-unit-模板文件"><span class="nav-number">1.4.</span> <span class="nav-text">创建 kube-apiserver systemd unit 模板文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为各节点创建和分发-kube-apiserver-systemd-unit-文件"><span class="nav-number">1.5.</span> <span class="nav-text">为各节点创建和分发 kube-apiserver systemd unit 文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动-kube-apiserver-服务"><span class="nav-number">1.6.</span> <span class="nav-text">启动 kube-apiserver 服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检查-kube-apiserver-运行状态"><span class="nav-number">1.7.</span> <span class="nav-text">检查 kube-apiserver 运行状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#打印-kube-apiserver-写入-etcd-的数据"><span class="nav-number">1.8.</span> <span class="nav-text">打印 kube-apiserver 写入 etcd 的数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检查集群信息"><span class="nav-number">1.9.</span> <span class="nav-text">检查集群信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检查-kube-apiserver-监听的端口"><span class="nav-number">1.10.</span> <span class="nav-text">检查 kube-apiserver 监听的端口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#授予-kubernetes-证书访问-kubelet-API-的权限"><span class="nav-number">1.11.</span> <span class="nav-text">授予 kubernetes 证书访问 kubelet API 的权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.12.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="datasir"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">datasir</p>
+  <div class="site-description" itemprop="description">小杨随笔</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chinayangze" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chinayangze" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:info@ask3.cn" title="E-Mail → mailto:info@ask3.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.yh-021.com/" title="https:&#x2F;&#x2F;www.yh-021.com" rel="noopener" target="_blank">上海有汇</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备13036234号-3 </a>
+      <img src="/images/beian.png" style="display: inline-block;">
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">datasir</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

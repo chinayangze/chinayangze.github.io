@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://www.ask3.cn').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="spark-python版本依赖与三方模块方案 （1）使用conda创建python虚拟环境、安装第三方库 假设虚拟环境是pyspark_py36，安装位置是： 12&#x2F;root&#x2F;miniconda3&#x2F;envs&#x2F;pyspark_py36此处省略1w个字。 安装的第三方库是： 12345source activate pyspark_py36pip instal">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spark打包提交python程序">
+<meta property="og:url" content="http://www.ask3.cn/2021/03/10/spark%E6%89%93%E5%8C%85%E6%8F%90%E4%BA%A4python%E7%A8%8B%E5%BA%8F/index.html">
+<meta property="og:site_name" content="爱思考">
+<meta property="og:description" content="spark-python版本依赖与三方模块方案 （1）使用conda创建python虚拟环境、安装第三方库 假设虚拟环境是pyspark_py36，安装位置是： 12&#x2F;root&#x2F;miniconda3&#x2F;envs&#x2F;pyspark_py36此处省略1w个字。 安装的第三方库是： 12345source activate pyspark_py36pip instal">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-10T08:22:27.803Z">
+<meta property="article:modified_time" content="2021-03-10T08:22:27.726Z">
+<meta property="article:author" content="datasir">
+<meta property="article:tag" content="爱思考">
+<meta property="article:tag" content="软件学习网">
+<meta property="article:tag" content="软件学习">
+<meta property="article:tag" content="hadoop">
+<meta property="article:tag" content="spark">
+<meta property="article:tag" content="hive">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="cdh">
+<meta property="article:tag" content="hbase">
+<meta property="article:tag" content="kudu">
+<meta property="article:tag" content="impala">
+<meta property="article:tag" content="flink">
+<meta property="article:tag" content="hdfs">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="presto">
+<meta property="article:tag" content="大数据运维">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.ask3.cn/2021/03/10/spark%E6%89%93%E5%8C%85%E6%8F%90%E4%BA%A4python%E7%A8%8B%E5%BA%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>spark打包提交python程序 | 爱思考</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">爱思考</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">分享知识，分享快乐</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/10/spark%E6%89%93%E5%8C%85%E6%8F%90%E4%BA%A4python%E7%A8%8B%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          spark打包提交python程序
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-10 16:22:27" itemprop="dateCreated datePublished" datetime="2021-03-10T16:22:27+08:00">2021-03-10</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><strong>spark-python版本依赖与三方模块方案</strong></p>
+<p>（1）使用conda创建python虚拟环境、安装第三方库</p>
+<p>假设虚拟环境是pyspark_py36，安装位置是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;root&#x2F;miniconda3&#x2F;envs&#x2F;pyspark_py36</span><br><span class="line">此处省略1w个字。</span><br></pre></td></tr></table></figure>
+<p>安装的第三方库是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">source activate pyspark_py36</span><br><span class="line"></span><br><span class="line">pip install pandas </span><br><span class="line">pip install sklearn</span><br><span class="line">pip install lightgbm</span><br></pre></td></tr></table></figure>
+<p>其他省略1w字。</p>
+<p>（2）打包整个虚拟环境</p>
+<p>进入虚拟环境目录，压缩整个文件夹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;root&#x2F;miniconda3&#x2F;envs&#x2F;</span><br><span class="line">zip -r -9 -q pyspark_py36.zip pyspark_py36&#x2F;</span><br></pre></td></tr></table></figure>
+<p>压缩后得到压缩包pyspark_py36.zip。</p>
+<p>（3）将压缩是虚拟环境上传到hdfs</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 上传</span><br><span class="line">hdfs dfs –put pyspark_py36.zip &#x2F;tmp&#x2F;</span><br></pre></td></tr></table></figure>
+<p>（4）新建pyspark程序</p>
+<p>没什么好说的，就是普通的pyspark程序，简单的例子如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试刚才安装的第三方库是否正常导入</span></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> platform</span><br><span class="line"></span><br><span class="line">dates = pd.date_range(<span class="string">'20130101'</span>,periods=<span class="number">6</span>)</span><br><span class="line">print(dates)</span><br><span class="line">print(platform.python_version())</span><br></pre></td></tr></table></figure>
+<p>(5) 提交pyspark程序</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo -u yarn spark-submit \</span><br><span class="line">--master yarn \</span><br><span class="line">--deploy-mode cluster \</span><br><span class="line">--queue bf_yarn_pool.development \</span><br><span class="line">--num-executors 1 \</span><br><span class="line">--executor-memory 1G \</span><br><span class="line">--archives hdfs://ns1/tmp/pyspark_py36.zip#pyenv \</span><br><span class="line">--conf spark.yarn.appMasterEnv.PYSPARK_PYTHON=pyenv/pyspark_py36/bin/python \</span><br><span class="line">hdfs://ns1/tmp/test_spark_env.py</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/10/vi%E6%A8%A1%E5%BC%8F%E4%B8%8B%E6%9F%A5%E6%89%BE%E5%92%8C%E6%9B%BF%E6%8D%A2/" rel="prev" title="vi模式下查找和替换">
+      <i class="fa fa-chevron-left"></i> vi模式下查找和替换
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/30/conda%E7%AC%94%E8%AE%B0/" rel="next" title="conda笔记">
+      conda笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="datasir"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">datasir</p>
+  <div class="site-description" itemprop="description">小杨随笔</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chinayangze" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chinayangze" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:info@ask3.cn" title="E-Mail → mailto:info@ask3.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.yh-021.com/" title="https:&#x2F;&#x2F;www.yh-021.com" rel="noopener" target="_blank">上海有汇</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备13036234号-3 </a>
+      <img src="/images/beian.png" style="display: inline-block;">
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">datasir</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
