@@ -1,6 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>hexo部署到GitHub</title>
+    <url>/2021/12/24/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub/</url>
+    <content><![CDATA[<p>参考这篇文章就可以了</p>
+<p>GitHub+Hexo 搭建个人网站详细教程  <a href="https://zhuanlan.zhihu.com/p/26625249" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/26625249</a></p>
+<p>其他相关笔记</p>
+<p><strong>安装插件</strong></p>
+<p>npm i -S hexo-prism-plugin</p>
+<p><strong>卸载插件</strong></p>
+<p>npm uninstall hexo-prism-plugin --save</p>
+<p><strong>next7.X版本关于设置阅读全文</strong></p>
+<p>网上查了好多资料始终都没得到解决如何去设置“阅读全文”。最后查了最细的next7.6文档才发现还要下载插件 然后在主题配置文件_config.yml配置下就好了。</p>
+<p>一，在博客目录下执行</p>
+<p>npm install hexo-excerpt --save</p>
+<p>二，在站点配置文件_config.yml添加</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">excerpt:</span><br><span class="line">depth: 10</span><br><span class="line">excerpt_excludes: []</span><br><span class="line">more_excludes: []</span><br><span class="line">hideWholePostExcerpts: true</span><br></pre></td></tr></table></figure>
+<p>使用 Hexo Admin 插件</p>
+<p><strong>使用方法</strong></p>
+<ol>
+<li>在Hexo网站目录下，安装 Hexo Admin 插件</li>
+</ol>
+<p>npm install --save hexo-admin</p>
+<ol>
+<li>启动本地服务器并打开管理界面，即可使用</li>
+</ol>
+<p>hexo server -d open <a href="http://localhost:4000/admin/" target="_blank" rel="noopener">http://localhost:4000/admin/</a></p>
+<p><strong>卸载模块</strong></p>
+<p>我们可以使用以下命令来卸载 Node.js 模块。</p>
+<p>$ npm uninstall express</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>hexo部署到GitHub出现的问题</title>
+    <url>/2021/12/24/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1>Hexo出现错误err: Error: Spawn failed</h1>
+<p>在 hexo d之后，出现如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">fatal: Could not read from remote repository.</span><br><span class="line">Please make sure you have the correct access rights</span><br><span class="line">and the repository exists.</span><br><span class="line">FATAL &#123;</span><br><span class="line">  err: Error: Spawn failed</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+<p>使用上面的命令查看详细错误信息，得到以下结果</p>
+<p>ssh: connect to host <a href="http://github.com" target="_blank" rel="noopener">github.com</a> port 22: Resource temporarily unavailable</p>
+<h1>2、解决方法</h1>
+<p>然后我们进入.ssh的配置目录查看，发现ssh目录里少了配置文件config。</p>
+<p>找到原因后我们进入.ssh的目录，使用命令“touch config”创建一个配置文件，并写入你github的配置信息。（xxxxx@xx.com是你github的注册邮箱）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Host github.com  </span><br><span class="line">User u8888888888@hotmail.com  </span><br><span class="line">Hostname ssh.github.com  </span><br><span class="line">PreferredAuthentications publickey  </span><br><span class="line">IdentityFile ~&#x2F;.ssh&#x2F;id_rsa  </span><br><span class="line">Port 443</span><br></pre></td></tr></table></figure>
+<p>现在再使用ssh git@github.com查看与github的连接状态，可能出现错误Bad owner or permissions on</p>
+<p>这是因为你创建的配置文件config的权限不够。所以我们需要修改其权限。使用下面命令。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo chmod 600 config</span><br></pre></td></tr></table></figure>
+<p>现在我们再尝试查看连接状态发现已经成功连接。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">root@BF100638:~&#x2F;.ssh# ssh -T git@github.com</span><br><span class="line">The authenticity of host &#39;[ssh.github.com]:443 ([20.205.243.160]:443)&#39; can&#39;t be established.</span><br><span class="line">ECDSA key fingerprint is SHA256:p2QAMXNIC1TJYWeIOttrVc98&#x2F;R1BUFWu3&#x2F;LiyKgUfQM.</span><br><span class="line">Are you sure you want to continue connecting (yes&#x2F;no)? yes</span><br><span class="line">Warning: Permanently added &#39;[ssh.github.com]:443,[20.205.243.160]:443&#39; (ECDSA) to the list of known hosts.</span><br><span class="line">Hi chinayangze! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</span><br></pre></td></tr></table></figure>
+<p>接下来就可以成功的push你的代码到github了。</p>
+<p>参考：<a href="https://gugeshenjineng.github.io/2021/07/02/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98/" target="_blank" rel="noopener">https://gugeshenjineng.github.io/2021/07/02/hexo部署到GitHub出现的问题/</a></p>
+]]></content>
+  </entry>
+  <entry>
     <title>presto 连接clickhouse</title>
     <url>/2021/12/23/presto%20%E8%BF%9E%E6%8E%A5clickhouse/</url>
     <content><![CDATA[<h1>presto 连接clickhouse</h1>

@@ -209,6 +209,143 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/03/yarn%20webUI%20%E7%9C%8B%E4%B8%8D%E5%88%B0%E6%97%A5%E5%BF%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/03/yarn%20webUI%20%E7%9C%8B%E4%B8%8D%E5%88%B0%E6%97%A5%E5%BF%97/" class="post-title-link" itemprop="url">yarn webUI 看不到日志</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-03 13:36:22" itemprop="dateCreated datePublished" datetime="2021-03-03T13:36:22+08:00">2021-03-03</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>yarn webUI 看不到日志</p>
+<p>解决办法：</p>
+<p>Resource Manager webUI No logs available for container</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">1. Please verify once if you could collect logs using "yarn logs" command as below?</span><br><span class="line">&#123;&#123;</span><br><span class="line">yarn logs -applicationId &lt;appID&gt; -appOwner &lt;user&gt;</span><br><span class="line">&#125;&#125;</span><br><span class="line"></span><br><span class="line">2.  please verify the below directories if they have right permissions</span><br><span class="line">&#123;&#123;</span><br><span class="line">hdfs dfs -ls /user/history/done</span><br><span class="line">hdfs dfs -ls  /user/history/done_intermediate</span><br><span class="line">&#125;&#125;</span><br><span class="line"></span><br><span class="line">3. Please verify if "Enable Log Aggregation" has been enabled or not</span><br><span class="line">&#123;&#123;</span><br><span class="line"><span class="meta">ClouderaManager--&gt;</span><span class="bash">Yarn--&gt;Configurations--&gt;<span class="string">"Enable Log Aggregation"</span></span></span><br><span class="line">&#125;&#125;</span><br><span class="line"></span><br><span class="line">4. Verify the permissions for /tmp/logs as below,</span><br><span class="line">&#123;&#123;</span><br><span class="line">hadoop fs -chown mapred:hadoop /tmp/logs</span><br><span class="line">hadoop fs -chown -R :hadoop /tmp/logs/*</span><br><span class="line">&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/03/yarn%20webUI%20%E7%9C%8B%E4%B8%8D%E5%88%B0%E6%97%A5%E5%BF%97/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/02/%E7%94%A8Hue%E4%B8%AD%E7%9A%84Oozie%E6%89%A7%E8%A1%8CImpala%20Sheel%E8%84%9A%E6%9C%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/02/%E7%94%A8Hue%E4%B8%AD%E7%9A%84Oozie%E6%89%A7%E8%A1%8CImpala%20Sheel%E8%84%9A%E6%9C%AC/" class="post-title-link" itemprop="url">用Hue中的Oozie执行Impala Sheel脚本</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-02 16:52:30" itemprop="dateCreated datePublished" datetime="2021-03-02T16:52:30+08:00">2021-03-02</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="用Hue中的Oozie执行Impala-Sheel脚本">用Hue中的Oozie执行Impala Sheel脚本</h3>
+<p>在Oozie中不能像执行hive SQL那样直接执行impala SQL脚本。目前没有Impala操作，因此你必须使用调用impala-shell的shell操作。调用impala-shell的shell脚本中还必须包含设置PYTHON EGGS位置的环境变量</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export PYTHON_EGG_CACHE=.python-eggs   </span><br><span class="line"></span><br><span class="line">impala-shell -i 172.20.15.10:21000 -u hpt -l --auth_creds_ok_in_clear --ldap_password_cmd='echo -n ***' -q 'SET request_pool=development;'</span><br></pre></td></tr></table></figure>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/02/%E7%94%A8Hue%E4%B8%AD%E7%9A%84Oozie%E6%89%A7%E8%A1%8CImpala%20Sheel%E8%84%9A%E6%9C%AC/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/02/hudi/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -912,158 +1049,6 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/11/23/xargs%E5%91%BD%E4%BB%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/23/xargs%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">xargs命令</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-11-23 15:43:13 / 修改时间：15:43:12" itemprop="dateCreated datePublished" datetime="2020-11-23T15:43:13+08:00">2020-11-23</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>xargs可以将输入内容（通常通过命令行管道传递），转成后续命令的参数，通常用途有：</p>
-<ol>
-<li>命令组合：尤其是一些命令不支持管道输入，比如<code>ls</code>。</li>
-<li>避免参数过长：xargs可以通过<code>-nx</code>来将参数分组，避免参数过长。</li>
-</ol>
-<p>使用语法如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Usage: xargs [OPTION]... COMMAND INITIAL-ARGS...</span><br><span class="line">Run COMMAND with arguments INITIAL-ARGS and more arguments read from input.</span><br></pre></td></tr></table></figure>
-<h2 id="入门例子">入门例子</h2>
-<p>首先，创建测试文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch a.js b.js c.js</span><br></pre></td></tr></table></figure>
-<p>接着，运行如下命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls *.js | xargs ls -al</span><br></pre></td></tr></table></figure>
-<p>输出如下：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/23/xargs%E5%91%BD%E4%BB%A4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/11/20/could%20only%20be%20written%20to%200%20of%20the%201%20minReplication%20nodes/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/20/could%20only%20be%20written%20to%200%20of%20the%201%20minReplication%20nodes/" class="post-title-link" itemprop="url">could only be written to 0 of the 1 minReplication nodes</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-11-20 15:33:15" itemprop="dateCreated datePublished" datetime="2020-11-20T15:33:15+08:00">2020-11-20</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>重启dn导致集群不能写入数据，几百个任务都失败了， 经过一个通宵的折腾，记录一下这次重大事故。</p>
-<h3 id="报错日志">报错日志</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DataStreamer Exception</span><br><span class="line">20-11-2020 09:48:59 CST mysql2sqoop-1-RD202006060009 INFO - org.apache.hadoop.ipc.RemoteException(java.io.IOException): File &#x2F;user&#x2F;yarn&#x2F;.staging&#x2F;job_1605809645188_1956&#x2F;job.jar could only be written to 0 of the 1 minReplication nodes. There are 66 datanode(s) running and no node(s) are excluded in this operation.</span><br></pre></td></tr></table></figure>
-<h3 id="报错的日志各种误导，走了很多弯路，只说一下，最终解决了这个问题的方法：">报错的日志各种误导，走了很多弯路，只说一下，最终解决了这个问题的方法：</h3>
-<p>网上有人出现这个问题是格式化解决，它们日志是There are 0 datanode(s) running and no node(s) are excluded in this operation.我的hdfs集群是正常的所有节点都在，只是不能写入数据。</p>
-<p>我用的分层策略是One_SSD，查看了DFS Storage Types，发现disk的空间不够。</p>
-<p><img src="/images/image-20201120151830207.png" alt="image-20201120151830207"></p>
-<h3 id="解决步骤">解决步骤</h3>
-<p>ssd磁盘的机器和普通磁盘的机器分2个角色组</p>
-<p>普通组不加[SSD]</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/20/could%20only%20be%20written%20to%200%20of%20the%201%20minReplication%20nodes/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1136,7 +1121,7 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-count">99</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
