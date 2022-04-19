@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://www.ask3.cn').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="09-2.部署 dashboard 插件 修改配置文件 将下载的 kubernetes-server-linux-amd64.tar.gz 解压后，再解压其中的 kubernetes-src.tar.gz 文件。 dashboard 对应的目录是：cluster&#x2F;addons&#x2F;dashboard。 $ pwd &#x2F;opt&#x2F;k8s&#x2F;kubernetes&#x2F;cluster&#x2F;addons&#x2F;dashboard">
+<meta property="og:type" content="article">
+<meta property="og:title" content="09-2.部署 dashboard 插件">
+<meta property="og:url" content="http://www.ask3.cn/2020/01/07/09-2.%E9%83%A8%E7%BD%B2%20dashboard%20%E6%8F%92%E4%BB%B6/index.html">
+<meta property="og:site_name" content="爱思考">
+<meta property="og:description" content="09-2.部署 dashboard 插件 修改配置文件 将下载的 kubernetes-server-linux-amd64.tar.gz 解压后，再解压其中的 kubernetes-src.tar.gz 文件。 dashboard 对应的目录是：cluster&#x2F;addons&#x2F;dashboard。 $ pwd &#x2F;opt&#x2F;k8s&#x2F;kubernetes&#x2F;cluster&#x2F;addons&#x2F;dashboard">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.orchome.com/group1/M00/00/02/dr5oXFufE_6ATXaNAAYSE23OlTM418.png">
+<meta property="og:image" content="https://img.orchome.com/group1/M00/00/02/dr5oXFufFBGANtysAAWK0mJBQZQ201.png">
+<meta property="og:image" content="https://img.orchome.com/group1/M00/00/02/dr5oXFufFC2ASDpDAAFzzzBHFKY593.png">
+<meta property="og:image" content="https://img.orchome.com/group1/M00/00/02/dr5oXFufFKCAOkuDAAKWwIAdbSI128.png">
+<meta property="article:published_time" content="2020-01-07T03:09:20.000Z">
+<meta property="article:modified_time" content="2020-01-07T08:41:34.512Z">
+<meta property="article:author" content="datasir">
+<meta property="article:tag" content="爱思考">
+<meta property="article:tag" content="软件学习网">
+<meta property="article:tag" content="软件学习">
+<meta property="article:tag" content="hadoop">
+<meta property="article:tag" content="spark">
+<meta property="article:tag" content="hive">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="cdh">
+<meta property="article:tag" content="hbase">
+<meta property="article:tag" content="kudu">
+<meta property="article:tag" content="impala">
+<meta property="article:tag" content="flink">
+<meta property="article:tag" content="hdfs">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="presto">
+<meta property="article:tag" content="大数据运维">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.orchome.com/group1/M00/00/02/dr5oXFufE_6ATXaNAAYSE23OlTM418.png">
+
+<link rel="canonical" href="http://www.ask3.cn/2020/01/07/09-2.%E9%83%A8%E7%BD%B2%20dashboard%20%E6%8F%92%E4%BB%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>09-2.部署 dashboard 插件 | 爱思考</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">爱思考</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">分享知识，分享快乐</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/09-2.%E9%83%A8%E7%BD%B2%20dashboard%20%E6%8F%92%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          09-2.部署 dashboard 插件
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-01-07 11:09:20 / 修改时间：16:41:34" itemprop="dateCreated datePublished" datetime="2020-01-07T11:09:20+08:00">2020-01-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1>09-2.部署 dashboard 插件</h1>
+<h2 id="修改配置文件">修改配置文件</h2>
+<p>将下载的 kubernetes-server-linux-amd64.tar.gz 解压后，再解压其中的 kubernetes-src.tar.gz 文件。</p>
+<p>dashboard 对应的目录是：<code>cluster/addons/dashboard</code>。</p>
+<pre><code>$ pwd
+/opt/k8s/kubernetes/cluster/addons/dashboard
+
+$ cp dashboard-controller.yaml{,.orig}
+
+$ diff dashboard-controller.yaml{,.orig}
+33c33
+&lt;         image: siriuszg/kubernetes-dashboard-amd64:v1.8.3
+---
+&gt;         image: k8s.gcr.io/kubernetes-dashboard-amd64:v1.8.3
+
+$ cp dashboard-service.yaml{,.orig}
+
+$ diff dashboard-service.yaml.orig dashboard-service.yaml
+10a11
+&gt;   type: NodePort
+</code></pre>
+<ul>
+<li>指定端口类型为 NodePort，这样外界可以通过地址 nodeIP:nodePort 访问 dashboard；</li>
+</ul>
+<h2 id="执行所有定义文件">执行所有定义文件</h2>
+<pre><code>$ ls *.yaml
+dashboard-configmap.yaml  dashboard-controller.yaml  dashboard-rbac.yaml  dashboard-secret.yaml  dashboard-service.yaml
+
+$ kubectl create -f  .
+</code></pre>
+<h2 id="查看分配的-NodePort">查看分配的 NodePort</h2>
+<pre><code>$ kubectl get deployment kubernetes-dashboard  -n kube-system
+NAME                   DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+kubernetes-dashboard   1         1         1            1           2m
+
+$ kubectl --namespace kube-system get pods -o wide
+NAME                                    READY     STATUS    RESTARTS   AGE       IP            NODE
+coredns-77c989547b-6l6jr                1/1       Running   0          58m       172.30.39.3   kube-node3
+coredns-77c989547b-d9lts                1/1       Running   0          58m       172.30.81.3   kube-node1
+kubernetes-dashboard-65f7b4f486-wgc6j   1/1       Running   0          2m        172.30.81.5   kube-node1
+
+$ kubectl get services kubernetes-dashboard -n kube-system
+NAME                   TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+kubernetes-dashboard   NodePort   10.254.96.204   &lt;none&gt;        443:8607/TCP   2m
+</code></pre>
+<ul>
+<li>NodePort 8607 映射到 dashboard pod 443 端口；</li>
+</ul>
+<p>dashboard 的 --authentication-mode 支持 token、basic，默认为 token。如果使用 basic，则 kube-apiserver 必须配置 ‘–authorization-mode=ABAC’ 和 ‘–basic-auth-file’ 参数。</p>
+<h2 id="查看-dashboard-支持的命令行参数">查看 dashboard 支持的命令行参数</h2>
+<pre><code>$ kubectl exec --namespace kube-system -it kubernetes-dashboard-65f7b4f486-wgc6j  -- /dashboard --help
+2018/06/13 15:17:44 Starting overwatch
+Usage of /dashboard:
+      --alsologtostderr                   log to standard error as well as files
+      --apiserver-host string             The address of the Kubernetes Apiserver to connect to in the format of protocol://address:port, e.g., https://localhost:8080. If not specified, the assumption is that the binary runs inside a Kubernetes cluster and local discovery is attempted.
+      --authentication-mode stringSlice   Enables authentication options that will be reflected on login screen. Supported values: token, basic. Default: token.Note that basic option should only be used if apiserver has '--authorization-mode=ABAC' and '--basic-auth-file' flags set. (default [token])
+      --auto-generate-certificates        When set to true, Dashboard will automatically generate certificates used to serve HTTPS. Default: false.
+      --bind-address ip                   The IP address on which to serve the --secure-port (set to 0.0.0.0 for all interfaces). (default 0.0.0.0)
+      --default-cert-dir string           Directory path containing '--tls-cert-file' and '--tls-key-file' files. Used also when auto-generating certificates flag is set. (default &quot;/certs&quot;)
+      --disable-settings-authorizer       When enabled, Dashboard settings page will not require user to be logged in and authorized to access settings page.
+      --enable-insecure-login             When enabled, Dashboard login view will also be shown when Dashboard is not served over HTTPS. Default: false.
+      --heapster-host string              The address of the Heapster Apiserver to connect to in the format of protocol://address:port, e.g., https://localhost:8082. If not specified, the assumption is that the binary runs inside a Kubernetes cluster and service proxy will be used.
+      --insecure-bind-address ip          The IP address on which to serve the --port (set to 0.0.0.0 for all interfaces). (default 127.0.0.1)
+      --insecure-port int                 The port to listen to for incoming HTTP requests. (default 9090)
+      --kubeconfig string                 Path to kubeconfig file with authorization and master location information.
+      --log_backtrace_at traceLocation    when logging hits line file:N, emit a stack trace (default :0)
+      --log_dir string                    If non-empty, write log files in this directory
+      --logtostderr                       log to standard error instead of files
+      --metric-client-check-period int    Time in seconds that defines how often configured metric client health check should be run. Default: 30 seconds. (default 30)
+      --port int                          The secure port to listen to for incoming HTTPS requests. (default 8443)
+      --stderrthreshold severity          logs at or above this threshold go to stderr (default 2)
+      --system-banner string              When non-empty displays message to Dashboard users. Accepts simple HTML tags. Default: ''.
+      --system-banner-severity string     Severity of system banner. Should be one of 'INFO|WARNING|ERROR'. Default: 'INFO'. (default &quot;INFO&quot;)
+      --tls-cert-file string              File containing the default x509 Certificate for HTTPS.
+      --tls-key-file string               File containing the default x509 private key matching --tls-cert-file.
+      --token-ttl int                     Expiration time (in seconds) of JWE tokens generated by dashboard. Default: 15 min. 0 - never expires (default 900)
+  -v, --v Level                           log level for V logs
+      --vmodule moduleSpec                comma-separated list of pattern=N settings for file-filtered logging
+command terminated with exit code 2
+$
+</code></pre>
+<h2 id="访问-dashboard">访问 dashboard</h2>
+<p>为了集群安全，从 1.7 开始，dashboard 只允许通过 https 访问，如果使用 kube proxy 则必须监听 localhost 或 127.0.0.1，对于 NodePort 没有这个限制，但是仅建议在开发环境中使用。</p>
+<p>对于不满足这些条件的登录访问，在登录成功后<strong>浏览器不跳转，始终停在登录界面</strong>。</p>
+<p>参考：<br>
+<a href="https://github.com/kubernetes/dashboard/wiki/Accessing-Dashboard---1.7.X-and-above" target="_blank" rel="noopener">https://github.com/kubernetes/dashboard/wiki/Accessing-Dashboard—1.7.X-and-above</a><br>
+<a href="https://github.com/kubernetes/dashboard/issues/2540" target="_blank" rel="noopener">https://github.com/kubernetes/dashboard/issues/2540</a></p>
+<ol>
+<li>kubernetes-dashboard 服务暴露了 NodePort，可以使用 <code>https://NodeIP:NodePort</code> 地址访问 dashboard；</li>
+<li>通过 kube-apiserver 访问 dashboard；</li>
+<li>通过 kubectl proxy 访问 dashboard：</li>
+</ol>
+<p>如果使用了 VirtualBox，需要启用 VirtualBox 的 ForworadPort 功能将虚机监听的端口和 Host 的本地端口绑定。</p>
+<p>可以在 Vagrant 的配置中指定这些端口转发规则，对于正在运行的虚机，也可以通过 VirtualBox 的界面进行配置：</p>
+<p><img src="https://img.orchome.com/group1/M00/00/02/dr5oXFufE_6ATXaNAAYSE23OlTM418.png" alt="screenshot"></p>
+<p><img src="https://img.orchome.com/group1/M00/00/02/dr5oXFufFBGANtysAAWK0mJBQZQ201.png" alt="screenshot"></p>
+<h3 id="通过-kubectl-proxy-访问-dashboard">通过 kubectl proxy 访问 dashboard</h3>
+<p>启动代理：</p>
+<pre><code>$ kubectl proxy --address='localhost' --port=8086 --accept-hosts='^*$'
+Starting to serve on 127.0.0.1:8086
+</code></pre>
+<ul>
+<li>–address 必须为 localhost 或 127.0.0.1；</li>
+<li>需要指定 <code>--accept-hosts</code> 选项，否则浏览器访问 dashboard 页面时提示 “Unauthorized”；</li>
+</ul>
+<p>浏览器访问 URL：<code>https://127.0.0.1:8086/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy</code></p>
+<h3 id="通过-kube-apiserver-访问-dashboard">通过 kube-apiserver 访问 dashboard</h3>
+<p>获取集群服务地址列表：</p>
+<pre><code>$ kubectl cluster-info
+Kubernetes master is running at https://172.27.129.105:6443
+CoreDNS is running at https://172.27.129.105:6443/api/v1/namespaces/kube-system/services/coredns:dns/proxy
+kubernetes-dashboard is running at https://172.27.129.105:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+</code></pre>
+<p>必须通过 kube-apiserver 的安全端口(https)访问 dashbaord，访问时浏览器需要使用<strong>自定义证书</strong>，否则会被 kube-apiserver 拒绝访问。</p>
+<p>创建和导入自定义证书的步骤，参考：<a href="/1204">A.浏览器访问kube-apiserver安全端口</a></p>
+<p>浏览器访问 URL：<code>https://172.27.129.105:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/</code><br>
+对于 virtuabox 做了端口映射： <code>https://127.0.0.1:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/</code></p>
+<p><img src="https://img.orchome.com/group1/M00/00/02/dr5oXFufFC2ASDpDAAFzzzBHFKY593.png" alt="screenshot"></p>
+<h2 id="创建登录-Dashboard-的-token-和-kubeconfig-配置文件">创建登录 Dashboard 的 token 和 kubeconfig 配置文件</h2>
+<p>上面提到，Dashboard 默认只支持 token 认证，所以如果使用 KubeConfig 文件，需要在该文件中指定 token，不支持使用 client 证书认证。</p>
+<h3 id="创建登录-token">创建登录 token</h3>
+<pre><code>kubectl create sa dashboard-admin -n kube-system
+kubectl create clusterrolebinding dashboard-admin --clusterrole=cluster-admin --serviceaccount=kube-system:dashboard-admin
+ADMIN_SECRET=$(kubectl get secrets -n kube-system | grep dashboard-admin | awk '{print $1}')
+DASHBOARD_LOGIN_TOKEN=$(kubectl describe secret -n kube-system ${ADMIN_SECRET} | grep -E '^token' | awk '{print $2}')
+echo ${DASHBOARD_LOGIN_TOKEN}
+</code></pre>
+<p>使用输出的 token 登录 Dashboard。</p>
+<h3 id="创建使用-token-的-KubeConfig-文件">创建使用 token 的 KubeConfig 文件</h3>
+<pre><code>source /opt/k8s/bin/environment.sh
+# 设置集群参数
+kubectl config set-cluster kubernetes \
+  --certificate-authority=/etc/kubernetes/cert/ca.pem \
+  --embed-certs=true \
+  --server=${KUBE_APISERVER} \
+  --kubeconfig=dashboard.kubeconfig
+
+# 设置客户端认证参数，使用上面创建的 Token
+kubectl config set-credentials dashboard_user \
+  --token=${DASHBOARD_LOGIN_TOKEN} \
+  --kubeconfig=dashboard.kubeconfig
+
+# 设置上下文参数
+kubectl config set-context default \
+  --cluster=kubernetes \
+  --user=dashboard_user \
+  --kubeconfig=dashboard.kubeconfig
+
+# 设置默认上下文
+kubectl config use-context default --kubeconfig=dashboard.kubeconfig
+</code></pre>
+<p>用生成的 dashboard.kubeconfig 登录 Dashboard。</p>
+<p><img src="https://img.orchome.com/group1/M00/00/02/dr5oXFufFKCAOkuDAAKWwIAdbSI128.png" alt="screenshot"></p>
+<p>由于缺少 Heapster 插件，当前 dashboard 不能展示 Pod、Nodes 的 CPU、内存等统计数据和图表；</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://github.com/kubernetes/dashboard/wiki/Access-control" target="_blank" rel="noopener">https://github.com/kubernetes/dashboard/wiki/Access-control</a><br>
+<a href="https://github.com/kubernetes/dashboard/issues/2558" target="_blank" rel="noopener">https://github.com/kubernetes/dashboard/issues/2558</a><br>
+<a href="https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/" target="_blank" rel="noopener">https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/07/09-1.%E9%83%A8%E7%BD%B2%20coredns%20%E6%8F%92%E4%BB%B6/" rel="prev" title="09-1.部署 coredns 插件">
+      <i class="fa fa-chevron-left"></i> 09-1.部署 coredns 插件
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/01/07/09-3.%E9%83%A8%E7%BD%B2%20heapster%20%E6%8F%92%E4%BB%B6/" rel="next" title="09-3.部署 heapster 插件">
+      09-3.部署 heapster 插件 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">1.</span> <span class="nav-text">09-2.部署 dashboard 插件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#修改配置文件"><span class="nav-number">1.1.</span> <span class="nav-text">修改配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行所有定义文件"><span class="nav-number">1.2.</span> <span class="nav-text">执行所有定义文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看分配的-NodePort"><span class="nav-number">1.3.</span> <span class="nav-text">查看分配的 NodePort</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看-dashboard-支持的命令行参数"><span class="nav-number">1.4.</span> <span class="nav-text">查看 dashboard 支持的命令行参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问-dashboard"><span class="nav-number">1.5.</span> <span class="nav-text">访问 dashboard</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通过-kubectl-proxy-访问-dashboard"><span class="nav-number">1.5.1.</span> <span class="nav-text">通过 kubectl proxy 访问 dashboard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过-kube-apiserver-访问-dashboard"><span class="nav-number">1.5.2.</span> <span class="nav-text">通过 kube-apiserver 访问 dashboard</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建登录-Dashboard-的-token-和-kubeconfig-配置文件"><span class="nav-number">1.6.</span> <span class="nav-text">创建登录 Dashboard 的 token 和 kubeconfig 配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建登录-token"><span class="nav-number">1.6.1.</span> <span class="nav-text">创建登录 token</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建使用-token-的-KubeConfig-文件"><span class="nav-number">1.6.2.</span> <span class="nav-text">创建使用 token 的 KubeConfig 文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.7.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="datasir"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">datasir</p>
+  <div class="site-description" itemprop="description">小杨随笔</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">112</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chinayangze" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chinayangze" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:info@ask3.cn" title="E-Mail → mailto:info@ask3.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.yh-021.com/" title="https:&#x2F;&#x2F;www.yh-021.com" rel="noopener" target="_blank">上海有汇</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备13036234号-3 </a>
+      <img src="/images/beian.png" style="display: inline-block;">
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">datasir</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

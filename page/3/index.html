@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://www.ask3.cn').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="小杨随笔">
+<meta property="og:type" content="website">
+<meta property="og:title" content="爱思考">
+<meta property="og:url" content="http://www.ask3.cn/page/3/index.html">
+<meta property="og:site_name" content="爱思考">
+<meta property="og:description" content="小杨随笔">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="datasir">
+<meta property="article:tag" content="爱思考">
+<meta property="article:tag" content="软件学习网">
+<meta property="article:tag" content="软件学习">
+<meta property="article:tag" content="hadoop">
+<meta property="article:tag" content="spark">
+<meta property="article:tag" content="hive">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="cdh">
+<meta property="article:tag" content="hbase">
+<meta property="article:tag" content="kudu">
+<meta property="article:tag" content="impala">
+<meta property="article:tag" content="flink">
+<meta property="article:tag" content="hdfs">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="presto">
+<meta property="article:tag" content="大数据运维">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.ask3.cn/page/3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: true,
+    isPost: false
+  };
+</script>
+
+  <title>爱思考</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">爱思考</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">分享知识，分享快乐</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/30/%E5%AE%89%E8%A3%85%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC%E7%9A%84php/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/30/%E5%AE%89%E8%A3%85%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC%E7%9A%84php/" class="post-title-link" itemprop="url">安装不同版本的php</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-30 09:20:43" itemprop="dateCreated datePublished" datetime="2021-12-30T09:20:43+08:00">2021-12-30</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="移除php">移除php</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum remove php-common -y</span><br></pre></td></tr></table></figure>
+<p><a href="https://www.cnblogs.com/hongdada/p/9687330.html" target="_blank" rel="noopener">yum仓库中源的配置与使用</a></p>
+<p>yum 仓库管理工具 <code>yum-config-manager</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum-config-manager --add-repo repository_url</span><br></pre></td></tr></table></figure>
+<p>查询仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum repolist enabled # 显示所有启动的仓库</span><br><span class="line">yum repolist disabled # 显示所有禁用的仓库</span><br><span class="line">yum repolist all # 显示所有仓库</span><br></pre></td></tr></table></figure>
+<p>修改仓库</p>
+<p>最常用的修改操作就是启动和停用, 可以使用以下命令实现:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum-config-manager --enable repository…</span><br><span class="line">yum-config-manager --disable repository…</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/30/%E5%AE%89%E8%A3%85%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC%E7%9A%84php/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/24/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/24/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub/" class="post-title-link" itemprop="url">hexo部署到GitHub</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-24 09:23:23" itemprop="dateCreated datePublished" datetime="2021-12-24T09:23:23+08:00">2021-12-24</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>参考这篇文章就可以了</p>
+<p>GitHub+Hexo 搭建个人网站详细教程  <a href="https://zhuanlan.zhihu.com/p/26625249" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/26625249</a></p>
+<p>其他相关笔记</p>
+<p><strong>安装插件</strong></p>
+<p>npm i -S hexo-prism-plugin</p>
+<p><strong>卸载插件</strong></p>
+<p>npm uninstall hexo-prism-plugin --save</p>
+<p><strong>next7.X版本关于设置阅读全文</strong></p>
+<p>网上查了好多资料始终都没得到解决如何去设置“阅读全文”。最后查了最细的next7.6文档才发现还要下载插件 然后在主题配置文件_config.yml配置下就好了。</p>
+<p>一，在博客目录下执行</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/24/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/23/presto%20%E8%BF%9E%E6%8E%A5clickhouse/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/23/presto%20%E8%BF%9E%E6%8E%A5clickhouse/" class="post-title-link" itemprop="url">presto 连接clickhouse</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-23 15:39:26" itemprop="dateCreated datePublished" datetime="2021-12-23T15:39:26+08:00">2021-12-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>presto 连接clickhouse</h1>
+<p>presto350版本，不支持clickhouse ，需要升级，</p>
+<p>presto350版本之后 presto改名为trino，导致不兼容，升级后 对应的jdbc驱动 ，客户端都需要换成新的。</p>
+<p>客户端工具用DBeaver比较好，DbVisualizer 不支持trino</p>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/23/presto%20%E8%BF%9E%E6%8E%A5clickhouse/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/10/%E8%A7%A3%E5%86%B3freeipa%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/10/%E8%A7%A3%E5%86%B3freeipa%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F/" class="post-title-link" itemprop="url">解决freeipa证书过期</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-10 09:47:30" itemprop="dateCreated datePublished" datetime="2021-12-10T09:47:30+08:00">2021-12-10</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>FreeIPA 服务器在重启后不会启动</h1>
+<p>参考   <a href="https://redhatlinux.guru/2020/10/09/freeipa-server-will-not-start-after-reboot/" target="_blank" rel="noopener">https://redhatlinux.guru/2020/10/09/freeipa-server-will-not-start-after-reboot/</a></p>
+<p><strong>原因 证书过期：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[root@freeipa ~]# ipa-getcert list </span><br><span class="line">Number of certificates and requests being tracked: 9.</span><br><span class="line">Request ID &#39;20190830074301&#39;:</span><br><span class="line">	status: CA_UNREACHABLE</span><br><span class="line">	ca-error: Server at https:&#x2F;&#x2F;freeipa.baofoo.cn&#x2F;ipa&#x2F;xml failed request, will retry: -504 (libcurl failed to execute the HTTP POST transaction, explaining:  Failed connect to freeipa.baofoo.cn:443; Connection refused).</span><br><span class="line">	stuck: no</span><br><span class="line">	key pair storage: type&#x3D;NSSDB,location&#x3D;&#39;&#x2F;etc&#x2F;dirsrv&#x2F;slapd-BAOFOO-CN&#39;,nickname&#x3D;&#39;Server-Cert&#39;,token&#x3D;&#39;NSS Certificate DB&#39;,pinfile&#x3D;&#39;&#x2F;etc&#x2F;dirsrv&#x2F;slapd-BAOFOO-CN&#x2F;pwdfile.txt&#39;</span><br><span class="line">	certificate: type&#x3D;NSSDB,location&#x3D;&#39;&#x2F;etc&#x2F;dirsrv&#x2F;slapd-BAOFOO-CN&#39;,nickname&#x3D;&#39;Server-Cert&#39;,token&#x3D;&#39;NSS Certificate DB&#39;</span><br><span class="line">	CA: IPA</span><br><span class="line">	issuer: CN&#x3D;Certificate Authority,O&#x3D;BAOFOO.CN</span><br><span class="line">	subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">	expires: 2021-08-30 07:43:01 UTC</span><br><span class="line">	dns: freeipa.baofoo.cn</span><br><span class="line">	principal name: ldap&#x2F;freeipa.baofoo.cn@BAOFOO.CN</span><br><span class="line">	key usage: digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment</span><br><span class="line">	eku: id-kp-serverAuth,id-kp-clientAuth</span><br><span class="line">	pre-save command: </span><br><span class="line">	post-save command: &#x2F;usr&#x2F;libexec&#x2F;ipa&#x2F;certmonger&#x2F;restart_dirsrv BAOFOO-CN</span><br><span class="line">	track: yes</span><br><span class="line">	auto-renew: yes</span><br></pre></td></tr></table></figure>
+<p>问题<br>
+这更多是利基问题。但可能对其他人有用。我在家里有一个用于 DNS 的 FreeIPA 服务器设置。在简单的重新启动以向 VM 添加一些 RAM 后，服务器将无法启动。我收到如下错误。</p>
+<p>IPA 服务器错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status ipa</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">● ipa.service - Identity, Policy, Audit</span><br><span class="line">Loaded: loaded (&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;ipa.service; enabled; vendor preset: disabled)</span><br><span class="line">Active: failed (Result: exit-code) since Fri 2020-10-09 14:57:15 EDT; 1s ago</span><br><span class="line">Process: 1110 ExecStart&#x3D;&#x2F;usr&#x2F;sbin&#x2F;ipactl start (code&#x3D;exited, status&#x3D;1&#x2F;FAILURE)</span><br><span class="line">Main PID: 1110 (code&#x3D;exited, status&#x3D;1&#x2F;FAILURE)</span><br><span class="line"></span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Aborting ipactl</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting Directory Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting krb5kdc Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting kadmin Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting named Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting httpd Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: ipa.service: main process exited, code&#x3D;exited, status&#x3D;1&#x2F;FAILURE</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: Failed to start Identity, Policy, Audit.</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: Unit ipa.service entered failed state.</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: ipa.service failed.</span><br></pre></td></tr></table></figure>
+<h5 id="Apache-服务错误">Apache 服务错误</h5>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status httpd -l</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/10/%E8%A7%A3%E5%86%B3freeipa%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/08/ckman%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/08/ckman%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">ckman部署</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-08 13:31:48" itemprop="dateCreated datePublished" datetime="2021-12-08T13:31:48+08:00">2021-12-08</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>ckman部署</p>
+<h3 id="安装">安装</h3>
+<p><code>rpm</code>安装直接使用命令安装即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh ckman-1.3.1.x86_64.rpm</span><br></pre></td></tr></table></figure>
+<p>安装完成后，在<code>/etc/ckman</code>目录下，会生成工作目录（日志和配置文件等都在该目录下）。</p>
+<h3 id="启动">启动</h3>
+<p><code>rpm</code>方式安装的<code>ckman</code>有两种启动方式：</p>
+<h4 id="方式一：">方式一：</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;local&#x2F;bin&#x2F;ckman -c&#x3D;&#x2F;etc&#x2F;ckman&#x2F;conf&#x2F;ckman.yaml -p&#x3D;&#x2F;run&#x2F;ckman&#x2F;ckman.pid -l&#x3D;&#x2F;var&#x2F;log&#x2F;ckman&#x2F;ckman.log -d</span><br></pre></td></tr></table></figure>
+<h4 id="方式二：">方式二：</h4>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/08/ckman%E9%83%A8%E7%BD%B2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/06/%E5%8D%87%E7%BA%A7OpenSSH%E4%B9%8B%E5%90%8E%E7%99%BB%E5%BD%95%E4%B8%8D%E4%B8%8A%E5%8E%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/06/%E5%8D%87%E7%BA%A7OpenSSH%E4%B9%8B%E5%90%8E%E7%99%BB%E5%BD%95%E4%B8%8D%E4%B8%8A%E5%8E%BB/" class="post-title-link" itemprop="url">升级OpenSSH之后登录不上去</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-06 14:01:54" itemprop="dateCreated datePublished" datetime="2021-12-06T14:01:54+08:00">2021-12-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/ssh/sshd_config</span><br></pre></td></tr></table></figure>
+<p>需要在配置文件中添加：</p>
+<p>PermitRootLogin yes</p>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/06/%E5%8D%87%E7%BA%A7OpenSSH%E4%B9%8B%E5%90%8E%E7%99%BB%E5%BD%95%E4%B8%8D%E4%B8%8A%E5%8E%BB/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/11/19/clickhouse%E4%B9%8BHDFS%E4%BA%91%E5%AD%98%E5%82%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/19/clickhouse%E4%B9%8BHDFS%E4%BA%91%E5%AD%98%E5%82%A8/" class="post-title-link" itemprop="url">clickhouse之HDFS云存储</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-19 09:23:57" itemprop="dateCreated datePublished" datetime="2021-11-19T09:23:57+08:00">2021-11-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>clickhouse之HDFS云存储</h1>
+<p>参考： <a href="https://blog.csdn.net/weixin_40104766/article/details/120029525" target="_blank" rel="noopener">https://blog.csdn.net/weixin_40104766/article/details/120029525</a></p>
+<p>按照官方文档说明，在config.xml文件中添加如下配置：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">storage_configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">disks</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">diskname</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">type</span>&gt;</span>hdfs<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">endpoint</span>&gt;</span>hdfs://10.0.19.241:8020/ckdata/<span class="tag">&lt;/<span class="name">endpoint</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">diskname</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">disks</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">policies</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">hdfs</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">volumes</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">volumename</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">disk</span>&gt;</span>diskname<span class="tag">&lt;/<span class="name">disk</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">volumename</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">volumes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">hdfs</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">policies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">storage_configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>配置完成后，重启clickhouse-server服务，验证是否生效：</p>
+<p>1.通过system.storage_policies表查看存储策略是否OK</p>
+<p>select * from system.storage_policies;</p>
+<p>2.通过settings参数指定storage_policy为我们配置好的hdfs，建表语句如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> test_data <span class="keyword">engine</span>=MergeTree <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">id</span> <span class="keyword">settings</span> storage_policy=<span class="string">'hdfs'</span> <span class="keyword">as</span> <span class="keyword">with</span> (<span class="keyword">select</span> [<span class="string">'A'</span>,<span class="string">'a'</span>,<span class="string">'A'</span>,<span class="string">'A'</span>,<span class="string">'B'</span>,<span class="string">'B'</span>,<span class="string">'B'</span>,<span class="string">'B'</span>,<span class="string">'B'</span>,<span class="string">'A'</span>,<span class="string">'59'</span>,<span class="string">'90'</span>,<span class="string">'80'</span>,<span class="string">'85'</span>,<span class="string">'90'</span>,<span class="string">'929'</span>,<span class="string">'80'</span>,<span class="string">'72'</span>,<span class="string">'90'</span>,<span class="string">'123'</span>]) <span class="keyword">AS</span> dict <span class="keyword">select</span> dict[<span class="built_in">number</span>%<span class="number">10</span> + <span class="number">1</span>] <span class="keyword">as</span> <span class="keyword">id</span>,dict[<span class="built_in">number</span> + <span class="number">11</span>] <span class="keyword">as</span> val <span class="keyword">from</span> system.numbers <span class="keyword">limit</span> <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/19/clickhouse%E4%B9%8BHDFS%E4%BA%91%E5%AD%98%E5%82%A8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/10/28/%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99%E6%B5%8B%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/28/%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">磁盘读写测试</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-28 16:44:32" itemprop="dateCreated datePublished" datetime="2021-10-28T16:44:32+08:00">2021-10-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="磁盘读写测试">磁盘读写测试</h2>
+<p>FIO安装<br>
+wget <a href="http://brick.kernel.dk/snaps/fio-2.2.5.tar.gz" target="_blank" rel="noopener">http://brick.kernel.dk/snaps/fio-2.2.5.tar.gz</a></p>
+<p>yum install libaio-devel<br>
+tar -zxvf fio-2.2.5.tar.gz<br>
+cd fio-2.2.5<br>
+make<br>
+make install</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">测试：</span><br><span class="line">顺序读：</span><br><span class="line">fio -filename=/dev/sda -direct=1 -iodepth 1 -thread -rw=read -ioengine=psync -bs=16k -size=2G -numjobs=10 -runtime=60 -group_reporting -name=mytest</span><br><span class="line"></span><br><span class="line">随机写：</span><br><span class="line">fio -filename=/dev/sda -direct=1 -iodepth 1 -thread -rw=randwrite -ioengine=psync -bs=16k -size=2G -numjobs=10 -runtime=60 -group_reporting -name=mytest</span><br><span class="line"></span><br><span class="line">顺序写：</span><br><span class="line">fio -filename=/dev/sda -direct=1 -iodepth 1 -thread -rw=write -ioengine=psync -bs=16k -size=2G -numjobs=10 -runtime=60 -group_reporting -name=mytest</span><br><span class="line"></span><br><span class="line">混合随机读写：</span><br><span class="line">fio -filename=/dev/sda -direct=1 -iodepth 1 -thread -rw=randrw -rwmixread=70 -ioengine=psync -bs=16k -size=2G -numjobs=10 -runtime=60 -group_reporting -name=mytest -ioscheduler=noop</span><br></pre></td></tr></table></figure>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/10/28/%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99%E6%B5%8B%E8%AF%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/07/20/%E6%99%BA%E8%83%BD%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0USDP%E6%93%8D%E4%BD%9C%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/20/%E6%99%BA%E8%83%BD%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0USDP%E6%93%8D%E4%BD%9C%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">智能大数据平台USDP操作部署</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-20 13:48:23" itemprop="dateCreated datePublished" datetime="2021-07-20T13:48:23+08:00">2021-07-20</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="智能大数据平台USDP操作部署">智能大数据平台USDP操作部署</h2>
+<p>USDP部署操作指南：<a href="https://mp.weixin.qq.com/s/COnkLXPTWL5OK1PFYooThw?scene=25#wechat_redirect" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/COnkLXPTWL5OK1PFYooThw?scene=25#wechat_redirect</a></p>
+<p>bash <a href="http://repair.sh" target="_blank" rel="noopener">repair.sh</a> initAll   这个步骤大约要30多分钟，重复执行也慢。</p>
+<p>注意：</p>
+<p>1.在repair-host-info-add.properties文件中，仅需配置每次新增的节点信息即可，若存在已修复过的节点信息时，在下次运行“<a href="http://repair.sh" target="_blank" rel="noopener">repair.sh</a> initSingle”指令前，请清除。</p>
+<p>2.jdk 安装在 /opt/module 下面，不允许随意删除，否则 java 环境失效。</p>
+<p>3.数据库密码中不得包含 “@” 。</p>
+<p>4.主机名设置不得包含 “_”，&quot;-&quot; 。</p>
+<p>启动服务  bin/stop-udp-server.sh</p>
+<p>查看日志目录  /var/log/udp</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/20/%E6%99%BA%E8%83%BD%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0USDP%E6%93%8D%E4%BD%9C%E9%83%A8%E7%BD%B2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/07/14/%E9%BB%91%E9%B2%A8%E6%B8%B8%E6%88%8F%E6%89%8B%E6%9C%BA%E8%A7%A3BL%E9%94%81%EF%BC%8C%E5%88%B7REC%EF%BC%8CROOT%20%E5%92%8C%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/14/%E9%BB%91%E9%B2%A8%E6%B8%B8%E6%88%8F%E6%89%8B%E6%9C%BA%E8%A7%A3BL%E9%94%81%EF%BC%8C%E5%88%B7REC%EF%BC%8CROOT%20%E5%92%8C%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">黑鲨游戏手机解BL锁，刷REC，ROOT 和问题总结</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-14 13:41:35" itemprop="dateCreated datePublished" datetime="2021-07-14T13:41:35+08:00">2021-07-14</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="黑鲨游戏手机解BL锁，刷REC，ROOT-和问题总结">黑鲨游戏手机解BL锁，刷REC，ROOT 和问题总结</h2>
+<p>参考帮助  <a href="https://www.bilibili.com/video/BV1Cf4y1U7gn?from=search&amp;seid=14731760489436726457" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1Cf4y1U7gn?from=search&amp;seid=14731760489436726457</a></p>
+<h2 id="总的步骤：">总的步骤：</h2>
+<p><img src="/images/image-20210714100219695.png" alt="image-20210714100219695"></p>
+<p>需要用到的文件</p>
+<p><img src="/images/image-20210714110634447.png" alt="image-20210714110634447"></p>
+<h3 id="第一步-系统降级">第一步.系统降级</h3>
+<p>黑鲨1代<br>
+系统版本:G66X1811300CN00MPX安卓版本:8.1下载地址:<a href="https://ota-1256119282.file.myqcloud.com/SKR-A0/2018-11-30_shark_mp_ota11_20180929shark-ota-eng.buildfarm.zip" target="_blank" rel="noopener">https://ota-1256119282.file.myqcloud.com/SKR-A0/2018-11-30_shark_mp_ota11_20180929shark-ota-eng.buildfarm.zip</a><br>
+系统版本:G66X1905170CN00MPP安卓版本:P(安卓9)下载地址:<a href="https://ota-1256119282.file.myqcloud.com/SKR-A0/shark-ota-eng.buildfarm_2019-05-17_sdm845_p_mp_ota1_20190430.zip" target="_blank" rel="noopener">https://ota-1256119282.file.myqcloud.com/SKR-A0/shark-ota-eng.buildfarm_2019-05-17_sdm845_p_mp_ota1_20190430.zip</a></p>
+<p><strong>刷机的准备工作：</strong></p>
+<p>1、根据自己机型下载对应版本型号的黑鲨手机全量包到电脑，将文件重命名为<strong>update.zip</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/14/%E9%BB%91%E9%B2%A8%E6%B8%B8%E6%88%8F%E6%89%8B%E6%9C%BA%E8%A7%A3BL%E9%94%81%EF%BC%8C%E5%88%B7REC%EF%BC%8CROOT%20%E5%92%8C%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+  </div>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="datasir"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">datasir</p>
+  <div class="site-description" itemprop="description">小杨随笔</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">112</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chinayangze" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chinayangze" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:info@ask3.cn" title="E-Mail → mailto:info@ask3.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.yh-021.com/" title="https:&#x2F;&#x2F;www.yh-021.com" rel="noopener" target="_blank">上海有汇</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备13036234号-3 </a>
+      <img src="/images/beian.png" style="display: inline-block;">
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">datasir</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

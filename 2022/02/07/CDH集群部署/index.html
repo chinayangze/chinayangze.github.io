@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://www.ask3.cn').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="一、集群规划 如果你正准备从0开始搭建一套CDH集群应用于生产环境，那么此时需要做的事情应该是 结合当前的数据、业务、硬件、节点、服务等对集群做合理的规划，而不是马上动手去安装软件。 合理的集群规划应该做到以下几点：  充分了解当前的数据现状 与业务方深入沟通，了解将会在集群上运行的业务，集群将会为业务提供什么服务 结合数据现状与业务，合理预估未来的数据量增长 盘点当前可用的硬件资源，包括机柜机架">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CDH集群部署">
+<meta property="og:url" content="http://www.ask3.cn/2022/02/07/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="爱思考">
+<meta property="og:description" content="一、集群规划 如果你正准备从0开始搭建一套CDH集群应用于生产环境，那么此时需要做的事情应该是 结合当前的数据、业务、硬件、节点、服务等对集群做合理的规划，而不是马上动手去安装软件。 合理的集群规划应该做到以下几点：  充分了解当前的数据现状 与业务方深入沟通，了解将会在集群上运行的业务，集群将会为业务提供什么服务 结合数据现状与业务，合理预估未来的数据量增长 盘点当前可用的硬件资源，包括机柜机架">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-02-07T02:34:00.433Z">
+<meta property="article:modified_time" content="2022-02-07T02:34:00.433Z">
+<meta property="article:author" content="datasir">
+<meta property="article:tag" content="爱思考">
+<meta property="article:tag" content="软件学习网">
+<meta property="article:tag" content="软件学习">
+<meta property="article:tag" content="hadoop">
+<meta property="article:tag" content="spark">
+<meta property="article:tag" content="hive">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="cdh">
+<meta property="article:tag" content="hbase">
+<meta property="article:tag" content="kudu">
+<meta property="article:tag" content="impala">
+<meta property="article:tag" content="flink">
+<meta property="article:tag" content="hdfs">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="presto">
+<meta property="article:tag" content="大数据运维">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.ask3.cn/2022/02/07/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>CDH集群部署 | 爱思考</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">爱思考</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">分享知识，分享快乐</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/02/07/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CDH集群部署
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-02-07 10:34:00" itemprop="dateCreated datePublished" datetime="2022-02-07T10:34:00+08:00">2022-02-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、集群规划">一、集群规划</h2>
+<p>如果你正准备从0开始搭建一套CDH集群应用于生产环境，那么此时需要做的事情应该是 <strong>结合当前的数据、业务、硬件、节点、服务等对集群做合理的规划</strong>，而不是马上动手去安装软件。</p>
+<p>合理的集群规划应该做到以下几点：</p>
+<ul>
+<li>充分了解当前的数据现状</li>
+<li>与业务方深入沟通，了解将会在集群上运行的业务，集群将会为业务提供什么服务</li>
+<li>结合数据现状与业务，合理预估未来的数据量增长</li>
+<li>盘点当前可用的硬件资源，包括机柜机架、服务器、交换机等</li>
+<li>当前硬件资源不充足的情况下，根据数据评估情况作出采购建议</li>
+<li>根据业务属性与组成，合理规划集群的部署架构</li>
+<li>根据可用硬件资源，对集群节点的服务角色进行合理划分</li>
+</ul>
+<p>以上步骤完成之后才是动手进行安装与部署。</p>
+<p>你将会对集群的架构模式、应用方向与业务场景了然于胸，并确保这个集群（或者是集群组）能够<strong>提供稳定、高效、高性能的服务</strong>，为业务保驾护航。</p>
+<p>并有能力能够提供 <strong>集群建设目标</strong>：</p>
+<ul>
+<li>
+<p>性能需求</p>
+</li>
+<li>
+<ul>
+<li>简单查询100G数据量时，耗时上限</li>
+<li>复杂查询（join）时，耗时上限</li>
+<li>历史数据导入时，耗时上限</li>
+<li>增量数据导入时，耗时上限</li>
+</ul>
+</li>
+<li>
+<p>可靠性需求：每月宕机次数（&lt;1），每月宕机时间（&lt;10min）</p>
+</li>
+<li>
+<p>可用性：每台机器每月的宕机时间</p>
+</li>
+<li>
+<p>容错性：机器故障，数据不丢失</p>
+</li>
+</ul>
+<h3 id="1-1-硬件规划">1.1 硬件规划</h3>
+<p>硬件规划决定集群将使用多少硬件资源，以及什么配置的硬件资源。</p>
+<p>可以从以下几个维度进行评估：</p>
+<ul>
+<li>
+<p>数据现状</p>
+</li>
+<li>
+<ul>
+<li>盘点所有数据情况，包括数据源、数据量、数据大小、数据维度等信息</li>
+</ul>
+</li>
+<li>
+<p>工作负载</p>
+</li>
+<li>
+<ul>
+<li>评估在集群与数据之上将执行的任务类型</li>
+<li>如实时计算、离线计算、图像处理、关系网络等应用场景以及是否提供OLTP服务等</li>
+</ul>
+</li>
+<li>
+<p>未来数据量预估</p>
+</li>
+<li>
+<ul>
+<li>根据数据源与业务应用场景可以对未来衍生的数据总量与数据增量做大致评估</li>
+<li>评估的时间范围视业务场景而定，建议做不少于一年的规划</li>
+</ul>
+</li>
+<li>
+<p>硬件资源现状</p>
+</li>
+<li>
+<ul>
+<li>盘点目前可用的硬件资源，确认是否满足所评估的规模及要求</li>
+<li>机房机柜空间、电源（双）等是否充足（需考虑后续扩容问题）</li>
+<li>网络交换机性能是否满足要求（建议万兆网卡（双））</li>
+<li>查看服务器磁盘、内存、CPU等资源是否需要补充</li>
+</ul>
+</li>
+<li>
+<p>硬件选择</p>
+</li>
+<li>
+<ul>
+<li>现有硬件资源不满足的需求的情况下，结合运维建议提出需要增加或者新采购的硬件型号、配置等</li>
+<li>确认所需服务器数量</li>
+</ul>
+</li>
+</ul>
+<p>示例主机列表：</p>
+<ul>
+<li>cdh2-1</li>
+<li>cdh2-2</li>
+<li>cdh2-3</li>
+<li>cdh2-4</li>
+<li>cdh2-5</li>
+<li>cdh2-6</li>
+<li>cdh2-7</li>
+<li>cdh2-8</li>
+</ul>
+<p>服务器硬件情况如下：</p>
+<ul>
+<li>数量：8</li>
+<li>CPU：10</li>
+<li>内存：64G</li>
+<li>硬盘：3.3T</li>
+</ul>
+<h3 id="1-2-集群架构">1.2 集群架构</h3>
+<h3 id="混合型集群">混合型集群</h3>
+<p>指由一个统一的大集群提供所有大数据服务，所有组件集中安装在同一个集群中，有部署简单、运维方便、易于使用等优点。</p>
+<p>但是由于混合型集群集群承载了所有功能，职能繁多，网络带宽、磁盘IO等为集群共享，会因大型离线任务占用大量网络或磁盘IO峰值，对线上业务会造成短暂延迟。</p>
+<p>且集群环境较为复杂，有较多对线上业务造成影响的风险。</p>
+<h3 id="专用型集群">专用型集群</h3>
+<p>专用型集群指根据不同的需求与功能职责对集群进行划分，由多个职责不同、硬件隔离的集群组成集群组环境提供服务。</p>
+<p>子集群各司其职，根据自身业务最大化利用硬件资源，互相独立互不影响。部署较为复杂，运维难度增加。</p>
+<p>专用型集群根据业务与应用场景可以划分如下：</p>
+<ul>
+<li>离线计算集群</li>
+<li>实时计算集群</li>
+<li>数据服务集群</li>
+<li>GPU深度学习集群</li>
+<li>图数据库集群</li>
+</ul>
+<p>等等。</p>
+<p>HBase提供实时读写服务的生产环境下<strong>建议将HBase集群独立部署为数据服务集群</strong>，参考：<a href="https://zhuanlan.zhihu.com/p/72150364" target="_blank" rel="noopener">HBase最佳实践</a> - 「集群部署」小节。</p>
+<h3 id="1-3-节点规划">1.3 节点规划</h3>
+<p>进行节点角色划分时尽可能遵守以下原则：</p>
+<ul>
+<li>
+<p>CM监控服务在小集群下可以部署在同一主机，大集群下需要独立部署</p>
+</li>
+<li>
+<p>集群主节点与子节点独立部署（HDFS/HBase/Yarn），且各自子节点部署在相同主机上</p>
+</li>
+<li>
+<ul>
+<li>独立部署可以避免子节点大量读写、计算引起IO、CPU、网络等资源阻塞而导致主节点异常甚至宕机</li>
+<li>HDFS/HBase/Yarn部署在相同主机上可以最大化利用数据本地化特性</li>
+<li>如果数据量巨大，而集群存储空间不足的时候忽视以上两点，满足业务需求放在第一位</li>
+</ul>
+</li>
+<li>
+<p>Hive、Hue、Impala、Sentry等服务/元数据服务需要部署在同一主机</p>
+</li>
+<li>
+<ul>
+<li>Hue+Sentry对Hive与Impala进行权限控制的时候需要读取Linux主机的用户与用户组进行判别，如果部署在不同主机上则需要在每个主机上创建相同的用户与用户组</li>
+<li>或者使用LDAP进行账号管理</li>
+<li>条件允许情况下，独立主机或者压力小的主机</li>
+</ul>
+</li>
+<li>
+<p>Zookeeper尽量使用5个节点，且条件允许下最好在不同的物理主机上</p>
+</li>
+<li>
+<ul>
+<li>5个节点的zk可以保证leader的快速选举</li>
+<li>在不同的物理主机上可以最大限度保证安全</li>
+</ul>
+</li>
+</ul>
+<p>示例集群主要进程分布如下：</p>
+<ul>
+<li>CM服务(monitors)：cdh2-4</li>
+<li>HDFS主节点（NameNode）：cdh2-1,cdh2-2</li>
+<li>HDFS容灾节点(JournalNode)：cdh2-[1:3]</li>
+<li>HDFS数据节点（DataNode）：cdh2-[3:8]</li>
+<li>HBase主节点(HMaster)：cdh2-1,cdh2-2</li>
+<li>HBase数据节点(RegionServer)：cdh2-[3:8]</li>
+<li>Yarn主节点(ResourceManager)：cdh2-1,cdh2-2</li>
+<li>Yarn子节点(NodeManager)：cdh2-[3:8]</li>
+<li>Hive元数据服务（Metastore、HiveServer2）：cdh2-3</li>
+<li>Hue服务(HueServer)：cdh2-3</li>
+<li>Impala服务(CatalogServer、StateStore)：cdh2-3</li>
+<li>Sentry权限验证服务（SentryServer）：cdh2-3</li>
+<li>Oozie服务(OozieServer)：cdh2-3</li>
+<li>Zookeeper服务(Server)：cdh2-[1:5]</li>
+<li>Solr服务(SolrServer)：cdh2-4</li>
+<li>Spark服务(HistoryServer)：cdh2-4</li>
+<li>Kakfa服务(KafkaBroker)：cdh2-[6:8]</li>
+<li>Flume(Agent)：cdh2-[6-8]</li>
+</ul>
+<h2 id="二、集群安装与部署">二、集群安装与部署</h2>
+<h3 id="2-1-打开系统网络">2.1 打开系统网络</h3>
+<p>操作系统安装初始，如果无法ping通内部服务，则检查 <strong>/etc/sysconfig/network-scripts/ifcfg-ens33</strong> 文件，确认 <strong>ONBOOT</strong> 的值如果为no需要修改为yes（Centos7.5虚拟机安装初始默认为no），否则网络无法连通。</p>
+<p>手动检查各个主机上的网络设置，如果有问题则修改配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># ONBOOT&#x3D;no 改成 ONBOOT&#x3D;yes</span><br><span class="line">vim &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-ens33</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-硬盘挂载">2.2 硬盘挂载</h3>
+<p>如果服务器硬盘已插入还未挂载则需要先载入硬盘：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># 格式化硬盘为xfs</span><br><span class="line">mkfs -t xfs &#x2F;dev&#x2F;sdb</span><br><span class="line"></span><br><span class="line"># 硬盘挂载</span><br><span class="line"># 主节点</span><br><span class="line">mount  &#x2F;dev&#x2F;sdb  &#x2F;opt</span><br><span class="line"># 计算节点</span><br><span class="line">mount  &#x2F;dev&#x2F;sdb  &#x2F;opt&#x2F;data1</span><br><span class="line">mount  &#x2F;dev&#x2F;sdc  &#x2F;opt&#x2F;data2</span><br><span class="line"></span><br><span class="line"># 查看挂载结果</span><br><span class="line">df -HT</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-自动化安装">2.3 自动化安装</h3>
+<p>使用自动化脚本工具进行安装操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 获取安装脚本，上传相关安装软件包至服务器（JDK、MySQL、CM、CDH等）</span><br><span class="line">yum install -y git</span><br><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;chubbyjiang&#x2F;cdh-deploy-robot.git</span><br><span class="line">cd cdh-deploy-robot</span><br><span class="line"></span><br><span class="line"># 编辑节点主机名</span><br><span class="line">vi hosts</span><br><span class="line"># 修改安装配置项</span><br><span class="line">vi deploy_robot.config</span><br><span class="line"># 配置ssh免密登录</span><br><span class="line">sh deploy_robot.sh init_ssh</span><br><span class="line"># 执行安装</span><br><span class="line">sh deploy_robot.sh install_all</span><br></pre></td></tr></table></figure>
+<p>安装脚本将会执行 配置SSH免密登录、安装软件、操作系统优化、Java等开发环境初始化、MySQL安装、CM服务安装、操作系统性能测试等过程。</p>
+<p>脚本操作说明见：<a href="https://link.zhihu.com/?target=https%3A//github.com/chubbyjiang/cdh-deploy-robot">CDH集群自动化部署工具</a> 。</p>
+<p>等待cloudera-scm-server进程起来后，在浏览器输入 ip:7180 进入CM管理界面部署CDH组件。</p>
+<p>第三部分将详细描述集群手动安装过程，<strong>与自动安装达成的效果一致</strong>，如已通过自动脚本完成CM服务安装可直接前往第四部分CDH部署。</p>
+<h2 id="三、手动安装">三、手动安装</h2>
+<p>以下操作均为Centos7.5操作系统上进行。</p>
+<h3 id="3-1-系统设置">3.1 系统设置</h3>
+<h3 id="主机名配置">主机名配置</h3>
+<p>设置集群机器主机名，并加入各自hosts文件中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 设置各主机主机名</span><br><span class="line">hostnamectl set-hostname cdh2-1</span><br><span class="line"></span><br><span class="line"># 更新hosts文件</span><br><span class="line">echo &quot;192.168.2.1 cdh2-1&quot; &gt;&gt; &#x2F;etc&#x2F;hosts</span><br><span class="line">echo &quot;192.168.2.2 cdh2-2&quot; &gt;&gt; &#x2F;etc&#x2F;hosts</span><br><span class="line">echo &quot;192.168.2.3 cdh2-3&quot; &gt;&gt; &#x2F;etc&#x2F;hosts</span><br><span class="line">echo &quot;192.168.2.4 cdh2-4&quot; &gt;&gt; &#x2F;etc&#x2F;hosts</span><br><span class="line">echo &quot;192.168.2.5 cdh2-5&quot; &gt;&gt; &#x2F;etc&#x2F;hosts</span><br><span class="line">echo &quot;192.168.2.6 cdh2-6&quot; &gt;&gt; &#x2F;etc&#x2F;hosts</span><br><span class="line">echo &quot;192.168.2.7 cdh2-7&quot; &gt;&gt; &#x2F;etc&#x2F;hosts</span><br><span class="line">echo &quot;192.168.2.8 cdh2-8&quot; &gt;&gt; &#x2F;etc&#x2F;hosts</span><br><span class="line"></span><br><span class="line"># 拷贝</span><br><span class="line">scp &#x2F;etc&#x2F;hosts root@cdh2-2:&#x2F;etc</span><br></pre></td></tr></table></figure>
+<h3 id="SSH免密登录">SSH免密登录</h3>
+<p>需要有root权限的用户（root或者sudo权限）设置免密登录。</p>
+<p>在各个主机上操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 生成密钥</span><br><span class="line">ssh-keygen -t rsa</span><br><span class="line">cat ~&#x2F;.ssh&#x2F;id_rsa.pub &gt;&gt; ~&#x2F;.ssh&#x2F;authorized_keys</span><br><span class="line"># 拷贝密钥到登录主机</span><br><span class="line">ssh-copy-id -i ~&#x2F;.ssh&#x2F;id_rsa.pub root@cdh2-1</span><br></pre></td></tr></table></figure>
+<p>从登录主机上复制到其他主机：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 同步密钥</span><br><span class="line">scp ~&#x2F;.ssh&#x2F;authorized_keys root@cdh2-2:~&#x2F;.ssh&#x2F;</span><br><span class="line"># 测试</span><br><span class="line">ssh cdh2-2 date</span><br></pre></td></tr></table></figure>
+<h3 id="安装Ansible">安装Ansible</h3>
+<p>安装ansible批量管理主机：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 控制机器上安装ansible</span><br><span class="line">yum install -y ansible</span><br></pre></td></tr></table></figure>
+<p>安装完毕后配置修改 <strong>/etc/ansible/hosts</strong> 对需要管理的主机进行配置，默认配置需要修改编辑 <strong>/etc/ansible/ansible.cfg</strong>。</p>
+<p>ansible使用配置参考 <a href="https://link.zhihu.com/?target=https%3A//docs.ansible.com/ansible/latest/installation_guide/intro_installation.html%23managed-node-requirements">Ansible官网</a>。</p>
+<p>host示例配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[except1]</span><br><span class="line">cdh2-[2:8]</span><br><span class="line"></span><br><span class="line">[all]</span><br><span class="line">cdh2-[1:8]</span><br></pre></td></tr></table></figure>
+<h3 id="关闭selinux">关闭selinux</h3>
+<p>查看selinux状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Enforcing 开启状态</span><br><span class="line"># Disabled 关闭状态</span><br><span class="line">ansible all -a &quot;getenforce&quot;</span><br></pre></td></tr></table></figure>
+<p>修改为关闭状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 在控制机器上修改内容</span><br><span class="line">vim &#x2F;etc&#x2F;selinux&#x2F;config</span><br><span class="line">SELINUX&#x3D;disable </span><br><span class="line"># 同步到其他机器</span><br><span class="line">ansible all -m copy -a &quot;src&#x3D;&#x2F;etc&#x2F;selinux&#x2F;config dest&#x3D;&#x2F;etc&#x2F;selinux&#x2F;config&quot;</span><br><span class="line"># 需要重启时候启用</span><br></pre></td></tr></table></figure>
+<h3 id="禁用IPv6">禁用IPv6</h3>
+<p>Centos7.5默认开启IPv6，CM组件明确说明不支持系统的IPv6功能，IPv6开启状态下可能会<strong>出现不可预料的错误</strong>，需要提前关闭。</p>
+<p>查看IPv6启用状态可以通过以下几种方式：</p>
+<ul>
+<li>ifconfig：查看是否有IPv6的地址（inet6）</li>
+<li>lsmod：查看是否有ipv6关键字</li>
+<li>disable_ipv6：查看/proc/sys/net/ipv6/conf/all/disable_ipv6文件内容，0为开启，1为关闭</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查看IPv6当前状态，有值则为打开，空则为关闭</span><br><span class="line">ansible all -a &quot;lsmod | grep ipv6&quot;</span><br></pre></td></tr></table></figure>
+<p>IPv6打开的情况下如何关闭：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 第六行添加</span><br><span class="line">vim &#x2F;etc&#x2F;default&#x2F;grub</span><br><span class="line">GRUB_CMDLINE_LUNUX&#x3D;&quot;ipv6.disable&#x3D;1 ....&quot;</span><br><span class="line">ansible all -m copy -a &quot;src&#x3D;&#x2F;etc&#x2F;default&#x2F;grub dest&#x3D;&#x2F;etc&#x2F;default&#x2F;grub&quot;</span><br><span class="line"># 重启</span><br><span class="line">ansible all -a &quot;reboot&quot;</span><br><span class="line"># 验证</span><br><span class="line">ansible all -a &quot;lsmod | grep ipv6&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="防火墙设置">防火墙设置</h3>
+<p>局域网内部安全情况下最好关闭防火墙，因为CM管理组件和CDH组件有大量的端口进行通讯，需要配置很多防火墙策略。</p>
+<p>需要开放的端口可参考 <a href="https://link.zhihu.com/?target=https%3A//www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_ig_ports.html">官网说明</a>，如果不能确保开放所有所需端口，则需要关闭防火墙。</p>
+<p>关闭防火墙：</p>
+<p><strong>firewall</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ansible all -a &quot;systemctl status firewalld&quot;</span><br><span class="line">ansible all -a &quot;systemctl stop firewalld&quot;</span><br><span class="line">ansible all -a &quot;systemctl disable firewalld&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>iptables</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ansible all -a &quot;chkconfig iptables off&quot;</span><br><span class="line">ansible all -a &quot;service iptables status&quot;</span><br><span class="line">ansible all -a &quot;service iptables stop&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="DNS服务器">DNS服务器</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 添加dns，有则略过</span><br><span class="line">echo &quot;nameserver 114.114.114.114&quot; &gt;&gt; &#x2F;etc&#x2F;resolv.conf</span><br><span class="line">echo &quot;nameserver 8.8.8.8&quot; &gt;&gt; &#x2F;etc&#x2F;resolv.conf</span><br><span class="line"># 文件同步</span><br><span class="line">ansible all -m copy -a &quot;src&#x3D;&#x2F;etc&#x2F;resolv.conf dest&#x3D;&#x2F;etc&#x2F;resolv.conf&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="NTP配置">NTP配置</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"># 调整时区</span><br><span class="line">ansible all -a &quot;ln -sf &#x2F;usr&#x2F;share&#x2F;zoneinfo&#x2F;Asia&#x2F;Shanghai &#x2F;etc&#x2F;localtime&quot;</span><br><span class="line"># 安装ntp</span><br><span class="line">ansible all -a &quot;yum install ntp -y&quot;</span><br><span class="line"># 手动同步时间（ntpd服务关闭的情况下），避免时间差距过大导致同步失败</span><br><span class="line">ansible all -a &quot;ntpdate -u 0.cn.pool.ntp.org&quot;</span><br><span class="line"></span><br><span class="line"># 配置ntp服务器地址</span><br><span class="line">vim &#x2F;etc&#x2F;ntp.conf</span><br><span class="line"># 有外网的情况下可直接配置外部ntp服务器</span><br><span class="line">echo &quot;server ntp1.aliyun.com&quot; &gt;&gt; &#x2F;etc&#x2F;ntp.conf</span><br><span class="line"># 其他备用ntp服务器</span><br><span class="line"># server 0.pool.ntp.org</span><br><span class="line"># server 1.pool.ntp.org</span><br><span class="line"># server 2.pool.ntp.org</span><br><span class="line"># server 0.pool.ntp.org  # 有域名负载均衡</span><br><span class="line"># server 0.cn.pool.ntp.org  # 有域名负载均衡</span><br><span class="line"># server ntp.tuna.tsinghua.edu.cn # 清华大学</span><br><span class="line"></span><br><span class="line"># 启动ntp</span><br><span class="line">ansible all -a &quot;systemctl start ntpd&quot;</span><br><span class="line"># 开机启动</span><br><span class="line">ansible all -a &quot;systemctl enable ntpd&quot;</span><br><span class="line"></span><br><span class="line"># 查看系统硬件时间</span><br><span class="line">hwclock --systohc</span><br></pre></td></tr></table></figure>
+<p><strong>附：NTP内网服务器搭建</strong></p>
+<p>配置内网NTP-Server(管理节点)。</p>
+<p>ntp.conf配置文件内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">#新增：日志文件</span><br><span class="line">logfile &#x2F;var&#x2F;log&#x2F;ntpd.log</span><br><span class="line">restrict default kod nomodify notrap nopeer noquery</span><br><span class="line">restrict 127.0.0.1</span><br><span class="line">restrict ::1</span><br><span class="line"></span><br><span class="line">#授权192.168.1.0网段上所有机器可以从这台机器上查询和时间同步</span><br><span class="line">restrict 192.168.0.0 mask 255.255.0.0 nomodify notrap</span><br><span class="line"></span><br><span class="line">#新增：时间服务器列表</span><br><span class="line">#server 0.cn.pool.ntp.org iburst</span><br><span class="line">#server 1.cn.pool.ntp.org iburst</span><br><span class="line">#server 2.cn.pool.ntp.org iburst</span><br><span class="line">#server 3.cn.pool.ntp.org iburst</span><br><span class="line"></span><br><span class="line">#新增：当外部时间不可用时，使用本地时间</span><br><span class="line">server 127.127.1.0 biurst</span><br><span class="line">fudge 127.127.1.0 stratum 10</span><br><span class="line"></span><br><span class="line">#新增：允许上层时间服务器主动修改本机时间</span><br><span class="line">#restrict 0.cn.pool.ntp.org nomodify notrap noquery</span><br><span class="line">#restrict 1.cn.pool.ntp.org nomodify notrap noquery</span><br><span class="line">#restrict 2.cn.pool.ntp.org nomodify notrap noquery</span><br><span class="line"></span><br><span class="line">includefile &#x2F;etc&#x2F;ntp&#x2F;crypto&#x2F;pw</span><br><span class="line">keys &#x2F;etc&#x2F;ntp&#x2F;keys</span><br><span class="line">disable monitor</span><br></pre></td></tr></table></figure>
+<h3 id="3-2-软件包安装">3.2 软件包安装</h3>
+<h3 id="修改yum源">修改yum源</h3>
+<p>默认国外的yum源下载速度缓慢，替换为国内阿里云的yum源。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 备份</span><br><span class="line">ansible all -a &quot;mv &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo.backup&quot;</span><br><span class="line"># 下载</span><br><span class="line">ansible all -a &quot;wget -O &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;Centos-7.repo&quot;</span><br><span class="line"># 更新</span><br><span class="line">ansible all -m shell -a &quot;yum clean all &amp;&amp; yum makecache&quot;</span><br><span class="line">ansible all -a &quot;yum -y update&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="系统软件安装">系统软件安装</h3>
+<p>安装后续需要用到的系统软件，以备日后服务器无外网无法下载的情况。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 包括不限于</span><br><span class="line">ansible all -a &quot;yum install -y expect bc net-tools iotop zip unzip telnet wget iperf3 fio ntfs-3g lzo iftop vim&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="JDK与Scala">JDK与Scala</h3>
+<p>Java安装</p>
+<p>JDK下载地址：<a href="https://link.zhihu.com/?target=https%3A//archive.cloudera.com/cm6/">Cloudera Archive CM</a>， 根据对应的cm版本选择下载。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 以jdk1.8示例</span><br><span class="line">ansible all -m copy -a &quot;src&#x3D;&#x2F;tmp&#x2F;oracle-j2sdk1.8 dest&#x3D;&#x2F;tmp&#x2F;oracle-j2sdk1.8&quot;</span><br><span class="line">ansible all -m shell -a &quot;yum localinstall -y oracle-j2sdk1.8 &amp;&amp; ln -s &#x2F;usr&#x2F;java&#x2F;jdk1.8.0_141-cloudera &#x2F;usr&#x2F;java&#x2F;default&quot;</span><br></pre></td></tr></table></figure>
+<p>Scala安装</p>
+<p>下载地址：<a href="https://link.zhihu.com/?target=https%3A//www.scala-lang.org/download/all.html">Scala</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 以2.11.8示例</span><br><span class="line">ansible all -m shell -a &quot;rm -rf &#x2F;usr&#x2F;scala &amp;&amp; mkdir -p &#x2F;usr&#x2F;scala&quot;</span><br><span class="line">cp &#x2F;tmp&#x2F;scala-2.11.8.tgz &#x2F;usr&#x2F;scala</span><br><span class="line">ansible all -m copy -a &quot;src&#x3D;&#x2F;usr&#x2F;scala&#x2F;scala-2.11.8.tgz dest&#x3D;&#x2F;usr&#x2F;scala&#x2F;scala-2.11.8.tgz&quot;</span><br><span class="line">ansible all -m shell -a &quot;cd &#x2F;usr&#x2F;scala &amp;&amp; tar -zxvf scala-2.11.8.tgz &amp;&amp; rm -rf scala-2.11.8.tgz&quot;</span><br></pre></td></tr></table></figure>
+<p>配置环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ansible all -a &quot;echo JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk1.8.0_141-cloudera &gt;&gt; &#x2F;etc&#x2F;profile&quot;</span><br><span class="line">ansible all -a &quot;echo SCALA_HOME&#x3D;&#x2F;usr&#x2F;scala&#x2F;scala-2.11.8 &gt;&gt; &#x2F;etc&#x2F;profile&quot;</span><br><span class="line">ansible all -a &quot;echo CLASSPATH&#x3D;$JAVA_HOME&#x2F;bin:$SCALA_HOME&#x2F;bin &gt;&gt; &#x2F;etc&#x2F;profile&quot;</span><br><span class="line">ansible all -a &quot;echo export PATH&#x3D;$JAVA_HOME:$SCALA_HOME:$CLASSPATH:$PATH &gt;&gt; &#x2F;etc&#x2F;profile&quot;</span><br><span class="line">ansible all -a &quot;source &#x2F;etc&#x2F;profile&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="Python与Python包">Python与Python包</h3>
+<p>Centos7自带python2.7，Centos6自带python2.6需要升级。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python -V</span><br><span class="line"># Python 2.7.5</span><br></pre></td></tr></table></figure>
+<p>安装python3.6</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># 依赖包安装</span><br><span class="line">ansible all -a &quot;yum install -y openssl-devel bzip2-devel expat-devel gdbm-devel readline-devel sqlite-devel gcc-c++ python36-devel cyrus-sasl-lib.x86_64 cyrus-sasl-devel.x86_64 libgsasl-devel.x86_64 epel-release&quot;</span><br><span class="line"># yum源下载</span><br><span class="line">ansible all -a &quot;yum install https:&#x2F;&#x2F;centos7.iuscommunity.org&#x2F;ius-release.rpm -y&quot;</span><br><span class="line"># 安装python3.6</span><br><span class="line">ansible all -a &quot;yum install python36 -y&quot;</span><br><span class="line"># 安装setuptools</span><br><span class="line">ansible all -a &quot;wget -P &#x2F;tmp --no-check-certificate https:&#x2F;&#x2F;pypi.python.org&#x2F;packages&#x2F;source&#x2F;s&#x2F;setuptools&#x2F;setuptools-19.6.tar.gz#md5&#x3D;c607dd118eae682c44ed146367a17e26&quot;</span><br><span class="line">ansible all -a &quot;tar -zxvf &#x2F;tmp&#x2F;setuptools-19.6.tar.gz&quot;</span><br><span class="line">ansible all -m shell -a &quot;cd &#x2F;tmp&#x2F;setuptools-19.6 &amp;&amp; python3.6 setup.py build &amp;&amp; python3.6 setup.py install&quot;</span><br><span class="line"># 安装pip3.6</span><br><span class="line">ansible all -a &quot;wget -P &#x2F;tmp --no-check-certificate https:&#x2F;&#x2F;pypi.python.org&#x2F;packages&#x2F;source&#x2F;p&#x2F;pip&#x2F;pip-8.0.2.tar.gz#md5&#x3D;3a73c4188f8dbad6a1e6f6d44d117eeb&quot;</span><br><span class="line">ansible all -a &quot;tar -zxvf &#x2F;tmp&#x2F;pip-8.0.2.tar.gz&quot;</span><br><span class="line">ansible all -m shell -a &quot;cd &#x2F;tmp&#x2F;pip-8.0.2 &amp;&amp; python3.6 setup.py build &amp;&amp; python3.6 setup.py install&quot;</span><br></pre></td></tr></table></figure>
+<p>修改pip源</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ansible all -a &quot;mkdir ~&#x2F;.pip&quot;</span><br><span class="line">vim ~&#x2F;.pip&#x2F;pip.conf</span><br><span class="line"></span><br><span class="line"># 内容修改如下</span><br><span class="line">[global]</span><br><span class="line">index-url &#x3D; https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple</span><br><span class="line"></span><br><span class="line"># 文件同步</span><br><span class="line">ansibe all -m copy -a &quot;src&#x3D;&#x2F;root&#x2F;.pip&#x2F;pip.conf dest&#x3D;&#x2F;root&#x2F;.pip&#x2F;pip.conf&quot;</span><br><span class="line"></span><br><span class="line"># 更新</span><br><span class="line">ansible all -m shell -a &quot;pip3.6 install --upgrade setuptools &amp;&amp; easy_install-3.6 -U setuptools &amp;&amp; pip3.6 install --upgrade pip&quot;</span><br></pre></td></tr></table></figure>
+<p>安装python所需依赖包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansibe all -m copy -a &quot;src&#x3D;&#x2F;tmp&#x2F;requirements.txt dest&#x3D;&#x2F;tmp&#x2F;requirements.txt&quot;</span><br><span class="line">ansible all -a &quot;pip3.6 install -r &#x2F;tmp&#x2F;requirements.txt&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="3-3-其他系统设置">3.3 其他系统设置</h3>
+<h3 id="中文乱码">中文乱码</h3>
+<p>安装操作系统时选择了中文语言，使用时发现部分中文会有乱码的情况，解决方案如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;locale.conf</span><br><span class="line"># 内容</span><br><span class="line">LANG&#x3D;zh_CN.UTF-8</span><br><span class="line">LC_CTYPE&#x3D;zh_CN.UTF-8</span><br><span class="line">LC_NUMERIC&#x3D;&quot;zh_CN.UTF-8&quot;</span><br><span class="line">LC_TIME&#x3D;&quot;zh_CN.UTF-8&quot;</span><br><span class="line">LC_COLLATE&#x3D;&quot;zh_CN.UTF-8&quot;</span><br><span class="line">LC_MONETARY&#x3D;&quot;zh_CN.UTF-8&quot;</span><br><span class="line">LC_MESSAGES&#x3D;&quot;zh_CN.UTF-8&quot;</span><br><span class="line">LC_PAPER&#x3D;&quot;zh_CN.UTF-8&quot;</span><br><span class="line">LC_NAME&#x3D;&quot;zh_CN.UTF-8&quot;</span><br><span class="line">LC_ADDRESS&#x3D;&quot;zh_CN.UTF-8&quot;</span><br><span class="line">LC_TELEPHONE&#x3D;&quot;zh_CN.UTF-8&quot;</span><br><span class="line">LC_MEASUREMENT&#x3D;&quot;zh_CN.UTF-8&quot;</span><br><span class="line">LC_IDENTIFICATION&#x3D;&quot;zh_CN.UTF-8&quot;</span><br><span class="line">LC_ALL&#x3D;</span><br><span class="line"></span><br><span class="line"># 更新</span><br><span class="line">ansible all -m copy -a &quot;src&#x3D;&#x2F;etc&#x2F;locale.conf dest&#x3D;&#x2F;etc&#x2F;locale.conf&quot;</span><br><span class="line">ansible all -a &quot;source &#x2F;etc&#x2F;locale.conf&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="tuned">tuned</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ansible all -a &quot;systemctl start tuned&quot;</span><br><span class="line">ansible all -a &quot;systemctl status tuned&quot;</span><br><span class="line"># 显示No current active profile</span><br><span class="line">ansible all -a &quot;tuned-adm off&quot;</span><br><span class="line">ansible all -a &quot;tuned-adm list&quot;</span><br><span class="line"># 关闭tuned服务</span><br><span class="line">ansible all -a &quot;systemctl stop tuned&quot;</span><br><span class="line">ansible all -a &quot;systemctl disable tuned&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="大页面关闭">大页面关闭</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># 输出[always] never意味着THP已启用，always [never]意味着THP未启用</span><br><span class="line">ansible all -a &quot;cat &#x2F;sys&#x2F;kernel&#x2F;mm&#x2F;transparent_hugepage&#x2F;enabled&quot;</span><br><span class="line">ansible all -a &quot;cat &#x2F;sys&#x2F;kernel&#x2F;mm&#x2F;transparent_hugepage&#x2F;defrag&quot;</span><br><span class="line"></span><br><span class="line"># 关闭</span><br><span class="line">ansible all -m shell -a &quot;echo never &gt; &#x2F;sys&#x2F;kernel&#x2F;mm&#x2F;transparent_hugepage&#x2F;enabled&quot;</span><br><span class="line">ansible all -m shell -a &quot;echo never &gt; &#x2F;sys&#x2F;kernel&#x2F;mm&#x2F;transparent_hugepage&#x2F;defrag&quot;</span><br><span class="line"># 设置开机关闭</span><br><span class="line">echo &quot;echo never &gt; &#x2F;sys&#x2F;kernel&#x2F;mm&#x2F;transparent_hugepage&#x2F;defrag&quot; &gt;&gt; &#x2F;etc&#x2F;rc.local</span><br><span class="line">echo &quot;echo never &gt; &#x2F;sys&#x2F;kernel&#x2F;mm&#x2F;transparent_hugepage&#x2F;enabled&quot; &gt;&gt; &#x2F;etc&#x2F;rc.local</span><br><span class="line">chmod +x &#x2F;etc&#x2F;rc.d&#x2F;rc.local</span><br><span class="line"></span><br><span class="line"># 在GRUB_CMDLINE_LINUX项目后面添加一个参数：transparent_hugepage&#x3D;never</span><br><span class="line">vim &#x2F;etc&#x2F;default&#x2F;grub</span><br><span class="line">ansile all -m copy -a &quot;src&#x3D;&#x2F;etc&#x2F;default&#x2F;grub dest&#x3D;&#x2F;etc&#x2F;default&#x2F;grub&quot;</span><br><span class="line"># 重新生成gurb.cfg文件</span><br><span class="line">ansible all -a &quot;grub2-mkconfig -o &#x2F;boot&#x2F;grub2&#x2F;grub.cfg&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="swappiness">swappiness</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ansible all -a &quot;cat &#x2F;proc&#x2F;sys&#x2F;vm&#x2F;swappiness&quot;</span><br><span class="line">ansible all -a &quot;sysctl -w vm.swappiness&#x3D;1&quot;</span><br><span class="line">echo &quot;vm.swappiness&#x3D;1&quot; &gt;&gt; &#x2F;etc&#x2F;sysctl.conf</span><br><span class="line">ansible all -m copy -a &quot;src&#x3D;&#x2F;etc&#x2F;sysctl.conf dest&#x3D;&#x2F;etc&#x2F;sysctl.conf&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="会话超时">会话超时</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;TMOUT&#x3D;900&quot;&gt;&gt;&#x2F;etc&#x2F;profile</span><br></pre></td></tr></table></figure>
+<h3 id="内核优化">内核优化</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">echo -e &quot;\nnet.ipv4.tcp_tw_reuse &#x3D; 1</span><br><span class="line">\nnet.ipv4.tcp_tw_recycle &#x3D; 1</span><br><span class="line">\nnet.ipv4.tcp_keepalive_time &#x3D; 1200</span><br><span class="line">\nnet.ipv4.ip_local_port_range &#x3D; 10000 65000</span><br><span class="line">\nnet.ipv4.tcp_max_syn_backlog &#x3D; 8192</span><br><span class="line">\nnet.ipv4.tcp_max_tw_buckets &#x3D; 5000</span><br><span class="line">\nfs.file-max &#x3D; 655350</span><br><span class="line">\nnet.ipv4.route.gc_timeout &#x3D; 100</span><br><span class="line">\nnet.ipv4.tcp_syn_retries &#x3D; 1</span><br><span class="line">\nnet.ipv4.tcp_synack_retries &#x3D; 1</span><br><span class="line">\nnet.core.netdev_max_backlog &#x3D; 16384</span><br><span class="line">\nnet.ipv4.tcp_max_orphans &#x3D; 16384</span><br><span class="line">\nnet.ipv4.tcp_fin_timeout &#x3D; 2</span><br><span class="line">\net.core.somaxconn&#x3D;32768</span><br><span class="line">\kernel.threads-max&#x3D;196605</span><br><span class="line">\kernel.pid_max&#x3D;196605</span><br><span class="line">\vm.max_map_count&#x3D;393210&quot;  &gt;&gt; &#x2F;etc&#x2F;sysctl.conf</span><br></pre></td></tr></table></figure>
+<h3 id="最大打开文件数">最大打开文件数</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ulimit -a</span><br><span class="line">sed -i &#39;$ a\* soft nofile 196605&#39; &#x2F;etc&#x2F;security&#x2F;limits.conf</span><br><span class="line">sed -i &#39;$ a\* hard nofile 196605&#39; &#x2F;etc&#x2F;security&#x2F;limits.conf</span><br><span class="line">echo &quot;* soft nproc 196605&quot; &gt;&gt; &#x2F;etc&#x2F;security&#x2F;limits.conf</span><br><span class="line">echo &quot;* hard nproc 196605&quot; &gt;&gt; &#x2F;etc&#x2F;security&#x2F;limits.conf</span><br></pre></td></tr></table></figure>
+<h3 id="3-4-系统性能测试">3.4 系统性能测试</h3>
+<h3 id="网络测试">网络测试</h3>
+<p>使用iperf测试主机之间的网络传输效率。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 在一个主机上启动iperf 服务端</span><br><span class="line">iperf3 -s -p 12345 -i 1</span><br><span class="line"># 另外一个主机启动iperf 客户端连接服务端</span><br><span class="line">iperf3 -c cdh85-19 -p 12345 -i 1 -t 10 -w 100K</span><br></pre></td></tr></table></figure>
+<h3 id="磁盘IO测试">磁盘IO测试</h3>
+<p>使用fio工具对io进行各个场景的读写性能测试。</p>
+<p><strong>随机读</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fio -filename&#x3D;&#x2F;dev&#x2F;sda -direct&#x3D;1 -iodepth 1 -thread -rw&#x3D;randread -ioengine&#x3D;psync -bs&#x3D;4k -size&#x3D;60G -numjobs&#x3D;64 -runtime&#x3D;10 -group_reporting -name&#x3D;file -allow_mounted_write&#x3D;1</span><br></pre></td></tr></table></figure>
+<p><strong>顺序读</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fio -filename&#x3D;&#x2F;dev&#x2F;sda -direct&#x3D;1 -iodepth 1 -thread -rw&#x3D;read -ioengine&#x3D;psync -bs&#x3D;4k -size&#x3D;60G -numjobs&#x3D;64 -runtime&#x3D;10 -group_reporting -name&#x3D;file -allow_mounted_write&#x3D;1</span><br></pre></td></tr></table></figure>
+<p><strong>随机写</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fio -filename&#x3D;&#x2F;dev&#x2F;sda -direct&#x3D;1 -iodepth 1 -thread -rw&#x3D;randwrite -ioengine&#x3D;psync -bs&#x3D;4k -size&#x3D;60G -numjobs&#x3D;64 -runtime&#x3D;10 -group_reporting -name&#x3D;file -allow_mounted_write&#x3D;1</span><br></pre></td></tr></table></figure>
+<p><strong>顺序写</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fio -filename&#x3D;&#x2F;dev&#x2F;sda -direct&#x3D;1 -iodepth 1 -thread -rw&#x3D;write -ioengine&#x3D;psync -bs&#x3D;4k -size&#x3D;60G -numjobs&#x3D;64 -runtime&#x3D;10 -group_reporting -name&#x3D;file -allow_mounted_write&#x3D;1</span><br></pre></td></tr></table></figure>
+<p><strong>混合随机读写</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fio -filename&#x3D;&#x2F;dev&#x2F;sda -direct&#x3D;1 -iodepth 1 -thread -rw&#x3D;randrw -rwmixread&#x3D;30 -ioengine&#x3D;psync -bs&#x3D;4k -size&#x3D;60G -numjobs&#x3D;64 -runtime&#x3D;10 -group_reporting -name&#x3D;file -ioscheduler&#x3D;noop -allow_mounted_write&#x3D;1</span><br></pre></td></tr></table></figure>
+<p>todo:</p>
+<ul>
+<li>内存性能测试</li>
+<li>操作系统性能测试</li>
+</ul>
+<h3 id="3-5-MySQL数据库">3.5 MySQL数据库</h3>
+<p>卸载已有mariadb数据库。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa|grep -i mariadb</span><br><span class="line">rpm -e mariadb-libs-5.5.60-1.el7_5.x86_64 --nodeps</span><br></pre></td></tr></table></figure>
+<p>下载mysql安装包。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># mysql官网下载bundle安装包并上传至服务器</span><br><span class="line"></span><br><span class="line"># 安装</span><br><span class="line">rpm -ivh &#x2F;tmp&#x2F;mysql-community-common-5.7.20-1.el7.x86_64.rpm</span><br><span class="line">rpm -ivh &#x2F;tmp&#x2F;mysql-community-libs-5.7.20-1.el7.x86_64.rpm</span><br><span class="line">rpm -ivh &#x2F;tmp&#x2F;mysql-community-client-5.7.20-1.el7.x86_64.rpm</span><br><span class="line">rpm -ivh &#x2F;tmp&#x2F;mysql-community-server-5.7.20-1.el7.x86_64.rpm</span><br></pre></td></tr></table></figure>
+<p>创建MySQL数据目录（非默认盘）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p &#x2F;opt&#x2F;mysql&#x2F;data</span><br></pre></td></tr></table></figure>
+<p>修改mysql配置文件内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;my.conf</span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line"># datadir修改为&#x2F;opt&#x2F;mysql&#x2F;data</span><br><span class="line">datadir&#x3D;&#x2F;opt&#x2F;mysql&#x2F;data</span><br><span class="line">socket&#x3D;&#x2F;var&#x2F;lib&#x2F;mysql&#x2F;mysql.sock</span><br><span class="line"></span><br><span class="line"># set the isolation level to READ-COMMITTED</span><br><span class="line">transaction-isolation &#x3D; READ-COMMITTED</span><br><span class="line"></span><br><span class="line"># Disabling symbolic-links is recommended to prevent assorted security risks;</span><br><span class="line"># to do so, uncomment this line:</span><br><span class="line">symbolic-links &#x3D; 0</span><br><span class="line"></span><br><span class="line">key_buffer_size &#x3D; 32M</span><br><span class="line">max_allowed_packet &#x3D; 32M</span><br><span class="line">thread_stack &#x3D; 256K</span><br><span class="line">thread_cache_size &#x3D; 64</span><br><span class="line">query_cache_limit &#x3D; 8M</span><br><span class="line">query_cache_size &#x3D; 64M</span><br><span class="line">query_cache_type &#x3D; 1</span><br><span class="line"></span><br><span class="line"># max_connections - Allow 100 maximum connections for each database and then add 50 extra connections. </span><br><span class="line">max_connections &#x3D; 550</span><br><span class="line">#expire_logs_days &#x3D; 10</span><br><span class="line">#max_binlog_size &#x3D; 100M</span><br><span class="line"></span><br><span class="line">#log_bin should be on a disk with enough free space.</span><br><span class="line">#Replace &#39;&#x2F;var&#x2F;lib&#x2F;mysql&#x2F;mysql_binary_log&#39; with an appropriate path for your</span><br><span class="line">#system and chown the specified folder to the mysql user.</span><br><span class="line"># 修改binlog存储路径</span><br><span class="line">log_bin&#x3D;&#x2F;opt&#x2F;mysql&#x2F;binlog&#x2F;mysql_binary_log</span><br><span class="line"></span><br><span class="line">#In later versions of MySQL, if you enable the binary log and do not set</span><br><span class="line">#a server_id, MySQL will not start. The server_id must be unique within</span><br><span class="line">#the replicating group.</span><br><span class="line">server_id&#x3D;1</span><br><span class="line"></span><br><span class="line">binlog_format &#x3D; mixed</span><br><span class="line"></span><br><span class="line">read_buffer_size &#x3D; 2M</span><br><span class="line">read_rnd_buffer_size &#x3D; 16M</span><br><span class="line">sort_buffer_size &#x3D; 8M</span><br><span class="line">join_buffer_size &#x3D; 8M</span><br><span class="line"></span><br><span class="line"># InnoDB settings</span><br><span class="line">innodb_file_per_table &#x3D; 1</span><br><span class="line">innodb_flush_log_at_trx_commit  &#x3D; 2</span><br><span class="line">innodb_log_buffer_size &#x3D; 64M</span><br><span class="line">innodb_buffer_pool_size &#x3D; 4G</span><br><span class="line">innodb_thread_concurrency &#x3D; 8</span><br><span class="line"># set the innodb_flush_method property to O_DIRECT.</span><br><span class="line">innodb_flush_method &#x3D; O_DIRECT</span><br><span class="line">innodb_log_file_size &#x3D; 512M</span><br><span class="line"></span><br><span class="line">[mysqld_safe]</span><br><span class="line">log-error&#x3D;&#x2F;var&#x2F;log&#x2F;mysqld.log</span><br><span class="line">pid-file&#x3D;&#x2F;var&#x2F;run&#x2F;mysqld&#x2F;mysqld.pid</span><br><span class="line"></span><br><span class="line">sql_mode&#x3D;STRICT_ALL_TABLES</span><br></pre></td></tr></table></figure>
+<p>备份文件logfile文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp &#x2F;var&#x2F;lib&#x2F;mysql&#x2F;ib_logfile0 &#x2F;tmp&#x2F;hadoop&#x2F;ib_logfile0.ba</span><br><span class="line">cp &#x2F;var&#x2F;lib&#x2F;mysql&#x2F;ib_logfile1 &#x2F;tmp&#x2F;hadoop&#x2F;ib_logfile1.ba</span><br></pre></td></tr></table></figure>
+<p>安装mysql驱动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 官网下载mysql驱动并上传至服务器</span><br><span class="line"># Installing the MySQL JDBC Driver</span><br><span class="line">tar zxvf &#x2F;tmp&#x2F;mysql-connector-java-5.1.46.tar.gz</span><br><span class="line"></span><br><span class="line">ansible all -a &quot;mkdir -p &#x2F;usr&#x2F;share&#x2F;java&#x2F;&quot;</span><br><span class="line"># 注意去掉版本号，否则cm无法使用</span><br><span class="line">ansible all -m copy -a &quot;src&#x3D;&#x2F;tmp&#x2F;mysql-connector-java-5.1.46&#x2F;mysql-connector-java-5.1.46-bin.jar &#x2F;usr&#x2F;share&#x2F;java&#x2F;usr&#x2F;share&#x2F;java&#x2F;mysql-connector-java.jar&quot;</span><br><span class="line">rm -rf &#x2F;tmp&#x2F;mysql-connector-java-5.1.46*</span><br></pre></td></tr></table></figure>
+<p>启动mysql服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl start mysqld</span><br><span class="line">systemctl status mysqld</span><br><span class="line">systemctl enable mysqld</span><br></pre></td></tr></table></figure>
+<p>设置mysql账号密码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 初始密码</span><br><span class="line">grep &quot;temporary password&quot; &#x2F;var&#x2F;log&#x2F;mysqld.log</span><br><span class="line"># 重置</span><br><span class="line">&#x2F;usr&#x2F;bin&#x2F;mysql_secure_installation</span><br></pre></td></tr></table></figure>
+<p>mysql5.7以上强制密码策略不满足可以通过以下方式修改：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 默认1，中等强度策略</span><br><span class="line">mysql -u root -p&quot;$init_passwd&quot; --connect-expired-password -e &quot;set global validate_password_policy&#x3D;0&quot;</span><br><span class="line"># 默认8长度</span><br><span class="line">mysql -u root -p&quot;$init_passwd&quot; --connect-expired-password -e &quot;set global validate_password_length&#x3D;1&quot;</span><br></pre></td></tr></table></figure>
+<p>进入mysql并创建数据库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p</span><br><span class="line"></span><br><span class="line"># Configure the Cloudera Manager Server, Activity Monitor, Reports Manager, Cloudera Navigator Audit Server, and Cloudera Navigator Metadata Server databases to support the utf8mb4 character set encoding.</span><br><span class="line"># Configure all other databases to use the utf8 character set.</span><br><span class="line">CREATE DATABASE scm DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;</span><br><span class="line">GRANT ALL ON scm.* TO &#39;scm&#39;@&#39;%&#39; IDENTIFIED BY &#39;scm@DW&#39;;</span><br><span class="line">CREATE DATABASE amon DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;</span><br><span class="line">GRANT ALL ON amon.* TO &#39;amon&#39;@&#39;%&#39; IDENTIFIED BY &#39;amon@DW&#39;;</span><br><span class="line">CREATE DATABASE rman DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;</span><br><span class="line">GRANT ALL ON rman.* TO &#39;rman&#39;@&#39;%&#39; IDENTIFIED BY &#39;rman@DW&#39;;</span><br><span class="line">CREATE DATABASE hue DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;</span><br><span class="line">GRANT ALL ON hue.* TO &#39;hue&#39;@&#39;%&#39; IDENTIFIED BY &#39;hue@DW&#39;;</span><br><span class="line">CREATE DATABASE metastore DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;</span><br><span class="line">GRANT ALL ON metastore.* TO &#39;hive&#39;@&#39;%&#39; IDENTIFIED BY &#39;hive@DW&#39;;</span><br><span class="line">CREATE DATABASE sentry DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;</span><br><span class="line">GRANT ALL ON sentry.* TO &#39;sentry&#39;@&#39;%&#39; IDENTIFIED BY &#39;sentry@DW&#39;;</span><br><span class="line">CREATE DATABASE nav DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;</span><br><span class="line">GRANT ALL ON nav.* TO &#39;nav&#39;@&#39;%&#39; IDENTIFIED BY &#39;nav@DW&#39;;</span><br><span class="line">CREATE DATABASE navms DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;</span><br><span class="line">GRANT ALL ON navms.* TO &#39;navms&#39;@&#39;%&#39; IDENTIFIED BY &#39;navms@DW&#39;;</span><br><span class="line">CREATE DATABASE oozie DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;</span><br><span class="line">GRANT ALL ON oozie.* TO &#39;oozie&#39;@&#39;%&#39; IDENTIFIED BY &#39;oozie@DW&#39;;</span><br><span class="line">SHOW DATABASES;</span><br></pre></td></tr></table></figure>
+<p><strong>注意事项：</strong></p>
+<p>在大型集群中Activity Monitor 与 Service Monitor 使用的数据库应该分配不同的磁盘卷来进行读写。</p>
+<p>在超过50个节点的集群中，不要将所有服务的数据库装在一个节点中，否则该节点的数据库压力会很大。最好能为每个服务配置不同位于不同节点上的数据库。</p>
+<p>不需要使用专门的数据库服务器，但是每个服务的数据库应该分散在不同的节点上。</p>
+<p>如果集群节点超过1000个，将mysql的max_allowed_packet值设置为16M。</p>
+<p>For MySQL 5.6 and 5.7, you must install the MySQL-shared-compat or MySQL-shared package. This is required for the Cloudera Manager Agent package installation.</p>
+<h3 id="3-6-安装Cloudera-Manager服务">3.6 安装Cloudera Manager服务</h3>
+<p>本次过程<strong>不启用auto-ssl。</strong></p>
+<h3 id="安装CM软件包">安装CM软件包</h3>
+<p>创建免密root权限用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;sudoers</span><br><span class="line">cloudera-scm    ALL&#x3D;(ALL)    NOPASSWD:ALL </span><br><span class="line"></span><br><span class="line"># 同步</span><br><span class="line">ansible except1 -m copy -a &quot;src&#x3D;&#x2F;etc&#x2F;sudoers dest&#x3D;&#x2F;etc&#x2F;sudoers&quot;</span><br></pre></td></tr></table></figure>
+<p>从 <a href="https://link.zhihu.com/?target=https%3A//archive.cloudera.com/cm6/">这里</a> 下载rpm离线安装包，所需文件及软件列表如下（以6.1版本为例）：</p>
+<ul>
+<li>allkeys.asc</li>
+<li>cloudera-manager.repo</li>
+<li>oracle-j2sdk1.8-1.8.0+update181-1.x86_64.rpm</li>
+<li>cloudera-manager-server-db-2-6.1.0-853290.el7.x86_64.rpm</li>
+<li>cloudera-manager-server-6.1.0-853290.el7.x86_64.rpm</li>
+<li>cloudera-manager-daemons-6.1.0-853290.el7.x86_64.rpm</li>
+<li>cloudera-manager-agent-6.1.0-853290.el7.x86_64.rpm</li>
+</ul>
+<p>上传并安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 主节点安装所有服务</span><br><span class="line">rpm -ivh --force --nodeps &#x2F;tmp&#x2F;cm&#x2F;*.rpm</span><br><span class="line"># 子节点安装daemons和agent</span><br><span class="line">rpm -ivh --force --nodeps &#x2F;tmp&#x2F;cm&#x2F;daemons*.rpm</span><br><span class="line">rpm -ivh --force --nodeps &#x2F;tmp&#x2F;cm&#x2F;agent*.rpm</span><br></pre></td></tr></table></figure>
+<p><strong>附：yum方式安装</strong></p>
+<p>安装yum源</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ansible all -m copy -a &quot;src&#x3D;&#x2F;tmp&#x2F;cm&#x2F;cloudera-manager.repo dest&#x3D;&#x2F;etc&#x2F;yum.repos.d&quot;</span><br><span class="line">ansible all -m shell -a &quot;yum clean all &amp;&amp; yum makecache&quot;</span><br><span class="line"></span><br><span class="line"># 将会下载很多依赖包，需要联网</span><br><span class="line">ansible all -m shell -a &quot;yum localinstall cloudera-manager-daemons-6.1.0-769885.el7.x86_64.rpm cloudera-manager-agent-6.1.0-769885.el7.x86_64.rpm cloudera-manager-server-6.1.0-769885.el7.x86_64.rpm&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="CDH-parcel包">CDH parcel包</h3>
+<p>在线安装耗时太长且不稳定，本次只考虑离线安装方式。</p>
+<p>从 <a href="https://link.zhihu.com/?target=https%3A//archive.cloudera.com/cdh6/">这里</a> 下载以下文件及软件：</p>
+<ul>
+<li>manifest.json</li>
+<li>CDH-6.1.0-1.cdh6.1.0.p0.770702-el7.parcel</li>
+</ul>
+<p>创建安装路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p &#x2F;opt&#x2F;cloudera&#x2F;parcel-repo</span><br><span class="line">mv &#x2F;tmp&#x2F;cm&#x2F;CDH-6.1.0-1.cdh6.1.0.p0.770702-el7.parcel &#x2F;opt&#x2F;cloudera&#x2F;parcel-repo</span><br><span class="line">mv &#x2F;tmp&#x2F;cm&#x2F;manifest.json &#x2F;opt&#x2F;cloudera&#x2F;parcel-repo</span><br><span class="line"># 创建签名文件</span><br><span class="line">cd &#x2F;opt&#x2F;cloudera&#x2F;parcel-repo &amp;&amp; sha1sum CDH-6.1.0-1.cdh6.1.0.p0.770702-el7.parcel | awk &#39;&#123; print $1 &#125;&#39; &gt; CDH-6.1.0-1.cdh6.1.0.p0.770702-el7.parcel.sha</span><br></pre></td></tr></table></figure>
+<h3 id="初始化Cloudera-Manager">初始化Cloudera Manager</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># cm数据库配置</span><br><span class="line">cat &#x2F;etc&#x2F;cloudera-scm-server&#x2F;db.properties</span><br><span class="line"># 初始化数据库</span><br><span class="line">&#x2F;opt&#x2F;cloudera&#x2F;cm&#x2F;schema&#x2F;scm_prepare_database.sh -h cdh2-3 mysql scm scm</span><br><span class="line"># 启动server</span><br><span class="line">systemctl start cloudera-scm-server</span><br><span class="line"># 查看日志</span><br><span class="line">tail -f &#x2F;var&#x2F;log&#x2F;cloudera-scm-server&#x2F;cloudera-scm-server.log</span><br><span class="line"></span><br><span class="line"># 各个节点上启动agent</span><br><span class="line">ansible all -a &quot;systemctl start cloudera-scm-agent&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="3-7-附：卸载Cloudera-Manager服务">3.7 附：卸载Cloudera Manager服务</h3>
+<p>删除mysql数据库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">drop database scm;</span><br><span class="line">drop database amon;</span><br><span class="line">drop database rman;</span><br><span class="line">drop database hue;</span><br><span class="line">drop database metastore;</span><br><span class="line">drop database sentry;</span><br><span class="line">drop database nav;</span><br><span class="line">drop database navms;</span><br><span class="line">drop database oozie;</span><br></pre></td></tr></table></figure>
+<p>卸载软件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ansible all -a &quot;yum -y remove cloudera-manager-*&quot;</span><br><span class="line">ansible all -a &quot;umount &#x2F;var&#x2F;run&#x2F;cloudera-scm-agent&#x2F;process&quot;</span><br><span class="line"># 删除数据目录</span><br><span class="line">ansible all -a &quot;rm -Rf &#x2F;var&#x2F;lib&#x2F;cloudera* &#x2F;var&#x2F;log&#x2F;cloudera* &#x2F;var&#x2F;run&#x2F;cloudera* &#x2F;etc&#x2F;cloudera* &#x2F;tmp&#x2F;.scm_prepare_node.lock&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="四、CDH组件部署">四、CDH组件部署</h2>
+<h3 id="4-1-界面安装">4.1 界面安装</h3>
+<p>进入Web界面，根据节点角色划分安装CDH组件，并启动集群。</p>
+<p>正常启动集群后需要根据业务与应用场景对各个组件的配置属性进行调优工作。</p>
+<h3 id="4-2-组件配置调优">4.2 组件配置调优</h3>
+<p>如果对组件配置调优无从下手，可以参考以下配置的调整。</p>
+<h3 id="HBase">HBase</h3>
+<p>根据使用的业务场景不同，HBase配置优化选项有很大的差异。</p>
+<p>有关HBase的性能、配置优化与配置项计算说明可以参考：<a href="https://zhuanlan.zhihu.com/p/72150364" target="_blank" rel="noopener">HBase最佳实践</a> - 「性能优化」小节。</p>
+<h3 id="Yarn">Yarn</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"># 开启压缩</span><br><span class="line">mapreduce.output.fileoutputformat.compress&#x3D;已启用</span><br><span class="line">mapreduce.output.fileoutputformat.compress.type&#x3D;BLOCK</span><br><span class="line">mapreduce.output.fileoutputformat.compress.codec&#x3D;org.apache.hadoop.io.compress.SnappyCodec</span><br><span class="line">mapreduce.map.output.compress.codec&#x3D;org.apache.hadoop.io.compress.SnappyCodec</span><br><span class="line">mapreduce.map.output.compress&#x3D;已启用</span><br><span class="line">zlib.compress.level&#x3D;DEFAULT_COMPRESSION</span><br><span class="line"></span><br><span class="line"># 设置资源队列</span><br><span class="line">yarn.nodemanager.resource.memory-mb：每台主机上能够被Yarn使用的内存大小</span><br><span class="line">yarn.app.mapreduce.am.resource.cpu-vcores：每台主机上能够被Yarn使用的CPU核心数</span><br><span class="line">yarn.scheduler.minimum-allocation-mb：Container最小申请的内存大小</span><br><span class="line">yarn.scheduler.maximum-allocation-mb：Container最大可申请的内存大小</span><br><span class="line"></span><br><span class="line"># Service Monitor 客户端配置替代</span><br><span class="line">&lt;property&gt;&lt;name&gt;mapreduce.output.fileoutputformat.compress&lt;&#x2F;name&gt;&lt;value&gt;true&lt;&#x2F;value&gt;&lt;&#x2F;property&gt;&lt;property&gt;&lt;name&gt;mapreduce.output.fileoutputformat.compress.codec&lt;&#x2F;name&gt;&lt;value&gt;org.apache.hadoop.io.compress.SnappyCodec&lt;&#x2F;value&gt;&lt;&#x2F;property&gt;&lt;property&gt;&lt;name&gt;io.compression.codecs&lt;&#x2F;name&gt;&lt;value&gt;org.apache.hadoop.io.compress.DefaultCodec,org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.BZip2Codec,org.apache.hadoop.io.compress.DeflateCodec,org.apache.hadoop.io.compress.SnappyCodec,org.apache.hadoop.io.compress.Lz4Codec&lt;&#x2F;value&gt;&lt;&#x2F;property&gt;</span><br><span class="line"></span><br><span class="line"># YARN 服务 MapReduce 高级配置代码段（安全阀）</span><br><span class="line">&lt;property&gt;&lt;name&gt;mapreduce.map.output.compress&lt;&#x2F;name&gt;&lt;value&gt;true&lt;&#x2F;value&gt;&lt;&#x2F;property&gt;&lt;property&gt;&lt;name&gt;mapred.map.output.compress.codec&lt;&#x2F;name&gt;&lt;value&gt;org.apache.hadoop.io.compress.SnappyCodec&lt;&#x2F;value&gt;&lt;&#x2F;property&gt;</span><br><span class="line"></span><br><span class="line"># 以上用户需要包含在yarn acl控制的用户中，最好和hue超级用户一致（可以直接访问hdfs页面的路径，但是允许所有人访问，有风险）</span><br><span class="line">&lt;property&gt;&lt;name&gt;hadoop.http.staticuser.user&lt;&#x2F;name&gt;&lt;value&gt;yarn&lt;&#x2F;value&gt;&lt;&#x2F;property&gt;</span><br></pre></td></tr></table></figure>
+<p>资源行管参数细节解释说明：</p>
+<ul>
+<li>AM参数mapreduce.map.memory.mb=1536MB，表示AM要为map Container申请1536MB资源，但RM实际分配的内存却是2048MB，因为yarn.scheduler.mininum-allocation-mb=1024MB，这定义了RM最小要分配1024MB，1536MB超过了这个值，所以实际分配给AM的值为2048MB。</li>
+<li>AM参数mapreduce.map.java.opts=-Xmx 1024m，表示运行map任务的jvm内存为1024MB,因为map任务要运行在Container里面，所以这个参数的值略微小于mapreduce.map.memory.mb=1536MB这个值。</li>
+<li>NM参数yarn.nodemanager.vmem-pmem-radio=2.1,这表示NodeManager可以分配给map/reduce Container 2.1倍的虚拟内存，安照上面的配置，实际分配给map Container容器的虚拟内存大小为2048 * 2.1=3225.6MB，若实际用到的内存超过这个值，NM就会kill掉这个map Container,任务执行过程就会出现异常。</li>
+<li>AM参数mapreduce.reduce.memory.mb=3072MB，表示分配给reduce Container的容器大小为3072MB,而map Container的大小分配的是1536MB，从这也看出，reduce Container容器的大小最好是map Container大小的两倍。</li>
+<li>NM参数yarn.nodemanager.resource.mem.mb=24576MB,这个值表示节点分配给NodeManager的可用内存，也就是节点用来执行yarn任务的内存大小。这个值要根据实际服务器内存大小来配置，比如我们hadoop集群机器内存是128GB，我们可以分配其中的80%给yarn，也就是102GB。</li>
+</ul>
+<p><strong>Yarn动态资源队列设置</strong></p>
+<p>在Cloudera Manager界面点击集群选项卡，进入动态资源池配置，设置任务队列、队列资源、访问控制等信息。</p>
+<h3 id="Spark">Spark</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># spark-conf&#x2F;spark-defaults.conf 的 Spark 客户端高级配置代码段（安全阀）</span><br><span class="line">spark.driver.extraJavaOptions&#x3D;-Dfile.encoding&#x3D;UTF-8</span><br><span class="line">spark.executor.extraJavaOptions&#x3D;-Dfile.encoding&#x3D;UTF-8</span><br><span class="line">spark.hadoop.mapred.output.compress&#x3D;true</span><br><span class="line">spark.hadoop.mapred.output.compression.codec&#x3D;org.apache.hadoop.io.compress.SnappyCodec</span><br><span class="line">spark.hadoop.mapred.output.compression.type&#x3D;BLOCK</span><br><span class="line"></span><br><span class="line"># 修改spark默认的python版本</span><br><span class="line"># spark2-conf&#x2F;spark-env.sh 的 Spark 2 客户端高级配置代码段（安全阀）</span><br><span class="line">PYSPARK_PYTHON&#x3D;&#x2F;usr&#x2F;bin&#x2F;python3.6</span><br><span class="line"># spark-shell或者spark-submit使用</span><br><span class="line">spark.pyspark.python</span><br></pre></td></tr></table></figure>
+<h3 id="hdfs">hdfs</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 压缩设置</span><br><span class="line">io.compression.codecs&#x3D;org.apache.hadoop.io.compress.DefaultCodec,org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.BZip2Codec,org.apache.hadoop.io.compress.DeflateCodec,org.apache.hadoop.io.compress.SnappyCodec,org.apache.hadoop.io.compress.Lz4Codec</span><br><span class="line"></span><br><span class="line"># 存量数据导入后可进行rebalance操作</span><br><span class="line">sudo -u hdfs hadoop balancer -threshold 10 -policy datanode</span><br><span class="line"></span><br><span class="line"># 启用HA</span><br><span class="line"># HDFS服务配置中开启HA设置</span><br></pre></td></tr></table></figure>
+<h3 id="Impala">Impala</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># hue启用impala</span><br><span class="line"></span><br><span class="line">hue_safety_value.ini</span><br><span class="line">[impala]</span><br><span class="line">server_host&#x3D;</span><br><span class="line">server_port&#x3D;</span><br><span class="line"></span><br><span class="line"># hue管理用户勾选组的impala权限</span><br></pre></td></tr></table></figure>
+<h3 id="Kafka">Kafka</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># kafka默认分区数修改为8</span><br><span class="line">num.partitions&#x3D;8</span><br></pre></td></tr></table></figure>
+<h3 id="使用Sentry进行权限管理">使用Sentry进行权限管理</h3>
+<p>Hue、Hive启用Sentry设置：</p>
+<ul>
+<li>hue开启sentry服务</li>
+<li>hive 启用数据库中的存储通知</li>
+<li>hue添加hue用户组和用户，超级管理权限</li>
+<li>security添加super role给hue组，所有权限</li>
+</ul>
+<p>添加普通用户流程：</p>
+<ul>
+<li>linux添加用户和用户组</li>
+<li>hue添加用户和用户组</li>
+<li>security添加role给到组</li>
+</ul>
+<p><strong>建议结合LDAP进行账号体系管理。</strong></p>
+<h3 id="4-3-其他配置">4.3 其他配置</h3>
+<h3 id="CM集群警报配置">CM集群警报配置</h3>
+<p>进入Cloudera Manager Service配置界面，搜索alert对邮件警报进行配置。</p>
+<ul>
+<li>启用电子邮件警报</li>
+<li>邮件服务器协议：smtp</li>
+<li>邮箱服务器主机名称：邮箱服务器地址</li>
+<li>邮箱服务器用户名：邮箱登录用户名</li>
+<li>邮箱服务器密码：邮箱登录用户密码</li>
+<li>邮件发件人地址：同登录用户名</li>
+<li>邮件收件人地址：多个使用逗号隔开</li>
+</ul>
+<h3 id="使用hdfs纠错码">使用hdfs纠错码</h3>
+<p>HDFS纠错码参考 <a href="https://link.zhihu.com/?target=https%3A//cloud.tencent.com/developer/article/1363393">这里</a>。</p>
+<h3 id="4-4-集群性能测试">4.4 集群性能测试</h3>
+<h3 id="HDFS性能测试">HDFS性能测试</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 写</span><br><span class="line">hadoop jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hadoop-mapreduce&#x2F;hadoop-mapreduce-client-jobclient-tests.jar TestDFSIO -D test.build.data&#x3D;&#x2F;tmp&#x2F;benchmark -write -nrFiles 1000 -fileSize 100</span><br><span class="line"># 读</span><br><span class="line">hadoop jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hadoop-mapreduce&#x2F;hadoop-mapreduce-client-jobclient-tests.jar TestDFSIO -D test.build.data&#x3D;&#x2F;tmp&#x2F;benchmark -read -nrFiles 1000 -fileSize 100</span><br><span class="line"># 清理数据</span><br><span class="line">hadoop jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hadoop-mapreduce&#x2F;hadoop-mapreduce-client-jobclient-tests.jar TestDFSIO -D test.build.data&#x3D;&#x2F;tmp&#x2F;benchmark -clean</span><br></pre></td></tr></table></figure>
+<h3 id="hbase性能测试">hbase性能测试</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">hbase org.apache.hadoop.hbase.PerformanceEvaluation --nomapred --rows&#x3D;100000 --presplit&#x3D;100 sequentialWrite 10</span><br><span class="line">19&#x2F;04&#x2F;11 09:08:19 INFO hbase.PerformanceEvaluation: [SequentialWriteTest]   Min: 14083ms    Max: 14549ms    Avg: 14270ms</span><br><span class="line"></span><br><span class="line">hbase org.apache.hadoop.hbase.PerformanceEvaluation --nomapred --rows&#x3D;100000 --presplit&#x3D;100 randomWrite 10</span><br><span class="line">19&#x2F;04&#x2F;11 09:09:59 INFO hbase.PerformanceEvaluation: [RandomWriteTest]   Min: 20766ms    Max: 21968ms    Avg: 21383ms</span><br><span class="line"></span><br><span class="line">hbase org.apache.hadoop.hbase.PerformanceEvaluation --nomapred --rows&#x3D;100000 sequentialRead 10</span><br><span class="line">19&#x2F;04&#x2F;11 09:12:07 INFO hbase.PerformanceEvaluation: [SequentialReadTest]    Min: 50383ms    Max: 52429ms    Avg: 51691ms</span><br><span class="line"></span><br><span class="line">hbase org.apache.hadoop.hbase.PerformanceEvaluation --nomapred --rows&#x3D;100000 randomRead 10</span><br><span class="line">19&#x2F;04&#x2F;11 09:13:46 INFO hbase.PerformanceEvaluation: [RandomReadTest]    Min: 73645ms    Max: 74517ms    Avg: 74130ms</span><br><span class="line"></span><br><span class="line">sudo -u hdfs hbase pe sequentialWrite 1</span><br><span class="line">sudo -u hdfs hbase pe sequentialRead 1</span><br><span class="line">sudo -u hdfs hbase pe randomWrite 1</span><br><span class="line">sudo -u hdfs hbase pe randomRead 1</span><br><span class="line"></span><br><span class="line">count &#39;TestTable&#39;, &#123;INTERVAL &#x3D;&gt; 100000, CACHE &#x3D;&gt; 50000&#125;</span><br></pre></td></tr></table></figure>
+<p>查看输出的测试报告，Done！</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/01/29/DBeaver%20Enterprise%2021.2.0%20%E7%A0%B4%E8%A7%A3%E7%89%88%20%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/" rel="prev" title="DBeaver Enterprise 21.2.0 破解版 安装教程">
+      <i class="fa fa-chevron-left"></i> DBeaver Enterprise 21.2.0 破解版 安装教程
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/14/centos7%E5%88%A0%E9%99%A4%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E5%90%8E%E7%A3%81%E7%9B%98%E4%B8%8D%E9%87%8A%E6%94%BE%E7%A9%BA%E9%97%B4%E5%A4%84%E7%90%86%E8%84%9A%E6%9C%AC/" rel="next" title="centos7删除日志文件后磁盘不释放空间处理脚本">
+      centos7删除日志文件后磁盘不释放空间处理脚本 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、集群规划"><span class="nav-number">1.</span> <span class="nav-text">一、集群规划</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-硬件规划"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 硬件规划</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-集群架构"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 集群架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#混合型集群"><span class="nav-number">1.3.</span> <span class="nav-text">混合型集群</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#专用型集群"><span class="nav-number">1.4.</span> <span class="nav-text">专用型集群</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-节点规划"><span class="nav-number">1.5.</span> <span class="nav-text">1.3 节点规划</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、集群安装与部署"><span class="nav-number">2.</span> <span class="nav-text">二、集群安装与部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-打开系统网络"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 打开系统网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-硬盘挂载"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 硬盘挂载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-自动化安装"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 自动化安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、手动安装"><span class="nav-number">3.</span> <span class="nav-text">三、手动安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-系统设置"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 系统设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主机名配置"><span class="nav-number">3.2.</span> <span class="nav-text">主机名配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSH免密登录"><span class="nav-number">3.3.</span> <span class="nav-text">SSH免密登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Ansible"><span class="nav-number">3.4.</span> <span class="nav-text">安装Ansible</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭selinux"><span class="nav-number">3.5.</span> <span class="nav-text">关闭selinux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#禁用IPv6"><span class="nav-number">3.6.</span> <span class="nav-text">禁用IPv6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#防火墙设置"><span class="nav-number">3.7.</span> <span class="nav-text">防火墙设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS服务器"><span class="nav-number">3.8.</span> <span class="nav-text">DNS服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NTP配置"><span class="nav-number">3.9.</span> <span class="nav-text">NTP配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-软件包安装"><span class="nav-number">3.10.</span> <span class="nav-text">3.2 软件包安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改yum源"><span class="nav-number">3.11.</span> <span class="nav-text">修改yum源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统软件安装"><span class="nav-number">3.12.</span> <span class="nav-text">系统软件安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JDK与Scala"><span class="nav-number">3.13.</span> <span class="nav-text">JDK与Scala</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python与Python包"><span class="nav-number">3.14.</span> <span class="nav-text">Python与Python包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-其他系统设置"><span class="nav-number">3.15.</span> <span class="nav-text">3.3 其他系统设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中文乱码"><span class="nav-number">3.16.</span> <span class="nav-text">中文乱码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tuned"><span class="nav-number">3.17.</span> <span class="nav-text">tuned</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大页面关闭"><span class="nav-number">3.18.</span> <span class="nav-text">大页面关闭</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#swappiness"><span class="nav-number">3.19.</span> <span class="nav-text">swappiness</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#会话超时"><span class="nav-number">3.20.</span> <span class="nav-text">会话超时</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内核优化"><span class="nav-number">3.21.</span> <span class="nav-text">内核优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最大打开文件数"><span class="nav-number">3.22.</span> <span class="nav-text">最大打开文件数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-系统性能测试"><span class="nav-number">3.23.</span> <span class="nav-text">3.4 系统性能测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络测试"><span class="nav-number">3.24.</span> <span class="nav-text">网络测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#磁盘IO测试"><span class="nav-number">3.25.</span> <span class="nav-text">磁盘IO测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-MySQL数据库"><span class="nav-number">3.26.</span> <span class="nav-text">3.5 MySQL数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-安装Cloudera-Manager服务"><span class="nav-number">3.27.</span> <span class="nav-text">3.6 安装Cloudera Manager服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装CM软件包"><span class="nav-number">3.28.</span> <span class="nav-text">安装CM软件包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CDH-parcel包"><span class="nav-number">3.29.</span> <span class="nav-text">CDH parcel包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化Cloudera-Manager"><span class="nav-number">3.30.</span> <span class="nav-text">初始化Cloudera Manager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-附：卸载Cloudera-Manager服务"><span class="nav-number">3.31.</span> <span class="nav-text">3.7 附：卸载Cloudera Manager服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、CDH组件部署"><span class="nav-number">4.</span> <span class="nav-text">四、CDH组件部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-界面安装"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 界面安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-组件配置调优"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 组件配置调优</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HBase"><span class="nav-number">4.3.</span> <span class="nav-text">HBase</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Yarn"><span class="nav-number">4.4.</span> <span class="nav-text">Yarn</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spark"><span class="nav-number">4.5.</span> <span class="nav-text">Spark</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hdfs"><span class="nav-number">4.6.</span> <span class="nav-text">hdfs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Impala"><span class="nav-number">4.7.</span> <span class="nav-text">Impala</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kafka"><span class="nav-number">4.8.</span> <span class="nav-text">Kafka</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Sentry进行权限管理"><span class="nav-number">4.9.</span> <span class="nav-text">使用Sentry进行权限管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-其他配置"><span class="nav-number">4.10.</span> <span class="nav-text">4.3 其他配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CM集群警报配置"><span class="nav-number">4.11.</span> <span class="nav-text">CM集群警报配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用hdfs纠错码"><span class="nav-number">4.12.</span> <span class="nav-text">使用hdfs纠错码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-集群性能测试"><span class="nav-number">4.13.</span> <span class="nav-text">4.4 集群性能测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HDFS性能测试"><span class="nav-number">4.14.</span> <span class="nav-text">HDFS性能测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hbase性能测试"><span class="nav-number">4.15.</span> <span class="nav-text">hbase性能测试</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="datasir"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">datasir</p>
+  <div class="site-description" itemprop="description">小杨随笔</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">112</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chinayangze" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chinayangze" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:info@ask3.cn" title="E-Mail → mailto:info@ask3.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.yh-021.com/" title="https:&#x2F;&#x2F;www.yh-021.com" rel="noopener" target="_blank">上海有汇</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备13036234号-3 </a>
+      <img src="/images/beian.png" style="display: inline-block;">
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">datasir</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

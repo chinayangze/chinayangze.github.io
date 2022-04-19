@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://www.ask3.cn').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="官网部署文档 https:&#x2F;&#x2F;dolphinscheduler.apache.org&#x2F;zh-cn&#x2F;docs&#x2F;latest&#x2F;user_doc&#x2F;cluster-deployment.html 1、基础软件安装(必装项请自行安装)  PostgreSQL (8.2.15+) or MySQL (5.7系列) : 两者任选其一即可, 如MySQL则需要JDBC Driver 5.1.47+ JDK (1.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DolphinScheduler集群部署">
+<meta property="og:url" content="http://www.ask3.cn/2021/04/08/DolphinScheduler%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="爱思考">
+<meta property="og:description" content="官网部署文档 https:&#x2F;&#x2F;dolphinscheduler.apache.org&#x2F;zh-cn&#x2F;docs&#x2F;latest&#x2F;user_doc&#x2F;cluster-deployment.html 1、基础软件安装(必装项请自行安装)  PostgreSQL (8.2.15+) or MySQL (5.7系列) : 两者任选其一即可, 如MySQL则需要JDBC Driver 5.1.47+ JDK (1.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.ask3.cn/2021/04/08/images/56bd851533e862beaedd00b76e45409e.png">
+<meta property="article:published_time" content="2021-04-08T02:11:48.351Z">
+<meta property="article:modified_time" content="2021-04-08T02:11:48.351Z">
+<meta property="article:author" content="datasir">
+<meta property="article:tag" content="爱思考">
+<meta property="article:tag" content="软件学习网">
+<meta property="article:tag" content="软件学习">
+<meta property="article:tag" content="hadoop">
+<meta property="article:tag" content="spark">
+<meta property="article:tag" content="hive">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="cdh">
+<meta property="article:tag" content="hbase">
+<meta property="article:tag" content="kudu">
+<meta property="article:tag" content="impala">
+<meta property="article:tag" content="flink">
+<meta property="article:tag" content="hdfs">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="presto">
+<meta property="article:tag" content="大数据运维">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.ask3.cn/2021/04/08/images/56bd851533e862beaedd00b76e45409e.png">
+
+<link rel="canonical" href="http://www.ask3.cn/2021/04/08/DolphinScheduler%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>DolphinScheduler集群部署 | 爱思考</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">爱思考</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">分享知识，分享快乐</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/04/08/DolphinScheduler%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DolphinScheduler集群部署
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-08 10:11:48" itemprop="dateCreated datePublished" datetime="2021-04-08T10:11:48+08:00">2021-04-08</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>官网部署文档</p>
+<p><a href="https://dolphinscheduler.apache.org/zh-cn/docs/latest/user_doc/cluster-deployment.html" target="_blank" rel="noopener">https://dolphinscheduler.apache.org/zh-cn/docs/latest/user_doc/cluster-deployment.html</a></p>
+<h1>1、基础软件安装(必装项请自行安装)</h1>
+<ul>
+<li>PostgreSQL (8.2.15+) or MySQL (5.7系列) : 两者任选其一即可, 如MySQL则需要JDBC Driver 5.1.47+</li>
+<li><a href="https://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">JDK</a> (1.8+) : 必装，请安装好后在/etc/profile下配置 JAVA_HOME 及 PATH 变量</li>
+<li>ZooKeeper (3.4.6+) ：必装</li>
+<li>Hadoop (2.6+) or MinIO ：选装，如果需要用到资源上传功能，可以选择上传到Hadoop or MinIO上</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注意：DolphinScheduler本身不依赖Hadoop、Hive、Spark,仅是会调用他们的Client，用于对应任务的提交。</span><br></pre></td></tr></table></figure>
+<h1>2、下载二进制tar.gz包</h1>
+<ul>
+<li>请下载最新版本的后端安装包至服务器部署目录,比如创建 /tmp/dolphinscheduler 做为安装部署目录，下载地址： <a href="https://dolphinscheduler.apache.org/zh-cn/download/download.html" target="_blank" rel="noopener">下载</a>，下载后上传tar包到该目录中，并进行解压</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建部署目录,部署目录请不要创建在/root、/home等高权限目录 </span></span><br><span class="line">mkdir -p /tmp/app/dolphinscheduler;  #安装文件别放到/tmp/dolphinscheduler , 这是特殊路径  创建文件时会用到的临时路径</span><br><span class="line">cd /tmp/app/dolphinscheduler;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 解压缩</span></span><br><span class="line">tar -zxvf apache-dolphinscheduler-incubating-1.3.5-dolphinscheduler-bin.tar.gz -C /opt/dolphinscheduler;</span><br><span class="line"></span><br><span class="line">mv apache-dolphinscheduler-incubating-1.3.5-dolphinscheduler-bin  dolphinscheduler-bin</span><br></pre></td></tr></table></figure>
+<h1>3、创建部署用户和hosts映射</h1>
+<ul>
+<li>在<strong>所有</strong>部署调度的机器上创建部署用户，并且一定要配置sudo免密。假如我们计划在ds1,ds2,ds3,ds4这4台机器上部署调度，首先需要在每台机器上都创建部署用户</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建用户需使用root登录，设置部署用户名，请自行修改，后面以dolphinscheduler为例</span></span><br><span class="line">useradd dolphinscheduler;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 设置用户密码，请自行修改，后面以dolphinscheduler123为例</span></span><br><span class="line">echo "dolphinscheduler123" | passwd --stdin dolphinscheduler</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 配置sudo免密</span></span><br><span class="line">echo 'dolphinscheduler  ALL=(ALL)  NOPASSWD: NOPASSWD: ALL' &gt;&gt; /etc/sudoers</span><br><span class="line">sed -i 's/Defaults    requirett/#Defaults    requirett/g' /etc/sudoers</span><br><span class="line"> 注意：</span><br><span class="line"> - 因为是以 sudo -u &#123;linux-user&#125; 切换不同linux用户的方式来实现多租户运行作业，所以部署用户需要有 sudo 权限，而且是免密的。</span><br><span class="line"> - 如果发现/etc/sudoers文件中有"Default requiretty"这行，也请注释掉</span><br><span class="line"> - 如果用到资源上传的话，还需要在`HDFS或者MinIO`上给该部署用户分配读写的权限</span><br></pre></td></tr></table></figure>
+<h1>4、配置hosts映射和ssh打通及修改目录权限</h1>
+<ul>
+<li>
+<p><em>备注：当然 通过<code>sshpass -p xxx sudo scp -r /etc/hosts $ip:/etc/</code>就可以省去输入密码了</em></p>
+<blockquote>
+<p>centos下sshpass的安装：</p>
+<ol>
+<li>
+<p>先安装epel</p>
+<p>yum install -y epel-release</p>
+<p>yum repolist</p>
+</li>
+<li>
+<p>安装完成epel之后，就可以按照sshpass了</p>
+<p>yum install -y sshpass</p>
+</li>
+</ol>
+</blockquote>
+</li>
+<li>
+<p>在ds1上，切换到部署用户并配置ssh本机免密登录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> su dolphinscheduler;</span><br><span class="line"></span><br><span class="line">ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa</span><br><span class="line">cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</span><br><span class="line">chmod 600 ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>注意：<em>正常设置后，dolphinscheduler用户在执行命令<code>ssh localhost</code> 是不需要再输入密码的</em></p>
+<ul>
+<li>
+<p>在ds1上，配置部署用户dolphinscheduler ssh打通到其他待部署的机器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">su dolphinscheduler;</span><br><span class="line">for ip in bigdata-9.baofoo.cn bigdata-8.baofoo.cn bigdata-7.baofoo.cn ;   </span><br><span class="line">do</span><br><span class="line">    sshpass -p dolphinscheduler123 ssh-copy-id $ip  </span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>在ds1上，修改目录权限，使得部署用户对dolphinscheduler-bin目录有操作权限</p>
+</li>
+</ul>
+<h1>5、数据库初始化</h1>
+<ul>
+<li>进入数据库，默认数据库是PostgreSQL，如选择MySQL的话，后续需要添加mysql-connector-java驱动包到DolphinScheduler的lib目录下，这里以MySQL为例</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -h192.168.xx.xx -P3306 -uroot -p</span><br></pre></td></tr></table></figure>
+<ul>
+<li>进入数据库命令行窗口后，执行数据库初始化命令，设置访问账号和密码。<strong>注: {user} 和 {password} 需要替换为具体的数据库用户名和密码</strong></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; CREATE DATABASE dolphinscheduler DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;</span><br><span class="line">mysql&gt; GRANT ALL PRIVILEGES ON dolphinscheduler.* TO &#39;&#123;user&#125;&#39;@&#39;%&#39; IDENTIFIED BY &#39;&#123;password&#125;&#39;;</span><br><span class="line">mysql&gt; GRANT ALL PRIVILEGES ON dolphinscheduler.* TO &#39;&#123;user&#125;&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;&#123;password&#125;&#39;;</span><br><span class="line">mysql&gt; flush privileges;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>创建表和导入基础数据</p>
+<ul>
+<li>修改 conf 目录下 datasource.properties 中的下列配置</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi conf/datasource.properties</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果选择 MySQL，请注释掉 PostgreSQL 相关配置(反之同理), 还需要手动添加 [<a href="https://downloads.mysql.com/archives/c-j/" target="_blank" rel="noopener"> mysql-connector-java 驱动 jar </a>] 包到 lib 目录下，这里下载的是mysql-connector-java-5.1.47.jar，然后正确配置数据库连接相关信息</li>
+</ul>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#postgre</span></span><br><span class="line"><span class="comment">#spring.datasource.driver-class-name=org.postgresql.Driver</span></span><br><span class="line"><span class="comment">#spring.datasource.url=jdbc:postgresql://localhost:5432/dolphinscheduler</span></span><br><span class="line"><span class="comment"># mysql</span></span><br><span class="line"><span class="meta">spring.datasource.driver-class-name</span>=<span class="string">com.mysql.jdbc.Driver</span></span><br><span class="line"><span class="meta">spring.datasource.url</span>=<span class="string">jdbc:mysql://10.0.20.107:3306/dolphinscheduler?useUnicode=true&amp;characterEncoding=UTF-8&amp;allowMultiQueries=true    </span></span><br><span class="line"><span class="meta">spring.datasource.username</span>=<span class="string">cs_yangz						需要修改为上面的&#123;user&#125;值</span></span><br><span class="line"><span class="meta">spring.datasource.password</span>=<span class="string">xxx						需要修改为上面的&#123;password&#125;值</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改并保存完后，执行 script 目录下的创建表及导入基础数据脚本</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh script/create-dolphinscheduler.sh</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1>6、修改运行参数</h1>
+<ul>
+<li>
+<p>修改 conf/env 目录下的 <code>dolphinscheduler_env.sh</code> 环境变量(以相关用到的软件都安装在/opt/soft下为例)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">   export HADOOP_HOME=/opt/cloudera/parcels/CDH/lib/hadoop</span><br><span class="line">   export HADOOP_CONF_DIR=/etc/hadoop/conf</span><br><span class="line"><span class="meta">   #</span><span class="bash"><span class="built_in">export</span> SPARK_HOME1=/opt/soft/spark1</span></span><br><span class="line">   export SPARK_HOME2=/opt/cloudera/parcels/CDH/lib/spark</span><br><span class="line">   export PYTHON_HOME=/usr/bin/python</span><br><span class="line">   export JAVA_HOME=/usr/java/jdk1.8.0_181-cloudera</span><br><span class="line">   export HIVE_HOME=/opt/cloudera/parcels/CDH/lib/hive</span><br><span class="line"><span class="meta">   #</span><span class="bash"><span class="built_in">export</span> FLINK_HOME=/opt/soft/flink</span></span><br><span class="line"><span class="meta">   #</span><span class="bash"><span class="built_in">export</span> DATAX_HOME=/opt/soft/datax/bin/datax.py</span></span><br><span class="line">   export PATH=$HADOOP_HOME/bin:$SPARK_HOME2/bin:$PYTHON_HOME:$JAVA_HOME/bin:$HIVE_HOME/bin:$PATH</span><br><span class="line">  </span><br><span class="line">`注: 这一步非常重要,例如 JAVA_HOME 和 PATH 是必须要配置的，没有用到的可以忽略或者注释掉`</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>修改一键部署配置文件 <code>conf/config/install_config.conf</code>中的各参数，特别注意以下参数的配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> postgresql or mysql</span></span><br><span class="line">dbtype="mysql"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> db config</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> db address and port</span></span><br><span class="line">dbhost="10.0.20.107:3306"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> db username</span></span><br><span class="line">username="cs_yangz"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> database name</span></span><br><span class="line">dbname="dolphinscheduler"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> db passwprd</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> NOTICE: <span class="keyword">if</span> there are special characters, please use the \ to escape, <span class="keyword">for</span> example, `[` escape to `\[`</span></span><br><span class="line">password="***"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> zk cluster</span></span><br><span class="line">zkQuorum="10.0.19.130:2181,10.0.19.131:2181,10.0.19.132:2181"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Note: the target installation path <span class="keyword">for</span> dolphinscheduler, please not config as the same as the current path (<span class="built_in">pwd</span>)</span></span><br><span class="line">installPath="/opt/dolphinscheduler"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> deployment user</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Note: the deployment user needs to have sudo privileges and permissions to operate hdfs. If hdfs is enabled, the root directory needs to be created by itself</span></span><br><span class="line">deployUser="dolphinscheduler"</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> alert config</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> mail server host</span></span><br><span class="line">mailServerHost="smtp.qiye.163.com"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> mail server port</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> note: Different protocols and encryption methods correspond to different ports, when SSL/TLS is enabled, make sure the port is correct.</span></span><br><span class="line">mailServerPort="25"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> sender</span></span><br><span class="line">mailSender="hadooper@baofoo.com"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> user</span></span><br><span class="line">mailUser="hadooper@baofoo.com"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> sender password</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> note: The mail.passwd is email service authorization code, not the email login password.</span></span><br><span class="line">mailPassword="***"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> TLS mail protocol support</span></span><br><span class="line">starttlsEnable="true"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> SSL mail protocol support</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> only one of TLS and SSL can be <span class="keyword">in</span> the <span class="literal">true</span> state.</span></span><br><span class="line">sslEnable="false"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">note: sslTrust is the same as mailServerHost</span></span><br><span class="line">sslTrust="smtp.qiye.163.com"</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> resource storage <span class="built_in">type</span>：HDFS,S3,NONE</span></span><br><span class="line">resourceStorageType="HDFS"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="keyword">if</span> resourceStorageType is HDFS，defaultFS write namenode address，HA you need to put core-site.xml and hdfs-site.xml <span class="keyword">in</span> the conf directory.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="keyword">if</span> S3，write S3 address，HA，<span class="keyword">for</span> example ：s3a://dolphinscheduler，</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Note，s3 be sure to create the root directory /dolphinscheduler</span></span><br><span class="line">defaultFS="hdfs://bigdata-7.baofoo.cn:8020"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="keyword">if</span> resourceStorageType is S3, the following three configuration is required, otherwise please ignore</span></span><br><span class="line">s3Endpoint="http://192.168.xx.xx:9010"</span><br><span class="line">s3AccessKey="xxxxxxxxxx"</span><br><span class="line">s3SecretKey="xxxxxxxxxx"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="keyword">if</span> resourcemanager HA <span class="built_in">enable</span>, please <span class="built_in">type</span> the HA ips ; <span class="keyword">if</span> resourcemanager is single, make this value empty</span></span><br><span class="line">yarnHaIps="bigdata-7.baofoo.cn"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="keyword">if</span> resourcemanager HA <span class="built_in">enable</span> or not use resourcemanager, please skip this value setting; If resourcemanager is single, you only need to replace yarnIp1 to actual resourcemanager hostname.</span></span><br><span class="line">singleYarnIp="bigdata-7.baofoo.cn"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> resource store on HDFS/S3 path, resource file will store to this hadoop hdfs path, self configuration, please make sure the directory exists on hdfs and have <span class="built_in">read</span> write permissions。/dolphinscheduler is recommended</span></span><br><span class="line">resourceUploadPath="/dolphinscheduler"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> who have permissions to create directory under HDFS/S3 root path</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Note: <span class="keyword">if</span> kerberos is enabled, please config hdfsRootUser=</span></span><br><span class="line">hdfsRootUser="hdfs"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> kerberos config</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> whether kerberos starts, <span class="keyword">if</span> kerberos starts, following four items need to config, otherwise please ignore</span></span><br><span class="line">kerberosStartUp="false"</span><br><span class="line"><span class="meta">#</span><span class="bash"> kdc krb5 config file path</span></span><br><span class="line">krb5ConfPath="$installPath/conf/krb5.conf"</span><br><span class="line"><span class="meta">#</span><span class="bash"> keytab username</span></span><br><span class="line">keytabUserName="hdfs-mycluster@ESZ.COM"</span><br><span class="line"><span class="meta">#</span><span class="bash"> username keytab path</span></span><br><span class="line">keytabPath="$installPath/conf/hdfs.headless.keytab"</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> api server port</span></span><br><span class="line">apiServerPort="12345"</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> install hosts</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Note: install the scheduled hostname list. If it is pseudo-distributed, just write a pseudo-distributed hostname</span></span><br><span class="line">ips="bigdata-7.baofoo.cn,bigdata-8.baofoo.cn,bigdata-9.baofoo.cn"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> ssh port, default 22</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Note: <span class="keyword">if</span> ssh port is not default, modify here</span></span><br><span class="line">sshPort="22"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> run master machine</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Note: list of hosts hostname <span class="keyword">for</span> deploying master</span></span><br><span class="line">masters="bigdata-9.baofoo.cn,bigdata-8.baofoo.cn"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> run worker machine</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> note: need to write the worker group name of each worker, the default value is <span class="string">"default"</span></span></span><br><span class="line">workers="bigdata-7.baofoo.cn:default,bigdata-8.baofoo.cn:default,bigdata-9.baofoo.cn:default"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> run alert machine</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> note: list of machine hostnames <span class="keyword">for</span> deploying alert server</span></span><br><span class="line">alertServer="bigdata-8.baofoo.cn"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> run api machine</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> note: list of machine hostnames <span class="keyword">for</span> deploying api server</span></span><br><span class="line">apiServers="bigdata-9.baofoo.cn"</span><br></pre></td></tr></table></figure>
+<p><em>特别注意：</em></p>
+<ul>
+<li>如果需要用资源上传到Hadoop集群功能， 并且Hadoop集群的NameNode 配置了 HA的话 ，需要开启 HDFS类型的资源上传，同时需要将Hadoop集群下的core-site.xml和hdfs-site.xml复制到/opt/dolphinscheduler/conf，非NameNode HA跳过次步骤</li>
+</ul>
+<h1>7、一键部署</h1>
+<ul>
+<li>
+<p><strong>切换到部署用户dolphinscheduler</strong>，然后执行一键部署脚本</p>
+<p><code>sh install.sh</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">注意：</span><br><span class="line">第一次部署的话，在运行中第3步&#96;3,stop server&#96;出现5次以下信息，此信息可以忽略</span><br><span class="line">sh: bin&#x2F;dolphinscheduler-daemon.sh: No such file or directory</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>脚本完成后，会启动以下5个服务，使用<code>jps</code>命令查看服务是否启动(<code>jps</code>为<code>java JDK</code>自带)</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">MasterServer         ----- master服务</span><br><span class="line">WorkerServer         ----- worker服务</span><br><span class="line">LoggerServer         ----- logger服务</span><br><span class="line">ApiApplicationServer ----- api服务</span><br><span class="line">AlertServer          ----- alert服务</span><br></pre></td></tr></table></figure>
+<p>如果以上服务都正常启动，说明自动部署成功</p>
+<p>部署成功后，可以进行日志查看，日志统一存放于logs文件夹内</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">logs&#x2F;</span><br><span class="line">   ├── dolphinscheduler-alert-server.log</span><br><span class="line">   ├── dolphinscheduler-master-server.log</span><br><span class="line">   |—— dolphinscheduler-worker-server.log</span><br><span class="line">   |—— dolphinscheduler-api-server.log</span><br><span class="line">   |—— dolphinscheduler-logger-server.log</span><br></pre></td></tr></table></figure>
+<h1>8、登录系统</h1>
+<ul>
+<li>访问前端页面地址,接口ip(自行修改) <a href="http://bigdata-9.baofoo.cn:12345/dolphinscheduler" target="_blank" rel="noopener">http://bigdata-9.baofoo.cn:12345/dolphinscheduler</a></li>
+</ul>
+<p>默认的用户是<code>admin</code>，默认的密码是<code>dolphinscheduler123</code></p>
+<h4 id="修改-JVM-参数">修改 JVM 参数</h4>
+<ul>
+<li>两个文件</li>
+<li>/bin/dolphinscheduler-daemon.sh</li>
+<li>/scripts/dolphinscheduler-daemon.sh</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export DOLPHINSCHEDULER_OPTS&#x3D;&quot;-server -Xmx16g -Xms1g -Xss512k -XX:+DisableExplicitGC -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:LargePageSizeInBytes&#x3D;128m -XX:+UseFastAccessorMethods -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction&#x3D;70&quot;</span><br></pre></td></tr></table></figure>
+<p>复制代码</p>
+<ul>
+<li>一键部署</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">su  dolphinscheduler</span><br><span class="line"></span><br><span class="line">sh install.sh</span><br></pre></td></tr></table></figure>
+<p>复制代码</p>
+<ul>
+<li>进程检查</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su dolphinscheduler;jps;</span><br></pre></td></tr></table></figure>
+<p>复制代码</p>
+<p><img src="../images/56bd851533e862beaedd00b76e45409e.png" alt="img"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># 一键停止</span><br><span class="line">sh .&#x2F;bin&#x2F;stop-all.sh</span><br><span class="line"># 一键开启</span><br><span class="line">sh .&#x2F;bin&#x2F;start-all.sh</span><br><span class="line"># 启停master</span><br><span class="line">sh .&#x2F;bin&#x2F;dolphinscheduler-daemon.sh start master-server</span><br><span class="line">sh .&#x2F;bin&#x2F;dolphinscheduler-daemon.sh stop master-server</span><br><span class="line"># 启停worker</span><br><span class="line">sh .&#x2F;bin&#x2F;dolphinscheduler-daemon.sh start worker-server</span><br><span class="line">sh .&#x2F;bin&#x2F;dolphinscheduler-daemon.sh stop worker-server</span><br><span class="line"># 启停api-server</span><br><span class="line">sh .&#x2F;bin&#x2F;dolphinscheduler-daemon.sh start api-server</span><br><span class="line">sh .&#x2F;bin&#x2F;dolphinscheduler-daemon.sh stop api-server</span><br><span class="line"># 启停logger</span><br><span class="line">sh .&#x2F;bin&#x2F;dolphinscheduler-daemon.sh start logger-server</span><br><span class="line">sh .&#x2F;bin&#x2F;dolphinscheduler-daemon.sh stop logger-server</span><br><span class="line"># 启停alert</span><br><span class="line">sh .&#x2F;bin&#x2F;dolphinscheduler-daemon.sh start alert-server</span><br><span class="line">sh .&#x2F;bin&#x2F;dolphinscheduler-daemon.sh stop alert-server</span><br></pre></td></tr></table></figure>
+<p><strong>遇到的坑：</strong></p>
+<p>1.安装文件别放到/tmp/dolphinscheduler    ， 这是特殊路径</p>
+<p>2.用root用户启动服务导致一系列问题，要用新建的用户操作所有的一切。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/06/ClickHouse%20%E9%83%A8%E7%BD%B2/" rel="prev" title="ClickHouse 部署">
+      <i class="fa fa-chevron-left"></i> ClickHouse 部署
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/19/xfs_repair%20%E7%A3%81%E7%9B%98%E4%BF%AE%E5%A4%8D/" rel="next" title="xfs_repair 磁盘修复">
+      xfs_repair 磁盘修复 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">1.</span> <span class="nav-text">1、基础软件安装(必装项请自行安装)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">2.</span> <span class="nav-text">2、下载二进制tar.gz包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">3.</span> <span class="nav-text">3、创建部署用户和hosts映射</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">4.</span> <span class="nav-text">4、配置hosts映射和ssh打通及修改目录权限</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">5.</span> <span class="nav-text">5、数据库初始化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">6.</span> <span class="nav-text">6、修改运行参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">7.</span> <span class="nav-text">7、一键部署</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">8.</span> <span class="nav-text">8、登录系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#修改-JVM-参数"><span class="nav-number">8.0.0.1.</span> <span class="nav-text">修改 JVM 参数</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="datasir"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">datasir</p>
+  <div class="site-description" itemprop="description">小杨随笔</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">112</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chinayangze" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chinayangze" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:info@ask3.cn" title="E-Mail → mailto:info@ask3.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.yh-021.com/" title="https:&#x2F;&#x2F;www.yh-021.com" rel="noopener" target="_blank">上海有汇</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备13036234号-3 </a>
+      <img src="/images/beian.png" style="display: inline-block;">
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">datasir</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

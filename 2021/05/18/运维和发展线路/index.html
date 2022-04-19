@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://www.ask3.cn').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="运维和发展的一个线路  1.搭建服务（部署并运行起来） 2.用好服务（监控、管理、优化） 3.自动化（服务直接的关联和协同工作） 4.产品设计（如何设计一个监控系统）  云计算的核心竞争力是运维！ 系统架构师（偏管理）：网络  系统  数据库  开发  云计算  自动化  运维管理  服务管理 项目管理  测试  业务 专注于某一领域 解决方案架构师 运维工作内容分类  监控运维（7x24运维值班">
+<meta property="og:type" content="article">
+<meta property="og:title" content="运维和发展线路">
+<meta property="og:url" content="http://www.ask3.cn/2021/05/18/%E8%BF%90%E7%BB%B4%E5%92%8C%E5%8F%91%E5%B1%95%E7%BA%BF%E8%B7%AF/index.html">
+<meta property="og:site_name" content="爱思考">
+<meta property="og:description" content="运维和发展的一个线路  1.搭建服务（部署并运行起来） 2.用好服务（监控、管理、优化） 3.自动化（服务直接的关联和协同工作） 4.产品设计（如何设计一个监控系统）  云计算的核心竞争力是运维！ 系统架构师（偏管理）：网络  系统  数据库  开发  云计算  自动化  运维管理  服务管理 项目管理  测试  业务 专注于某一领域 解决方案架构师 运维工作内容分类  监控运维（7x24运维值班">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-18T07:26:56.341Z">
+<meta property="article:modified_time" content="2021-05-18T07:26:56.306Z">
+<meta property="article:author" content="datasir">
+<meta property="article:tag" content="爱思考">
+<meta property="article:tag" content="软件学习网">
+<meta property="article:tag" content="软件学习">
+<meta property="article:tag" content="hadoop">
+<meta property="article:tag" content="spark">
+<meta property="article:tag" content="hive">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="cdh">
+<meta property="article:tag" content="hbase">
+<meta property="article:tag" content="kudu">
+<meta property="article:tag" content="impala">
+<meta property="article:tag" content="flink">
+<meta property="article:tag" content="hdfs">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="presto">
+<meta property="article:tag" content="大数据运维">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.ask3.cn/2021/05/18/%E8%BF%90%E7%BB%B4%E5%92%8C%E5%8F%91%E5%B1%95%E7%BA%BF%E8%B7%AF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>运维和发展线路 | 爱思考</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">爱思考</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">分享知识，分享快乐</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/05/18/%E8%BF%90%E7%BB%B4%E5%92%8C%E5%8F%91%E5%B1%95%E7%BA%BF%E8%B7%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          运维和发展线路
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-18 15:26:56" itemprop="dateCreated datePublished" datetime="2021-05-18T15:26:56+08:00">2021-05-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="运维和发展的一个线路">运维和发展的一个线路</h2>
+<ul>
+<li>1.搭建服务（部署并运行起来）</li>
+<li>2.用好服务（监控、管理、优化）</li>
+<li>3.自动化（服务直接的关联和协同工作）</li>
+<li>4.产品设计（如何设计一个监控系统）</li>
+</ul>
+<p><strong>云计算的核心竞争力是运维！</strong></p>
+<p>系统架构师（偏管理）：网络  系统  数据库  开发  云计算  自动化  运维管理  服务管理 项目管理  测试  业务<br>
+专注于某一领域<br>
+解决方案架构师</p>
+<h2 id="运维工作内容分类">运维工作内容分类</h2>
+<ul>
+<li>监控运维（7x24运维值班、故障处理）</li>
+<li>应用运维（业务熟悉、服务部署、业务部署、版本管理、灰度发布、应用监控）</li>
+<li>安全运维（整体的安全方案、规范、漏洞监测、安全防护等）</li>
+<li>系统运维（架构层面的分布式缓存、分布式文件系统、日志收集、环境规划（测试、开发、生产）、架构设计、性能优化）</li>
+<li>基础服务运维（包含运维开发）（内部DNS、负载均衡、系统监控、资产管理、运维平台）</li>
+<li>基础设施运维（系统初始化、网络维护）</li>
+<li>机房运维（负责设备上下架、巡检、报修、硬件监控）</li>
+</ul>
+<p>阿里云:<br>
+SLB  LVS + Tengine（Nginx）<br>
+ECS  KVM</p>
+<h2 id="运维标准化">运维标准化</h2>
+<p><strong>物理设备层面：</strong><br>
+1.服务器标签化、设备负责人、设备采购详情、设备摆放标准<br>
+2.网络划分、远程控制卡、网卡端口<br>
+3.服务器机型、硬盘、内存统一，根据业务分类<br>
+4.资产命名规范、编号规范、类型规范<br>
+5.监控标准</p>
+<p><strong>操作系统层面</strong><br>
+1.操作系统版本<br>
+2.系统初始化（配置DNS、NTP、内核参数调优）<br>
+3.基础Agent配备（Zabbix agent、logstash agent、salt minion）<br>
+4.系统监控标准（CPU、内存、硬盘、网络、进程）</p>
+<p><strong>应用服务层面：</strong><br>
+1.Web服务器选型（nginx、Apache）<br>
+2.进程启动用户、端口监听规范、日志收集规范（访问日志、错误日志、运行日志）<br>
+3.配置管理（配置文件规范、脚本规范）<br>
+4.架构规范（Nginx+keepalived、LVS+keepalived等等）<br>
+5.部署规范（位置、包命名等）</p>
+<p><strong>运维操作层面：</strong><br>
+1.机房巡检流程（周期、内容、保修流程）<br>
+2.业务部署流程（先测试、后生产。回滚）<br>
+3.故障处理流程（紧急处理、故障升级、重大故障处理）<br>
+4.工作日志流程（如何编写工作日志）<br>
+5.业务上线流程（1.项目发起人 2.系统安装 3.部署nginx 4.解析域名 5.测试 6.加监控）<br>
+6.业务下线流程（谁发起，数据如何处理）<br>
+7.运维安全规范（密码复杂度、更改周期、VPN使用规范、服务登陆规范、rm命令的参数写在最后面）</p>
+<p>标准化：规范化  流程化  文档化</p>
+<p>目标：文档化</p>
+<h2 id="运维自动化发展-工具化">运维自动化发展-工具化</h2>
+<p><strong>工具化：</strong></p>
+<ul>
+<li>1.shell脚本（功能性（流程）脚本、检查性、报表性）</li>
+<li>2.开源工具：zabbix、elkstack、saltstack、cobbler</li>
+</ul>
+<p><strong>目标：</strong></p>
+<ul>
+<li>1.促进标准化的实施</li>
+<li>2.将重复的操作简单化</li>
+<li>3.将多次操作流程化</li>
+<li>4.减少人为操作的低效和降低故障率</li>
+</ul>
+<p>工具化和标准化是好搭档</p>
+<p><strong>痛点：</strong></p>
+<ul>
+<li>1.你至少要ssh到服务器执行，可能出错</li>
+<li>2.多个脚本有执行顺序的时候，可能出错</li>
+<li>3.权限不好管理，日志没法统计</li>
+<li>4.无法避免手工操作</li>
+</ul>
+<p><strong>例子：</strong></p>
+<p>比如某天我们要对一个数据库从库进行版本停机升级。那么要求评估：<br>
+停机影响：<br>
+3：00  晚上有定时任务连接该数据库，做数据报表统计</p>
+<ul>
+<li>1.凌晨3：00 我们所有系统的定时任务有哪些crontab</li>
+<li>2.这些crontab哪些要连接我们要停止的从库</li>
+<li>3.哪些可以停，哪些不能停（修改到主库），哪些可以后补</li>
+<li>4.这些需要后补的脚本哪个业务的，谁加的，什么时候加的</li>
+</ul>
+<h2 id="运维自动化发展-web化">运维自动化发展-web化</h2>
+<p>运维平台<br>
+例子：Job管理平台</p>
+<ul>
+<li>1.做成web界面</li>
+<li>2.权限控制</li>
+<li>3.日志记录</li>
+<li>4.弱化流程</li>
+<li>5.不用ssh到服务器，减少人为操作造成故障 Web ssh</li>
+</ul>
+<p>DNSWeb管理 bind-DLZ<br>
+负载均衡Web管理<br>
+Job管理平台<br>
+监控平台  zabbix<br>
+操作系统安装平台</p>
+<h2 id="运维自动化发展-服务化（API）">运维自动化发展-服务化（API）</h2>
+<ul>
+<li>DNSWeb管理 bind-DLZ  dns-api</li>
+<li>负载均衡Web管理     slb-api</li>
+<li>Job管理平台    job-api</li>
+<li>监控平台  zabbix  zabbix-api</li>
+<li>操作系统安装平台   cobbler-api</li>
+<li>部署平台    deploy-api</li>
+<li>配置管理    saltstack-api</li>
+</ul>
+<p><strong>智能化实现</strong></p>
+<ul>
+<li>1.调用cobbler-api安装操作系统</li>
+<li>2.调用saltstack-api进行系统初始化</li>
+<li>3.调用dns-api解析主机名</li>
+<li>4.调用zabbix-api将该新上线机器加上监控</li>
+<li>5.再次调用saltstack-api部署软件（安装nginx+php）</li>
+<li>6.调用deploy-api将当前版本的代码部署到服务器上</li>
+<li>7.调用test-api 测试当前服务器运行是否正常</li>
+<li>8.调用slb-api 将该节点加入集群</li>
+</ul>
+<h2 id="运维自动化发展-智能化">运维自动化发展-智能化</h2>
+<p>运维自动化发展层级：</p>
+<ul>
+<li>标准化、工具化</li>
+<li>Web化、平台化</li>
+<li>服务化、API化</li>
+<li>智能化</li>
+</ul>
+<p>智能化的自动化扩容、缩容、服务降级、故障自愈</p>
+<p><strong>自动化扩容</strong><br>
+1.zabbix触发Action<br>
+触发条件和决策：</p>
+<ul>
+<li>1.当某个集群的访问量超过最大支撑量，比如10000</li>
+<li>2.并持续5分钟</li>
+<li>3.不是攻击</li>
+<li>4.资源池有可用资源
+<ul>
+<li>当前网络带宽使用率</li>
+<li>如果是公有云–钱够不够</li>
+</ul>
+</li>
+<li>5.当前后端服务支撑量是否超过阈值  如果超过应该后端先扩容</li>
+<li>6.数据库是否可以支撑当前并发</li>
+<li>7.当前自动化扩展队列，是否有正在扩容的节点</li>
+<li>其他业务相关的</li>
+</ul>
+<p>创建虚拟机之前，先判断Buffer是否有最近X小时已经存在之前已经移除的虚拟机，并查询软件版本是否和当前一致，如果一致，跳过234步，如果不一致，跳过23步</p>
+<p>2.Openstack 创建虚拟机<br>
+3.Saltstack 配置环境<br>
+4.部署系统 部署当前代码<br>
+5.测试服务是否可用(注意间隔和次数)<br>
+6.加入集群<br>
+7.通知(短信、邮件)</p>
+<p><strong>自动化缩容</strong></p>
+<ul>
+<li>1.触发条件和决策</li>
+<li>2.从集群中移除节点</li>
+<li>3.通知</li>
+<li>4.移除的节点存放于Buffer里面</li>
+<li>5.Buffer里面超过1天的虚拟机，自动关闭，存放于xx区</li>
+<li>6.xx区的虚拟机，超过7天的清理删除</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/30/CDH%20Disk%20Balancer%20%E7%A3%81%E7%9B%98%E6%95%B0%E6%8D%AE%E5%9D%87%E8%A1%A1/" rel="prev" title="CDH Disk Balancer 磁盘数据均衡">
+      <i class="fa fa-chevron-left"></i> CDH Disk Balancer 磁盘数据均衡
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/18/Windows%20Server%202019%E5%92%8CWin10%20%E5%AE%89%E8%A3%85%20Linux%20%E5%AD%90%E7%B3%BB%E7%BB%9F/" rel="next" title="Windows Server 2019和Win10 安装 Linux 子系统">
+      Windows Server 2019和Win10 安装 Linux 子系统 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#运维和发展的一个线路"><span class="nav-number">1.</span> <span class="nav-text">运维和发展的一个线路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运维工作内容分类"><span class="nav-number">2.</span> <span class="nav-text">运维工作内容分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运维标准化"><span class="nav-number">3.</span> <span class="nav-text">运维标准化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运维自动化发展-工具化"><span class="nav-number">4.</span> <span class="nav-text">运维自动化发展-工具化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运维自动化发展-web化"><span class="nav-number">5.</span> <span class="nav-text">运维自动化发展-web化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运维自动化发展-服务化（API）"><span class="nav-number">6.</span> <span class="nav-text">运维自动化发展-服务化（API）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运维自动化发展-智能化"><span class="nav-number">7.</span> <span class="nav-text">运维自动化发展-智能化</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="datasir"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">datasir</p>
+  <div class="site-description" itemprop="description">小杨随笔</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">112</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chinayangze" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chinayangze" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:info@ask3.cn" title="E-Mail → mailto:info@ask3.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.yh-021.com/" title="https:&#x2F;&#x2F;www.yh-021.com" rel="noopener" target="_blank">上海有汇</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备13036234号-3 </a>
+      <img src="/images/beian.png" style="display: inline-block;">
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">datasir</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

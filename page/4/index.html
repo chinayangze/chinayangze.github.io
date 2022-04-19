@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://www.ask3.cn').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="小杨随笔">
+<meta property="og:type" content="website">
+<meta property="og:title" content="爱思考">
+<meta property="og:url" content="http://www.ask3.cn/page/4/index.html">
+<meta property="og:site_name" content="爱思考">
+<meta property="og:description" content="小杨随笔">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="datasir">
+<meta property="article:tag" content="爱思考">
+<meta property="article:tag" content="软件学习网">
+<meta property="article:tag" content="软件学习">
+<meta property="article:tag" content="hadoop">
+<meta property="article:tag" content="spark">
+<meta property="article:tag" content="hive">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="cdh">
+<meta property="article:tag" content="hbase">
+<meta property="article:tag" content="kudu">
+<meta property="article:tag" content="impala">
+<meta property="article:tag" content="flink">
+<meta property="article:tag" content="hdfs">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="presto">
+<meta property="article:tag" content="大数据运维">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.ask3.cn/page/4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: true,
+    isPost: false
+  };
+</script>
+
+  <title>爱思考</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">爱思考</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">分享知识，分享快乐</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/07/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AE%A1%E7%90%86%E8%A7%84%E8%8C%83(V1)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AE%A1%E7%90%86%E8%A7%84%E8%8C%83(V1)/" class="post-title-link" itemprop="url">服务器管理规范(V1)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-13 09:26:43" itemprop="dateCreated datePublished" datetime="2021-07-13T09:26:43+08:00">2021-07-13</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="服务器管理规范-V1">服务器管理规范(V1)</h4>
+<p><strong>一 配置管理规范</strong></p>
+<p>所有设备信息必须录入配置管理系统，在配置系统中能随时查询到现网业务的部署分布情况 具体信息待配置管理系统建立后再补充</p>
+<p>主机命名规范</p>
+<p>网卡vlan规范</p>
+<p>安全策略命名规范</p>
+<p>监控/部署/插件/模块命名规范</p>
+<p>版本命名规范</p>
+<p><strong>二 文件系统管理规范</strong></p>
+<p>2.1 文件布局</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AE%A1%E7%90%86%E8%A7%84%E8%8C%83(V1)/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/06/29/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/29/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">Docker常用命令</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-06-29 10:30:08" itemprop="dateCreated datePublished" datetime="2021-06-29T10:30:08+08:00">2021-06-29</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <table>
+<thead>
+<tr>
+<th>COMMAND</th>
+<th>DESC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>查看</td>
+<td></td>
+</tr>
+<tr>
+<td>docker images</td>
+<td>列出所有镜像(images)</td>
+</tr>
+<tr>
+<td>docker ps</td>
+<td>列出正在运行的容器(containers)</td>
+</tr>
+<tr>
+<td>docker ps -a</td>
+<td>列出所有的容器</td>
+</tr>
+<tr>
+<td>docker pull centos</td>
+<td>下载centos镜像</td>
+</tr>
+<tr>
+<td>docker top ‘container’</td>
+<td>查看容器内部运行程序</td>
+</tr>
+<tr>
+<td>容器</td>
+<td></td>
+</tr>
+<tr>
+<td>docker exec -it 容器ID sh</td>
+<td>进入容器</td>
+</tr>
+<tr>
+<td>docker stop ‘container’</td>
+<td>停止一个正在运行的容器，‘container’可以是容器ID或名称</td>
+</tr>
+<tr>
+<td>docker start ‘container’</td>
+<td>启动一个已经停止的容器</td>
+</tr>
+<tr>
+<td>docker restart ‘container’</td>
+<td>重启容器</td>
+</tr>
+<tr>
+<td>docker rm ‘container’</td>
+<td>删除容器</td>
+</tr>
+<tr>
+<td>docker run -i -t -p :80 LAMP /bin/bash</td>
+<td>运行容器并做http端口转发</td>
+</tr>
+<tr>
+<td>docker exec -it ‘container’ /bin/bash</td>
+<td>进入ubuntu类容器的bash</td>
+</tr>
+<tr>
+<td>docker exec -it /bin/sh</td>
+<td>进入alpine类容器的sh</td>
+</tr>
+<tr>
+<td>docker rm <code>docker ps -a -q</code></td>
+<td>删除所有已经停止的容器</td>
+</tr>
+<tr>
+<td>docker kill $(docker ps -a -q)</td>
+<td>杀死所有正在运行的容器，$()功能同``</td>
+</tr>
+<tr>
+<td>镜像</td>
+<td></td>
+</tr>
+<tr>
+<td>docker build -t wp-api .</td>
+<td>构建1个镜像,-t(镜像的名字及标签) wp-api(镜像名) .(构建的目录)</td>
+</tr>
+<tr>
+<td>docker run -i -t wp-api</td>
+<td>-t -i以交互伪终端模式运行,可以查看输出信息</td>
+</tr>
+<tr>
+<td>docker run -d -p 80:80 wp-api</td>
+<td>镜像端口 -d后台模式运行镜像</td>
+</tr>
+<tr>
+<td>docker rmi [image-id]</td>
+<td>删除镜像</td>
+</tr>
+<tr>
+<td>docker rmi $(docker images -q)</td>
+<td>删除所有镜像</td>
+</tr>
+<tr>
+<td>docker rmi $(sudo docker images --filter “dangling=true” -q --no-trunc)</td>
+<td>删除无用镜像</td>
+</tr>
+<tr>
+<td>docker run --help</td>
+<td>帮助</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>更多命令查看Docker 命令大全 | 菜鸟教程</p>
+</blockquote>
+<h3 id="场景二：下载镜像并直接运行">场景二：下载镜像并直接运行</h3>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run  --name ubuntu -it ubuntu bash </span><br><span class="line">docker cp dd ubuntu:tmp/ #复制文件dd 到容器的/tmp 目录</span><br><span class="line">Ctrl-p Ctrl-q  #退出</span><br></pre></td></tr></table></figure>
+<h3 id="场景三：修改镜像，并保存到私有仓库">场景三：修改镜像，并保存到私有仓库</h3>
+<blockquote>
+<p>期望结果:在ubuntu 镜像中添加 apache，将新的镜像保存到私有仓库中</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it ubuntu bash </span><br><span class="line">apt-<span class="keyword">get</span> update</span><br><span class="line">apt-<span class="keyword">get</span> install apache2</span><br><span class="line">Ctrl-p Ctrl-q  #退出</span><br><span class="line">docker commit -a "mir355" -m "ubuntu add apache2" &#123;ID&#125;  private/ubuntu_apache:v1   #保存镜像</span><br><span class="line">docker stop ubuntu </span><br><span class="line">docker rm ubuntu</span><br><span class="line">docker run -i -t --name apache2 -p <span class="number">8080</span>:<span class="number">80</span> private/ubuntu_apache:v1 /bin/bash</span><br><span class="line">/etc/init.d/apache2 start</span><br><span class="line">Ctrl-p Ctrl-q  #退出</span><br><span class="line">#通过 docker tag重命名镜像，使之与registry匹配</span><br><span class="line">docker tag private/ubuntu_apache:v1 <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">5000</span>/private/ubuntu_apache:v1</span><br><span class="line">#保存到私有仓库</span><br><span class="line">docker push <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">5000</span>/private/ubuntu_apache:v1</span><br><span class="line">curl http:<span class="comment">//127.0.0.1:5000/v2/_catalog</span></span><br><span class="line"></span><br><span class="line">#下载镜像</span><br><span class="line">docker pull <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">5000</span>/private/ubuntu_apache:v1</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/29/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/06/25/mapreduce%E3%80%81spark%E7%9A%84%E6%A0%B7%E4%BE%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/25/mapreduce%E3%80%81spark%E7%9A%84%E6%A0%B7%E4%BE%8B/" class="post-title-link" itemprop="url">mapreduce、spark的样例</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-06-25 16:04:01" itemprop="dateCreated datePublished" datetime="2021-06-25T16:04:01+08:00">2021-06-25</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>mapreduce、spark的样例</h1>
+<h3 id="指定队列和优先级">指定队列和优先级</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-mapreduce-examples.jar pi \</span><br><span class="line">-D mapreduce.job.queuename=bf_yarn_pool.development \</span><br><span class="line">-D mapreduce.job.priority=VERY_HIGH 5 5</span><br></pre></td></tr></table></figure>
+<h3 id="TestDFSIO">TestDFSIO</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo -u hdfs hadoop jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hadoop-mapreduce&#x2F;hadoop-mapreduce-client-jobclient-3.0.0-cdh6.0.1-tests.jar  TestDFSIO \</span><br><span class="line">-D mapreduce.job.queuename&#x3D;bf_yarn_pool.production \</span><br><span class="line">-D test.build.data&#x3D;&#x2F;tmp&#x2F;benchmark \</span><br><span class="line">-D mapreduce.output.fileoutputformat.compress&#x3D;false \</span><br><span class="line">-write -nrFiles 10 -fileSize 1000</span><br></pre></td></tr></table></figure>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/25/mapreduce%E3%80%81spark%E7%9A%84%E6%A0%B7%E4%BE%8B/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/05/18/Windows%20Server%202019%E5%92%8CWin10%20%E5%AE%89%E8%A3%85%20Linux%20%E5%AD%90%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/05/18/Windows%20Server%202019%E5%92%8CWin10%20%E5%AE%89%E8%A3%85%20Linux%20%E5%AD%90%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">Windows Server 2019和Win10 安装 Linux 子系统</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-18 15:52:31" itemprop="dateCreated datePublished" datetime="2021-05-18T15:52:31+08:00">2021-05-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>Windows Server</strong>版本 安装参考  <a href="https://blog.51cto.com/professor/2411436" target="_blank" rel="noopener">https://blog.51cto.com/professor/2411436</a></p>
+<p>注意：如果先安装的ConEmu ，可能没有bash  ，刷新一系default tasks，如下图：</p>
+<p><img src="/images/image-20210518154415530.png" alt="image-20210518154415530"></p>
+<p>win10版本 参考之前写的文档：</p>
+<p><strong>Win10 Subsystem Linux : Ubuntu 的root密码</strong></p>
+<p>每次开机都有一个新的root密码。我们可以在终端输入命令 sudo passwd，</p>
+<p>然后输入当前用户的密码，enter，终端会提示我们输入新的密码并确认，</p>
+<p>此时的密码就是root新密码。修改成功后，输入命令 su root，再输入新的密码就ok了。</p>
+<p><strong>win10 linux子系统设置默认用户</strong></p>
+<p><a href="https://blog.csdn.net/ijiabao520/article/details/79285041" target="_blank" rel="noopener">https://blog.csdn.net/ijiabao520/article/details/79285041</a></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/05/18/Windows%20Server%202019%E5%92%8CWin10%20%E5%AE%89%E8%A3%85%20Linux%20%E5%AD%90%E7%B3%BB%E7%BB%9F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/05/18/%E8%BF%90%E7%BB%B4%E5%92%8C%E5%8F%91%E5%B1%95%E7%BA%BF%E8%B7%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/05/18/%E8%BF%90%E7%BB%B4%E5%92%8C%E5%8F%91%E5%B1%95%E7%BA%BF%E8%B7%AF/" class="post-title-link" itemprop="url">运维和发展线路</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-18 15:26:56" itemprop="dateCreated datePublished" datetime="2021-05-18T15:26:56+08:00">2021-05-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="运维和发展的一个线路">运维和发展的一个线路</h2>
+<ul>
+<li>1.搭建服务（部署并运行起来）</li>
+<li>2.用好服务（监控、管理、优化）</li>
+<li>3.自动化（服务直接的关联和协同工作）</li>
+<li>4.产品设计（如何设计一个监控系统）</li>
+</ul>
+<p><strong>云计算的核心竞争力是运维！</strong></p>
+<p>系统架构师（偏管理）：网络  系统  数据库  开发  云计算  自动化  运维管理  服务管理 项目管理  测试  业务<br>
+专注于某一领域<br>
+解决方案架构师</p>
+<h2 id="运维工作内容分类">运维工作内容分类</h2>
+<ul>
+<li>监控运维（7x24运维值班、故障处理）</li>
+<li>应用运维（业务熟悉、服务部署、业务部署、版本管理、灰度发布、应用监控）</li>
+<li>安全运维（整体的安全方案、规范、漏洞监测、安全防护等）</li>
+<li>系统运维（架构层面的分布式缓存、分布式文件系统、日志收集、环境规划（测试、开发、生产）、架构设计、性能优化）</li>
+<li>基础服务运维（包含运维开发）（内部DNS、负载均衡、系统监控、资产管理、运维平台）</li>
+<li>基础设施运维（系统初始化、网络维护）</li>
+<li>机房运维（负责设备上下架、巡检、报修、硬件监控）</li>
+</ul>
+<p>阿里云:<br>
+SLB  LVS + Tengine（Nginx）<br>
+ECS  KVM</p>
+<h2 id="运维标准化">运维标准化</h2>
+<p><strong>物理设备层面：</strong><br>
+1.服务器标签化、设备负责人、设备采购详情、设备摆放标准<br>
+2.网络划分、远程控制卡、网卡端口<br>
+3.服务器机型、硬盘、内存统一，根据业务分类<br>
+4.资产命名规范、编号规范、类型规范<br>
+5.监控标准</p>
+<p><strong>操作系统层面</strong><br>
+1.操作系统版本<br>
+2.系统初始化（配置DNS、NTP、内核参数调优）<br>
+3.基础Agent配备（Zabbix agent、logstash agent、salt minion）<br>
+4.系统监控标准（CPU、内存、硬盘、网络、进程）</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/05/18/%E8%BF%90%E7%BB%B4%E5%92%8C%E5%8F%91%E5%B1%95%E7%BA%BF%E8%B7%AF/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/04/30/CDH%20Disk%20Balancer%20%E7%A3%81%E7%9B%98%E6%95%B0%E6%8D%AE%E5%9D%87%E8%A1%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/30/CDH%20Disk%20Balancer%20%E7%A3%81%E7%9B%98%E6%95%B0%E6%8D%AE%E5%9D%87%E8%A1%A1/" class="post-title-link" itemprop="url">CDH Disk Balancer 磁盘数据均衡</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-30 09:58:57" itemprop="dateCreated datePublished" datetime="2021-04-30T09:58:57+08:00">2021-04-30</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="CDH-Disk-Balancer-磁盘数据均衡">CDH Disk Balancer 磁盘数据均衡</h3>
+<p>1.设置dfs.disk.balancer.enabled  为true , 可以单个datanode设置，重启单个datanode生效。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.disk.balancer.enabled<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="/images/image-20210429175922996.png" alt="image-20210429175922996">
+<p>1.创建均衡任务并生成计划任务配置文件</p>
+<p>sudo -u hdfs hdfs diskbalancer -plan cdh85-73</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@cdh85-73 tmp]# sudo -u hdfs hdfs diskbalancer -plan cdh85-73</span><br><span class="line">21/04/29 17:02:45 INFO planner.GreedyPlanner: Starting plan for Node : cdh85-73:9867</span><br><span class="line">21/04/29 17:02:45 INFO planner.GreedyPlanner: Disk Volume set f4da1504-1dfc-42d0-ac61-020dd7b02620 Type : DISK plan completed.</span><br><span class="line">21/04/29 17:02:45 INFO planner.GreedyPlanner: Compute Plan for Node : cdh85-73:9867 took 7 ms </span><br><span class="line">21/04/29 17:02:46 INFO command.Command: Writing plan to:</span><br><span class="line">21/04/29 17:02:46 INFO command.Command: /system/diskbalancer/2021-Apr-29-17-02-45/cdh85-73.plan.json</span><br><span class="line">Writing plan to:</span><br><span class="line">/system/diskbalancer/2021-Apr-29-17-02-45/cdh85-73.plan.json</span><br></pre></td></tr></table></figure>
+<p>注意： 这个路径是HDFS的路径，不是本地路径</p>
+<p>2.查看配置文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@cdh85-73 tmp]# hdfs dfs -ls  /system/diskbalancer/2021-Apr-29-16-45-51</span><br><span class="line">Found 2 items</span><br><span class="line">-rw-r--r--   3 hdfs supergroup     192586 2021-04-29 16:45 /system/diskbalancer/2021-Apr-29-16-45-51/cdh85-73.before.json</span><br><span class="line">-rw-r--r--   3 hdfs supergroup       4546 2021-04-29 16:45 /system/diskbalancer/2021-Apr-29-16-45-51/cdh85-73.plan.json</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/04/30/CDH%20Disk%20Balancer%20%E7%A3%81%E7%9B%98%E6%95%B0%E6%8D%AE%E5%9D%87%E8%A1%A1/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/04/27/chia%E6%8C%96%E7%9F%BF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/27/chia%E6%8C%96%E7%9F%BF/" class="post-title-link" itemprop="url">chia挖矿</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-27 10:52:45" itemprop="dateCreated datePublished" datetime="2021-04-27T10:52:45+08:00">2021-04-27</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="用家里的老电脑做一个测试-，p了一块k32的盘">用家里的老电脑做一个测试 ，p了一块k32的盘</h4>
+<p>矿池的具体接入教程描述得非常浅显易懂了，这里我就不做重复搬运了，直接参考 <a href="https://www.hpool.com/help/tutorial/Chia%E6%8C%96%E7%9F%BF%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">Chia挖矿教程</a></p>
+<p>linux P盘</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup &#x2F;opt&#x2F;chia-plotter&#x2F;chia-plotter-linux-amd64 -action plotting -plotting-fpk 0x85f80829a93d960313a99ca5482703fea2caae1d07db589344e76eba135db14c8f70d08dadc991805ae917d61626fd8d -plotting-ppk 0x970214947045bd1c6fbb0b3b3499dafab837eb26b58356504aea4d8ee19e9c5c064a5dfdad0cb5f7f047e0030f088a65 -plotting-n 1 -b 8000 -t &#x2F;data1&#x2F;chia -d &#x2F;opt&#x2F;chia  &gt;&gt; plots2.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+<p>晒一下收益效果：</p>
+<p><img src="/images/image-20210427101445602.png" alt="image-20210427101445602"></p>
+<h4 id="相关资料：">相关资料：</h4>
+<p><strong>谋杀SSD磁盘</strong></p>
+<p><a href="https://www.expreview.com/78802.html" target="_blank" rel="noopener">https://www.expreview.com/78802.html</a></p>
+<blockquote>
+<p>生成一个K=32文件大概需要6.5小时，生成三个K33两个K32文件总共占了829GB的硬盘空间，而HDD的写入量是840.1GB，但SSD的读写非常厉害，整个P盘过程，SSD读取11.8TB，写入12.06TB，因为SSD的写入次数是有限的，把这个6TB的红盘P满虽然不至于把SSD写死，但磨损也很厉害。</p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/04/27/chia%E6%8C%96%E7%9F%BF/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/04/27/hadoop%20decommission%20%E5%8D%A1%E4%BD%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/27/hadoop%20decommission%20%E5%8D%A1%E4%BD%8F/" class="post-title-link" itemprop="url">hadoop decommission 卡住</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-27 10:00:22" itemprop="dateCreated datePublished" datetime="2021-04-27T10:00:22+08:00">2021-04-27</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>hadoop decommission 卡住</p>
+<p>hadoop decommission一个节点Datanode，几万个block都同步过去了，但是唯独剩下2个block一直停留在哪，导致该节点几个小时也无法 下线。hadoop UI中显示在Under Replicated Blocks里面有2个块始终无法消除.</p>
+<p>是一个hadoop的bug，<a href="https://issues.apache.org/jira/browse/HDFS-5579" target="_blank" rel="noopener">https://issues.apache.org/jira/browse/HDFS-5579</a></p>
+<p>根据blockid 查找文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs fsck -blockId blk_2050561344</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/04/27/hadoop%20decommission%20%E5%8D%A1%E4%BD%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/04/21/hdfs%20%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%80%80%E5%BD%B9%E8%8A%82%E7%82%B9%E5%BF%AB%E9%80%9F%E4%B8%8B%E7%BA%BF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/21/hdfs%20%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%80%80%E5%BD%B9%E8%8A%82%E7%82%B9%E5%BF%AB%E9%80%9F%E4%B8%8B%E7%BA%BF/" class="post-title-link" itemprop="url">hdfs 如何实现退役节点快速下线</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-21 17:25:28" itemprop="dateCreated datePublished" datetime="2021-04-21T17:25:28+08:00">2021-04-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>hdfs 如何实现退役节点快速下线（也就是退役节点上的数据块快速迁移）</strong></p>
+<p>参考  <a href="https://www.cnblogs.com/jiangxiaoxian/p/9665588.html" target="_blank" rel="noopener">https://www.cnblogs.com/jiangxiaoxian/p/9665588.html</a></p>
+<p>进度可在HDFS的50070可视化界面的Decommissioning处查看**</p>
+<p>Under replicated blocks	： 有备份的blocks</p>
+<p>Blocks with no live replicas	： 没有存活备份的blocks(存备份的datanode下线了)</p>
+<p>Under Replicated Blocks In files under construction   ： 备份数不够的blocks</p>
+<p>可调整集群参数，对退服进行调优，注意，更改参数需要重启服务。需要修改的参数如下：</p>
+<table>
+<thead>
+<tr>
+<th><strong>组件</strong></th>
+<th><strong>实例</strong></th>
+<th><strong>参数类别</strong></th>
+<th style="text-align:left"><strong>参数名称</strong></th>
+<th><strong>默认值</strong></th>
+<th><strong>修改值</strong></th>
+<th><strong>参数含义</strong></th>
+<th><strong>调整场景</strong></th>
+<th><strong>是否可以默认值调整</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HDFS</td>
+<td>NameNode</td>
+<td>balance/退服性能参数</td>
+<td style="text-align:left">dfs.datanode.balance.bandwidthPerSec</td>
+<td>20971520</td>
+<td>209715200</td>
+<td>【说明】每个DataNode可用于负载均衡的最大带宽量（每秒的字节数）。</td>
+<td>balance-性能调优</td>
+<td>不建议调整默认值</td>
+</tr>
+<tr>
+<td>HDFS</td>
+<td>DataNode</td>
+<td>balance/退服性能参数</td>
+<td style="text-align:left">dfs.datanode.balance.max.concurrent.moves</td>
+<td>5</td>
+<td>30</td>
+<td>允许在DataNode上进行负载均衡的最大线程数。</td>
+<td></td>
+<td>有必要调整</td>
+</tr>
+<tr>
+<td>HDFS</td>
+<td>NameNode</td>
+<td>balance/退服性能参数</td>
+<td style="text-align:left">dfs.namenode.replication.max-streams</td>
+<td>10</td>
+<td>64</td>
+<td>DataNode上复制线程的最大数。</td>
+<td></td>
+<td>C70默认值已调整为64，有必要继续调整</td>
+</tr>
+<tr>
+<td>HDFS</td>
+<td>NameNode</td>
+<td>balance/退服性能参数</td>
+<td style="text-align:left">dfs.namenode.replication.max-streams-hard-limit</td>
+<td>20</td>
+<td>500</td>
+<td>对DataNode上复制线程数的硬限制。</td>
+<td></td>
+<td>C70默认值已调整为128，有必要继续调整</td>
+</tr>
+<tr>
+<td>HDFS</td>
+<td>NameNode</td>
+<td>balance/退服性能参数</td>
+<td style="text-align:left">dfs.namenode.replication.work.multiplier.per.iteration</td>
+<td>10</td>
+<td>500</td>
+<td>高级属性。修改时需谨慎。该参数表示NameNode通过DataNode心跳发送这样一个命令列表时DataNode上并行开始的用于复制的块传输的总量。</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>HDFS</th>
+<th>NameNode</th>
+<th>运行-性能调优</th>
+<th>dfs.namenode.handler.count</th>
+<th>64</th>
+<th>192</th>
+<th>NameNode处理线程数</th>
+<th>大集群，性能调优</th>
+<th>可以调整/更耗内存</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HDFS</td>
+<td>DataNode</td>
+<td>运行-性能调优</td>
+<td>dfs.datanode.handler.count</td>
+<td>8</td>
+<td>24</td>
+<td>DataNode处理线程数</td>
+<td>大集群，性能调优</td>
+<td>可以调整/更耗内存</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>HDFS</th>
+<th>NameNode</th>
+<th>运行-性能调优</th>
+<th>ipc.server.read.threadpool.size</th>
+<th>1</th>
+<th>10</th>
+<th>NameNode处理请求线程池大小</th>
+<th>大集群，性能调优</th>
+<th>可以调整/更耗内存</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/04/21/hdfs%20%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%80%80%E5%BD%B9%E8%8A%82%E7%82%B9%E5%BF%AB%E9%80%9F%E4%B8%8B%E7%BA%BF/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/04/19/xfs_repair%20%E7%A3%81%E7%9B%98%E4%BF%AE%E5%A4%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/19/xfs_repair%20%E7%A3%81%E7%9B%98%E4%BF%AE%E5%A4%8D/" class="post-title-link" itemprop="url">xfs_repair 磁盘修复</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-19 14:03:40" itemprop="dateCreated datePublished" datetime="2021-04-19T14:03:40+08:00">2021-04-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="1-现状">1.现状</h3>
+<p>目前网上出现大量的主机输入输出错误，原因是由于主机文件系统损坏。一线人员大部分采用的是umont 和 mount的方式恢复，这种恢复方式不能真正修复已经损坏的文件系统，在后续使用过程中，仍然会再次出现主机端输入输出错误。</p>
+<h3 id="2-需要修复的场景">2.需要修复的场景</h3>
+<p>&lt;1&gt;.主机侧发现存在文件系统不可读写的情况，也可以通过查看主机端日志来确认是否有文件系统异常发生： xfs_force_shutdown 、I/O error <br>
+&lt;2&gt;.出现异常停电，供电恢复正常，主机和阵列系统重起之后<br>
+&lt;3&gt;.存储介质故障：出现LUN失效、RAID失效、以及IO超时或者出现慢盘，对慢盘进行更换，系统恢复正常之后<br>
+&lt;4&gt;.传输介质故障：如光纤、网线等损坏等，数据传输链路断开后又恢复正常之后</p>
+<h3 id="3-检查文件系统">3.检查文件系统</h3>
+<p>注：检查文件系统必须保证将文件系统umount成功。<br>
+在根目录下输入“xfs_check /dev/sdd（盘符）；echo $?”（注意：在执行 此命令之前，必须将文件系统umount，否则会出现警告信 “xfs_check: /dev/sdd contains a mounted and writable filesystem ”）敲回车键，查看命令执行返回值：0表示正常，其他为不正常，说明文件系统 损坏，需要修复。</p>
+<h3 id="4-修复过程">4.修复过程</h3>
+<p>注：修复时需要暂停主机侧的业务，umount 和 mount 无法修复文件系统 。</p>
+<ol>
+<li>先umount要修复的文件系统的分区</li>
+<li>然后输入 “xfs_repair /dev/sdd（盘符）”执行修复命令。<br>
+xfs_check /dev/sdd; echo $?<br>
+A）如果为0===》成功修复。<br>
+B) 如果不为0===》没有成功：请执行 <strong>xfs_repair –L /dev/sdd</strong> 命令，再执 行xfs_repair（反复多修复几次）</li>
+</ol>
+<h3 id="5-xfs常用命令">5.xfs常用命令</h3>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/04/19/xfs_repair%20%E7%A3%81%E7%9B%98%E4%BF%AE%E5%A4%8D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+  </div>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="datasir"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">datasir</p>
+  <div class="site-description" itemprop="description">小杨随笔</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">112</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chinayangze" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chinayangze" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:info@ask3.cn" title="E-Mail → mailto:info@ask3.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.yh-021.com/" title="https:&#x2F;&#x2F;www.yh-021.com" rel="noopener" target="_blank">上海有汇</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备13036234号-3 </a>
+      <img src="/images/beian.png" style="display: inline-block;">
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">datasir</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
