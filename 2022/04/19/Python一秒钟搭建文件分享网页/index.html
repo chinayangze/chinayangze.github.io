@@ -49,21 +49,15 @@
   <meta name="description" content="Python一秒钟搭建文件分享网页 Python的库是十分丰富的。在局域网内分享文件时，Python的http.server可以创建一个非常基本的Web服务器，相对于当前目录提供文件。http.server模块定义用于实现 HTTP 服务器（Web 服务器）的类。 一、运行简单网页 先来试验一下，在cmd运行：python -m http.server，如果时linux平台的化，注意python版">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python一秒钟搭建文件分享网页">
-<meta property="og:url" content="http://www.ask3.cn/2022/03/22/Python%E4%B8%80%E7%A7%92%E9%92%9F%E6%90%AD%E5%BB%BA%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E7%BD%91%E9%A1%B5/index.html">
+<meta property="og:url" content="http://www.ask3.cn/2022/04/19/Python%E4%B8%80%E7%A7%92%E9%92%9F%E6%90%AD%E5%BB%BA%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E7%BD%91%E9%A1%B5/index.html">
 <meta property="og:site_name" content="爱思考">
 <meta property="og:description" content="Python一秒钟搭建文件分享网页 Python的库是十分丰富的。在局域网内分享文件时，Python的http.server可以创建一个非常基本的Web服务器，相对于当前目录提供文件。http.server模块定义用于实现 HTTP 服务器（Web 服务器）的类。 一、运行简单网页 先来试验一下，在cmd运行：python -m http.server，如果时linux平台的化，注意python版">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/24447700-a76e1d33147b6118.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/657/format/webp">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/24447700-e9440b8b295e43e1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/890/format/webp">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/24447700-acbebe374b8d8c3c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/780/format/webp">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/24447700-a9f48c4af6cbc7aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/748/format/webp">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/24447700-e5a3b5d7ac736f8e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/934/format/webp">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/24447700-fd7af4ded14cafe7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1200/format/webp">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/24447700-2daa0e093f417a40.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1200/format/webp">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/24447700-13b0f21eda21d9e8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/616/format/webp">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/24447700-c31081ae3279e5d7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/576/format/webp">
-<meta property="article:published_time" content="2022-03-22T09:58:20.865Z">
-<meta property="article:modified_time" content="2022-03-22T09:58:20.865Z">
+<meta property="og:image" content="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/image-20220419170008535.png">
+<meta property="og:image" content="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2022/04/image-20220419173412287.png">
+<meta property="article:published_time" content="2022-04-19T09:39:41.515Z">
+<meta property="article:modified_time" content="2022-04-19T09:39:41.515Z">
 <meta property="article:author" content="datasir">
 <meta property="article:tag" content="爱思考">
 <meta property="article:tag" content="软件学习网">
@@ -84,7 +78,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/24447700-a76e1d33147b6118.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/657/format/webp">
 
-<link rel="canonical" href="http://www.ask3.cn/2022/03/22/Python%E4%B8%80%E7%A7%92%E9%92%9F%E6%90%AD%E5%BB%BA%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E7%BD%91%E9%A1%B5/">
+<link rel="canonical" href="http://www.ask3.cn/2022/04/19/Python%E4%B8%80%E7%A7%92%E9%92%9F%E6%90%AD%E5%BB%BA%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E7%BD%91%E9%A1%B5/">
 
 
 <script id="page-configurations">
@@ -221,7 +215,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/03/22/Python%E4%B8%80%E7%A7%92%E9%92%9F%E6%90%AD%E5%BB%BA%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E7%BD%91%E9%A1%B5/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/04/19/Python%E4%B8%80%E7%A7%92%E9%92%9F%E6%90%AD%E5%BB%BA%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E7%BD%91%E9%A1%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -244,7 +238,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-03-22 17:58:20" itemprop="dateCreated datePublished" datetime="2022-03-22T17:58:20+08:00">2022-03-22</time>
+              <time title="创建时间：2022-04-19 17:39:41" itemprop="dateCreated datePublished" datetime="2022-04-19T17:39:41+08:00">2022-04-19</time>
             </span>
 
           
@@ -264,31 +258,18 @@
 <p>先来试验一下，在cmd运行：python -m http.server，如果时linux平台的化，注意python版本3 。在浏览器输入IP地址:8000，即可获得的当前目录下的所有文件列表，以提供下载。需要注意的是防火墙要关闭或添加规则。</p>
 <p>在局域网内暂时分享文件的话是十分方便的，比U盘拷贝省心很多。</p>
 <p><img src="https:////upload-images.jianshu.io/upload_images/24447700-a76e1d33147b6118.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/657/format/webp" alt="img"></p>
-<p><img src="https:////upload-images.jianshu.io/upload_images/24447700-e9440b8b295e43e1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/890/format/webp" alt="img"></p>
-<p>分享网页</p>
+<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/image-20220419170008535.png" alt="image-20220419170008535"></p>
 <p>查看官方文档：http请求映射到目录，检查目录中是否有index.html或index.htm文件（按顺序）。如果有，文件的内容将返回：否则，目录列表将通过调用list_directory()方法生成，此方法使用os.listdir()扫描目录。</p>
 <h4 id="二、http-server具体使用方法">二、http.server具体使用方法</h4>
 <p>使用 python -m http.server --help 再来看一下具体的使用方法。</p>
-<p><img src="https:////upload-images.jianshu.io/upload_images/24447700-acbebe374b8d8c3c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/780/format/webp" alt="img"></p>
+<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2022/04/image-20220419173412287.png" alt="image-20220419173412287"></p>
 <p>port指定端口号，而不是默认的8000。</p>
 <p>–bind ADDRESS, -b ADDRESS此方式是针对多网卡设备，绑定特定的网卡可以访问，而不是全部网卡。</p>
 <p>–directory DIRECTORY, -d DIRECTORY指定特定的目录，而不是当前目录。</p>
 <p>下面的命令指定E:\download目录并通过端口8888运行http.server ，所有网卡组成的局域网IP地址都可以访问。</p>
-<p>python -m http.server --directory E:\download 8888</p>
-<p><img src="https:////upload-images.jianshu.io/upload_images/24447700-a9f48c4af6cbc7aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/748/format/webp" alt="img"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m http.server --directory E:\download 8888</span><br></pre></td></tr></table></figure>
 <p>下面的命令指定E:\download目录并通过端口8888运行http.server ，特定网卡的局域网IP地址可以访问。</p>
-<p>python -m http.server --directory E:\download --bind 192.168.15.219 8888</p>
-<p><img src="https:////upload-images.jianshu.io/upload_images/24447700-e5a3b5d7ac736f8e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/934/format/webp" alt="img"></p>
-<h4 id="三、底层实现server-py">三、<a href="http://xn--server-hk7kj6b86k157d.py" target="_blank" rel="noopener">底层实现server.py</a></h4>
-<p>上面的帮助信息里面有提示：usage: <a href="http://server.py" target="_blank" rel="noopener">server.py</a> [-h] [–cgi] [–bind ADDRESS] [–directory DIRECTORY] [port] ，<a href="http://xn--server-9h8kq7mbotylah2ada934owxemz1b9seda542m7k8f.py" target="_blank" rel="noopener">既是此种方法的底层调用的是server.py</a> （<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2Fpython%2Fcpython%2Ftree%2F3.3%2FLib%2Fhttp%2Fserver.py" target="_blank" rel="noopener">github上也有托管</a>）。下面笔者通过进入到server.py的目录，直接使用底层server.py来运行http服务，效果是一样的。</p>
-<p><img src="https:////upload-images.jianshu.io/upload_images/24447700-fd7af4ded14cafe7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1200/format/webp" alt="img"></p>
-<p>你也可以使用__pycache__目录下的已经编译好的.pyc文件。</p>
-<p><img src="https:////upload-images.jianshu.io/upload_images/24447700-2daa0e093f417a40.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1200/format/webp" alt="img"></p>
-<h4 id="四、Linux系统上实践">四、Linux系统上实践</h4>
-<p>​    在Llinux系统上，如果要远程拷贝文件可以使用scp命令，或者在windows上使用可视化程序winscp。笔者使用腾讯云服务器来测试（哈哈，忽略前面的登陆显示的狮子），需要注意的是腾讯云服务器密钥开启firewall防火墙，但是NAT转换服务器是有防火墙的，需要在控制台中开启TCP/8000端口。</p>
-<p>但是，官方不推荐在生产环境中使用 <a href="https://links.jianshu.com/go?to=https%3A%2F%2Fdocs.python.org%2Fzh-cn%2F3%2Flibrary%2Fhttp.server.html%23module-http.server" target="_blank" rel="noopener">http.server</a> ，它只实现了基本的安全检查功能。所有临时搭建分享文件或者调试是可以的。</p>
-<p><img src="https:////upload-images.jianshu.io/upload_images/24447700-13b0f21eda21d9e8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/616/format/webp" alt="img"></p>
-<p><img src="https:////upload-images.jianshu.io/upload_images/24447700-c31081ae3279e5d7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/576/format/webp" alt="img"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m http.server --directory E:\download --bind 192.168.15.219 8888</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -304,13 +285,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/03/03/clickhouse%E8%BF%90%E7%BB%B4/" rel="prev" title="clickhouse运维">
-      <i class="fa fa-chevron-left"></i> clickhouse运维
+    <a href="/2022/04/19/typora%20+%20hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/" rel="prev" title="typora + hexo博客中插入图片">
+      <i class="fa fa-chevron-left"></i> typora + hexo博客中插入图片
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/04/13/%E9%87%87%E7%94%A8hive%E8%87%AA%E5%B8%A6%E7%9A%84%E6%96%B9%E6%B3%95%E7%94%9F%E6%88%90Hfile%EF%BC%8C%E5%B9%B6%E5%B0%86%E4%B8%8A%E4%BA%BF%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%87%8F%E5%AF%BC%E5%85%A5HBASE/" rel="next" title="采用hive自带的方法生成Hfile，并将上亿大数据量导入HBASE">
-      采用hive自带的方法生成Hfile，并将上亿大数据量导入HBASE <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -370,7 +348,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">1.</span> <span class="nav-text">Python一秒钟搭建文件分享网页</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、运行简单网页"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">一、运行简单网页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、http-server具体使用方法"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">二、http.server具体使用方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、底层实现server-py"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">三、底层实现server.py</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、Linux系统上实践"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">四、Linux系统上实践</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">1.</span> <span class="nav-text">Python一秒钟搭建文件分享网页</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、运行简单网页"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">一、运行简单网页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、http-server具体使用方法"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">二、http.server具体使用方法</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

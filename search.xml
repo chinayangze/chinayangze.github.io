@@ -1,6 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Python一秒钟搭建文件分享网页</title>
+    <url>/2022/04/19/Python%E4%B8%80%E7%A7%92%E9%92%9F%E6%90%AD%E5%BB%BA%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E7%BD%91%E9%A1%B5/</url>
+    <content><![CDATA[<h1>Python一秒钟搭建文件分享网页</h1>
+<p>Python的库是十分丰富的。在局域网内分享文件时，Python的http.server可以创建一个非常基本的Web服务器，相对于当前目录提供文件。http.server模块定义用于实现 HTTP 服务器（Web 服务器）的类。</p>
+<h4 id="一、运行简单网页">一、运行简单网页</h4>
+<p>先来试验一下，在cmd运行：python -m http.server，如果时linux平台的化，注意python版本3 。在浏览器输入IP地址:8000，即可获得的当前目录下的所有文件列表，以提供下载。需要注意的是防火墙要关闭或添加规则。</p>
+<p>在局域网内暂时分享文件的话是十分方便的，比U盘拷贝省心很多。</p>
+<p><img src="https:////upload-images.jianshu.io/upload_images/24447700-a76e1d33147b6118.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/657/format/webp" alt="img"></p>
+<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/image-20220419170008535.png" alt="image-20220419170008535"></p>
+<p>查看官方文档：http请求映射到目录，检查目录中是否有index.html或index.htm文件（按顺序）。如果有，文件的内容将返回：否则，目录列表将通过调用list_directory()方法生成，此方法使用os.listdir()扫描目录。</p>
+<h4 id="二、http-server具体使用方法">二、http.server具体使用方法</h4>
+<p>使用 python -m http.server --help 再来看一下具体的使用方法。</p>
+<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2022/04/image-20220419173412287.png" alt="image-20220419173412287"></p>
+<p>port指定端口号，而不是默认的8000。</p>
+<p>–bind ADDRESS, -b ADDRESS此方式是针对多网卡设备，绑定特定的网卡可以访问，而不是全部网卡。</p>
+<p>–directory DIRECTORY, -d DIRECTORY指定特定的目录，而不是当前目录。</p>
+<p>下面的命令指定E:\download目录并通过端口8888运行http.server ，所有网卡组成的局域网IP地址都可以访问。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python -m http.server --directory E:\download 8888</span><br></pre></td></tr></table></figure>
+<p>下面的命令指定E:\download目录并通过端口8888运行http.server ，特定网卡的局域网IP地址可以访问。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python -m http.server --directory E:\download --bind 192.168.15.219 8888</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>typora + hexo博客中插入图片</title>
+    <url>/2022/04/19/typora%20+%20hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/</url>
+    <content><![CDATA[<p>在使用了hexo搭建了博客后，最大的问题便是如何使用一款markdown工具来编辑博客了，我采取的就是Typora，这工具免费简单易用没广告，而且把图片保存到本地还是很方便的，因此大家只要稍微了解点markdown语法就可以上手使用了。</p>
+<p>关于图片和图片路径的设置，有以下教程。</p>
+<h2 id="typora-自动上传图片的教程">typora 自动上传图片的教程</h2>
+<p><a href="https://connor-sun.github.io/posts/38835.html" target="_blank" rel="noopener">https://connor-sun.github.io/posts/38835.html</a></p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"picBed"</span>: &#123;</span><br><span class="line">    <span class="attr">"uploader"</span>: <span class="string">"aliyun"</span>,</span><br><span class="line">    <span class="attr">"aliyun"</span>: &#123;</span><br><span class="line">      <span class="attr">"accessKeyId"</span>: <span class="string">"LvX8msYp6t1UQv3h"</span>,</span><br><span class="line">      <span class="attr">"accessKeySecret"</span>: <span class="string">"BOmXyUnZ2ky4DJAIfRJOfrySHGwohV"</span>,</span><br><span class="line">      <span class="attr">"bucket"</span>: <span class="string">"ask3"</span>,</span><br><span class="line">      <span class="attr">"area"</span>: <span class="string">"oss-cn-hangzhou"</span>,</span><br><span class="line">      <span class="attr">"path"</span>: <span class="string">"img/md/"</span>,</span><br><span class="line">      <span class="attr">"customUrl"</span>: <span class="string">""</span>,</span><br><span class="line">      <span class="attr">"options"</span>: <span class="string">""</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 插件设置</span></span><br><span class="line">  <span class="attr">"picgoPlugins"</span>: &#123;</span><br><span class="line">    <span class="attr">"picgo-plugin-super-prefix"</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"picgo-plugin-super-prefix"</span>: &#123;</span><br><span class="line">    <span class="attr">"prefixFormat"</span>: <span class="string">"YYYY/MM/"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意 ：   存储路径比如<code>img/</code>的话，上传的图片会默认放在OSS的<code>img</code>文件夹下。注意存储路径一定要以<code>/</code>结尾！存储路径是可选的，如果不需要请留空。</p>
+<h3 id=""></h3>
+<h1>让Typora的图片居左的两种方法</h1>
+<ul>
+<li>方法1：空格键</li>
+<li>方法2：tab键</li>
+</ul>
+<p><a href="https://blog.csdn.net/sky0816/article/details/111321812" target="_blank" rel="noopener">https://blog.csdn.net/sky0816/article/details/111321812</a></p>
+<h1>下面是老办法  （淘汰了）</h1>
+<p>事先声明，所有博客文件均保存在 hexo/_posts/文件夹下</p>
+<p>首先在 hexo &gt; source目录下建一个文件夹叫images，用来保存博客中的图片。</p>
+<p>然后打开Typora的 文件 &gt; 偏好设置，进行如下设置。</p>
+<p><img src="/images/image-20200116142728587.png" alt="image-20200116142728587"></p>
+<p>这样的话所有的博客中的图片都将会保存到 /source/images/该博客md文件名/图片名称</p>
+<p>但是仅仅这样设置还不够，这样设置在typora中倒是能看图片了，但是使用的却是相对于当前md文件的相对路径，可是如果启动hexo，是要用服务器访问的，而服务器显然无法根据这个相对路径正确访问到图片，因此还需要在typora中进行进一步设置。</p>
+<p>在typora菜单栏点击 格式-&gt;图像-&gt;设置图片根目录，将hexo/source作为其根目录即可。</p>
+<p><strong>一定要先设置了图片根目录后再插入图片，否则图片路径会不正确喔！</strong></p>
+<p><strong>根目录设置：</strong></p>
+<p>在文章头部插入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">typora-root-url: ..</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>然后图片地址换成绝对路径</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![image-20200116142728587](&#x2F;images&#x2F;image-20200116142728587.png)</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>scala：函数至简原则、函数简化过程</title>
+    <url>/2022/04/19/scala%EF%BC%9A%E5%87%BD%E6%95%B0%E8%87%B3%E7%AE%80%E5%8E%9F%E5%88%99%E3%80%81%E5%87%BD%E6%95%B0%E7%AE%80%E5%8C%96%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[<p>scala：函数至简原则、函数简化过程</p>
+<p>1.return可以省略，Scala会使用函数体的最后一行代码作为返回值<br>
+2.如果函数体只有一行代码，可以省略花括号<br>
+3.返回值类型如果能够推断出来，那么可以省略（:和返回值类型一起省略）<br>
+4.如果有return，则不能省略返回值类型，必须指定<br>
+5.如果函数明确声明unit，那么即使函数体中使用return关键字也不起作用<br>
+6.Scala如果期望是无返回值类型，可以省略等号 这种形式称为过程<br>
+7.如果函数无参，但是声明了参数列表，那么调用时，小括号，可加可不加<br>
+8.如果函数没有参数列表，那么小括号可以省略，调用时小括号必须省略<br>
+9.如果不关心名称，只关心逻辑处理，那么函数名（def）可以省略</p>
+<p>代码示例</p>
+<figure class="highlight scala"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Scala05_TestFun_review</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    //正常定义函数</span></span><br><span class="line"><span class="comment">    def f0(name:String): String =&#123;</span></span><br><span class="line"><span class="comment">      return name</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    println(f0("atguigu"))</span></span><br><span class="line"><span class="comment">    //（1）return可以省略，Scala会使用函数体的最后一行代码作为返回值</span></span><br><span class="line"><span class="comment">    def f1(name:String): String =&#123;</span></span><br><span class="line"><span class="comment">      name</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    println(f1("atguigu"))</span></span><br><span class="line"><span class="comment">    //（2）如果函数体只有一行代码，可以省略花括号</span></span><br><span class="line"><span class="comment">def f2(name:String): String = name</span></span><br><span class="line"><span class="comment">println(f2("atguigu"))</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（3）返回值类型如果能够推断出来，那么可以省略（:和返回值类型一起省略）</span></span><br><span class="line"><span class="comment">def f3(name:String)= name</span></span><br><span class="line"><span class="comment">println(f3("atguigu"))</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（4）如果有return，则不能省略返回值类型，必须指定</span></span><br><span class="line"><span class="comment">def f4(name:String) =&#123;</span></span><br><span class="line"><span class="comment">  return name</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（5）如果函数明确声明unit，那么即使函数体中使用return关键字也不起作用</span></span><br><span class="line"><span class="comment">def f5(name:String): Unit =&#123;</span></span><br><span class="line"><span class="comment">  return name</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">println(f5("atguigu"))</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（6）Scala如果期望是无返回值类型，可以省略等号   这种形式称为过程</span></span><br><span class="line"><span class="comment">def f6(name:String)&#123;</span></span><br><span class="line"><span class="comment">  println(name)</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">f6("banzhang")</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（7）如果函数无参，但是声明了参数列表，那么调用时，小括号，可加可不加</span></span><br><span class="line"><span class="comment">def f7(): Unit =&#123;</span></span><br><span class="line"><span class="comment">  println("jingjing")</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">f7</span></span><br><span class="line"><span class="comment">f7()</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（8）如果函数没有参数列表，那么小括号可以省略，调用时小括号必须省略</span></span><br><span class="line"><span class="comment">def f8: Unit =&#123;</span></span><br><span class="line"><span class="comment">  println("jingjing")</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">//f8()</span></span><br><span class="line"><span class="comment">f8</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（9）如果不关心名称，只关心逻辑处理，那么函数名（def）可以省略</span></span><br><span class="line"><span class="comment">// 1.扩展f9的功能   2.具体扩展的功能是通过fun函数传递，很灵活</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f9</span></span>(fun:(<span class="type">String</span>)=&gt;<span class="type">Unit</span>): <span class="type">Unit</span> =&#123;</span><br><span class="line">  fun(<span class="string">"jingjing"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//def f10(s:String): Unit =&#123;</span></span><br><span class="line"><span class="comment">//  println(s)</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"><span class="comment">//f9(f10)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//匿名函数 ：没有名字的函数，通过lambda表达式实现     (参数)=&gt;&#123;函数体&#125;</span></span><br><span class="line"><span class="comment">//f9((s:String)=&gt;&#123;println(s)&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（1）参数的类型可以省略，会根据形参进行自动的推导</span></span><br><span class="line"><span class="comment">//f9((s)=&gt;&#123;println(s)&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（2）类型省略之后，发现只有一个参数，则圆括号可以省略；其他情况：没有参数和参数超过1的永远不能省略圆括号。</span></span><br><span class="line"><span class="comment">//f9(s =&gt;&#123;println(s)&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（3）匿名函数如果只有一行，则大括号也可以省略</span></span><br><span class="line"><span class="comment">//f9(s =&gt;println(s))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（4）如果参数只出现一次，则参数省略且后面参数可以用_代替</span></span><br><span class="line"><span class="comment">//f9(println(_))</span></span><br><span class="line">  <span class="comment">//  （5） 如果可以推断出，println是一个函数体，而不是调用语句，那么(_)可以省</span></span><br><span class="line">  <span class="comment">//  f9(println)</span></span><br><span class="line">  <span class="comment">//反推导     f9((s:String)=&gt;println(s))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//加深大家理解</span></span><br><span class="line"><span class="comment">//定义一个函数，接受一个函数类型的参数，该函数类型有两个参数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f11</span></span>(fun:(<span class="type">Int</span>,<span class="type">Int</span>)=&gt;<span class="type">Int</span>):<span class="type">Int</span>=&#123;</span><br><span class="line">  fun(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//println(f11((x:Int,y:Int)=&gt;&#123;x + y&#125;))</span></span><br><span class="line"><span class="comment">//println(f11((x,y)=&gt;x + y))</span></span><br><span class="line">println(f11(_ + _))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
     <title>hexo 常用命令</title>
     <url>/2022/04/19/hexo%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<p>hexo 常用命令 ：</p>
@@ -35,55 +107,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>scala：函数至简原则、函数简化过程</title>
-    <url>/2022/04/13/scala%EF%BC%9A%E5%87%BD%E6%95%B0%E8%87%B3%E7%AE%80%E5%8E%9F%E5%88%99%E3%80%81%E5%87%BD%E6%95%B0%E7%AE%80%E5%8C%96%E8%BF%87%E7%A8%8B/</url>
-    <content><![CDATA[<p>scala：函数至简原则、函数简化过程</p>
-<p>1.return可以省略，Scala会使用函数体的最后一行代码作为返回值<br>
-2.如果函数体只有一行代码，可以省略花括号<br>
-3.返回值类型如果能够推断出来，那么可以省略（:和返回值类型一起省略）<br>
-4.如果有return，则不能省略返回值类型，必须指定<br>
-5.如果函数明确声明unit，那么即使函数体中使用return关键字也不起作用<br>
-6.Scala如果期望是无返回值类型，可以省略等号 这种形式称为过程<br>
-7.如果函数无参，但是声明了参数列表，那么调用时，小括号，可加可不加<br>
-8.如果函数没有参数列表，那么小括号可以省略，调用时小括号必须省略<br>
-9.如果不关心名称，只关心逻辑处理，那么函数名（def）可以省略</p>
-<p>代码示例</p>
-<figure class="highlight scala"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Scala05_TestFun_review</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    //正常定义函数</span></span><br><span class="line"><span class="comment">    def f0(name:String): String =&#123;</span></span><br><span class="line"><span class="comment">      return name</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    println(f0("atguigu"))</span></span><br><span class="line"><span class="comment">    //（1）return可以省略，Scala会使用函数体的最后一行代码作为返回值</span></span><br><span class="line"><span class="comment">    def f1(name:String): String =&#123;</span></span><br><span class="line"><span class="comment">      name</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    println(f1("atguigu"))</span></span><br><span class="line"><span class="comment">    //（2）如果函数体只有一行代码，可以省略花括号</span></span><br><span class="line"><span class="comment">def f2(name:String): String = name</span></span><br><span class="line"><span class="comment">println(f2("atguigu"))</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（3）返回值类型如果能够推断出来，那么可以省略（:和返回值类型一起省略）</span></span><br><span class="line"><span class="comment">def f3(name:String)= name</span></span><br><span class="line"><span class="comment">println(f3("atguigu"))</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（4）如果有return，则不能省略返回值类型，必须指定</span></span><br><span class="line"><span class="comment">def f4(name:String) =&#123;</span></span><br><span class="line"><span class="comment">  return name</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（5）如果函数明确声明unit，那么即使函数体中使用return关键字也不起作用</span></span><br><span class="line"><span class="comment">def f5(name:String): Unit =&#123;</span></span><br><span class="line"><span class="comment">  return name</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">println(f5("atguigu"))</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（6）Scala如果期望是无返回值类型，可以省略等号   这种形式称为过程</span></span><br><span class="line"><span class="comment">def f6(name:String)&#123;</span></span><br><span class="line"><span class="comment">  println(name)</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">f6("banzhang")</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（7）如果函数无参，但是声明了参数列表，那么调用时，小括号，可加可不加</span></span><br><span class="line"><span class="comment">def f7(): Unit =&#123;</span></span><br><span class="line"><span class="comment">  println("jingjing")</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">f7</span></span><br><span class="line"><span class="comment">f7()</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（8）如果函数没有参数列表，那么小括号可以省略，调用时小括号必须省略</span></span><br><span class="line"><span class="comment">def f8: Unit =&#123;</span></span><br><span class="line"><span class="comment">  println("jingjing")</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">//f8()</span></span><br><span class="line"><span class="comment">f8</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（9）如果不关心名称，只关心逻辑处理，那么函数名（def）可以省略</span></span><br><span class="line"><span class="comment">// 1.扩展f9的功能   2.具体扩展的功能是通过fun函数传递，很灵活</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f9</span></span>(fun:(<span class="type">String</span>)=&gt;<span class="type">Unit</span>): <span class="type">Unit</span> =&#123;</span><br><span class="line">  fun(<span class="string">"jingjing"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//def f10(s:String): Unit =&#123;</span></span><br><span class="line"><span class="comment">//  println(s)</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"><span class="comment">//f9(f10)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//匿名函数 ：没有名字的函数，通过lambda表达式实现     (参数)=&gt;&#123;函数体&#125;</span></span><br><span class="line"><span class="comment">//f9((s:String)=&gt;&#123;println(s)&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（1）参数的类型可以省略，会根据形参进行自动的推导</span></span><br><span class="line"><span class="comment">//f9((s)=&gt;&#123;println(s)&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（2）类型省略之后，发现只有一个参数，则圆括号可以省略；其他情况：没有参数和参数超过1的永远不能省略圆括号。</span></span><br><span class="line"><span class="comment">//f9(s =&gt;&#123;println(s)&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（3）匿名函数如果只有一行，则大括号也可以省略</span></span><br><span class="line"><span class="comment">//f9(s =&gt;println(s))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（4）如果参数只出现一次，则参数省略且后面参数可以用_代替</span></span><br><span class="line"><span class="comment">//f9(println(_))</span></span><br><span class="line">  <span class="comment">//  （5） 如果可以推断出，println是一个函数体，而不是调用语句，那么(_)可以省</span></span><br><span class="line">  <span class="comment">//  f9(println)</span></span><br><span class="line">  <span class="comment">//反推导     f9((s:String)=&gt;println(s))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//加深大家理解</span></span><br><span class="line"><span class="comment">//定义一个函数，接受一个函数类型的参数，该函数类型有两个参数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f11</span></span>(fun:(<span class="type">Int</span>,<span class="type">Int</span>)=&gt;<span class="type">Int</span>):<span class="type">Int</span>=&#123;</span><br><span class="line">  fun(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//println(f11((x:Int,y:Int)=&gt;&#123;x + y&#125;))</span></span><br><span class="line"><span class="comment">//println(f11((x,y)=&gt;x + y))</span></span><br><span class="line">println(f11(_ + _))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
-    <title>typora + hexo博客中插入图片</title>
-    <url>/2022/04/13/typora%20+%20hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/</url>
-    <content><![CDATA[<p>在使用了hexo搭建了博客后，最大的问题便是如何使用一款markdown工具来编辑博客了，我采取的就是Typora，这工具免费简单易用没广告，而且把图片保存到本地还是很方便的，因此大家只要稍微了解点markdown语法就可以上手使用了。</p>
-<p>关于图片和图片路径的设置，有以下教程。</p>
-<h2 id="typora-自动上传图片的教程">typora 自动上传图片的教程</h2>
-<p><a href="https://connor-sun.github.io/posts/38835.html" target="_blank" rel="noopener">https://connor-sun.github.io/posts/38835.html</a></p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"picgoPlugins"</span>: &#123;</span><br><span class="line">    <span class="attr">"picgo-plugin-super-prefix"</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"picBed"</span>: &#123;</span><br><span class="line">    <span class="attr">"uploader"</span>: <span class="string">"aliyun"</span>,</span><br><span class="line">    <span class="attr">"aliyun"</span>: &#123;</span><br><span class="line">      <span class="attr">"accessKeyId"</span>: <span class="string">"***"</span>,</span><br><span class="line">      <span class="attr">"accessKeySecret"</span>: <span class="string">"***"</span>,</span><br><span class="line">      <span class="attr">"bucket"</span>: <span class="string">"ask3"</span>,</span><br><span class="line">      <span class="attr">"area"</span>: <span class="string">"oss-cn-hangzhou"</span>,</span><br><span class="line">      <span class="attr">"path"</span>: <span class="string">"img/md/"</span>,</span><br><span class="line">      <span class="attr">"customUrl"</span>: <span class="string">""</span>,</span><br><span class="line">      <span class="attr">"options"</span>: <span class="string">""</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>注意 ：   存储路径比如<code>img/</code>的话，上传的图片会默认放在OSS的<code>img</code>文件夹下。注意存储路径一定要以<code>/</code>结尾！存储路径是可选的，如果不需要请留空。</p>
-<h3 id=""></h3>
-<h1>让Typora的图片居左的两种方法</h1>
-<ul>
-<li>方法1：空格键</li>
-<li>方法2：tab键</li>
-</ul>
-<p><a href="https://blog.csdn.net/sky0816/article/details/111321812" target="_blank" rel="noopener">https://blog.csdn.net/sky0816/article/details/111321812</a></p>
-<h1>下面是老办法  （淘汰了）</h1>
-<p>事先声明，所有博客文件均保存在 hexo/_posts/文件夹下</p>
-<p>首先在 hexo &gt; source目录下建一个文件夹叫images，用来保存博客中的图片。</p>
-<p>然后打开Typora的 文件 &gt; 偏好设置，进行如下设置。</p>
-<p><img src="/images/image-20200116142728587.png" alt="image-20200116142728587"></p>
-<p>这样的话所有的博客中的图片都将会保存到 /source/images/该博客md文件名/图片名称</p>
-<p>但是仅仅这样设置还不够，这样设置在typora中倒是能看图片了，但是使用的却是相对于当前md文件的相对路径，可是如果启动hexo，是要用服务器访问的，而服务器显然无法根据这个相对路径正确访问到图片，因此还需要在typora中进行进一步设置。</p>
-<p>在typora菜单栏点击 格式-&gt;图像-&gt;设置图片根目录，将hexo/source作为其根目录即可。</p>
-<p><strong>一定要先设置了图片根目录后再插入图片，否则图片路径会不正确喔！</strong></p>
-<p><strong>根目录设置：</strong></p>
-<p>在文章头部插入</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">typora-root-url: ..</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-<p>然后图片地址换成绝对路径</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![image-20200116142728587](&#x2F;images&#x2F;image-20200116142728587.png)</span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
     <title>采用hive自带的方法生成Hfile，并将上亿大数据量导入HBASE</title>
     <url>/2022/04/13/%E9%87%87%E7%94%A8hive%E8%87%AA%E5%B8%A6%E7%9A%84%E6%96%B9%E6%B3%95%E7%94%9F%E6%88%90Hfile%EF%BC%8C%E5%B9%B6%E5%B0%86%E4%B8%8A%E4%BA%BF%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%87%8F%E5%AF%BC%E5%85%A5HBASE/</url>
     <content><![CDATA[<h1>采用hive自带的方法生成Hfile，并将上亿大数据量导入HBASE</h1>
@@ -100,42 +123,6 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo -u hdfs hbase  org.apache.hadoop.hbase.mapreduce.LoadIncrementalHFiles  -Dhbase.mapreduce.bulkload.max.hfiles.perRegion.perFamily&#x3D;2048 &#x2F;tmp&#x2F;fi_pt_card_library BAOFOO_FI:fi_pt_card_library</span><br></pre></td></tr></table></figure>
 <p>亲测有效。<br>
 最终花费了14915.376 seconds 将5亿条HIVE数据迁移到了Hbase中。</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>Python一秒钟搭建文件分享网页</title>
-    <url>/2022/03/22/Python%E4%B8%80%E7%A7%92%E9%92%9F%E6%90%AD%E5%BB%BA%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E7%BD%91%E9%A1%B5/</url>
-    <content><![CDATA[<h1>Python一秒钟搭建文件分享网页</h1>
-<p>Python的库是十分丰富的。在局域网内分享文件时，Python的http.server可以创建一个非常基本的Web服务器，相对于当前目录提供文件。http.server模块定义用于实现 HTTP 服务器（Web 服务器）的类。</p>
-<h4 id="一、运行简单网页">一、运行简单网页</h4>
-<p>先来试验一下，在cmd运行：python -m http.server，如果时linux平台的化，注意python版本3 。在浏览器输入IP地址:8000，即可获得的当前目录下的所有文件列表，以提供下载。需要注意的是防火墙要关闭或添加规则。</p>
-<p>在局域网内暂时分享文件的话是十分方便的，比U盘拷贝省心很多。</p>
-<p><img src="https:////upload-images.jianshu.io/upload_images/24447700-a76e1d33147b6118.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/657/format/webp" alt="img"></p>
-<p><img src="https:////upload-images.jianshu.io/upload_images/24447700-e9440b8b295e43e1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/890/format/webp" alt="img"></p>
-<p>分享网页</p>
-<p>查看官方文档：http请求映射到目录，检查目录中是否有index.html或index.htm文件（按顺序）。如果有，文件的内容将返回：否则，目录列表将通过调用list_directory()方法生成，此方法使用os.listdir()扫描目录。</p>
-<h4 id="二、http-server具体使用方法">二、http.server具体使用方法</h4>
-<p>使用 python -m http.server --help 再来看一下具体的使用方法。</p>
-<p><img src="https:////upload-images.jianshu.io/upload_images/24447700-acbebe374b8d8c3c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/780/format/webp" alt="img"></p>
-<p>port指定端口号，而不是默认的8000。</p>
-<p>–bind ADDRESS, -b ADDRESS此方式是针对多网卡设备，绑定特定的网卡可以访问，而不是全部网卡。</p>
-<p>–directory DIRECTORY, -d DIRECTORY指定特定的目录，而不是当前目录。</p>
-<p>下面的命令指定E:\download目录并通过端口8888运行http.server ，所有网卡组成的局域网IP地址都可以访问。</p>
-<p>python -m http.server --directory E:\download 8888</p>
-<p><img src="https:////upload-images.jianshu.io/upload_images/24447700-a9f48c4af6cbc7aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/748/format/webp" alt="img"></p>
-<p>下面的命令指定E:\download目录并通过端口8888运行http.server ，特定网卡的局域网IP地址可以访问。</p>
-<p>python -m http.server --directory E:\download --bind 192.168.15.219 8888</p>
-<p><img src="https:////upload-images.jianshu.io/upload_images/24447700-e5a3b5d7ac736f8e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/934/format/webp" alt="img"></p>
-<h4 id="三、底层实现server-py">三、<a href="http://xn--server-hk7kj6b86k157d.py" target="_blank" rel="noopener">底层实现server.py</a></h4>
-<p>上面的帮助信息里面有提示：usage: <a href="http://server.py" target="_blank" rel="noopener">server.py</a> [-h] [–cgi] [–bind ADDRESS] [–directory DIRECTORY] [port] ，<a href="http://xn--server-9h8kq7mbotylah2ada934owxemz1b9seda542m7k8f.py" target="_blank" rel="noopener">既是此种方法的底层调用的是server.py</a> （<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2Fpython%2Fcpython%2Ftree%2F3.3%2FLib%2Fhttp%2Fserver.py" target="_blank" rel="noopener">github上也有托管</a>）。下面笔者通过进入到server.py的目录，直接使用底层server.py来运行http服务，效果是一样的。</p>
-<p><img src="https:////upload-images.jianshu.io/upload_images/24447700-fd7af4ded14cafe7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1200/format/webp" alt="img"></p>
-<p>你也可以使用__pycache__目录下的已经编译好的.pyc文件。</p>
-<p><img src="https:////upload-images.jianshu.io/upload_images/24447700-2daa0e093f417a40.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1200/format/webp" alt="img"></p>
-<h4 id="四、Linux系统上实践">四、Linux系统上实践</h4>
-<p>​    在Llinux系统上，如果要远程拷贝文件可以使用scp命令，或者在windows上使用可视化程序winscp。笔者使用腾讯云服务器来测试（哈哈，忽略前面的登陆显示的狮子），需要注意的是腾讯云服务器密钥开启firewall防火墙，但是NAT转换服务器是有防火墙的，需要在控制台中开启TCP/8000端口。</p>
-<p>但是，官方不推荐在生产环境中使用 <a href="https://links.jianshu.com/go?to=https%3A%2F%2Fdocs.python.org%2Fzh-cn%2F3%2Flibrary%2Fhttp.server.html%23module-http.server" target="_blank" rel="noopener">http.server</a> ，它只实现了基本的安全检查功能。所有临时搭建分享文件或者调试是可以的。</p>
-<p><img src="https:////upload-images.jianshu.io/upload_images/24447700-13b0f21eda21d9e8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/616/format/webp" alt="img"></p>
-<p><img src="https:////upload-images.jianshu.io/upload_images/24447700-c31081ae3279e5d7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/576/format/webp" alt="img"></p>
 ]]></content>
   </entry>
   <entry>
