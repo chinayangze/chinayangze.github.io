@@ -209,7 +209,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/04/19/Python%E4%B8%80%E7%A7%92%E9%92%9F%E6%90%AD%E5%BB%BA%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E7%BD%91%E9%A1%B5/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/02/10/hk-blockin%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -223,7 +223,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/04/19/Python%E4%B8%80%E7%A7%92%E9%92%9F%E6%90%AD%E5%BB%BA%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E7%BD%91%E9%A1%B5/" class="post-title-link" itemprop="url">Python一秒钟搭建文件分享网页</a>
+            <a href="/2023/02/10/hk-blockin%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">hk-blockin系统优化</a>
         </h1>
 
         <div class="post-meta">
@@ -233,7 +233,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-04-19 17:45:35" itemprop="dateCreated datePublished" datetime="2022-04-19T17:45:35+08:00">2022-04-19</time>
+              <time title="创建时间：2023-02-10 17:37:33" itemprop="dateCreated datePublished" datetime="2023-02-10T17:37:33+08:00">2023-02-10</time>
             </span>
 
           
@@ -247,19 +247,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>Python一秒钟搭建文件分享网页</h1>
-<p>Python的库是十分丰富的。在局域网内分享文件时，Python的http.server可以创建一个非常基本的Web服务器，相对于当前目录提供文件。http.server模块定义用于实现 HTTP 服务器（Web 服务器）的类。</p>
-<h4 id="一、运行简单网页">一、运行简单网页</h4>
-<p>先来试验一下，在cmd运行：python -m http.server，如果时linux平台的化，注意python版本3 。在浏览器输入IP地址:8000，即可获得的当前目录下的所有文件列表，以提供下载。需要注意的是防火墙要关闭或添加规则。</p>
-<p>在局域网内暂时分享文件的话是十分方便的，比U盘拷贝省心很多。</p>
-<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/image-20220419170008535.png" alt="image-20220419170008535"></p>
-<p>查看官方文档：http请求映射到目录，检查目录中是否有index.html或index.htm文件（按顺序）。如果有，文件的内容将返回：否则，目录列表将通过调用list_directory()方法生成，此方法使用os.listdir()扫描目录。</p>
-<h4 id="二、http-server具体使用方法">二、http.server具体使用方法</h4>
-<p>使用 python -m http.server --help 再来看一下具体的使用方法。</p>
-<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2022/04/image-20220419173412287.png" alt="image-20220419173412287"></p>
+          <p>群用到了那些组件？ 版本有什么要求？</p>
+<p>trino386，这个是jdk11了，安装两个目录就行了， phoenix5， hive3.1.2, hadoop.3.1.3,spark2.4.8,spark3.2 flink1.12.7, flink和spark都想升级。 iceberg.0.13.2,</p>
+<p>trino ui地址  <a href="http://cdh192-57:8089/ui/" target="_blank" rel="noopener">http://cdh192-57:8089/ui/</a>  用户 presto          jdbc 172.20.192.57  用户presto</p>
+<p>软件都安装在/home/hadoop/bigdata/这个下面</p>
+<p>[root@hadoop102 ~]$ xsync/home/hadoop/bigdata/hadoop/etc/hadoop/capacity-scheduler.xml</p>
+<p>刷新yarn集群的队列</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;HADOOP_HOME&#125;&#x2F;bin&#x2F;yarn rmadmin -refreshQueues&#96; 或&#96;yarn rmadmin -refreshQueues</span><br></pre></td></tr></table></figure>
+<p>hbase</p>
+<p>cdh192-[234-236]</p>
+<p>/opt/local/</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/04/19/Python%E4%B8%80%E7%A7%92%E9%92%9F%E6%90%AD%E5%BB%BA%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E7%BD%91%E9%A1%B5/#more" rel="contents">
+              <a class="btn" href="/2023/02/10/hk-blockin%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -283,7 +283,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/04/19/typora%20+%20hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/02/08/starRocks%E9%83%A8%E7%BD%B2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -297,7 +297,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/04/19/typora%20+%20hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/" class="post-title-link" itemprop="url">typora + hexo博客中插入图片</a>
+            <a href="/2023/02/08/starRocks%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">starRocks部署</a>
         </h1>
 
         <div class="post-meta">
@@ -307,7 +307,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-04-19 17:32:19" itemprop="dateCreated datePublished" datetime="2022-04-19T17:32:19+08:00">2022-04-19</time>
+              <time title="创建时间：2023-02-08 09:29:41" itemprop="dateCreated datePublished" datetime="2023-02-08T09:29:41+08:00">2023-02-08</time>
             </span>
 
           
@@ -321,22 +321,24 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>在使用了hexo搭建了博客后，最大的问题便是如何使用一款markdown工具来编辑博客了，我采取的就是Typora，这工具免费简单易用没广告，而且把图片保存到本地还是很方便的，因此大家只要稍微了解点markdown语法就可以上手使用了。</p>
-<p>关于图片和图片路径的设置，有以下教程。</p>
-<h2 id="typora-自动上传图片的教程">typora 自动上传图片的教程</h2>
-<p><a href="https://connor-sun.github.io/posts/38835.html" target="_blank" rel="noopener">https://connor-sun.github.io/posts/38835.html</a></p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"picBed"</span>: &#123;</span><br><span class="line">    <span class="attr">"uploader"</span>: <span class="string">"aliyun"</span>,</span><br><span class="line">    <span class="attr">"aliyun"</span>: &#123;</span><br><span class="line">      <span class="attr">"accessKeyId"</span>: <span class="string">"LvX8msYp6t1UQv3h"</span>,</span><br><span class="line">      <span class="attr">"accessKeySecret"</span>: <span class="string">"BOmXyUnZ2ky4DJAIfRJOfrySHGwohV"</span>,</span><br><span class="line">      <span class="attr">"bucket"</span>: <span class="string">"ask3"</span>,</span><br><span class="line">      <span class="attr">"area"</span>: <span class="string">"oss-cn-hangzhou"</span>,</span><br><span class="line">      <span class="attr">"path"</span>: <span class="string">"img/md/"</span>,</span><br><span class="line">      <span class="attr">"customUrl"</span>: <span class="string">""</span>,</span><br><span class="line">      <span class="attr">"options"</span>: <span class="string">""</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 插件设置</span></span><br><span class="line">  <span class="attr">"picgoPlugins"</span>: &#123;</span><br><span class="line">    <span class="attr">"picgo-plugin-super-prefix"</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"picgo-plugin-super-prefix"</span>: &#123;</span><br><span class="line">    <span class="attr">"prefixFormat"</span>: <span class="string">"YYYY/MM/"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>注意 ：   存储路径比如<code>img/</code>的话，上传的图片会默认放在OSS的<code>img</code>文件夹下。注意存储路径一定要以<code>/</code>结尾！存储路径是可选的，如果不需要请留空。</p>
-<h3 id></h3>
-<h1>让Typora的图片居左的两种方法</h1>
-<ul>
-<li>方法1：空格键</li>
-<li>方法2：tab键</li>
-</ul>
-<p><a href="https://blog.csdn.net/sky0816/article/details/111321812" target="_blank" rel="noopener">https://blog.csdn.net/sky0816/article/details/111321812</a></p>
+          <p>z</p>
+<p>[clickhouse]<br>
+172.20.85.[111:113]<br>
+172.20.85.[138:142]</p>
+<p>[fe]<br>
+172.20.85.[111:113]</p>
+<p>[be]<br>
+172.20.85.[138:142]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible clickhouse -m copy -a &quot;src&#x3D;&#x2F;root&#x2F;.bashrc dest&#x3D;&#x2F;root&#x2F;.bashrc &quot;</span><br><span class="line">ansible clickhouse -m shell -a &quot;java -version  &quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ansible clickhouse -m shell -a <span class="string">"yum install -y rsync  "</span></span><br><span class="line">ansible clickhouse  -m synchronize  -a <span class="string">"src=/opt/module/StarRocks dest=/opt/module/"</span>  </span><br><span class="line">ansible clickhouse -m shell -a <span class="string">" ls /opt/module/StarRocks "</span></span><br></pre></td></tr></table></figure>
+<h2 id="fe部署">fe部署</h2>
+<p>第一次启动需指定–helper参数，后续再启动无需指定此参数<br>
+sh /opt/module/StarRocks/fe/bin/start_fe.sh --helper 172.20.85.111:9010 --daemon</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;fe&#x2F;bin&#x2F;stop_fe.sh &quot;</span><br><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;fe&#x2F;bin&#x2F;start_fe.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mysql -h 127.0.0.1 -P9030 -uroot -p</span><br><span class="line">mysql&gt; SHOW PROC '/frontends'\G</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"172.20.85.112:9010"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"172.20.85.142:9010"</span>;</span><br><span class="line"><span class="comment"># ALTER SYSTEM DROP FOLLOWER "172.20.85.142:9010";</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> OBSERVER <span class="string">"172.20.85.113:9010"</span>;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/04/19/typora%20+%20hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/#more" rel="contents">
+              <a class="btn" href="/2023/02/08/starRocks%E9%83%A8%E7%BD%B2/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -360,7 +362,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/04/19/scala%EF%BC%9A%E5%87%BD%E6%95%B0%E8%87%B3%E7%AE%80%E5%8E%9F%E5%88%99%E3%80%81%E5%87%BD%E6%95%B0%E7%AE%80%E5%8C%96%E8%BF%87%E7%A8%8B/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/01/07/doris%E9%83%A8%E7%BD%B2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -374,7 +376,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/04/19/scala%EF%BC%9A%E5%87%BD%E6%95%B0%E8%87%B3%E7%AE%80%E5%8E%9F%E5%88%99%E3%80%81%E5%87%BD%E6%95%B0%E7%AE%80%E5%8C%96%E8%BF%87%E7%A8%8B/" class="post-title-link" itemprop="url">scala：函数至简原则、函数简化过程</a>
+            <a href="/2023/01/07/doris%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">doris部署</a>
         </h1>
 
         <div class="post-meta">
@@ -384,7 +386,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-04-19 16:42:03" itemprop="dateCreated datePublished" datetime="2022-04-19T16:42:03+08:00">2022-04-19</time>
+              <time title="创建时间：2023-01-07 12:26:10" itemprop="dateCreated datePublished" datetime="2023-01-07T12:26:10+08:00">2023-01-07</time>
             </span>
 
           
@@ -398,22 +400,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>scala：函数至简原则、函数简化过程</p>
-<p>1.return可以省略，Scala会使用函数体的最后一行代码作为返回值<br>
-2.如果函数体只有一行代码，可以省略花括号<br>
-3.返回值类型如果能够推断出来，那么可以省略（:和返回值类型一起省略）<br>
-4.如果有return，则不能省略返回值类型，必须指定<br>
-5.如果函数明确声明unit，那么即使函数体中使用return关键字也不起作用<br>
-6.Scala如果期望是无返回值类型，可以省略等号 这种形式称为过程<br>
-7.如果函数无参，但是声明了参数列表，那么调用时，小括号，可加可不加<br>
-8.如果函数没有参数列表，那么小括号可以省略，调用时小括号必须省略<br>
-9.如果不关心名称，只关心逻辑处理，那么函数名（def）可以省略</p>
-<p>代码示例</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Scala05_TestFun_review</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    //正常定义函数</span></span><br><span class="line"><span class="comment">    def f0(name:String): String =&#123;</span></span><br><span class="line"><span class="comment">      return name</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    println(f0("atguigu"))</span></span><br><span class="line"><span class="comment">    //（1）return可以省略，Scala会使用函数体的最后一行代码作为返回值</span></span><br><span class="line"><span class="comment">    def f1(name:String): String =&#123;</span></span><br><span class="line"><span class="comment">      name</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    println(f1("atguigu"))</span></span><br><span class="line"><span class="comment">    //（2）如果函数体只有一行代码，可以省略花括号</span></span><br><span class="line"><span class="comment">def f2(name:String): String = name</span></span><br><span class="line"><span class="comment">println(f2("atguigu"))</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（3）返回值类型如果能够推断出来，那么可以省略（:和返回值类型一起省略）</span></span><br><span class="line"><span class="comment">def f3(name:String)= name</span></span><br><span class="line"><span class="comment">println(f3("atguigu"))</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（4）如果有return，则不能省略返回值类型，必须指定</span></span><br><span class="line"><span class="comment">def f4(name:String) =&#123;</span></span><br><span class="line"><span class="comment">  return name</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（5）如果函数明确声明unit，那么即使函数体中使用return关键字也不起作用</span></span><br><span class="line"><span class="comment">def f5(name:String): Unit =&#123;</span></span><br><span class="line"><span class="comment">  return name</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">println(f5("atguigu"))</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（6）Scala如果期望是无返回值类型，可以省略等号   这种形式称为过程</span></span><br><span class="line"><span class="comment">def f6(name:String)&#123;</span></span><br><span class="line"><span class="comment">  println(name)</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">f6("banzhang")</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（7）如果函数无参，但是声明了参数列表，那么调用时，小括号，可加可不加</span></span><br><span class="line"><span class="comment">def f7(): Unit =&#123;</span></span><br><span class="line"><span class="comment">  println("jingjing")</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">f7</span></span><br><span class="line"><span class="comment">f7()</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（8）如果函数没有参数列表，那么小括号可以省略，调用时小括号必须省略</span></span><br><span class="line"><span class="comment">def f8: Unit =&#123;</span></span><br><span class="line"><span class="comment">  println("jingjing")</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">//f8()</span></span><br><span class="line"><span class="comment">f8</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（9）如果不关心名称，只关心逻辑处理，那么函数名（def）可以省略</span></span><br><span class="line"><span class="comment">// 1.扩展f9的功能   2.具体扩展的功能是通过fun函数传递，很灵活</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f9</span></span>(fun:(<span class="type">String</span>)=&gt;<span class="type">Unit</span>): <span class="type">Unit</span> =&#123;</span><br><span class="line">  fun(<span class="string">"jingjing"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//def f10(s:String): Unit =&#123;</span></span><br><span class="line"><span class="comment">//  println(s)</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"><span class="comment">//f9(f10)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//匿名函数 ：没有名字的函数，通过lambda表达式实现     (参数)=&gt;&#123;函数体&#125;</span></span><br><span class="line"><span class="comment">//f9((s:String)=&gt;&#123;println(s)&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（1）参数的类型可以省略，会根据形参进行自动的推导</span></span><br><span class="line"><span class="comment">//f9((s)=&gt;&#123;println(s)&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（2）类型省略之后，发现只有一个参数，则圆括号可以省略；其他情况：没有参数和参数超过1的永远不能省略圆括号。</span></span><br><span class="line"><span class="comment">//f9(s =&gt;&#123;println(s)&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（3）匿名函数如果只有一行，则大括号也可以省略</span></span><br><span class="line"><span class="comment">//f9(s =&gt;println(s))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（4）如果参数只出现一次，则参数省略且后面参数可以用_代替</span></span><br><span class="line"><span class="comment">//f9(println(_))</span></span><br><span class="line">  <span class="comment">//  （5） 如果可以推断出，println是一个函数体，而不是调用语句，那么(_)可以省</span></span><br><span class="line">  <span class="comment">//  f9(println)</span></span><br><span class="line">  <span class="comment">//反推导     f9((s:String)=&gt;println(s))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//加深大家理解</span></span><br><span class="line"><span class="comment">//定义一个函数，接受一个函数类型的参数，该函数类型有两个参数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f11</span></span>(fun:(<span class="type">Int</span>,<span class="type">Int</span>)=&gt;<span class="type">Int</span>):<span class="type">Int</span>=&#123;</span><br><span class="line">  fun(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//println(f11((x:Int,y:Int)=&gt;&#123;x + y&#125;))</span></span><br><span class="line"><span class="comment">//println(f11((x,y)=&gt;x + y))</span></span><br><span class="line">println(f11(_ + _))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+          <p>doris部署</p>
+<h2 id="fe部署">fe部署</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">第一次启动需指定--helper参数，后续再启动无需指定此参数</span><br><span class="line">sh &#x2F;opt&#x2F;module&#x2F;apache-doris-fe&#x2F;bin&#x2F;start_fe.sh --helper cdh192-150:19010 --daemon</span><br><span class="line"></span><br><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-fe&#x2F;bin&#x2F;stop_fe.sh &quot;</span><br><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-fe&#x2F;bin&#x2F;start_fe.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql -h 127.0.0.1 -P9030 -uroot -p</span><br><span class="line">mysql&gt; SHOW PROC '/frontends'\G</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"cdh192-151:19010"</span>;</span><br><span class="line"><span class="comment"># ALTER SYSTEM DROP FOLLOWER "cdh192-151:19010";</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> OBSERVER <span class="string">"cdh192-152:19010"</span>;</span><br><span class="line"><span class="comment"># ALTER SYSTEM drop OBSERVER "cdh192-152:19010";</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"cdh192-153:19010"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"cdh192-146.hadoop.xy:19010"</span>;</span><br><span class="line"></span><br><span class="line">netstat -nap |grep 19010</span><br></pre></td></tr></table></figure>
+<h2 id="be-部署">be 部署</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible be -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;stop_be.sh &quot;</span><br><span class="line">ansible be -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;start_be.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SHOW PROC '/backends'\G</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-150:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-151:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-152:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-146:9050"</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible be -m shell -a &quot;sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;stop_be.sh &quot;</span><br><span class="line">ansible be -m shell -a &quot;sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;start_be.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<h2 id="doris升级">doris升级</h2>
+<p><strong>重要！！在升级之前需要备份元数据（整个目录都需要备份）！！</strong></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/04/19/scala%EF%BC%9A%E5%87%BD%E6%95%B0%E8%87%B3%E7%AE%80%E5%8E%9F%E5%88%99%E3%80%81%E5%87%BD%E6%95%B0%E7%AE%80%E5%8C%96%E8%BF%87%E7%A8%8B/#more" rel="contents">
+              <a class="btn" href="/2023/01/07/doris%E9%83%A8%E7%BD%B2/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -437,7 +436,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/04/19/hexo%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/12/30/CDH6.3.2%20%E5%8D%87%E7%BA%A7%20Spark3.3.0%20%E7%89%88%E6%9C%AC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -451,7 +450,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/04/19/hexo%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">hexo 常用命令</a>
+            <a href="/2022/12/30/CDH6.3.2%20%E5%8D%87%E7%BA%A7%20Spark3.3.0%20%E7%89%88%E6%9C%AC/" class="post-title-link" itemprop="url">CDH6.3.2 升级 Spark3.3.0 版本</a>
         </h1>
 
         <div class="post-meta">
@@ -461,7 +460,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-04-19 15:50:21" itemprop="dateCreated datePublished" datetime="2022-04-19T15:50:21+08:00">2022-04-19</time>
+              <time title="创建时间：2022-12-30 16:21:28" itemprop="dateCreated datePublished" datetime="2022-12-30T16:21:28+08:00">2022-12-30</time>
             </span>
 
           
@@ -475,19 +474,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>hexo 常用命令 ：</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate (hexo g) 生成静态文件</span><br><span class="line">$ hexo server (hexo s) 启动本地服务</span><br><span class="line">$ hexo deploy (hexo d) 提交到远程仓库</span><br><span class="line">$ hexo new page <span class="string">"xx"</span>(hexo n page) 创建页面 </span><br><span class="line">$ hexo new <span class="string">"xx"</span> (hexo n <span class="string">""</span>) 创建文章</span><br><span class="line">$ hexo d -g 生成静态并提交到远程仓库</span><br><span class="line">$ hexo s -g 生成静态文件并启动本地预览</span><br><span class="line">$ hexo clean (hexo cl)清除本地 public 文件</span><br></pre></td></tr></table></figure>
-<p>其他参考：</p>
-<p>5分钟搞定个人博客-hexo     <a href="https://www.jianshu.com/p/390f202c5b0e" target="_blank" rel="noopener">https://www.jianshu.com/p/390f202c5b0e</a></p>
-<p>换终端更新hexo博客  <a href="https://www.jianshu.com/p/6a29f5243ab4" target="_blank" rel="noopener">https://www.jianshu.com/p/6a29f5243ab4</a></p>
-<p>win10子系统安装</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br><span class="line">sudo apt-get install npm</span><br><span class="line">npm install -g hexo-cli@3.1.0</span><br></pre></td></tr></table></figure>
-<h1>ubuntu18.04安装nodejs最新版、指定版 12.x 14.x</h1>
-<p>今天准备在 ubuntu 服务器里面安装 nodejs 版本，ubuntu 18.04 仓库 nodejs 默认是 8.x 版本。</p>
-<h2 id="1-通过-apt-安装-nodejs">1. 通过 apt 安装 nodejs</h2>
+          <h1>CDH6.3.2 升级 Spark3.3.0 版本</h1>
+<p><a href="https://juejin.cn/post/7140053569431928845" target="_blank" rel="noopener">https://juejin.cn/post/7140053569431928845</a></p>
+<p>根据上面的文档进行部署  还有下列操作需要补充</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">cp -r &#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;*.xml &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3&#x2F;conf&#x2F;</span><br><span class="line">cp &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;hive-site.xml &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3&#x2F;conf&#x2F;</span><br><span class="line"></span><br><span class="line"># 奇怪用快捷方式就不行</span><br><span class="line">cd &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3&#x2F;conf</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;hive-site.xml hive-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;hdfs-site.xml hdfs-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;core-site.xml core-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;mapred-site.xml mapred-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;yarn-site.xml yarn-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;spark&#x2F;conf&#x2F;spark-defaults.conf spark-defaults.conf</span><br><span class="line">ln -s &#x2F;etc&#x2F;spark&#x2F;conf&#x2F;spark-env.sh spark-env.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;local&#x2F;bin</span><br><span class="line">ln -s &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3&#x2F;bin&#x2F;pyspark pyspark3</span><br></pre></td></tr></table></figure>
+<p>新增一个spark3-shell的快捷方式</p>
+<p>vim  /opt/cloudera/parcels/CDH/bin/spark3-shell</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Autodetect JAVA_HOME <span class="keyword">if</span> not defined</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Reference: http://stackoverflow.com/questions/59895/can<span class="_">-a</span>-bash-script-tell-what-directory-its-stored-in</span></span><br><span class="line">SOURCE="$&#123;BASH_SOURCE[0]&#125;"</span><br><span class="line">BIN_DIR="$( dirname "$SOURCE" )"</span><br><span class="line">while [ -h "$SOURCE" ]</span><br><span class="line">do</span><br><span class="line">SOURCE="$(readlink "$SOURCE")"</span><br><span class="line">[[ $SOURCE != /* ]] &amp;&amp; SOURCE="$DIR/$SOURCE"</span><br><span class="line">BIN_DIR="$( cd -P "$( dirname "$SOURCE"  )" &amp;&amp; pwd )"</span><br><span class="line">done</span><br><span class="line">BIN_DIR="$( cd -P "$( dirname "$SOURCE" )" &amp;&amp; pwd )"</span><br><span class="line">CDH_LIB_DIR=$BIN_DIR/../../CDH/lib</span><br><span class="line">LIB_DIR=$BIN_DIR/../lib</span><br><span class="line">export HADOOP_HOME=$CDH_LIB_DIR/hadoop</span><br><span class="line">. $CDH_LIB_DIR/bigtop-utils/bigtop-detect-javahome</span><br><span class="line">exec $LIB_DIR/spark3/bin/spark-shell "$@"</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;bin&#x2F;spark3-shell</span><br></pre></td></tr></table></figure>
+<p>用法：alternatives --install &lt;链接&gt; &lt;名称&gt; &lt;路径&gt; &lt;优先度&gt;</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/04/19/hexo%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/#more" rel="contents">
+              <a class="btn" href="/2022/12/30/CDH6.3.2%20%E5%8D%87%E7%BA%A7%20Spark3.3.0%20%E7%89%88%E6%9C%AC/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -511,7 +510,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/04/13/%E9%87%87%E7%94%A8hive%E8%87%AA%E5%B8%A6%E7%9A%84%E6%96%B9%E6%B3%95%E7%94%9F%E6%88%90Hfile%EF%BC%8C%E5%B9%B6%E5%B0%86%E4%B8%8A%E4%BA%BF%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%87%8F%E5%AF%BC%E5%85%A5HBASE/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/12/30/anaconda%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -525,7 +524,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/04/13/%E9%87%87%E7%94%A8hive%E8%87%AA%E5%B8%A6%E7%9A%84%E6%96%B9%E6%B3%95%E7%94%9F%E6%88%90Hfile%EF%BC%8C%E5%B9%B6%E5%B0%86%E4%B8%8A%E4%BA%BF%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%87%8F%E5%AF%BC%E5%85%A5HBASE/" class="post-title-link" itemprop="url">采用hive自带的方法生成Hfile，并将上亿大数据量导入HBASE</a>
+            <a href="/2022/12/30/anaconda%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/" class="post-title-link" itemprop="url">anaconda部署文档</a>
         </h1>
 
         <div class="post-meta">
@@ -535,7 +534,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-04-13 13:57:32" itemprop="dateCreated datePublished" datetime="2022-04-13T13:57:32+08:00">2022-04-13</time>
+              <time title="创建时间：2022-12-30 14:37:19" itemprop="dateCreated datePublished" datetime="2022-12-30T14:37:19+08:00">2022-12-30</time>
             </span>
 
           
@@ -549,19 +548,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>采用hive自带的方法生成Hfile，并将上亿大数据量导入HBASE</h1>
-<h2 id="1-引入HBASE自带的jar">1.引入HBASE自带的jar</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">[root@cdh85-100 ~]# sudo -u hdfs hive</span><br><span class="line">hive&gt; </span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-annotations-2.0.0-cdh6.0.1.jar                      ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-client-2.0.0-cdh6.0.1.jar                           ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-common-2.0.0-cdh6.0.1.jar                           ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-endpoint-2.0.0-cdh6.0.1.jar                         ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-examples-2.0.0-cdh6.0.1.jar                         ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-external-blockcache-2.0.0-cdh6.0.1.jar              ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-hadoop2-compat-2.0.0-cdh6.0.1.jar                   ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-hadoop-compat-2.0.0-cdh6.0.1.jar                    ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-http-2.0.0-cdh6.0.1.jar                             ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-it-2.0.0-cdh6.0.1.jar                               ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-mapreduce-2.0.0-cdh6.0.1.jar                        ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-metrics-2.0.0-cdh6.0.1.jar                          ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-metrics-api-2.0.0-cdh6.0.1.jar                      ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-procedure-2.0.0-cdh6.0.1.jar                        ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-protocol-2.0.0-cdh6.0.1.jar                         ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-protocol-shaded-2.0.0-cdh6.0.1.jar                  ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-replication-2.0.0-cdh6.0.1.jar                      ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-resource-bundle-2.0.0-cdh6.0.1.jar                  ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-rest-2.0.0-cdh6.0.1.jar                             ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-rsgroup-2.0.0-cdh6.0.1.jar                          ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-server-2.0.0-cdh6.0.1.jar                           ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-shaded-miscellaneous-2.1.0.jar                      ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-shaded-netty-2.1.0.jar                              ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-shaded-protobuf-2.1.0.jar                           ;</span><br></pre></td></tr></table></figure>
-<h2 id="2-0建Hfile表">2.0建Hfile表</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">create table tmp.fi_pt_card_library(</span><br><span class="line"> KEY STRING COMMENT &#39;HBASE_ROWKEY&#39; ,</span><br><span class="line">  sign_id STRING COMMENT &#39;id自增长&#39;,</span><br><span class="line">  ....</span><br><span class="line">)</span><br><span class="line">STORED AS</span><br><span class="line">INPUTFORMAT &#39;org.apache.hadoop.mapred.TextInputFormat&#39;</span><br><span class="line">OUTPUTFORMAT &#39;org.apache.hadoop.hive.hbase.HiveHFileOutputFormat&#39;</span><br><span class="line">TBLPROPERTIES (&#39;hfile.family.path&#39; &#x3D; &#39;&#x2F;tmp&#x2F;fi_pt_card_library&#x2F;info&#39;);</span><br></pre></td></tr></table></figure>
-<p><strong>注意：此处的info应该与HBase中的family相同。</strong></p>
-<h2 id="生成Hfile文件">生成Hfile文件</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; set mapreduce.job.queuename&#x3D;bf_yarn_pool.production;</span><br><span class="line"></span><br><span class="line">insert overwrite  table tmp.fi_pt_card_library</span><br><span class="line">SELECT * from tmp.fi_pt_card_library_0330 order by key</span><br></pre></td></tr></table></figure>
-<p><strong>注意： fi_pt_card_library_0330表 不能有重复值， 而且要排序。</strong></p>
-<p>这里的第一个字段会默认为Hbase的KEY，但是这里的key的名称可以不为key，其他的也可以。还有数据中不允许存在同样的KEY，如果出现同样的KEY会报错。同时KEY的值应当具有顺序，如果顺序不同也会出错。</p>
+          <p>anaconda部署文档</p>
+<p><a href="https://docs.anaconda.com/anaconda/install/linux/" target="_blank" rel="noopener">https://docs.anaconda.com/anaconda/install/linux/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash .&#x2F;Anaconda3-2022.10-Linux-x86_64.sh</span><br></pre></td></tr></table></figure>
+<p>退出默认环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda config --set auto_activate_base False</span><br></pre></td></tr></table></figure>
+<p>conda activate</p>
+<p>conda deactivate #退出环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -czvf anaconda3.tar.gz anaconda3&#x2F;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u hdfs hadoop fs -put &#x2F;opt&#x2F;module&#x2F;anaconda3.tar.gz &#x2F;user&#x2F;yarn&#x2F;mapreduce&#x2F;</span><br></pre></td></tr></table></figure>
+<p>anaconda已安装 在/opt/module/anaconda3/</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/04/13/%E9%87%87%E7%94%A8hive%E8%87%AA%E5%B8%A6%E7%9A%84%E6%96%B9%E6%B3%95%E7%94%9F%E6%88%90Hfile%EF%BC%8C%E5%B9%B6%E5%B0%86%E4%B8%8A%E4%BA%BF%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%87%8F%E5%AF%BC%E5%85%A5HBASE/#more" rel="contents">
+              <a class="btn" href="/2022/12/30/anaconda%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -585,7 +584,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/03/03/clickhouse%E8%BF%90%E7%BB%B4/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/12/21/CDH%206.3.2%20%E9%9B%86%E6%88%90%20flink%201.14.6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -599,7 +598,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/03/03/clickhouse%E8%BF%90%E7%BB%B4/" class="post-title-link" itemprop="url">clickhouse运维</a>
+            <a href="/2022/12/21/CDH%206.3.2%20%E9%9B%86%E6%88%90%20flink%201.14.6/" class="post-title-link" itemprop="url">CDH 6.3.2 集成 flink 1.14.6</a>
         </h1>
 
         <div class="post-meta">
@@ -609,7 +608,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-03-03 16:42:49" itemprop="dateCreated datePublished" datetime="2022-03-03T16:42:49+08:00">2022-03-03</time>
+              <time title="创建时间：2022-12-21 11:20:53" itemprop="dateCreated datePublished" datetime="2022-12-21T11:20:53+08:00">2022-12-21</time>
             </span>
 
           
@@ -623,20 +622,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>查看后台进程并杀死</p>
-<p>– 这个命令和mysql是一样的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show processlist</span><br></pre></td></tr></table></figure>
-<p>– 如果进程太多，也可用通过查询系统表 processes，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from system.processes</span><br></pre></td></tr></table></figure>
-<p>– 指定主要关心字段</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select </span><br><span class="line">  user,query_id,query,elapsed,memory_usage</span><br><span class="line">from system.processes</span><br></pre></td></tr></table></figure>
-<p>杀死后台进程<br>
-–  通过上面指令获取到进程相关信息后，可以用query_id条件kill进程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">KILL QUERY WHERE query_id&#x3D;&#39;2-857d-4a57-9ee0-327da5d60a90&#39;</span><br></pre></td></tr></table></figure>
-<p>– 杀死default用户下的所有进程</p>
+          <h1>CDH 6.3.2 集成 flink 1.14.6</h1>
+<h1>制作Flink的parcel包和<a href="https://so.csdn.net/so/search?q=csd&amp;spm=1001.2101.3001.7020" target="_blank" rel="noopener">csd</a>文件</h1>
+<h2 id="1-下载制作脚本">1. 下载制作脚本</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 克隆源码</span><br><span class="line">git clone https:<span class="comment">//github.com/pkeropen/flink-parcel.git</span></span><br><span class="line">cd flink-parcel</span><br></pre></td></tr></table></figure>
+<h2 id="2-修改参数">2 修改参数</h2>
+<p>vim flink-parcel.properties</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#FLINK 下载地址</span></span><br><span class="line"><span class="attr">FLINK_URL</span>=<span class="string">https://archive.apache.org/dist/flink/flink-1.14.6/flink-1.14.6-bin-scala_2.12.tgz</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#flink版本号</span></span><br><span class="line"><span class="attr">FLINK_VERSION</span>=<span class="string">1.14.6</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#扩展版本号</span></span><br><span class="line"><span class="attr">EXTENS_VERSION</span>=<span class="string">BIN-SCALA_2.12</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#操作系统版本，以centos为例</span></span><br><span class="line"><span class="attr">OS_VERSION</span>=<span class="string">7</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#CDH 小版本</span></span><br><span class="line"><span class="attr">CDH_MIN_FULL</span>=<span class="string">5.13.1</span></span><br><span class="line"><span class="attr">CDH_MAX_FULL</span>=<span class="string">6.3.2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#CDH大版本</span></span><br><span class="line"><span class="attr">CDH_MIN</span>=<span class="string">5</span></span><br><span class="line"><span class="attr">CDH_MAX</span>=<span class="string">6</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-编译parcel">4 编译parcel</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 赋予执行权限</span><br><span class="line">chmod +x ./build.sh</span><br><span class="line"># 执行编译脚本</span><br><span class="line">./build.sh parcel</span><br></pre></td></tr></table></figure>
+<p>编译完会在flink-parcel项目根目录下生成_build文件夹</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/03/03/clickhouse%E8%BF%90%E7%BB%B4/#more" rel="contents">
+              <a class="btn" href="/2022/12/21/CDH%206.3.2%20%E9%9B%86%E6%88%90%20flink%201.14.6/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -660,7 +658,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/02/22/%E6%9F%A5%E7%9C%8Brcfile%E3%80%81orc%E3%80%81text%E5%92%8Cpaquet%E7%AD%89%E6%A0%BC%E5%BC%8F%E7%9A%84%E6%96%87%E4%BB%B6/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/12/09/%E8%A7%A3%E5%86%B3freeipa%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -674,7 +672,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/22/%E6%9F%A5%E7%9C%8Brcfile%E3%80%81orc%E3%80%81text%E5%92%8Cpaquet%E7%AD%89%E6%A0%BC%E5%BC%8F%E7%9A%84%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">查看rcfile、orc、text和paquet等格式的文件</a>
+            <a href="/2022/12/09/%E8%A7%A3%E5%86%B3freeipa%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F/" class="post-title-link" itemprop="url">解决freeipa证书过期</a>
         </h1>
 
         <div class="post-meta">
@@ -684,7 +682,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-02-22 16:05:00" itemprop="dateCreated datePublished" datetime="2022-02-22T16:05:00+08:00">2022-02-22</time>
+              <time title="创建时间：2022-12-09 10:23:14" itemprop="dateCreated datePublished" datetime="2022-12-09T10:23:14+08:00">2022-12-09</time>
             </span>
 
           
@@ -698,21 +696,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="hive查看rcfile和orc">hive查看rcfile和orc</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hive --rcfilecat hdfs:&#x2F;&#x2F;cluster1&#x2F;tmp&#x2F;youni_user_profile_ft&#x2F;000000_0</span><br><span class="line">hive --rcfilecat hdfs:&#x2F;&#x2F;cluster1&#x2F;tmp&#x2F;000000-000009&#x2F;000000_0</span><br></pre></td></tr></table></figure>
-<h3 id="hive查看orc">hive查看orc</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive --orcfiledump &#x2F;data&#x2F;datawarehouse&#x2F;xx&#x2F;xxxx&#x2F;xxxx&#x2F;part-00199</span><br></pre></td></tr></table></figure>
-<h3 id="查看文本格式">查看文本格式</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop fs -text &#x2F;tmp&#x2F;part-m-00000.snappy</span><br></pre></td></tr></table></figure>
-<h3 id="查看parquet文件格式内容">查看parquet文件格式内容</h3>
-<ol>
-<li>下载对应的parquet-tools jar:<a href="http://logservice-resource.oss-cn-shanghai.aliyuncs.com/tools/parquet-tools-1.6.0rc3-SNAPSHOT.jar?spm=5176.doc52798.2.7.H3s2kL&amp;file=parquet-tools-1.6.0rc3-SNAPSHOT.jar" target="_blank" rel="noopener">http://logservice-resource.oss-cn-shanghai.aliyuncs.com/tools/parquet-tools-1.6.0rc3-SNAPSHOT.jar?spm=5176.doc52798.2.7.H3s2kL&amp;file=parquet-tools-1.6.0rc3-SNAPSHOT.jar</a></li>
-</ol>
-<p>git：<a href="https://github.com/apache/parquet-mr/tree/master/parquet-tools?spm=5176.doc52798.2.6.H3s2kL" target="_blank" rel="noopener">https://github.com/apache/parquet-mr/tree/master/parquet-tools?spm=5176.doc52798.2.6.H3s2kL</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">查看schema:</span><br><span class="line">java -jar  parquet-tools-1.6.0rc3-SNAPSHOT.jar  schema -d myparquet.parquet | head -n 10</span><br><span class="line">查看内容：</span><br><span class="line">java -jar  parquet-tools-1.6.0rc3-SNAPSHOT.jar  head -n 10 myparquet.parquet</span><br></pre></td></tr></table></figure>
+          <h1>FreeIPA 服务器在重启后不会启动</h1>
+<p>参考   <a href="https://redhatlinux.guru/2020/10/09/freeipa-server-will-not-start-after-reboot/" target="_blank" rel="noopener">https://redhatlinux.guru/2020/10/09/freeipa-server-will-not-start-after-reboot/</a></p>
+<p><strong>原因 证书过期：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[root@freeipa ~]# ipa-getcert list </span><br><span class="line">Number of certificates and requests being tracked: 9.</span><br><span class="line">Request ID &#39;20190830074301&#39;:</span><br><span class="line">	status: CA_UNREACHABLE</span><br><span class="line">	ca-error: Server at https:&#x2F;&#x2F;freeipa.baofoo.cn&#x2F;ipa&#x2F;xml failed request, will retry: -504 (libcurl failed to execute the HTTP POST transaction, explaining:  Failed connect to freeipa.baofoo.cn:443; Connection refused).</span><br><span class="line">	stuck: no</span><br><span class="line">	key pair storage: type&#x3D;NSSDB,location&#x3D;&#39;&#x2F;etc&#x2F;dirsrv&#x2F;slapd-BAOFOO-CN&#39;,nickname&#x3D;&#39;Server-Cert&#39;,token&#x3D;&#39;NSS Certificate DB&#39;,pinfile&#x3D;&#39;&#x2F;etc&#x2F;dirsrv&#x2F;slapd-BAOFOO-CN&#x2F;pwdfile.txt&#39;</span><br><span class="line">	certificate: type&#x3D;NSSDB,location&#x3D;&#39;&#x2F;etc&#x2F;dirsrv&#x2F;slapd-BAOFOO-CN&#39;,nickname&#x3D;&#39;Server-Cert&#39;,token&#x3D;&#39;NSS Certificate DB&#39;</span><br><span class="line">	CA: IPA</span><br><span class="line">	issuer: CN&#x3D;Certificate Authority,O&#x3D;BAOFOO.CN</span><br><span class="line">	subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">	expires: 2021-08-30 07:43:01 UTC</span><br><span class="line">	dns: freeipa.baofoo.cn</span><br><span class="line">	principal name: ldap&#x2F;freeipa.baofoo.cn@BAOFOO.CN</span><br><span class="line">	key usage: digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment</span><br><span class="line">	eku: id-kp-serverAuth,id-kp-clientAuth</span><br><span class="line">	pre-save command: </span><br><span class="line">	post-save command: &#x2F;usr&#x2F;libexec&#x2F;ipa&#x2F;certmonger&#x2F;restart_dirsrv BAOFOO-CN</span><br><span class="line">	track: yes</span><br><span class="line">	auto-renew: yes</span><br></pre></td></tr></table></figure>
+<p>问题<br>
+这更多是利基问题。但可能对其他人有用。我在家里有一个用于 DNS 的 FreeIPA 服务器设置。在简单的重新启动以向 VM 添加一些 RAM 后，服务器将无法启动。我收到如下错误。</p>
+<p>IPA 服务器错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status ipa</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">● ipa.service - Identity, Policy, Audit</span><br><span class="line">Loaded: loaded (&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;ipa.service; enabled; vendor preset: disabled)</span><br><span class="line">Active: failed (Result: exit-code) since Fri 2020-10-09 14:57:15 EDT; 1s ago</span><br><span class="line">Process: 1110 ExecStart&#x3D;&#x2F;usr&#x2F;sbin&#x2F;ipactl start (code&#x3D;exited, status&#x3D;1&#x2F;FAILURE)</span><br><span class="line">Main PID: 1110 (code&#x3D;exited, status&#x3D;1&#x2F;FAILURE)</span><br><span class="line"></span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Aborting ipactl</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting Directory Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting krb5kdc Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting kadmin Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting named Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting httpd Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: ipa.service: main process exited, code&#x3D;exited, status&#x3D;1&#x2F;FAILURE</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: Failed to start Identity, Policy, Audit.</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: Unit ipa.service entered failed state.</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: ipa.service failed.</span><br></pre></td></tr></table></figure>
+<h5 id="Apache-服务错误">Apache 服务错误</h5>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status httpd -l</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/02/22/%E6%9F%A5%E7%9C%8Brcfile%E3%80%81orc%E3%80%81text%E5%92%8Cpaquet%E7%AD%89%E6%A0%BC%E5%BC%8F%E7%9A%84%E6%96%87%E4%BB%B6/#more" rel="contents">
+              <a class="btn" href="/2022/12/09/%E8%A7%A3%E5%86%B3freeipa%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -736,7 +733,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/02/14/tar%E4%B8%8D%E8%A6%86%E7%9B%96%E5%B7%B2%E5%AD%98%E5%9C%A8%E6%96%87%E4%BB%B6/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/11/14/cdh%20%E5%AE%89%E8%A3%85Pheonix5.12/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -750,7 +747,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/14/tar%E4%B8%8D%E8%A6%86%E7%9B%96%E5%B7%B2%E5%AD%98%E5%9C%A8%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">tar不覆盖已存在文件</a>
+            <a href="/2022/11/14/cdh%20%E5%AE%89%E8%A3%85Pheonix5.12/" class="post-title-link" itemprop="url">cdh 安装Pheonix5.12</a>
         </h1>
 
         <div class="post-meta">
@@ -760,7 +757,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-02-14 09:58:04" itemprop="dateCreated datePublished" datetime="2022-02-14T09:58:04+08:00">2022-02-14</time>
+              <time title="创建时间：2022-11-14 15:49:27" itemprop="dateCreated datePublished" datetime="2022-11-14T15:49:27+08:00">2022-11-14</time>
             </span>
 
           
@@ -774,61 +771,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>tar在解压或创建的时候一不小心就盖已存在文件</p>
-<p>tar 工具的 -k 参数就提供干这事<br>
--k,–keep-old-files 不覆盖已存在文件<br>
-keep existing files; don’t overwrite them from archive</p>
-<p>如:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxfk filename.tar.gz</span><br></pre></td></tr></table></figure>
-<p>tar 【参数】 【文件或目录】</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#压缩比如把x文件夹打包并用gzip压缩。</span><br><span class="line">tar -zcvf x.tar.gz x</span><br><span class="line"></span><br><span class="line">#解压到当前目录</span><br><span class="line">tar -xzvf x.tar.gz</span><br><span class="line"></span><br><span class="line">#解压到父目录</span><br><span class="line">tar -xzvf x.tar.gz -C ..</span><br></pre></td></tr></table></figure>
-<h4 id="常用参数：">常用参数：</h4>
-<table>
-<thead>
-<tr>
-<th>指定归档</th>
-<th><strong>-f</strong> <strong>后面必须直接跟归档名</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>打包（create）</td>
-<td><strong>-c</strong></td>
-</tr>
-<tr>
-<td>解包</td>
-<td><strong>-x</strong></td>
-</tr>
-<tr>
-<td>详细地列出处理的文件</td>
-<td><strong>-v</strong></td>
-</tr>
-<tr>
-<td>查看打包的文件</td>
-<td><strong>-t</strong></td>
-</tr>
-<tr>
-<td>压缩</td>
-<td><strong>-z</strong> <strong>调用<strong><strong>gzip</strong></strong>压缩</strong>  <strong>-j<strong><strong>调用</strong></strong>bzip2****压缩</strong></td>
-</tr>
-<tr>
-<td>时间限制参数</td>
-<td><strong>-N</strong> **比后面接的日期(yyyy/mm/dd)**<strong>还要新的才会被打包进新建的文件中</strong></td>
-</tr>
-<tr>
-<td>排除指定文件</td>
-<td><strong>–exclude FILE</strong>**：**<strong>不将</strong> <strong>FILE</strong> <strong>打包！</strong></td>
-</tr>
-<tr>
-<td>保留原本文件的属性</td>
-<td><strong>-p</strong></td>
-</tr>
-</tbody>
-</table>
-
+          <h1>cdh 安装Pheonix5.12</h1>
+<p>Phoenix5.12-之安装部署（Hbase-2.1.1）<br>
+Phoenix与Hbase的版本兼容是很严格的，我们需要使用Phoenix去适配Hbase，有很严格的版本标准，具体的版本匹配如下图。</p>
+<p>具体版本的选择请查阅官网下载页面：<a href="https://phoenix.apache.org/download.html" target="_blank" rel="noopener">https://phoenix.apache.org/download.html</a></p>
+<h1>1 解压</h1>
+<p>tar -zxvf phoenix-hbase-2.1-5.1.2-bin.tar.gz -C /opt/module/</p>
+<h1>2 重新命名</h1>
+<p>mv phoenix-hbase-2.1-5.1.2-bin/ phoenix-hbase-2.1-5.1.2</p>
+<h1>3 将phoenix-server-hbase-2.1-5.1.2.jar拷贝到Hbase的Master和Slave节点的lib目录下</h1>
+<p>cp phoenix-server-hbase-2.1-5.1.2.jar …/hbase-2.1.1/lib/</p>
+<h1>4 配置环境变量 hbase和phoenix 在/etc/profile</h1>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/02/14/tar%E4%B8%8D%E8%A6%86%E7%9B%96%E5%B7%B2%E5%AD%98%E5%9C%A8%E6%96%87%E4%BB%B6/#more" rel="contents">
+              <a class="btn" href="/2022/11/14/cdh%20%E5%AE%89%E8%A3%85Pheonix5.12/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -852,7 +808,7 @@ keep existing files; don’t overwrite them from archive</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/02/14/centos7%E5%88%A0%E9%99%A4%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E5%90%8E%E7%A3%81%E7%9B%98%E4%B8%8D%E9%87%8A%E6%94%BE%E7%A9%BA%E9%97%B4%E5%A4%84%E7%90%86%E8%84%9A%E6%9C%AC/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/11/12/Dbeaver%E8%BF%9E%E6%8E%A5phoenix/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -866,7 +822,7 @@ keep existing files; don’t overwrite them from archive</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/14/centos7%E5%88%A0%E9%99%A4%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E5%90%8E%E7%A3%81%E7%9B%98%E4%B8%8D%E9%87%8A%E6%94%BE%E7%A9%BA%E9%97%B4%E5%A4%84%E7%90%86%E8%84%9A%E6%9C%AC/" class="post-title-link" itemprop="url">centos7删除日志文件后磁盘不释放空间处理脚本</a>
+            <a href="/2022/11/12/Dbeaver%E8%BF%9E%E6%8E%A5phoenix/" class="post-title-link" itemprop="url">Dbeaver连接phoenix</a>
         </h1>
 
         <div class="post-meta">
@@ -876,7 +832,7 @@ keep existing files; don’t overwrite them from archive</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-02-14 09:14:44" itemprop="dateCreated datePublished" datetime="2022-02-14T09:14:44+08:00">2022-02-14</time>
+              <time title="创建时间：2022-11-12 17:10:16" itemprop="dateCreated datePublished" datetime="2022-11-12T17:10:16+08:00">2022-11-12</time>
             </span>
 
           
@@ -890,17 +846,19 @@ keep existing files; don’t overwrite them from archive</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote>
-<p>背景：日志文件被人为删除，但日志对应的程序仍然在运行（进程在，IO未关闭），df看磁盘未释放<br>
-但du看磁盘已释放空间。<br>
-操作系统：<a href="https://so.csdn.net/so/search?q=CentOS7&amp;spm=1001.2101.3001.7020" target="_blank" rel="noopener">CentOS7</a>.5</p>
-</blockquote>
-<p>以下脚本可通过找出被删文件彻底释放磁盘空间</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">for p in &#96;ls &#x2F;proc&#x2F; |egrep &#39;^[0-9]&#123;1,5&#125;&#39;&#96;</span><br><span class="line">do</span><br><span class="line">cd &#x2F;proc&#x2F;$&#123;p&#125;&#x2F;fd;ls -l|grep deleted &amp;&amp; &gt;1 &amp;&amp; &gt;2</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+          <h1>Dbeaver连接phoenix</h1>
+<p>1.切换到/opt/cloudera/parcels/PHOENIX-5.0.0-cdh6.2.0.p0.1308267/lib/phoenix，下载</p>
+<p>phoenix-5.0.0-cdh6.2.0-client.jar这个jar包</p>
+<p>2.下载客户端配置</p>
+<p>里面有个phoenix-5.0.0-cdh6.2.0-client.jar下载下来</p>
+<p>3.执行下面命令:</p>
+<p>jar -uf phoenix-5.0.0-cdh6.2.0-client.jar hbase-site.xml 将hbase-site.xml添加到phoenix-5.0.0-cdh6.2.0-client.jar里</p>
+<p>4.打开Dbeaver，创建新链接-&gt;编辑驱动-&gt;添加文件(刚才的jar包)-&gt;找到类-&gt;确定</p>
+<p>5.填写连接信息，点击测试连接，成功！</p>
 
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/02/14/centos7%E5%88%A0%E9%99%A4%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E5%90%8E%E7%A3%81%E7%9B%98%E4%B8%8D%E9%87%8A%E6%94%BE%E7%A9%BA%E9%97%B4%E5%A4%84%E7%90%86%E8%84%9A%E6%9C%AC/#more" rel="contents">
+              <a class="btn" href="/2022/11/12/Dbeaver%E8%BF%9E%E6%8E%A5phoenix/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -924,7 +882,7 @@ keep existing files; don’t overwrite them from archive</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/02/07/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/11/07/Docker%E8%AE%BE%E7%BD%AE%E5%AE%B9%E5%99%A8%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -938,7 +896,7 @@ keep existing files; don’t overwrite them from archive</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/07/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">CDH集群部署</a>
+            <a href="/2022/11/07/Docker%E8%AE%BE%E7%BD%AE%E5%AE%B9%E5%99%A8%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF/" class="post-title-link" itemprop="url">Docker设置容器开机自启</a>
         </h1>
 
         <div class="post-meta">
@@ -948,7 +906,7 @@ keep existing files; don’t overwrite them from archive</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-02-07 10:34:00" itemprop="dateCreated datePublished" datetime="2022-02-07T10:34:00+08:00">2022-02-07</time>
+              <time title="创建时间：2022-11-07 10:36:26" itemprop="dateCreated datePublished" datetime="2022-11-07T10:36:26+08:00">2022-11-07</time>
             </span>
 
           
@@ -962,48 +920,25 @@ keep existing files; don’t overwrite them from archive</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="一、集群规划">一、集群规划</h2>
-<p>如果你正准备从0开始搭建一套CDH集群应用于生产环境，那么此时需要做的事情应该是 <strong>结合当前的数据、业务、硬件、节点、服务等对集群做合理的规划</strong>，而不是马上动手去安装软件。</p>
-<p>合理的集群规划应该做到以下几点：</p>
-<ul>
-<li>充分了解当前的数据现状</li>
-<li>与业务方深入沟通，了解将会在集群上运行的业务，集群将会为业务提供什么服务</li>
-<li>结合数据现状与业务，合理预估未来的数据量增长</li>
-<li>盘点当前可用的硬件资源，包括机柜机架、服务器、交换机等</li>
-<li>当前硬件资源不充足的情况下，根据数据评估情况作出采购建议</li>
-<li>根据业务属性与组成，合理规划集群的部署架构</li>
-<li>根据可用硬件资源，对集群节点的服务角色进行合理划分</li>
-</ul>
-<p>以上步骤完成之后才是动手进行安装与部署。</p>
-<p>你将会对集群的架构模式、应用方向与业务场景了然于胸，并确保这个集群（或者是集群组）能够<strong>提供稳定、高效、高性能的服务</strong>，为业务保驾护航。</p>
-<p>并有能力能够提供 <strong>集群建设目标</strong>：</p>
-<ul>
-<li>
-<p>性能需求</p>
-</li>
-<li>
-<ul>
-<li>简单查询100G数据量时，耗时上限</li>
-<li>复杂查询（join）时，耗时上限</li>
-<li>历史数据导入时，耗时上限</li>
-<li>增量数据导入时，耗时上限</li>
-</ul>
-</li>
-<li>
-<p>可靠性需求：每月宕机次数（&lt;1），每月宕机时间（&lt;10min）</p>
-</li>
-<li>
-<p>可用性：每台机器每月的宕机时间</p>
-</li>
-<li>
-<p>容错性：机器故障，数据不丢失</p>
-</li>
-</ul>
-<h3 id="1-1-硬件规划">1.1 硬件规划</h3>
-<p>硬件规划决定集群将使用多少硬件资源，以及什么配置的硬件资源。</p>
+          <p><strong>Docker设置容器开机自启</strong></p>
+<p>设置docker开机自启</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable docker</span><br></pre></td></tr></table></figure>
+<p>设置docker容器开机自启<br>
+创建docker容器时设置开机自启<br>
+#在使用docker run启动容器时，使用–restart参数来设置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --restart&#x3D;always --name imagesName</span><br></pre></td></tr></table></figure>
+<p>修改已创建的docker容器开机自启<br>
+#如果创建时未指定 --restart=always ,可通过update 命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker update --restart&#x3D;always imagesName</span><br></pre></td></tr></table></figure>
+<p>参数说明<br>
+  --restart具体参数值详细信息：</p>
+<p>no - 容器退出时，不重启容器；<br>
+on-failure - 只有在非0状态退出时才从新启动容器；<br>
+always - 无论退出状态是如何，都重启容器；</p>
+<p>还可以在使用on - failure策略时，指定Docker将尝试重新启动容器的最大次数。默认情况下，Docker将尝试永远重新启动容器。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/02/07/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/#more" rel="contents">
+              <a class="btn" href="/2022/11/07/Docker%E8%AE%BE%E7%BD%AE%E5%AE%B9%E5%99%A8%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1027,7 +962,7 @@ keep existing files; don’t overwrite them from archive</p>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1095,7 +1030,7 @@ keep existing files; don’t overwrite them from archive</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">112</span>
+          <span class="site-state-item-count">128</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1147,7 +1082,7 @@ keep existing files; don’t overwrite them from archive</p>
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -1,6 +1,417 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>hk-blockin系统优化</title>
+    <url>/2023/02/10/hk-blockin%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<p>群用到了那些组件？ 版本有什么要求？</p>
+<p>trino386，这个是jdk11了，安装两个目录就行了， phoenix5， hive3.1.2, hadoop.3.1.3,spark2.4.8,spark3.2 flink1.12.7, flink和spark都想升级。 iceberg.0.13.2,</p>
+<p>trino ui地址  <a href="http://cdh192-57:8089/ui/" target="_blank" rel="noopener">http://cdh192-57:8089/ui/</a>  用户 presto          jdbc 172.20.192.57  用户presto</p>
+<p>软件都安装在/home/hadoop/bigdata/这个下面</p>
+<p>[root@hadoop102 ~]$ xsync/home/hadoop/bigdata/hadoop/etc/hadoop/capacity-scheduler.xml</p>
+<p>刷新yarn集群的队列</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$&#123;HADOOP_HOME&#125;&#x2F;bin&#x2F;yarn rmadmin -refreshQueues&#96; 或&#96;yarn rmadmin -refreshQueues</span><br></pre></td></tr></table></figure>
+<p>hbase</p>
+<p>cdh192-[234-236]</p>
+<p>/opt/local/</p>
+<p>tar -zxvf hbase-2.4.11-bin.tar.gz -C /opt/module/</p>
+<p>mv /opt/module/hbase/lib/client-facing-thirdparty/slf4j-reload4j-1.7.33.jar /opt/module/hbase/lib/client-facing-thirdparty/slf4j-reload4j-1.7.33.jar.bak</p>
+<p>echo usdp02 &gt; conf/backup-masters</p>
+<p>phenix 部署</p>
+<p><a href="https://app.yinxiang.com/fx/73f7b1c8-9c10-4b48-92a8-50afa5d3e9c8" target="_blank" rel="noopener">https://app.yinxiang.com/fx/73f7b1c8-9c10-4b48-92a8-50afa5d3e9c8</a></p>
+<p><a href="http://zkCli.sh" target="_blank" rel="noopener">zkCli.sh</a> -server 127.0.0.1:2181</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;yarn.scheduler.capacity.resource-calculator&lt;&#x2F;name&gt;</span><br><span class="line">  &lt;value&gt;org.apache.hadoop.yarn.util.resource.DominantResourceCalculator&lt;&#x2F;value&gt;</span><br><span class="line">  &lt;description&gt;</span><br><span class="line">        资源计算方法：</span><br><span class="line">        DefaultResourseCalculator只会计算内存</span><br><span class="line">        DominantResourceCalculator 考虑内存和CPU</span><br><span class="line">  &lt;&#x2F;description&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="phoenix-client">phoenix client</h2>
+<p>172.20.192.151:/opt/module/phoenix-hbase-2.1-5.1.2/</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">phoenix-sqlline cdh192-150,cdh192-151,cdh192-152,cdh192-153,cdh192-154:2181</span><br><span class="line"></span><br><span class="line">&#x2F;opt&#x2F;module&#x2F;phoenix-hbase-2.1-5.1.2&#x2F;bin&#x2F;sqlline.py cdh192-150,cdh192-151,cdh192-152,cdh192-153,cdh192-154:2181</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>starRocks部署</title>
+    <url>/2023/02/08/starRocks%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<p>z</p>
+<p>[clickhouse]<br>
+172.20.85.[111:113]<br>
+172.20.85.[138:142]</p>
+<p>[fe]<br>
+172.20.85.[111:113]</p>
+<p>[be]<br>
+172.20.85.[138:142]</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible clickhouse -m copy -a &quot;src&#x3D;&#x2F;root&#x2F;.bashrc dest&#x3D;&#x2F;root&#x2F;.bashrc &quot;</span><br><span class="line">ansible clickhouse -m shell -a &quot;java -version  &quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ansible clickhouse -m shell -a <span class="string">"yum install -y rsync  "</span></span><br><span class="line">ansible clickhouse  -m synchronize  -a <span class="string">"src=/opt/module/StarRocks dest=/opt/module/"</span>  </span><br><span class="line">ansible clickhouse -m shell -a <span class="string">" ls /opt/module/StarRocks "</span></span><br></pre></td></tr></table></figure>
+<h2 id="fe部署">fe部署</h2>
+<p>第一次启动需指定–helper参数，后续再启动无需指定此参数<br>
+sh /opt/module/StarRocks/fe/bin/start_fe.sh --helper 172.20.85.111:9010 --daemon</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;fe&#x2F;bin&#x2F;stop_fe.sh &quot;</span><br><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;fe&#x2F;bin&#x2F;start_fe.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql -h 127.0.0.1 -P9030 -uroot -p</span><br><span class="line">mysql&gt; SHOW PROC '/frontends'\G</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"172.20.85.112:9010"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"172.20.85.142:9010"</span>;</span><br><span class="line"><span class="comment"># ALTER SYSTEM DROP FOLLOWER "172.20.85.142:9010";</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> OBSERVER <span class="string">"172.20.85.113:9010"</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="be-部署">be 部署</h2>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql&gt; SHOW PROC '/backends'\G</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh85-138:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh85-139:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh85-140:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh85-141:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh85-142:9050"</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible be -m shell -a &quot; &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;be&#x2F;bin&#x2F;stop_be.sh &quot;</span><br><span class="line">ansible be -m shell -a &quot; &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;be&#x2F;bin&#x2F;start_be.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<p>如添加过程出现错误，需要通过以下命令将该 BE 节点从集群移除。</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">mysql&gt; ALTER SYSTEM decommission BACKEND "host:port";</span><br></pre></td></tr></table></figure>
+<h2 id="监控">监控</h2>
+<p>wget <a href="https://github.com/prometheus/prometheus/releases/download/v2.29.1/prometheus-2.29.1.linux-amd64.tar.gz" target="_blank" rel="noopener">https://github.com/prometheus/prometheus/releases/download/v2.29.1/prometheus-2.29.1.linux-amd64.tar.gz</a><br>
+tar -xf prometheus-2.29.1.linux-amd64.tar.gz -C /usr/local/</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">'StarRocks_Cluster01'</span> <span class="comment"># 每一个集群称之为一个job，可以自定义名字作为StarRocks集群名</span></span><br><span class="line">  <span class="attr">metrics_path:</span> <span class="string">'/metrics'</span>    <span class="comment"># 指定获取监控项目的Restful Api</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">static_configs:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['cdh85-111:8030','cdh85-112:8030','cdh85-113:8030']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">group:</span> <span class="string">fe</span> <span class="comment"># 这里配置了 fe 的 group，该 group 中包含了 3 个 Frontends</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['cdh85-138:8040',</span> <span class="string">'cdh85-139:8040'</span><span class="string">,</span> <span class="string">'cdh85-140:8040'</span><span class="string">,'cdh85-141:8040','cdh85-142:8040']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">group:</span> <span class="string">be</span> <span class="comment"># 这里配置了 be 的 group，该 group 中包含了 5 个 Backends</span></span><br></pre></td></tr></table></figure>
+<h2 id="权限">权限</h2>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建用户</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> dba_starRocks@<span class="string">'%'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'dba_starRocks'</span>;</span><br><span class="line"></span><br><span class="line">给权限</span><br><span class="line"></span><br><span class="line"><span class="keyword">GRANT</span> SELECT_PRIV,LOAD_PRIV,ALTER_PRIV,CREATE_PRIV,DROP_PRIV <span class="keyword">ON</span> *.*  <span class="keyword">TO</span> dba_starRocks;</span><br><span class="line"></span><br><span class="line">取消权限</span><br><span class="line"><span class="keyword">REVOKE</span> LOAD_PRIV,ALTER_PRIV,CREATE_PRIV,DROP_PRIV <span class="keyword">ON</span> *.*  <span class="keyword">FROM</span>  dba_starRocks;</span><br><span class="line"></span><br><span class="line">查看权限</span><br><span class="line"><span class="keyword">SHOW</span> <span class="keyword">GRANTS</span> <span class="keyword">FOR</span> dba_starRocks</span><br></pre></td></tr></table></figure>
+<h2 id="测试环境">测试环境</h2>
+<p>[sr]<br>
+10.0.19.[156:158]</p>
+<h3 id="fe-重启">fe 重启</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible sr -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;fe&#x2F;bin&#x2F;stop_fe.sh &quot;</span><br><span class="line">ansible sr -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;fe&#x2F;bin&#x2F;start_fe.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<h3 id="be重启">be重启</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible sr -m shell -a &quot;sh  &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;be&#x2F;bin&#x2F;stop_be.sh &quot;</span><br><span class="line">ansible sr -m shell -a &quot;sh  &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;be&#x2F;bin&#x2F;start_be.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<h2 id="hive外部表">hive外部表</h2>
+<p>需要把hdfs-site.xml文件 放到be和fe的conf目录里  并重启</p>
+<p>遇到权限问题  修改 hadoop_env.sh</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export HADOOP_USER_NAME&#x3D;hdfs</span><br></pre></td></tr></table></figure>
+<h2 id="手动升级">手动升级</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">\cp -r &#x2F;opt&#x2F;module&#x2F;StarRocks-2.3.0-rc01&#x2F;apache_hdfs_broker &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;apache_hdfs_broker&#x2F;..&#x2F;</span><br></pre></td></tr></table></figure>
+<h2 id="监控-2">监控</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible be -m shell -a &quot; netstat -nap |grep 9050 &quot;</span><br></pre></td></tr></table></figure>
+<h2 id="supervisord守护进程">supervisord守护进程</h2>
+<p>/etc/supervisord.d/StartRocks.ini</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[program:be]</span><br><span class="line">process_name&#x3D;%(program_name)s                        ;进程名称</span><br><span class="line">directory&#x3D;&#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;be                   ;工作目录be所在路径</span><br><span class="line">command&#x3D;sh &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;be&#x2F;bin&#x2F;start_be.sh  ;运行的命令be的启动sh命令</span><br><span class="line">autostart&#x3D;true                                       ;是否随supervisor自动开启</span><br><span class="line">autorestart&#x3D;true                                     ;是否在挂了之后重启，意外关闭后会重启，比如kill掉</span><br><span class="line">user&#x3D;root                                            ;用户</span><br><span class="line">numprocs&#x3D;1                                           ;进程数 如果需要同时启动多个进程，进程名称需要不一样</span><br><span class="line">startretries&#x3D;3                                       ;启动重试次数</span><br><span class="line">stopasgroup&#x3D;true                                     ;是否停止子进程</span><br><span class="line">killasgroup&#x3D;true                                     ;是否杀死子进程</span><br><span class="line">startsecs&#x3D;5                                          ;启动5秒后，如果还是运行状态才认为进程已经启动</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">supervisorctl status        &#x2F;&#x2F;查看所有进程的状态</span><br><span class="line">supervisorctl stop be       &#x2F;&#x2F;停止es</span><br><span class="line">supervisorctl start be      &#x2F;&#x2F;启动es</span><br><span class="line">supervisorctl restart be    &#x2F;&#x2F;重启es</span><br><span class="line">supervisorctl update be     &#x2F;&#x2F;配置文件修改后使用该命令加载新的配置</span><br><span class="line">supervisorctl reload        &#x2F;&#x2F;重新启动配置中的所有程序</span><br></pre></td></tr></table></figure>
+<h1>官网升级</h1>
+<p><strong>升级 BE 前的准备</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#为了避免 BE 重启期间不必要的 Tablet 修复，进而影响升级后的集群性能，建议在升级前先在 FE Leader 上执行如下命令以禁用 Tablet 调度功能，</span></span><br><span class="line">&gt; mysql -h 127.0.0.1 -P9030 -uroot -p</span><br><span class="line"></span><br><span class="line">admin <span class="keyword">set</span> frontend config (<span class="string">"max_scheduling_tablets"</span>=<span class="string">"0"</span>);</span><br><span class="line">admin <span class="keyword">set</span> frontend config (<span class="string">"disable_balance"</span>=<span class="string">"true"</span>);</span><br><span class="line">admin <span class="keyword">set</span> frontend config (<span class="string">"disable_colocate_balance"</span>=<span class="string">"true"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在所有 BE 重启升级完成后，通过 show backends 命令确认所有 BE 的 Alive 状态为 true 后，启用 Tablet 调度功能，</span></span><br><span class="line"></span><br><span class="line">admin <span class="keyword">set</span> frontend config (<span class="string">"max_scheduling_tablets"</span>=<span class="string">"2000"</span>);</span><br><span class="line">admin <span class="keyword">set</span> frontend config (<span class="string">"disable_balance"</span>=<span class="string">"false"</span>);</span><br><span class="line">admin <span class="keyword">set</span> frontend config (<span class="string">"disable_colocate_balance"</span>=<span class="string">"false"</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>升级</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">scp StarRocks-2.5.0-rc03.tar.gz usdp05:/opt/module/</span><br><span class="line"><span class="meta">#</span><span class="bash">ansible clickhouse  -m copy  -a <span class="string">"src=/opt/module/StarRocks-2.5.0-rc03.tar.gz dest=/opt/module/"</span></span></span><br><span class="line"></span><br><span class="line">cd /opt/module</span><br><span class="line">tar -zxvf StarRocks-2.5.0-rc03.tar.gz </span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 升级 BE 节点</span></span><br><span class="line">cd /opt/module/StarRocks/be</span><br><span class="line">rm -rf lib.bak &amp;&amp; mv lib lib.bak </span><br><span class="line">rm -rf bin.bak &amp;&amp; mv bin bin.bak</span><br><span class="line">cp -r /opt/module/StarRocks-2.5.0-rc03/be/lib .</span><br><span class="line">cp -r /opt/module/StarRocks-2.5.0-rc03/be/bin .</span><br><span class="line">sh bin.bak/stop_be.sh</span><br><span class="line">sh bin/start_be.sh --daemon</span><br><span class="line">ps aux | grep starrocks_be</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 升级 FE 节点</span></span><br><span class="line">cd /opt/module/StarRocks/fe</span><br><span class="line">rm -rf lib.bak &amp;&amp; mv lib lib.bak </span><br><span class="line">rm -rf bin.bak &amp;&amp; mv bin bin.bak</span><br><span class="line">cp -r /opt/module/StarRocks-2.5.0-rc03/fe/lib .</span><br><span class="line">cp -r /opt/module/StarRocks-2.5.0-rc03/fe/bin .</span><br><span class="line">sh bin.bak/stop_fe.sh</span><br><span class="line">sh bin/start_fe.sh --daemon</span><br><span class="line">ps aux | grep StarRocksFE</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 升级 Broker</span></span><br><span class="line">cd /opt/module/StarRocks/apache_hdfs_broker</span><br><span class="line">rm -rf lib.bak &amp;&amp; mv lib lib.bak </span><br><span class="line">rm -rf bin.bak &amp;&amp; mv bin bin.bak</span><br><span class="line">cp -r /opt/module/StarRocks-2.5.0-rc03/apache_hdfs_broker/lib  .   </span><br><span class="line">cp -r /opt/module/StarRocks-2.5.0-rc03/apache_hdfs_broker/bin  .</span><br><span class="line">sh bin.bak/stop_broker.sh</span><br><span class="line">sh bin/start_broker.sh --daemon</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>doris部署</title>
+    <url>/2023/01/07/doris%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<p>doris部署</p>
+<h2 id="fe部署">fe部署</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">第一次启动需指定--helper参数，后续再启动无需指定此参数</span><br><span class="line">sh &#x2F;opt&#x2F;module&#x2F;apache-doris-fe&#x2F;bin&#x2F;start_fe.sh --helper cdh192-150:19010 --daemon</span><br><span class="line"></span><br><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-fe&#x2F;bin&#x2F;stop_fe.sh &quot;</span><br><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-fe&#x2F;bin&#x2F;start_fe.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql -h 127.0.0.1 -P9030 -uroot -p</span><br><span class="line">mysql&gt; SHOW PROC '/frontends'\G</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"cdh192-151:19010"</span>;</span><br><span class="line"><span class="comment"># ALTER SYSTEM DROP FOLLOWER "cdh192-151:19010";</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> OBSERVER <span class="string">"cdh192-152:19010"</span>;</span><br><span class="line"><span class="comment"># ALTER SYSTEM drop OBSERVER "cdh192-152:19010";</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"cdh192-153:19010"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"cdh192-146.hadoop.xy:19010"</span>;</span><br><span class="line"></span><br><span class="line">netstat -nap |grep 19010</span><br></pre></td></tr></table></figure>
+<h2 id="be-部署">be 部署</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible be -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;stop_be.sh &quot;</span><br><span class="line">ansible be -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;start_be.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql&gt; SHOW PROC '/backends'\G</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-150:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-151:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-152:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-146:9050"</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible be -m shell -a &quot;sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;stop_be.sh &quot;</span><br><span class="line">ansible be -m shell -a &quot;sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;start_be.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<h2 id="doris升级">doris升级</h2>
+<p><strong>重要！！在升级之前需要备份元数据（整个目录都需要备份）！！</strong></p>
+<p><strong>前置工作</strong></p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 关闭副本均衡逻辑。关闭后，不会再触发普通表副本的均衡操作。</span></span><br><span class="line">$ mysql-client &gt; admin set frontend config("disable_balance" = "true");</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭 colocation 表的副本均衡逻辑。关闭后，不会再触发 colocation 表的副本重分布操作。</span></span><br><span class="line">$ mysql-client &gt; admin set frontend config("disable_colocate_balance" = "true");</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭副本调度逻辑。关闭后，所有已产生的副本修复和均衡任务不会再被调度。</span></span><br><span class="line">$ mysql-client &gt; admin set frontend config("disable_tablet_scheduler" = "true");</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /opt/module/apache-doris-fe</span><br><span class="line">cp -r doris-meta/ doris-meta_bak</span><br></pre></td></tr></table></figure>
+<p><strong>升级</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">scp apache-doris-fe-1.2.0-bin-x86_64.tar.xz cdh192-146:/opt/module/</span><br><span class="line">scp apache-doris-be-1.2.0-bin-x86_64.tar.xz cdh192-146:/opt/module/</span><br><span class="line">scp apache-doris-java-udf-jar-with-dependencies-1.2.0-bin-x86_64.tar.xz cdh192-146:/opt/module/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> ansible cdh-online  -m copy  -a <span class="string">"src=/opt/module/apache-doris-be-1.2.0-bin-x86_64.tar.xz dest=/opt/module/"</span></span></span><br><span class="line">ssh cdh192-150 </span><br><span class="line">cd /opt/module</span><br><span class="line">tar -xvf apache-doris-be-1.2.1-bin-x86_64.tar.xz</span><br><span class="line">tar -xvf apache-doris-fe-1.2.1-bin-x86_64.tar.xz</span><br><span class="line">tar -xvf apache-doris-dependencies-1.2.1-bin-x86_64.tar.xz</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 升级 BE 节点</span></span><br><span class="line">cd /opt/module/apache-doris-be</span><br><span class="line">rm -rf lib.bak &amp;&amp; mv lib lib.bak </span><br><span class="line">rm -rf bin.bak &amp;&amp; mv bin bin.bak</span><br><span class="line">cp -r /opt/module/apache-doris-be-1.2.1-bin-x86_64/lib .</span><br><span class="line">cp -r /opt/module/apache-doris-be-1.2.1-bin-x86_64/bin .</span><br><span class="line">cp /opt/module/apache-doris-dependencies-1.2.1-bin-x86_64/java-udf-jar-with-dependencies.jar lib/</span><br><span class="line">sh bin.bak/stop_be.sh</span><br><span class="line">sh bin/start_be.sh --daemon</span><br><span class="line">ps aux | grep doris_be</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 升级 FE 节点</span></span><br><span class="line">cd /opt/module/apache-doris-fe</span><br><span class="line">rm -rf lib.bak &amp;&amp; mv lib lib.bak </span><br><span class="line">rm -rf bin.bak &amp;&amp; mv bin bin.bak</span><br><span class="line">cp -r /opt/module/apache-doris-1.2.1-hive_211-fe-x86_64//lib .</span><br><span class="line">cp -r /opt/module/apache-doris-fe-1.2.1-bin-x86_64/bin .</span><br><span class="line">sh bin.bak/stop_fe.sh</span><br><span class="line">sh bin/start_fe.sh --daemon</span><br><span class="line">ps aux | grep apache-doris-fe</span><br></pre></td></tr></table></figure>
+<p>新加节点</p>
+<p>sh /opt/module/apache-doris-fe/bin/start_fe.sh --helper cdh192-151.hadoop.xy:19010 --daemon</p>
+<p><strong>正确的顺序</strong>：</p>
+<ol>
+<li>在系统注册：ALTER SYSTEM ADD FOLLOWER “follower_host:edit_log_port”;</li>
+<li>启动新节点：./bin/start_fe.sh --helper leader_fe_host:edit_log_port --daemon</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>CDH6.3.2 升级 Spark3.3.0 版本</title>
+    <url>/2022/12/30/CDH6.3.2%20%E5%8D%87%E7%BA%A7%20Spark3.3.0%20%E7%89%88%E6%9C%AC/</url>
+    <content><![CDATA[<h1>CDH6.3.2 升级 Spark3.3.0 版本</h1>
+<p><a href="https://juejin.cn/post/7140053569431928845" target="_blank" rel="noopener">https://juejin.cn/post/7140053569431928845</a></p>
+<p>根据上面的文档进行部署  还有下列操作需要补充</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cp -r &#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;*.xml &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3&#x2F;conf&#x2F;</span><br><span class="line">cp &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;hive-site.xml &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3&#x2F;conf&#x2F;</span><br><span class="line"></span><br><span class="line"># 奇怪用快捷方式就不行</span><br><span class="line">cd &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3&#x2F;conf</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;hive-site.xml hive-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;hdfs-site.xml hdfs-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;core-site.xml core-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;mapred-site.xml mapred-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;yarn-site.xml yarn-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;spark&#x2F;conf&#x2F;spark-defaults.conf spark-defaults.conf</span><br><span class="line">ln -s &#x2F;etc&#x2F;spark&#x2F;conf&#x2F;spark-env.sh spark-env.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;local&#x2F;bin</span><br><span class="line">ln -s &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3&#x2F;bin&#x2F;pyspark pyspark3</span><br></pre></td></tr></table></figure>
+<p>新增一个spark3-shell的快捷方式</p>
+<p>vim  /opt/cloudera/parcels/CDH/bin/spark3-shell</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Autodetect JAVA_HOME <span class="keyword">if</span> not defined</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Reference: http://stackoverflow.com/questions/59895/can<span class="_">-a</span>-bash-script-tell-what-directory-its-stored-in</span></span><br><span class="line">SOURCE="$&#123;BASH_SOURCE[0]&#125;"</span><br><span class="line">BIN_DIR="$( dirname "$SOURCE" )"</span><br><span class="line">while [ -h "$SOURCE" ]</span><br><span class="line">do</span><br><span class="line">SOURCE="$(readlink "$SOURCE")"</span><br><span class="line">[[ $SOURCE != /* ]] &amp;&amp; SOURCE="$DIR/$SOURCE"</span><br><span class="line">BIN_DIR="$( cd -P "$( dirname "$SOURCE"  )" &amp;&amp; pwd )"</span><br><span class="line">done</span><br><span class="line">BIN_DIR="$( cd -P "$( dirname "$SOURCE" )" &amp;&amp; pwd )"</span><br><span class="line">CDH_LIB_DIR=$BIN_DIR/../../CDH/lib</span><br><span class="line">LIB_DIR=$BIN_DIR/../lib</span><br><span class="line">export HADOOP_HOME=$CDH_LIB_DIR/hadoop</span><br><span class="line">. $CDH_LIB_DIR/bigtop-utils/bigtop-detect-javahome</span><br><span class="line">exec $LIB_DIR/spark3/bin/spark-shell "$@"</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod +x &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;bin&#x2F;spark3-shell</span><br></pre></td></tr></table></figure>
+<p>用法：alternatives --install &lt;链接&gt; &lt;名称&gt; &lt;路径&gt; &lt;优先度&gt;</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">alternatives --install &#x2F;usr&#x2F;bin&#x2F;spark3-shell spark3-shell &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;bin&#x2F;spark3-shell 1</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>anaconda部署文档</title>
+    <url>/2022/12/30/anaconda%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/</url>
+    <content><![CDATA[<p>anaconda部署文档</p>
+<p><a href="https://docs.anaconda.com/anaconda/install/linux/" target="_blank" rel="noopener">https://docs.anaconda.com/anaconda/install/linux/</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bash .&#x2F;Anaconda3-2022.10-Linux-x86_64.sh</span><br></pre></td></tr></table></figure>
+<p>退出默认环境</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda config --set auto_activate_base False</span><br></pre></td></tr></table></figure>
+<p>conda activate</p>
+<p>conda deactivate #退出环境</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tar -czvf anaconda3.tar.gz anaconda3&#x2F;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo -u hdfs hadoop fs -put &#x2F;opt&#x2F;module&#x2F;anaconda3.tar.gz &#x2F;user&#x2F;yarn&#x2F;mapreduce&#x2F;</span><br></pre></td></tr></table></figure>
+<p>anaconda已安装 在/opt/module/anaconda3/</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">spark.pyspark.python&#x3D;python&#x2F;bin&#x2F;python3</span><br><span class="line">spark.pyspark.driver.python&#x3D;&#x2F;opt&#x2F;module&#x2F;anaconda3&#x2F;bin&#x2F;python3</span><br><span class="line">spark.yarn.dist.archives&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;yarn&#x2F;mapreduce&#x2F;anaconda3.zip#python</span><br></pre></td></tr></table></figure>
+<p>ln -s /opt/module/anaconda3/bin/python3 python3</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>CDH 6.3.2 集成 flink 1.14.6</title>
+    <url>/2022/12/21/CDH%206.3.2%20%E9%9B%86%E6%88%90%20flink%201.14.6/</url>
+    <content><![CDATA[<h1>CDH 6.3.2 集成 flink 1.14.6</h1>
+<h1>制作Flink的parcel包和<a href="https://so.csdn.net/so/search?q=csd&amp;spm=1001.2101.3001.7020" target="_blank" rel="noopener">csd</a>文件</h1>
+<h2 id="1-下载制作脚本">1. 下载制作脚本</h2>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"># 克隆源码</span><br><span class="line">git clone https:<span class="comment">//github.com/pkeropen/flink-parcel.git</span></span><br><span class="line">cd flink-parcel</span><br></pre></td></tr></table></figure>
+<h2 id="2-修改参数">2 修改参数</h2>
+<p>vim flink-parcel.properties</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="comment">#FLINK 下载地址</span></span><br><span class="line"><span class="attr">FLINK_URL</span>=<span class="string">https://archive.apache.org/dist/flink/flink-1.14.6/flink-1.14.6-bin-scala_2.12.tgz</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#flink版本号</span></span><br><span class="line"><span class="attr">FLINK_VERSION</span>=<span class="string">1.14.6</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#扩展版本号</span></span><br><span class="line"><span class="attr">EXTENS_VERSION</span>=<span class="string">BIN-SCALA_2.12</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#操作系统版本，以centos为例</span></span><br><span class="line"><span class="attr">OS_VERSION</span>=<span class="string">7</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#CDH 小版本</span></span><br><span class="line"><span class="attr">CDH_MIN_FULL</span>=<span class="string">5.13.1</span></span><br><span class="line"><span class="attr">CDH_MAX_FULL</span>=<span class="string">6.3.2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#CDH大版本</span></span><br><span class="line"><span class="attr">CDH_MIN</span>=<span class="string">5</span></span><br><span class="line"><span class="attr">CDH_MAX</span>=<span class="string">6</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-编译parcel">4 编译parcel</h2>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"># 赋予执行权限</span><br><span class="line">chmod +x ./build.sh</span><br><span class="line"># 执行编译脚本</span><br><span class="line">./build.sh parcel</span><br></pre></td></tr></table></figure>
+<p>编译完会在flink-parcel项目根目录下生成_build文件夹</p>
+<h2 id="5-编译csd">5 编译csd</h2>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"># 编译flink on yarn版本</span><br><span class="line">./build.sh  csd_on_yarn</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>解决freeipa证书过期</title>
+    <url>/2022/12/09/%E8%A7%A3%E5%86%B3freeipa%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F/</url>
+    <content><![CDATA[<h1>FreeIPA 服务器在重启后不会启动</h1>
+<p>参考   <a href="https://redhatlinux.guru/2020/10/09/freeipa-server-will-not-start-after-reboot/" target="_blank" rel="noopener">https://redhatlinux.guru/2020/10/09/freeipa-server-will-not-start-after-reboot/</a></p>
+<p><strong>原因 证书过期：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@freeipa ~]# ipa-getcert list </span><br><span class="line">Number of certificates and requests being tracked: 9.</span><br><span class="line">Request ID &#39;20190830074301&#39;:</span><br><span class="line">	status: CA_UNREACHABLE</span><br><span class="line">	ca-error: Server at https:&#x2F;&#x2F;freeipa.baofoo.cn&#x2F;ipa&#x2F;xml failed request, will retry: -504 (libcurl failed to execute the HTTP POST transaction, explaining:  Failed connect to freeipa.baofoo.cn:443; Connection refused).</span><br><span class="line">	stuck: no</span><br><span class="line">	key pair storage: type&#x3D;NSSDB,location&#x3D;&#39;&#x2F;etc&#x2F;dirsrv&#x2F;slapd-BAOFOO-CN&#39;,nickname&#x3D;&#39;Server-Cert&#39;,token&#x3D;&#39;NSS Certificate DB&#39;,pinfile&#x3D;&#39;&#x2F;etc&#x2F;dirsrv&#x2F;slapd-BAOFOO-CN&#x2F;pwdfile.txt&#39;</span><br><span class="line">	certificate: type&#x3D;NSSDB,location&#x3D;&#39;&#x2F;etc&#x2F;dirsrv&#x2F;slapd-BAOFOO-CN&#39;,nickname&#x3D;&#39;Server-Cert&#39;,token&#x3D;&#39;NSS Certificate DB&#39;</span><br><span class="line">	CA: IPA</span><br><span class="line">	issuer: CN&#x3D;Certificate Authority,O&#x3D;BAOFOO.CN</span><br><span class="line">	subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">	expires: 2021-08-30 07:43:01 UTC</span><br><span class="line">	dns: freeipa.baofoo.cn</span><br><span class="line">	principal name: ldap&#x2F;freeipa.baofoo.cn@BAOFOO.CN</span><br><span class="line">	key usage: digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment</span><br><span class="line">	eku: id-kp-serverAuth,id-kp-clientAuth</span><br><span class="line">	pre-save command: </span><br><span class="line">	post-save command: &#x2F;usr&#x2F;libexec&#x2F;ipa&#x2F;certmonger&#x2F;restart_dirsrv BAOFOO-CN</span><br><span class="line">	track: yes</span><br><span class="line">	auto-renew: yes</span><br></pre></td></tr></table></figure>
+<p>问题<br>
+这更多是利基问题。但可能对其他人有用。我在家里有一个用于 DNS 的 FreeIPA 服务器设置。在简单的重新启动以向 VM 添加一些 RAM 后，服务器将无法启动。我收到如下错误。</p>
+<p>IPA 服务器错误</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl status ipa</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">● ipa.service - Identity, Policy, Audit</span><br><span class="line">Loaded: loaded (&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;ipa.service; enabled; vendor preset: disabled)</span><br><span class="line">Active: failed (Result: exit-code) since Fri 2020-10-09 14:57:15 EDT; 1s ago</span><br><span class="line">Process: 1110 ExecStart&#x3D;&#x2F;usr&#x2F;sbin&#x2F;ipactl start (code&#x3D;exited, status&#x3D;1&#x2F;FAILURE)</span><br><span class="line">Main PID: 1110 (code&#x3D;exited, status&#x3D;1&#x2F;FAILURE)</span><br><span class="line"></span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Aborting ipactl</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting Directory Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting krb5kdc Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting kadmin Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting named Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting httpd Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: ipa.service: main process exited, code&#x3D;exited, status&#x3D;1&#x2F;FAILURE</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: Failed to start Identity, Policy, Audit.</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: Unit ipa.service entered failed state.</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: ipa.service failed.</span><br></pre></td></tr></table></figure>
+<h5 id="Apache-服务错误">Apache 服务错误</h5>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl status httpd -l</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">● httpd.service - The Apache HTTP Server</span><br><span class="line">Loaded: loaded (&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;httpd.service; disabled; vendor preset: disabled)</span><br><span class="line">Drop-In: &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;httpd.service.d</span><br><span class="line">└─ipa.conf</span><br><span class="line">Active: failed (Result: exit-code) since Fri 2020-10-09 14:57:44 EDT; 9s ago</span><br><span class="line">Docs: man:httpd(8)</span><br><span class="line">man:apachectl(8)</span><br><span class="line">Process: 1532 ExecStart&#x3D;&#x2F;usr&#x2F;sbin&#x2F;httpd $OPTIONS -DFOREGROUND (code&#x3D;exited, status&#x3D;1&#x2F;FAILURE)</span><br><span class="line">Process: 1529 ExecStartPre&#x3D;&#x2F;usr&#x2F;libexec&#x2F;ipa&#x2F;ipa-httpd-kdcproxy (code&#x3D;exited, status&#x3D;0&#x2F;SUCCESS)</span><br><span class="line">Main PID: 1532 (code&#x3D;exited, status&#x3D;1&#x2F;FAILURE)</span><br><span class="line"></span><br><span class="line">Oct 09 14:57:42 ipasrv.home.local systemd[1]: Starting The Apache HTTP Server...</span><br><span class="line">Oct 09 14:57:43 ipasrv.home.local ipa-httpd-kdcproxy[1529]: ipa: WARNING: Unable to connect to dirsrv: cannot connect to &amp;#039;ldapi:&#x2F;&#x2F;%2fvar%2frun%2fslapd-HOME-LOCAL.socket&amp;#039;:</span><br><span class="line">Oct 09 14:57:43 ipasrv.home.local ipa-httpd-kdcproxy[1529]: ipa-httpd-kdcproxy: WARNING  Unable to connect to dirsrv: cannot connect to &amp;#039;ldapi:&#x2F;&#x2F;%2fvar%2frun%2fslapd-HOME-LOCAL.socket&amp;#039;:</span><br><span class="line">Oct 09 14:57:43 ipasrv.home.local ipa-httpd-kdcproxy[1529]: ipa: WARNING: Disabling KDC proxy</span><br><span class="line">Oct 09 14:57:43 ipasrv.home.local ipa-httpd-kdcproxy[1529]: ipa-httpd-kdcproxy: WARNING  Disabling KDC proxy</span><br><span class="line">Oct 09 14:57:44 ipasrv.home.local systemd[1]: httpd.service: main process exited, code&#x3D;exited, status&#x3D;1&#x2F;FAILURE</span><br><span class="line">Oct 09 14:57:44 ipasrv.home.local systemd[1]: Failed to start The Apache HTTP Server.</span><br><span class="line">Oct 09 14:57:44 ipasrv.home.local systemd[1]: Unit httpd.service entered failed state.</span><br><span class="line">Oct 09 14:57:44 ipasrv.home.local systemd[1]: httpd.service failed.</span><br></pre></td></tr></table></figure>
+<p>解析度<br>
+不会用这个绕过灌木丛。底线是我的证书已过期。下面是解决它的步骤。</p>
+<h3 id="1-–-使用忽略失败服务的选项启动-IPA-服务器。">1 – 使用忽略失败服务的选项启动 IPA 服务器。</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ipactl start --ignore-service-failure</span><br></pre></td></tr></table></figure>
+<p>示例输出</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Existing service file detected!</span><br><span class="line">Assuming stale, cleaning and proceeding</span><br><span class="line">Starting Directory Service</span><br><span class="line">Starting krb5kdc Service</span><br><span class="line">Starting kadmin Service</span><br><span class="line">Starting named Service</span><br><span class="line">Starting httpd Service</span><br><span class="line">Failed to start httpd Service</span><br><span class="line">Forced start, ignoring httpd Service, continuing normal operation</span><br><span class="line">Starting ipa-custodia Service</span><br><span class="line">Starting ntpd Service</span><br><span class="line">Starting pki-tomcatd Service</span><br></pre></td></tr></table></figure>
+<h2 id="2-–-接下来运行ipa-cert-fix命令来更新过期的证书。">2 – 接下来运行ipa-cert-fix命令来更新过期的证书。</h2>
+<p>ipa-cert-fix</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">                          WARNING</span><br><span class="line"></span><br><span class="line">ipa-cert-fix is intended for recovery when expired certificates</span><br><span class="line">prevent the normal operation of IPA.  It should ONLY be used</span><br><span class="line">in such scenarios, and backup of the system, especially certificates</span><br><span class="line">and keys, is STRONGLY RECOMMENDED.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">The following certificates will be renewed: </span><br><span class="line"></span><br><span class="line">Dogtag sslserver certificate:</span><br><span class="line">  Subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  3</span><br><span class="line">  Expires: 2021-08-19 07:42:09</span><br><span class="line"></span><br><span class="line">Dogtag subsystem certificate:</span><br><span class="line">  Subject: CN&#x3D;CA Subsystem,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  4</span><br><span class="line">  Expires: 2021-08-19 07:42:09</span><br><span class="line"></span><br><span class="line">Dogtag ca_ocsp_signing certificate:</span><br><span class="line">  Subject: CN&#x3D;OCSP Subsystem,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  2</span><br><span class="line">  Expires: 2021-08-19 07:42:09</span><br><span class="line"></span><br><span class="line">Dogtag ca_audit_signing certificate:</span><br><span class="line">  Subject: CN&#x3D;CA Audit,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  5</span><br><span class="line">  Expires: 2021-08-19 07:42:09</span><br><span class="line"></span><br><span class="line">IPA IPA RA certificate:</span><br><span class="line">  Subject: CN&#x3D;IPA RA,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  7</span><br><span class="line">  Expires: 2021-08-19 07:42:30</span><br><span class="line"></span><br><span class="line">IPA Apache HTTPS certificate:</span><br><span class="line">  Subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  9</span><br><span class="line">  Expires: 2021-08-30 07:43:31</span><br><span class="line"></span><br><span class="line">IPA LDAP certificate:</span><br><span class="line">  Subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  8</span><br><span class="line">  Expires: 2021-08-30 07:43:01</span><br><span class="line"></span><br><span class="line">IPA KDC certificate:</span><br><span class="line">  Subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  10</span><br><span class="line">  Expires: 2021-08-30 07:43:38</span><br><span class="line"></span><br><span class="line">Enter &quot;yes&quot; to proceed: yes</span><br><span class="line">Proceeding.</span><br><span class="line">Renewed Dogtag sslserver certificate:</span><br><span class="line">  Subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  11</span><br><span class="line">  Expires: 2023-11-30 01:22:29</span><br><span class="line"></span><br><span class="line">Renewed Dogtag subsystem certificate:</span><br><span class="line">  Subject: CN&#x3D;CA Subsystem,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  12</span><br><span class="line">  Expires: 2023-11-30 01:22:30</span><br><span class="line"></span><br><span class="line">Renewed Dogtag ca_ocsp_signing certificate:</span><br><span class="line">  Subject: CN&#x3D;OCSP Subsystem,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  13</span><br><span class="line">  Expires: 2023-11-30 01:22:31</span><br><span class="line"></span><br><span class="line">Renewed Dogtag ca_audit_signing certificate:</span><br><span class="line">  Subject: CN&#x3D;CA Audit,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  14</span><br><span class="line">  Expires: 2023-11-30 01:22:31</span><br><span class="line"></span><br><span class="line">Renewed IPA IPA RA certificate:</span><br><span class="line">  Subject: CN&#x3D;IPA RA,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  15</span><br><span class="line">  Expires: 2023-11-30 01:22:32</span><br><span class="line"></span><br><span class="line">Renewed IPA Apache HTTPS certificate:</span><br><span class="line">  Subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  16</span><br><span class="line">  Expires: 2023-12-11 01:22:32</span><br><span class="line"></span><br><span class="line">Renewed IPA LDAP certificate:</span><br><span class="line">  Subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  17</span><br><span class="line">  Expires: 2023-12-11 01:22:32</span><br><span class="line"></span><br><span class="line">Renewed IPA KDC certificate:</span><br><span class="line">  Subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  18</span><br><span class="line">  Expires: 2023-12-11 01:22:33</span><br><span class="line"></span><br><span class="line">Becoming renewal master.</span><br><span class="line">The ipa-cert-fix command was successful</span><br><span class="line">[root@freeipa ~]# ipactl restart</span><br></pre></td></tr></table></figure>
+<h3 id="3-–-更新证书后，重新启动-IPA-服务器，">3 – 更新证书后，重新启动 IPA 服务器，</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ipactl restart</span><br></pre></td></tr></table></figure>
+<p>示例输出</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Restarting Directory Service</span><br><span class="line">Restarting krb5kdc Service</span><br><span class="line">Restarting kadmin Service</span><br><span class="line">Restarting named Service</span><br><span class="line">Restarting httpd Service</span><br><span class="line">Restarting ipa-custodia Service</span><br><span class="line">Restarting ntpd Service</span><br><span class="line">Restarting pki-tomcatd Service</span><br><span class="line">Restarting ipa-otpd Service</span><br><span class="line">Restarting ipa-dnskeysyncd Service</span><br><span class="line">ipa: INFO: The ipactl command was successful</span><br></pre></td></tr></table></figure>
+<h3 id="4-–-最后使用ipactl-status命令验证IPA服务器启动。">4 – 最后使用ipactl status命令验证IPA服务器启动。</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ipactl status</span><br></pre></td></tr></table></figure>
+<p>示例输出</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Directory Service: RUNNING</span><br><span class="line">krb5kdc Service: RUNNING</span><br><span class="line">kadmin Service: RUNNING</span><br><span class="line">named Service: RUNNING</span><br><span class="line">httpd Service: RUNNING</span><br><span class="line">ipa-custodia Service: RUNNING</span><br><span class="line">ntpd Service: RUNNING</span><br><span class="line">pki-tomcatd Service: RUNNING</span><br><span class="line">ipa-otpd Service: RUNNING</span><br><span class="line">ipa-dnskeysyncd Service: RUNNING</span><br><span class="line">ipa: INFO: The ipactl command was successful</span><br></pre></td></tr></table></figure>
+<h1>Upgrade   版本升级</h1>
+<p>[root@freeipa ipa]# rpm -aq ipa-server<br>
+ipa-server-4.6.5-11.el7.centos.x86_64</p>
+<p>ipa-server-upgrade</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ipa-getcert list  #查看全部证书</span><br><span class="line"></span><br><span class="line">ipa-cacert-manage renew  #更新证书     会在到期日期前 28 天自动更新以下证书</span><br><span class="line"></span><br><span class="line">手工更新证书</span><br><span class="line">ipa-getcert resubmit -i REQUEST_ID</span><br><span class="line"></span><br><span class="line">ipa-getcert resubmit -i cert_nickname   #cert_nickname自行替换，可由ipa-getcert list 命令获取到，结合自带的certmonger服务可以更新证书过期时间</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>cdh 安装Pheonix5.12</title>
+    <url>/2022/11/14/cdh%20%E5%AE%89%E8%A3%85Pheonix5.12/</url>
+    <content><![CDATA[<h1>cdh 安装Pheonix5.12</h1>
+<p>Phoenix5.12-之安装部署（Hbase-2.1.1）<br>
+Phoenix与Hbase的版本兼容是很严格的，我们需要使用Phoenix去适配Hbase，有很严格的版本标准，具体的版本匹配如下图。</p>
+<p>具体版本的选择请查阅官网下载页面：<a href="https://phoenix.apache.org/download.html" target="_blank" rel="noopener">https://phoenix.apache.org/download.html</a></p>
+<h1>1 解压</h1>
+<p>tar -zxvf phoenix-hbase-2.1-5.1.2-bin.tar.gz -C /opt/module/</p>
+<h1>2 重新命名</h1>
+<p>mv phoenix-hbase-2.1-5.1.2-bin/ phoenix-hbase-2.1-5.1.2</p>
+<h1>3 将phoenix-server-hbase-2.1-5.1.2.jar拷贝到Hbase的Master和Slave节点的lib目录下</h1>
+<p>cp phoenix-server-hbase-2.1-5.1.2.jar …/hbase-2.1.1/lib/</p>
+<h1>4 配置环境变量 hbase和phoenix 在/etc/profile</h1>
+<p>export HBASE_HOME=/opt/module/hbase-2.1.1<br>
+export PATH=$PATH:$HBASE_HOME/bin</p>
+<h1>PHOENIX_HOME</h1>
+<p>export PHOENIX_HOME=/opt/module/phoenix-hbase-2.1-5.1.2<br>
+export PATH=$PATH:$PHOENIX_HOME/bin<br>
+export PHOENIX_CLASSPATH=$PHOENIX_HOME</p>
+<h1>source</h1>
+<p>source /etc/profile</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Dbeaver连接phoenix</title>
+    <url>/2022/11/12/Dbeaver%E8%BF%9E%E6%8E%A5phoenix/</url>
+    <content><![CDATA[<h1>Dbeaver连接phoenix</h1>
+<p>1.切换到/opt/cloudera/parcels/PHOENIX-5.0.0-cdh6.2.0.p0.1308267/lib/phoenix，下载</p>
+<p>phoenix-5.0.0-cdh6.2.0-client.jar这个jar包</p>
+<p>2.下载客户端配置</p>
+<p>里面有个phoenix-5.0.0-cdh6.2.0-client.jar下载下来</p>
+<p>3.执行下面命令:</p>
+<p>jar -uf phoenix-5.0.0-cdh6.2.0-client.jar hbase-site.xml 将hbase-site.xml添加到phoenix-5.0.0-cdh6.2.0-client.jar里</p>
+<p>4.打开Dbeaver，创建新链接-&gt;编辑驱动-&gt;添加文件(刚才的jar包)-&gt;找到类-&gt;确定</p>
+<p>5.填写连接信息，点击测试连接，成功！</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Docker设置容器开机自启</title>
+    <url>/2022/11/07/Docker%E8%AE%BE%E7%BD%AE%E5%AE%B9%E5%99%A8%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF/</url>
+    <content><![CDATA[<p><strong>Docker设置容器开机自启</strong></p>
+<p>设置docker开机自启</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl enable docker</span><br></pre></td></tr></table></figure>
+<p>设置docker容器开机自启<br>
+创建docker容器时设置开机自启<br>
+#在使用docker run启动容器时，使用–restart参数来设置：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run --restart&#x3D;always --name imagesName</span><br></pre></td></tr></table></figure>
+<p>修改已创建的docker容器开机自启<br>
+#如果创建时未指定 --restart=always ,可通过update 命令</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker update --restart&#x3D;always imagesName</span><br></pre></td></tr></table></figure>
+<p>参数说明<br>
+  --restart具体参数值详细信息：</p>
+<p>no - 容器退出时，不重启容器；<br>
+on-failure - 只有在非0状态退出时才从新启动容器；<br>
+always - 无论退出状态是如何，都重启容器；</p>
+<p>还可以在使用on - failure策略时，指定Docker将尝试重新启动容器的最大次数。默认情况下，Docker将尝试永远重新启动容器。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run --restart&#x3D;on-failure:10 imagesName</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>jpsall xsync命令脚本</title>
+    <url>/2022/10/28/jpsall%20xsync%E5%91%BD%E4%BB%A4%E8%84%9A%E6%9C%AC/</url>
+    <content><![CDATA[<p>vim  /usr/bin/xsync</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash">1. 判断参数个数</span></span><br><span class="line">if [ $# -lt 1 ]</span><br><span class="line">then</span><br><span class="line"> echo Not Enough Arguement!</span><br><span class="line"> exit;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">2. 遍历集群所有机器</span></span><br><span class="line">for host in usdp01 usdp02 usdp03</span><br><span class="line">do</span><br><span class="line"> echo ==================== $host ====================</span><br><span class="line"><span class="meta"> #</span><span class="bash">3. 遍历所有目录，挨个发送</span></span><br><span class="line"> for file in $@</span><br><span class="line"> do</span><br><span class="line"><span class="meta"> #</span><span class="bash">4. 判断文件是否存在</span></span><br><span class="line"> if [ -e $file ]</span><br><span class="line"> then</span><br><span class="line"><span class="meta"> #</span><span class="bash">5. 获取父目录</span></span><br><span class="line"> pdir=$(cd -P $(dirname $file); pwd)</span><br><span class="line"><span class="meta"> #</span><span class="bash">6. 获取当前文件的名称</span></span><br><span class="line"> fname=$(basename $file)</span><br><span class="line"> ssh $host "mkdir -p $pdir"</span><br><span class="line"> rsync -av $pdir/$fname $host:$pdir</span><br><span class="line"> else</span><br><span class="line"> echo $file does not exists!</span><br><span class="line"> fi</span><br><span class="line"> done</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p><strong><a href="http://jpsall.sh" target="_blank" rel="noopener">jpsall.sh</a> 脚本：</strong></p>
+<p>vim /usr/bin/jpsall</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行jps命令查询每台服务器上的节点状态</span></span><br><span class="line">echo ======================集群节点状态====================</span><br><span class="line"></span><br><span class="line">for i in usdp01 usdp02 usdp03</span><br><span class="line">do</span><br><span class="line">        echo ====================== $i ====================</span><br><span class="line">        ssh $i "/opt/module/jdk1.8.0_202/bin/jps"</span><br><span class="line">done</span><br><span class="line">echo ======================执行完毕====================</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>StartRocks补数据</title>
+    <url>/2022/10/10/StartRocks%E8%A1%A5%E6%95%B0%E6%8D%AE/</url>
+    <content><![CDATA[<h1>StartRocks补数据</h1>
+<h2 id="创建catalog">创建catalog</h2>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">CATALOG</span> hive_catalog0 </span><br><span class="line">PROPERTIES(</span><br><span class="line">  <span class="string">"type"</span>=<span class="string">"hive"</span>, </span><br><span class="line">  <span class="string">"hive.metastore.uris"</span>=<span class="string">"thrift://172.20.85.29:9083,thrift://172.20.85.29:9083"</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">SHOW</span> RESOURCES;</span><br><span class="line"></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">databases</span> <span class="keyword">from</span> hive_catalog0</span><br></pre></td></tr></table></figure>
+<h2 id="创建parquet文件格式的临时表">创建parquet文件格式的临时表</h2>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> PAY_TRADECENTER.T_TC_BASE_P </span><br><span class="line"> <span class="keyword">STORED</span> <span class="keyword">AS</span> parquet  </span><br><span class="line"> <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">SELECT</span>  *  <span class="keyword">from</span>  PAY_TRADECENTER.T_TC_BASE <span class="keyword">where</span> pk_day &gt;= <span class="string">'2022-07-16'</span> <span class="keyword">and</span>  pk_day &lt; <span class="string">'2022-08-17'</span></span><br></pre></td></tr></table></figure>
+<h2 id="导入数据">导入数据</h2>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SET</span> query_timeout = <span class="number">259200</span>;</span><br><span class="line"><span class="keyword">set</span> exec_mem_limit=<span class="number">21474836480</span>;</span><br><span class="line"><span class="keyword">SET</span> enable_insert_strict = <span class="literal">false</span>; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span>  <span class="keyword">into</span> PAY_TRADECENTER.<span class="string">`T_TC_BASE`</span> (CREATED_AT ,<span class="keyword">ID</span>, TRADE_NO, OUT_TRADE_NO, PRODUCT_TYPE, SUB_PRODUCT_TYPE, PRODUCT_CHANNEL, TRADE_CHANNEL, REQUEST_DATE, REQUEST_SYSTEM, TRADE_AMT, SERVICE_FEE, CCY, MERCHANT_NO, MERCHANT_TRADE_NO, ORIG_TRADE_NO, TRADE_FINISH_DATE, MEMO, EXTEND, SUBJECT, TRADE_STATUS, TRADE_FAIL_STATUS, TRADE_TYPE, REFUND_AMT, RESULT_CODE, RESULT_DESC, TRACE_LOG_ID, SETTLE_ACCOUNT_NO, SETTLE_ACCOUNT_TYPE, FEE_ACCOUNT_NO, FEE_ACCOUNT_TYPE, SUB_MERCHANT_ID, AGENT_NO, STORE_ID, EXTEND1, EXTEND2, EXTEND3, CREATED_BY, UPDATED_AT, UPDATED_BY, USER_ID, EXTEND4, EXTEND5, EXTEND6, TOTAL_ORDER_AMT, UNION_INFO)</span><br><span class="line"><span class="keyword">SELECT</span> CREATED_AT ,<span class="keyword">ID</span>, TRADE_NO, OUT_TRADE_NO, PRODUCT_TYPE, SUB_PRODUCT_TYPE, PRODUCT_CHANNEL, TRADE_CHANNEL, REQUEST_DATE, REQUEST_SYSTEM, TRADE_AMT, SERVICE_FEE, CCY, MERCHANT_NO, MERCHANT_TRADE_NO, ORIG_TRADE_NO, TRADE_FINISH_DATE, MEMO, EXTEND, SUBJECT, TRADE_STATUS, TRADE_FAIL_STATUS, TRADE_TYPE, REFUND_AMT, RESULT_CODE, RESULT_DESC, TRACE_LOG_ID, SETTLE_ACCOUNT_NO, SETTLE_ACCOUNT_TYPE, FEE_ACCOUNT_NO, FEE_ACCOUNT_TYPE, SUB_MERCHANT_ID, AGENT_NO, STORE_ID, EXTEND1, EXTEND2, EXTEND3, CREATED_BY, UPDATED_AT, UPDATED_BY, USER_ID, EXTEND4, EXTEND5, EXTEND6, TOTAL_ORDER_AMT, UNION_INFO</span><br><span class="line"><span class="keyword">FROM</span>  hive_catalog0.PAY_TRADECENTER.T_TC_BASE_P</span><br></pre></td></tr></table></figure>
+<h2 id="删除临时表">删除临时表</h2>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> PAY_TRADECENTER.T_TC_BASE_P</span><br></pre></td></tr></table></figure>
+<p>PAY_AGGREGATE        T_ORDER_EXTERNAL        CREATED_AT<br>
+PAY_BENEFIT        T_BIZ_CMD        CREATED_AT<br>
+PAY_BENEFIT        T_ORDER_BASE        CREATED_AT<br>
+PAY_BENEFIT        T_ORDER_BASE_BENEFIT        CREATED_AT<br>
+<s>PAY_GATEWAY        T_ACQ_AGGREGATE        CREATED_AT</s><br>
+<s>PAY_GATEWAY        T_ACQ_AGGREGATE_DYNAMIC        CREATED_AT</s><br>
+<s>PAY_GATEWAY        T_ACQ_NOTIFY        CREATED_AT</s><br>
+<s>PAY_GATEWAY        T_ACQ_REFUND        CREATED_AT</s><br>
+<s>PAY_GATEWAY        T_RISK_INFO        CREATED_AT</s><br>
+PAY_SETTLE        T_SETTLE_ORDER_ACQUIRING        TRADE_FINISH_DATE<br>
+PAY_SETTLE        T_SETTLE_ORDER_RE·FUND        TRADE_FINISH_DATE<br>
+PAY_TRADECENTER        T_BIZ_CMD        CREATED_AT<br>
+PAY_TRADECENTER        T_TC_ACCOUNT_TRANS        CREATED_AT<br>
+<s>PAY_TRADECENTER        T_TC_AGGREGATE_TRANS        CREATED_AT</s><br>
+<s>PAY_TRADECENTER        T_TC_BASE        CREATED_AT</s><br>
+<s>PAY_TRADECENTER        T_TC_CHANNEL_MSG        CREATED_AT</s><br>
+<s>PAY_TRADECENTER        T_TC_CHANNEL_TRANS        CREATED_AT</s><br>
+PAY_VERIFY        T_VERIFY_BANK_TRANS        VERIFY_DATE<br>
+PAY_VERIFY        T_VERIFY_CHANNEL_COST        VERIFY_DATE<br>
+PAY_VERIFY        T_VERIFY_CHANNEL_TRANS        VERIFY_DATE<br>
+PAY_VERIFY        T_VERIFY_RESULT        VERIFY_DATE</p>
+<p>– PAY_GATEWAY数据库<br>
+PAY_GATEWAY.T_ACQ_AGGREGATE_DYNAMIC      保留一个月<br>
+PAY_GATEWAY.T_ACQ_AGGREGATE          保留一个月<br>
+PAY_GATEWAY.T_ACQ_NOTIFY            保留一个月<br>
+PAY_GATEWAY.T_ACQ_REFUND            保留一个月<br>
+PAY_GATEWAY.T_RISK_INFO            保留一个月<br>
+PAY_GATEWAY.T_BIZ_CMD             暂不归档</p>
+<p>– PAY_TRADECENTER数据库<br>
+PAY_TRADECENTER.T_BIZ_CMD           保留一个月<br>
+PAY_TRADECENTER.T_TC_ACCOUNT_TRANS       保留一个月<br>
+PAY_TRADECENTER.T_TC_AGGREGATE_TRANS      保留一个月<br>
+PAY_TRADECENTER.T_TC_BASE           保留一个月<br>
+PAY_TRADECENTER.T_TC_CHANNEL_MSG        保留一个月<br>
+PAY_TRADECENTER.T_TC_CHANNEL_TRANS       保留一个月</p>
+<p>– PAY_AGGREGATE<br>
+PAY_AGGREGATE.T_ORDER_EXTERNAL         保留四个月</p>
+<p>– PAY_BENEFIT<br>
+PAY_BENEFIT.T_ORDER_BASE            保留四个月<br>
+PAY_BENEFIT.T_BIZ_CMD             保留四个月<br>
+PAY_BENEFIT.T_ORDER_BASE_BENEFIT        保留四个月</p>
+<p>---- PAY_VERIFY<br>
+PAY_VERIFY.T_VERIFY_RESULT           保留四个月<br>
+PAY_VERIFY.T_VERIFY_CHANNEL_TRANS       保留四个月<br>
+PAY_VERIFY.T_VERIFY_CHANNEL_COST        保留四个月<br>
+PAY_VERIFY.T_VERIFY_BANK_TRANS         保留四个月</p>
+<p>– PAY_SETTLE<br>
+PAY_SETTLE.T_SETTLE_ORDER_ACQUIRING      保留四个月<br>
+PAY_SETTLE.T_SETTLE_ORDER_WITHDRAW       保留四个月<br>
+PAY_SETTLE.T_SETTLE_ORDER_REFUND        保留四个月<br>
+PAY_SETTLE.T_SETTLE_ORDER_CANCEL        保留四个月</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>取消掉远程桌面mstsc顶部（侧面）连接栏</title>
+    <url>/2022/08/18/%E5%8F%96%E6%B6%88%E6%8E%89%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2mstsc%E9%A1%B6%E9%83%A8%EF%BC%88%E4%BE%A7%E9%9D%A2%EF%BC%89%E8%BF%9E%E6%8E%A5%E6%A0%8F/</url>
+    <content><![CDATA[<p>取消掉远程桌面mstsc顶部（侧面）连接栏</p>
+<p>在进行mstsc远程桌面连接电脑或者虚拟机的时候，总是会出现一个连接栏。虽然点左边的图钉可以自动隐藏，但是每次鼠标滑到上面的时候，还是会冒出来，这个就有点闹心了。</p>
+<p>查了下相关资料，解决了，特写下相关教程；</p>
+<p>关闭步骤：在进行远程连接的时候，取消选择 显示-&gt;全屏显示时显示连接栏(B)。</p>
+<p>如果要退出远程连接的话，Ctrl+ Alt+ Home,在全屏模式下，激活连接栏，然后叉掉就好了。</p>
+<p>笔记本可能没有HOME键</p>
+<p>HOME键和左方向键共用，打开HOME的方法是FN + HOME<br>
+所有笔记本唤醒连接栏的方法就是<br>
+Ctrl+ Alt+ FN + Home</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>解决root用户对HDFS文件系统操作权限不够问题</title>
+    <url>/2022/07/12/%E8%A7%A3%E5%86%B3root%E7%94%A8%E6%88%B7%E5%AF%B9HDFS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%93%8D%E4%BD%9C%E6%9D%83%E9%99%90%E4%B8%8D%E5%A4%9F%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1>解决root用户对HDFS文件系统操作权限不够问题</h1>
+<p>HDFS文件系统的目录基本都属于supergroup用户组，所以就把用户添加到该用户组，即可解决很多权限问题。</p>
+<p>1、<strong>在namenode节点</strong>的Linux执行如下命令增加supergroup</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">groupadd supergroup</span><br></pre></td></tr></table></figure>
+<p>2、如将用户root增加到supergroup中</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">usermod -a -G supergroup root</span><br></pre></td></tr></table></figure>
+<p>3、同步系统的权限信息到HDFS文件系统</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo -u hdfs hdfs dfsadmin -refreshUserToGroupsMappings</span><br></pre></td></tr></table></figure>
+<p>4、查看属于supergroup用户组的用户</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">grep &#39;supergroup:&#39; &#x2F;etc&#x2F;group</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>Docker配置代理服务器</title>
+    <url>/2022/05/30/Docker%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
+    <content><![CDATA[<h1>Docker配置代理服务器</h1>
+<h2 id="背景环境说明">背景环境说明</h2>
+<p>Docker环境安装在内网，只有一台公共的代理服务器能够上网，<br>
+一般的docker pull会无法下载镜像。</p>
+<p>新配置了代理服务器squid。（搭建squid代理服务器这里不讲，参考另一篇文章。不建议使用nginx坐正向代理，处理不了https。）<br>
+操作系统： Redhat 7.5 X86<br>
+内核: 3.10.0-862.el7.x86_64/docker 18.09<br>
+代理服务器： 10.1.1.1:10000</p>
+<h2 id="修改DockerService文件">修改DockerService文件</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;docker.service</span><br></pre></td></tr></table></figure>
+<p>在[Service]下面添加：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">[<span class="meta">Service</span>]</span><br><span class="line">Environment=<span class="string">"HTTP_PROXY=http://10.1.1.1:10000"</span></span><br><span class="line">Environment=<span class="string">"HTTPS_PROXY=https://proxy.example.com:443"</span></span><br></pre></td></tr></table></figure>
+<h2 id="重启Docker服务">重启Docker服务</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl rstart docker </span><br><span class="line">systemctl <span class="built_in">enable</span> docker</span><br></pre></td></tr></table></figure>
+<h2 id="检查">检查</h2>
+<p>docker info,可以看到http proxy设置成功。</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Debug</span> Mode (client): <span class="literal">false</span></span><br><span class="line"><span class="built_in">Debug</span> Mode (server): <span class="literal">false</span></span><br><span class="line">HTTP Proxy: http:<span class="comment">//10.1.1.1:10000</span></span><br><span class="line">Registry: https:<span class="comment">//index.docker.io/v1/</span></span><br><span class="line">Labels:</span><br><span class="line">Experimental: <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>Linux 防止rm误删文件，将rm配置成mv到.trash</title>
+    <url>/2022/05/17/Linux%20%E9%98%B2%E6%AD%A2rm%E8%AF%AF%E5%88%A0%E6%96%87%E4%BB%B6%EF%BC%8C%E5%B0%86rm%E9%85%8D%E7%BD%AE%E6%88%90mv%E5%88%B0.trash/</url>
+    <content><![CDATA[<h1>Linux 防止rm误删文件，将rm配置成mv到.trash</h1>
+<p>今天在服务器上操作想删除文件来着，结果一直提示我mv: 正在访问&quot;/data0/.trash/&quot;: 没有那个文件或目录，原来是为了防止误删把rm命令改写了，这样删错了后果就不会很严重</p>
+<p>操作方法就是在~下的.bashrc或者.bash_profile文件加入如下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir -p ~&#x2F;.trash</span><br><span class="line">alias rm&#x3D;trash  </span><br><span class="line">alias r&#x3D;trash  </span><br><span class="line">alias rl&#x3D;&#39;ls ~&#x2F;.trash&#39;</span><br><span class="line">alias ur&#x3D;undelfile</span><br><span class="line">undelfile()</span><br><span class="line">&#123;</span><br><span class="line">  mv -i ~&#x2F;.trash&#x2F;$@ .&#x2F;</span><br><span class="line">&#125;</span><br><span class="line">trash()</span><br><span class="line">&#123;</span><br><span class="line">  mv $@ ~&#x2F;.trash&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样删除的文件会出现在家目录下的.trash文件中。</p>
+<p>那么问题来了，如何删除.trash文件中的文件呢</p>
+<p>继续在之前的.bashrc中添加</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cleartrash()</span><br><span class="line">&#123;</span><br><span class="line">    read -p &quot;clear sure?[n]&quot; confirm</span><br><span class="line">    [ $confirm &#x3D;&#x3D; &#39;y&#39; ] || [ $confirm &#x3D;&#x3D; &#39;Y&#39; ]  &amp;&amp; &#x2F;usr&#x2F;bin&#x2F;rm -rf ~&#x2F;.trash&#x2F;*</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>清理回收站直接使用$cleartrash即可</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>centos7 简单开启代理上网</title>
+    <url>/2022/05/10/centos7%20%E7%AE%80%E5%8D%95%E5%BC%80%E5%90%AF%E4%BB%A3%E7%90%86%E4%B8%8A%E7%BD%91/</url>
+    <content><![CDATA[<p>centos7 简单开启代理上网</p>
+<p><strong>服务端安装</strong>： 在可以上网的机器安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install squid -y</span><br><span class="line">systemctl restart squid</span><br></pre></td></tr></table></figure>
+<p><strong>客户端安装</strong>：</p>
+<p>yum  配置代理</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;proxy&#x3D;http:&#x2F;&#x2F;IP:3128&#x2F;&quot; &gt;&gt; &#x2F;etc&#x2F;yum.conf</span><br></pre></td></tr></table></figure>
+<p>系统全局代理（我测试下来，yum  不能用 ）</p>
+<p>vi /etc/profile</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># export all_proxy&#x3D;http:&#x2F;&#x2F;IP:3128  只导入这个 ，测试下来wget不能用</span><br><span class="line">export http_proxy&#x3D;http:&#x2F;&#x2F;IP:3128</span><br><span class="line">export https_proxy&#x3D;http:&#x2F;&#x2F;IP:3128</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">测试代理是否生效</span><br><span class="line">curl http:&#x2F;&#x2F;myip.ipip.net</span><br><span class="line">curl https:&#x2F;&#x2F;myip.ipip.net&#x2F;</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
     <title>Python一秒钟搭建文件分享网页</title>
     <url>/2022/04/19/Python%E4%B8%80%E7%A7%92%E9%92%9F%E6%90%AD%E5%BB%BA%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E7%BD%91%E9%A1%B5/</url>
     <content><![CDATA[<h1>Python一秒钟搭建文件分享网页</h1>
@@ -1047,44 +1458,6 @@ nginx: [error] open() “/usr/local/nginx/logs/nginx.pid” failed (2: No such f
 <p>presto350版本，不支持clickhouse ，需要升级，</p>
 <p>presto350版本之后 presto改名为trino，导致不兼容，升级后 对应的jdbc驱动 ，客户端都需要换成新的。</p>
 <p>客户端工具用DBeaver比较好，DbVisualizer 不支持trino</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>解决freeipa证书过期</title>
-    <url>/2021/12/10/%E8%A7%A3%E5%86%B3freeipa%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F/</url>
-    <content><![CDATA[<h1>FreeIPA 服务器在重启后不会启动</h1>
-<p>参考   <a href="https://redhatlinux.guru/2020/10/09/freeipa-server-will-not-start-after-reboot/" target="_blank" rel="noopener">https://redhatlinux.guru/2020/10/09/freeipa-server-will-not-start-after-reboot/</a></p>
-<p><strong>原因 证书过期：</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@freeipa ~]# ipa-getcert list </span><br><span class="line">Number of certificates and requests being tracked: 9.</span><br><span class="line">Request ID &#39;20190830074301&#39;:</span><br><span class="line">	status: CA_UNREACHABLE</span><br><span class="line">	ca-error: Server at https:&#x2F;&#x2F;freeipa.baofoo.cn&#x2F;ipa&#x2F;xml failed request, will retry: -504 (libcurl failed to execute the HTTP POST transaction, explaining:  Failed connect to freeipa.baofoo.cn:443; Connection refused).</span><br><span class="line">	stuck: no</span><br><span class="line">	key pair storage: type&#x3D;NSSDB,location&#x3D;&#39;&#x2F;etc&#x2F;dirsrv&#x2F;slapd-BAOFOO-CN&#39;,nickname&#x3D;&#39;Server-Cert&#39;,token&#x3D;&#39;NSS Certificate DB&#39;,pinfile&#x3D;&#39;&#x2F;etc&#x2F;dirsrv&#x2F;slapd-BAOFOO-CN&#x2F;pwdfile.txt&#39;</span><br><span class="line">	certificate: type&#x3D;NSSDB,location&#x3D;&#39;&#x2F;etc&#x2F;dirsrv&#x2F;slapd-BAOFOO-CN&#39;,nickname&#x3D;&#39;Server-Cert&#39;,token&#x3D;&#39;NSS Certificate DB&#39;</span><br><span class="line">	CA: IPA</span><br><span class="line">	issuer: CN&#x3D;Certificate Authority,O&#x3D;BAOFOO.CN</span><br><span class="line">	subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">	expires: 2021-08-30 07:43:01 UTC</span><br><span class="line">	dns: freeipa.baofoo.cn</span><br><span class="line">	principal name: ldap&#x2F;freeipa.baofoo.cn@BAOFOO.CN</span><br><span class="line">	key usage: digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment</span><br><span class="line">	eku: id-kp-serverAuth,id-kp-clientAuth</span><br><span class="line">	pre-save command: </span><br><span class="line">	post-save command: &#x2F;usr&#x2F;libexec&#x2F;ipa&#x2F;certmonger&#x2F;restart_dirsrv BAOFOO-CN</span><br><span class="line">	track: yes</span><br><span class="line">	auto-renew: yes</span><br></pre></td></tr></table></figure>
-<p>问题<br>
-这更多是利基问题。但可能对其他人有用。我在家里有一个用于 DNS 的 FreeIPA 服务器设置。在简单的重新启动以向 VM 添加一些 RAM 后，服务器将无法启动。我收到如下错误。</p>
-<p>IPA 服务器错误</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl status ipa</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">● ipa.service - Identity, Policy, Audit</span><br><span class="line">Loaded: loaded (&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;ipa.service; enabled; vendor preset: disabled)</span><br><span class="line">Active: failed (Result: exit-code) since Fri 2020-10-09 14:57:15 EDT; 1s ago</span><br><span class="line">Process: 1110 ExecStart&#x3D;&#x2F;usr&#x2F;sbin&#x2F;ipactl start (code&#x3D;exited, status&#x3D;1&#x2F;FAILURE)</span><br><span class="line">Main PID: 1110 (code&#x3D;exited, status&#x3D;1&#x2F;FAILURE)</span><br><span class="line"></span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Aborting ipactl</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting Directory Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting krb5kdc Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting kadmin Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting named Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting httpd Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: ipa.service: main process exited, code&#x3D;exited, status&#x3D;1&#x2F;FAILURE</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: Failed to start Identity, Policy, Audit.</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: Unit ipa.service entered failed state.</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: ipa.service failed.</span><br></pre></td></tr></table></figure>
-<h5 id="Apache-服务错误">Apache 服务错误</h5>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl status httpd -l</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">● httpd.service - The Apache HTTP Server</span><br><span class="line">Loaded: loaded (&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;httpd.service; disabled; vendor preset: disabled)</span><br><span class="line">Drop-In: &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;httpd.service.d</span><br><span class="line">└─ipa.conf</span><br><span class="line">Active: failed (Result: exit-code) since Fri 2020-10-09 14:57:44 EDT; 9s ago</span><br><span class="line">Docs: man:httpd(8)</span><br><span class="line">man:apachectl(8)</span><br><span class="line">Process: 1532 ExecStart&#x3D;&#x2F;usr&#x2F;sbin&#x2F;httpd $OPTIONS -DFOREGROUND (code&#x3D;exited, status&#x3D;1&#x2F;FAILURE)</span><br><span class="line">Process: 1529 ExecStartPre&#x3D;&#x2F;usr&#x2F;libexec&#x2F;ipa&#x2F;ipa-httpd-kdcproxy (code&#x3D;exited, status&#x3D;0&#x2F;SUCCESS)</span><br><span class="line">Main PID: 1532 (code&#x3D;exited, status&#x3D;1&#x2F;FAILURE)</span><br><span class="line"></span><br><span class="line">Oct 09 14:57:42 ipasrv.home.local systemd[1]: Starting The Apache HTTP Server...</span><br><span class="line">Oct 09 14:57:43 ipasrv.home.local ipa-httpd-kdcproxy[1529]: ipa: WARNING: Unable to connect to dirsrv: cannot connect to &amp;#039;ldapi:&#x2F;&#x2F;%2fvar%2frun%2fslapd-HOME-LOCAL.socket&amp;#039;:</span><br><span class="line">Oct 09 14:57:43 ipasrv.home.local ipa-httpd-kdcproxy[1529]: ipa-httpd-kdcproxy: WARNING  Unable to connect to dirsrv: cannot connect to &amp;#039;ldapi:&#x2F;&#x2F;%2fvar%2frun%2fslapd-HOME-LOCAL.socket&amp;#039;:</span><br><span class="line">Oct 09 14:57:43 ipasrv.home.local ipa-httpd-kdcproxy[1529]: ipa: WARNING: Disabling KDC proxy</span><br><span class="line">Oct 09 14:57:43 ipasrv.home.local ipa-httpd-kdcproxy[1529]: ipa-httpd-kdcproxy: WARNING  Disabling KDC proxy</span><br><span class="line">Oct 09 14:57:44 ipasrv.home.local systemd[1]: httpd.service: main process exited, code&#x3D;exited, status&#x3D;1&#x2F;FAILURE</span><br><span class="line">Oct 09 14:57:44 ipasrv.home.local systemd[1]: Failed to start The Apache HTTP Server.</span><br><span class="line">Oct 09 14:57:44 ipasrv.home.local systemd[1]: Unit httpd.service entered failed state.</span><br><span class="line">Oct 09 14:57:44 ipasrv.home.local systemd[1]: httpd.service failed.</span><br></pre></td></tr></table></figure>
-<p>解析度<br>
-不会用这个绕过灌木丛。底线是我的证书已过期。下面是解决它的步骤。</p>
-<h3 id="1-–-使用忽略失败服务的选项启动-IPA-服务器。">1 – 使用忽略失败服务的选项启动 IPA 服务器。</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ipactl start --ignore-service-failure</span><br></pre></td></tr></table></figure>
-<p>示例输出</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Existing service file detected!</span><br><span class="line">Assuming stale, cleaning and proceeding</span><br><span class="line">Starting Directory Service</span><br><span class="line">Starting krb5kdc Service</span><br><span class="line">Starting kadmin Service</span><br><span class="line">Starting named Service</span><br><span class="line">Starting httpd Service</span><br><span class="line">Failed to start httpd Service</span><br><span class="line">Forced start, ignoring httpd Service, continuing normal operation</span><br><span class="line">Starting ipa-custodia Service</span><br><span class="line">Starting ntpd Service</span><br><span class="line">Starting pki-tomcatd Service</span><br></pre></td></tr></table></figure>
-<h2 id="2-–-接下来运行ipa-cert-fix命令来更新过期的证书。">2 – 接下来运行ipa-cert-fix命令来更新过期的证书。</h2>
-<p>ipa-cert-fix</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">                          WARNING</span><br><span class="line"></span><br><span class="line">ipa-cert-fix is intended for recovery when expired certificates</span><br><span class="line">prevent the normal operation of IPA.  It should ONLY be used</span><br><span class="line">in such scenarios, and backup of the system, especially certificates</span><br><span class="line">and keys, is STRONGLY RECOMMENDED.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">The following certificates will be renewed: </span><br><span class="line"></span><br><span class="line">Dogtag sslserver certificate:</span><br><span class="line">  Subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  3</span><br><span class="line">  Expires: 2021-08-19 07:42:09</span><br><span class="line"></span><br><span class="line">Dogtag subsystem certificate:</span><br><span class="line">  Subject: CN&#x3D;CA Subsystem,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  4</span><br><span class="line">  Expires: 2021-08-19 07:42:09</span><br><span class="line"></span><br><span class="line">Dogtag ca_ocsp_signing certificate:</span><br><span class="line">  Subject: CN&#x3D;OCSP Subsystem,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  2</span><br><span class="line">  Expires: 2021-08-19 07:42:09</span><br><span class="line"></span><br><span class="line">Dogtag ca_audit_signing certificate:</span><br><span class="line">  Subject: CN&#x3D;CA Audit,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  5</span><br><span class="line">  Expires: 2021-08-19 07:42:09</span><br><span class="line"></span><br><span class="line">IPA IPA RA certificate:</span><br><span class="line">  Subject: CN&#x3D;IPA RA,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  7</span><br><span class="line">  Expires: 2021-08-19 07:42:30</span><br><span class="line"></span><br><span class="line">IPA Apache HTTPS certificate:</span><br><span class="line">  Subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  9</span><br><span class="line">  Expires: 2021-08-30 07:43:31</span><br><span class="line"></span><br><span class="line">IPA LDAP certificate:</span><br><span class="line">  Subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  8</span><br><span class="line">  Expires: 2021-08-30 07:43:01</span><br><span class="line"></span><br><span class="line">IPA KDC certificate:</span><br><span class="line">  Subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  10</span><br><span class="line">  Expires: 2021-08-30 07:43:38</span><br><span class="line"></span><br><span class="line">Enter &quot;yes&quot; to proceed: yes</span><br><span class="line">Proceeding.</span><br><span class="line">Renewed Dogtag sslserver certificate:</span><br><span class="line">  Subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  11</span><br><span class="line">  Expires: 2023-11-30 01:22:29</span><br><span class="line"></span><br><span class="line">Renewed Dogtag subsystem certificate:</span><br><span class="line">  Subject: CN&#x3D;CA Subsystem,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  12</span><br><span class="line">  Expires: 2023-11-30 01:22:30</span><br><span class="line"></span><br><span class="line">Renewed Dogtag ca_ocsp_signing certificate:</span><br><span class="line">  Subject: CN&#x3D;OCSP Subsystem,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  13</span><br><span class="line">  Expires: 2023-11-30 01:22:31</span><br><span class="line"></span><br><span class="line">Renewed Dogtag ca_audit_signing certificate:</span><br><span class="line">  Subject: CN&#x3D;CA Audit,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  14</span><br><span class="line">  Expires: 2023-11-30 01:22:31</span><br><span class="line"></span><br><span class="line">Renewed IPA IPA RA certificate:</span><br><span class="line">  Subject: CN&#x3D;IPA RA,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  15</span><br><span class="line">  Expires: 2023-11-30 01:22:32</span><br><span class="line"></span><br><span class="line">Renewed IPA Apache HTTPS certificate:</span><br><span class="line">  Subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  16</span><br><span class="line">  Expires: 2023-12-11 01:22:32</span><br><span class="line"></span><br><span class="line">Renewed IPA LDAP certificate:</span><br><span class="line">  Subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  17</span><br><span class="line">  Expires: 2023-12-11 01:22:32</span><br><span class="line"></span><br><span class="line">Renewed IPA KDC certificate:</span><br><span class="line">  Subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">  Serial:  18</span><br><span class="line">  Expires: 2023-12-11 01:22:33</span><br><span class="line"></span><br><span class="line">Becoming renewal master.</span><br><span class="line">The ipa-cert-fix command was successful</span><br><span class="line">[root@freeipa ~]# ipactl restart</span><br></pre></td></tr></table></figure>
-<h3 id="3-–-更新证书后，重新启动-IPA-服务器，">3 – 更新证书后，重新启动 IPA 服务器，</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ipactl restart</span><br></pre></td></tr></table></figure>
-<p>示例输出</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Restarting Directory Service</span><br><span class="line">Restarting krb5kdc Service</span><br><span class="line">Restarting kadmin Service</span><br><span class="line">Restarting named Service</span><br><span class="line">Restarting httpd Service</span><br><span class="line">Restarting ipa-custodia Service</span><br><span class="line">Restarting ntpd Service</span><br><span class="line">Restarting pki-tomcatd Service</span><br><span class="line">Restarting ipa-otpd Service</span><br><span class="line">Restarting ipa-dnskeysyncd Service</span><br><span class="line">ipa: INFO: The ipactl command was successful</span><br></pre></td></tr></table></figure>
-<h3 id="4-–-最后使用ipactl-status命令验证IPA服务器启动。">4 – 最后使用ipactl status命令验证IPA服务器启动。</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ipactl status</span><br></pre></td></tr></table></figure>
-<p>示例输出</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Directory Service: RUNNING</span><br><span class="line">krb5kdc Service: RUNNING</span><br><span class="line">kadmin Service: RUNNING</span><br><span class="line">named Service: RUNNING</span><br><span class="line">httpd Service: RUNNING</span><br><span class="line">ipa-custodia Service: RUNNING</span><br><span class="line">ntpd Service: RUNNING</span><br><span class="line">pki-tomcatd Service: RUNNING</span><br><span class="line">ipa-otpd Service: RUNNING</span><br><span class="line">ipa-dnskeysyncd Service: RUNNING</span><br><span class="line">ipa: INFO: The ipactl command was successful</span><br></pre></td></tr></table></figure>
-<h1>Upgrade   版本升级</h1>
-<p>[root@freeipa ipa]# rpm -aq ipa-server<br>
-ipa-server-4.6.5-11.el7.centos.x86_64</p>
-<p>ipa-server-upgrade</p>
 ]]></content>
   </entry>
   <entry>
