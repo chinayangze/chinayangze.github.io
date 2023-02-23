@@ -209,6 +209,158 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/02/22/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/02/22/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/" class="post-title-link" itemprop="url">内网穿透</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-02-22 17:56:32" itemprop="dateCreated datePublished" datetime="2023-02-22T17:56:32+08:00">2023-02-22</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>内网穿透</h1>
+<p>花生壳的http不能免费使用了，网上找了资料实测下面这2款可以用</p>
+<h2 id="localhost-run">localhost.run</h2>
+<p><a href="http://localhost.run/" target="_blank" rel="noopener">http://localhost.run/</a></p>
+<p>1、这个使用最简单，不需要下载任何软件，简单一行ssh命令就行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -R 80:localhost:8080 nokey@localhost.run</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-R命令表示反向端口转发</span><br><span class="line">80是被指定的转发端口</span><br><span class="line">localhost是你局域网ip地址（对应127.0.0.1）</span><br><span class="line">8080是你的局域网端口号</span><br><span class="line">nokey@localhost.run是一台处在公网的服务器</span><br></pre></td></tr></table></figure>
+<h2 id="FastTunnel">FastTunnel</h2>
+<p><a href="https://suidao.io/" target="_blank" rel="noopener">https://suidao.io/</a></p>
+<ol>
+<li>在个人中心获取用于客户端登录的<code>AccessKey</code></li>
+<li>在创建隧道页面，创建需要穿透的隧道信息。</li>
+<li>下载并启动客户端软件, 根据提示录入<code>AccessKey</code>进行登录, 登录成功后根据映射信息提示进行访问你的服务。</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/02/22/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/02/21/doris%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/02/21/doris%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">doris部署</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-02-21 16:44:03" itemprop="dateCreated datePublished" datetime="2023-02-21T16:44:03+08:00">2023-02-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>doris部署</p>
+<h2 id="fe部署">fe部署</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">第一次启动需指定--helper参数，后续再启动无需指定此参数</span><br><span class="line">sh &#x2F;opt&#x2F;module&#x2F;apache-doris-fe&#x2F;bin&#x2F;start_fe.sh --helper cdh192-150:19010 --daemon</span><br><span class="line"></span><br><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-fe&#x2F;bin&#x2F;stop_fe.sh &quot;</span><br><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-fe&#x2F;bin&#x2F;start_fe.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql -h 127.0.0.1 -P9030 -uroot -p</span><br><span class="line">mysql&gt; SHOW PROC '/frontends'\G</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"cdh192-151:19010"</span>;</span><br><span class="line"><span class="comment"># ALTER SYSTEM DROP FOLLOWER "cdh192-151:19010";</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> OBSERVER <span class="string">"cdh192-152:19010"</span>;</span><br><span class="line"><span class="comment"># ALTER SYSTEM drop OBSERVER "cdh192-152:19010";</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"cdh192-153:19010"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"cdh192-146.hadoop.xy:19010"</span>;</span><br><span class="line"></span><br><span class="line">netstat -nap |grep 19010</span><br></pre></td></tr></table></figure>
+<h2 id="be-部署">be 部署</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible be -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;stop_be.sh &quot;</span><br><span class="line">ansible be -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;start_be.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SHOW PROC '/backends'\G</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-150:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-151:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-152:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-146:9050"</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible be -m shell -a &quot;sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;stop_be.sh &quot;</span><br><span class="line">ansible be -m shell -a &quot;sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;start_be.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<h2 id="doris升级">doris升级</h2>
+<p><strong>重要！！在升级之前需要备份元数据（整个目录都需要备份）！！</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/02/21/doris%E9%83%A8%E7%BD%B2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/02/10/hk-blockin%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -339,80 +491,6 @@ sh /opt/module/StarRocks/fe/bin/start_fe.sh --helper 172.20.85.111:9010 --daemon
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2023/02/08/starRocks%E9%83%A8%E7%BD%B2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/01/07/doris%E9%83%A8%E7%BD%B2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/01/07/doris%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">doris部署</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-01-07 12:26:10" itemprop="dateCreated datePublished" datetime="2023-01-07T12:26:10+08:00">2023-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>doris部署</p>
-<h2 id="fe部署">fe部署</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">第一次启动需指定--helper参数，后续再启动无需指定此参数</span><br><span class="line">sh &#x2F;opt&#x2F;module&#x2F;apache-doris-fe&#x2F;bin&#x2F;start_fe.sh --helper cdh192-150:19010 --daemon</span><br><span class="line"></span><br><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-fe&#x2F;bin&#x2F;stop_fe.sh &quot;</span><br><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-fe&#x2F;bin&#x2F;start_fe.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql -h 127.0.0.1 -P9030 -uroot -p</span><br><span class="line">mysql&gt; SHOW PROC '/frontends'\G</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"cdh192-151:19010"</span>;</span><br><span class="line"><span class="comment"># ALTER SYSTEM DROP FOLLOWER "cdh192-151:19010";</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> OBSERVER <span class="string">"cdh192-152:19010"</span>;</span><br><span class="line"><span class="comment"># ALTER SYSTEM drop OBSERVER "cdh192-152:19010";</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"cdh192-153:19010"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"cdh192-146.hadoop.xy:19010"</span>;</span><br><span class="line"></span><br><span class="line">netstat -nap |grep 19010</span><br></pre></td></tr></table></figure>
-<h2 id="be-部署">be 部署</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible be -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;stop_be.sh &quot;</span><br><span class="line">ansible be -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;start_be.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SHOW PROC '/backends'\G</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-150:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-151:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-152:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-146:9050"</span>;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible be -m shell -a &quot;sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;stop_be.sh &quot;</span><br><span class="line">ansible be -m shell -a &quot;sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;start_be.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
-<h2 id="doris升级">doris升级</h2>
-<p><strong>重要！！在升级之前需要备份元数据（整个目录都需要备份）！！</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/01/07/doris%E9%83%A8%E7%BD%B2/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -878,86 +956,6 @@ Phoenix与Hbase的版本兼容是很严格的，我们需要使用Phoenix去适�
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/11/07/Docker%E8%AE%BE%E7%BD%AE%E5%AE%B9%E5%99%A8%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/11/07/Docker%E8%AE%BE%E7%BD%AE%E5%AE%B9%E5%99%A8%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF/" class="post-title-link" itemprop="url">Docker设置容器开机自启</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-11-07 10:36:26" itemprop="dateCreated datePublished" datetime="2022-11-07T10:36:26+08:00">2022-11-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><strong>Docker设置容器开机自启</strong></p>
-<p>设置docker开机自启</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable docker</span><br></pre></td></tr></table></figure>
-<p>设置docker容器开机自启<br>
-创建docker容器时设置开机自启<br>
-#在使用docker run启动容器时，使用–restart参数来设置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --restart&#x3D;always --name imagesName</span><br></pre></td></tr></table></figure>
-<p>修改已创建的docker容器开机自启<br>
-#如果创建时未指定 --restart=always ,可通过update 命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker update --restart&#x3D;always imagesName</span><br></pre></td></tr></table></figure>
-<p>参数说明<br>
-  --restart具体参数值详细信息：</p>
-<p>no - 容器退出时，不重启容器；<br>
-on-failure - 只有在非0状态退出时才从新启动容器；<br>
-always - 无论退出状态是如何，都重启容器；</p>
-<p>还可以在使用on - failure策略时，指定Docker将尝试重新启动容器的最大次数。默认情况下，Docker将尝试永远重新启动容器。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/11/07/Docker%E8%AE%BE%E7%BD%AE%E5%AE%B9%E5%99%A8%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1030,7 +1028,7 @@ always - 无论退出状态是如何，都重启容器；</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-count">129</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1061,6 +1059,9 @@ always - 无论退出状态是如何，都重启容器；</p>
         </li>
         <li class="links-of-blogroll-item">
           <a href="https://www.ezessay.com/essay/" title="https:&#x2F;&#x2F;www.ezessay.com&#x2F;essay&#x2F;" rel="noopener" target="_blank">essay代写</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.6hww.com/" title="https:&#x2F;&#x2F;www.6hww.com" rel="noopener" target="_blank">偏门项目</a>
         </li>
     </ul>
   </div>

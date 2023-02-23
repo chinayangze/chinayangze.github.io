@@ -209,6 +209,76 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/10/12/%E8%A7%A3%E5%86%B3spark%20streaming%E9%95%BF%E6%97%B6%E9%97%B4%E8%BF%90%E8%A1%8C%E6%97%A5%E5%BF%97%E4%B8%8D%E6%96%AD%E5%A2%9E%E9%95%BF%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/12/%E8%A7%A3%E5%86%B3spark%20streaming%E9%95%BF%E6%97%B6%E9%97%B4%E8%BF%90%E8%A1%8C%E6%97%A5%E5%BF%97%E4%B8%8D%E6%96%AD%E5%A2%9E%E9%95%BF%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">解决spark streaming长时间运行日志不断增长问题</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-12 15:33:53" itemprop="dateCreated datePublished" datetime="2020-10-12T15:33:53+08:00">2020-10-12</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>解决spark streaming长时间运行日志不断增长问题</h1>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">log4j.rootLogger=WARN,stdout,A1</span><br><span class="line"></span><br><span class="line">log4j.appender.stdout=org.apache.log4j.ConsoleAppender</span><br><span class="line">log4j.appender.stdout.Threshold=WARN</span><br><span class="line">log4j.appender.stdout.encoding=UTF-8</span><br><span class="line">log4j.appender.stdout.layout=org.apache.log4j.PatternLayout</span><br><span class="line">log4j.appender.stdout.layout.ConversionPattern=[%d&#123;yyyy-MM-dd HH:mm:ss,SSS&#125;] %m %n[%d&#123;yyyy-MM-dd HH:mm:ss,SSS&#125;] %p | %F:%L | %M%n%n</span><br><span class="line"></span><br><span class="line">log4j.appender.A1=org.apache.log4j.RollingFileAppender</span><br><span class="line">log4j.appender.A1.BufferedIO=true</span><br><span class="line">log4j.appender.A1.BufferSize=8192</span><br><span class="line">log4j.appender.A1.File=$&#123;spark.yarn.app.container.log.dir&#125;/stderr</span><br><span class="line">log4j.appender.A1.MaxFileSize=10MB</span><br><span class="line">log4j.appender.A1.MaxBackupIndex=9</span><br><span class="line">log4j.appender.A1.encoding=UTF-8</span><br><span class="line">log4j.appender.A1.Append=true</span><br><span class="line">log4j.appender.A1.Threshold=ERROR</span><br><span class="line">log4j.appender.A1.layout=org.apache.log4j.PatternLayout</span><br><span class="line">log4j.appender.A1.layout.ConversionPattern=[%d&#123;yyyy-MM-dd HH:mm:ss,SSS&#125;] %m %n[%d&#123;yyyy-MM-dd HH:mm:ss,SSS&#125;] %p | %F:%L | %M%n%n</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">echo  "================= spark job:CbDimStreamDriver  start!!!========================"</span><br><span class="line"></span><br><span class="line">spark-submit \</span><br><span class="line">--master yarn  \</span><br><span class="line">--deploy-mode  cluster  \</span><br><span class="line">--name  stream-rm-cb-dim  \</span><br><span class="line">--queue bf_yarn_pool.production  \</span><br><span class="line">--class com.baofu.rm.streaming.CbDimStreamDriver  \</span><br><span class="line">--num-executors  32  \</span><br><span class="line">--driver-memory  3G  \</span><br><span class="line">--executor-memory  4G  \</span><br><span class="line">--executor-cores  1  \</span><br><span class="line">--conf spark.dynamicAllocation.enabled=false \</span><br><span class="line">--conf spark.executor.extraJavaOptions=-XX:+UseConcMarkSweepGC \</span><br><span class="line">--conf spark.streaming.backpressure.enabled=true \</span><br><span class="line">--conf spark.streaming.kafka.maxRatePerPartition=1000 \</span><br><span class="line">--conf spark.eventLog.enabled=false \</span><br><span class="line">--conf spark.driver.extraJavaOptions=-Dlog4j.configuration=file:log4j.properties \</span><br><span class="line">--conf spark.executor.extraJavaOptions=-Dlog4j.configuration=file:log4j.properties \</span><br><span class="line">--files ./log4j.properties \</span><br><span class="line">/home/bf_app_spark/spark-jobs/streams/fxJob/cbdim/rm-streaming-analysis-pro.jar</span><br><span class="line"></span><br><span class="line">rc=$?</span><br><span class="line">if [[ $rc != 0 ]]; then</span><br><span class="line">    echo "spark task: $0  failed,please check......"  </span><br><span class="line">    exit 1</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">echo "end run spark: `date "+%Y-%m-%d %H:%M:%S"`"  </span><br><span class="line">echo "================== spark job:CbDimStreamDriver  end!!!===================="</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup sh .&#x2F;stream_CbDimStreamDriver.sh &gt; &#x2F;dev&#x2F;null 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
+<p>参考： <a href="http://mkuthan.github.io/blog/2016/09/30/spark-streaming-on-yarn/" target="_blank" rel="noopener">http://mkuthan.github.io/blog/2016/09/30/spark-streaming-on-yarn/</a></p>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/10/12/%E8%A7%A3%E5%86%B3spark%20streaming%E9%95%BF%E6%97%B6%E9%97%B4%E8%BF%90%E8%A1%8C%E6%97%A5%E5%BF%97%E4%B8%8D%E6%96%AD%E5%A2%9E%E9%95%BF%E9%97%AE%E9%A2%98/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/09/30/%E6%9C%89%E9%81%93%E7%AC%94%E8%AE%B0%E6%96%87%E4%BB%B6%E5%A4%87%E4%BB%BD/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1253,81 +1323,6 @@ grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 patter
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/Shell%E6%95%B0%E7%BB%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/Shell%E6%95%B0%E7%BB%84/" class="post-title-link" itemprop="url">Shell数组</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-01-07 17:28:40" itemprop="dateCreated datePublished" datetime="2020-01-07T17:28:40+08:00">2020-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Shell在编程方面比Windows批处理强大很多，无论是在循环、运算。</p>
-<p>bash支持一维数组（不支持多维数组），并且没有限定数组的大小。类似与C语言，数组元素的下标由0开始编号。获取数组中的元素要利用下标，下标可以是整数或算术表达式，其值应大于或等于0。<br>
-定义数组</p>
-<p>在Shell中，用括号来表示数组，数组元素用“空格”符号分割开。定义数组的一般形式为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array_name&#x3D;(value1 ... valuen)</span><br></pre></td></tr></table></figure>
-<p>例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array_name&#x3D;(value0 value1 value2 value3)</span><br></pre></td></tr></table></figure>
-<p>或者</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">array_name&#x3D;(</span><br><span class="line">value0</span><br><span class="line">value1</span><br><span class="line">value2</span><br><span class="line">value3</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>还可以单独定义数组的各个分量：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array_name[0]&#x3D;value0</span><br><span class="line">array_name[1]&#x3D;value1</span><br><span class="line">array_name[2]&#x3D;value2</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/07/Shell%E6%95%B0%E7%BB%84/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1400,7 +1395,7 @@ grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 patter
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-count">129</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1431,6 +1426,9 @@ grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 patter
         </li>
         <li class="links-of-blogroll-item">
           <a href="https://www.ezessay.com/essay/" title="https:&#x2F;&#x2F;www.ezessay.com&#x2F;essay&#x2F;" rel="noopener" target="_blank">essay代写</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.6hww.com/" title="https:&#x2F;&#x2F;www.6hww.com" rel="noopener" target="_blank">偏门项目</a>
         </li>
     </ul>
   </div>

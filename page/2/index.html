@@ -209,6 +209,86 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/11/07/Docker%E8%AE%BE%E7%BD%AE%E5%AE%B9%E5%99%A8%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/07/Docker%E8%AE%BE%E7%BD%AE%E5%AE%B9%E5%99%A8%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF/" class="post-title-link" itemprop="url">Docker设置容器开机自启</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-11-07 10:36:26" itemprop="dateCreated datePublished" datetime="2022-11-07T10:36:26+08:00">2022-11-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>Docker设置容器开机自启</strong></p>
+<p>设置docker开机自启</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable docker</span><br></pre></td></tr></table></figure>
+<p>设置docker容器开机自启<br>
+创建docker容器时设置开机自启<br>
+#在使用docker run启动容器时，使用–restart参数来设置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --restart&#x3D;always --name imagesName</span><br></pre></td></tr></table></figure>
+<p>修改已创建的docker容器开机自启<br>
+#如果创建时未指定 --restart=always ,可通过update 命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker update --restart&#x3D;always imagesName</span><br></pre></td></tr></table></figure>
+<p>参数说明<br>
+  --restart具体参数值详细信息：</p>
+<p>no - 容器退出时，不重启容器；<br>
+on-failure - 只有在非0状态退出时才从新启动容器；<br>
+always - 无论退出状态是如何，都重启容器；</p>
+<p>还可以在使用on - failure策略时，指定Docker将尝试重新启动容器的最大次数。默认情况下，Docker将尝试永远重新启动容器。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/11/07/Docker%E8%AE%BE%E7%BD%AE%E5%AE%B9%E5%99%A8%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/10/28/jpsall%20xsync%E5%91%BD%E4%BB%A4%E8%84%9A%E6%9C%AC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -894,83 +974,6 @@ Ctrl+ Alt+ FN + Home</p>
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/04/19/scala%EF%BC%9A%E5%87%BD%E6%95%B0%E8%87%B3%E7%AE%80%E5%8E%9F%E5%88%99%E3%80%81%E5%87%BD%E6%95%B0%E7%AE%80%E5%8C%96%E8%BF%87%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/19/scala%EF%BC%9A%E5%87%BD%E6%95%B0%E8%87%B3%E7%AE%80%E5%8E%9F%E5%88%99%E3%80%81%E5%87%BD%E6%95%B0%E7%AE%80%E5%8C%96%E8%BF%87%E7%A8%8B/" class="post-title-link" itemprop="url">scala：函数至简原则、函数简化过程</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-04-19 16:42:03" itemprop="dateCreated datePublished" datetime="2022-04-19T16:42:03+08:00">2022-04-19</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>scala：函数至简原则、函数简化过程</p>
-<p>1.return可以省略，Scala会使用函数体的最后一行代码作为返回值<br>
-2.如果函数体只有一行代码，可以省略花括号<br>
-3.返回值类型如果能够推断出来，那么可以省略（:和返回值类型一起省略）<br>
-4.如果有return，则不能省略返回值类型，必须指定<br>
-5.如果函数明确声明unit，那么即使函数体中使用return关键字也不起作用<br>
-6.Scala如果期望是无返回值类型，可以省略等号 这种形式称为过程<br>
-7.如果函数无参，但是声明了参数列表，那么调用时，小括号，可加可不加<br>
-8.如果函数没有参数列表，那么小括号可以省略，调用时小括号必须省略<br>
-9.如果不关心名称，只关心逻辑处理，那么函数名（def）可以省略</p>
-<p>代码示例</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Scala05_TestFun_review</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    //正常定义函数</span></span><br><span class="line"><span class="comment">    def f0(name:String): String =&#123;</span></span><br><span class="line"><span class="comment">      return name</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    println(f0("atguigu"))</span></span><br><span class="line"><span class="comment">    //（1）return可以省略，Scala会使用函数体的最后一行代码作为返回值</span></span><br><span class="line"><span class="comment">    def f1(name:String): String =&#123;</span></span><br><span class="line"><span class="comment">      name</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    println(f1("atguigu"))</span></span><br><span class="line"><span class="comment">    //（2）如果函数体只有一行代码，可以省略花括号</span></span><br><span class="line"><span class="comment">def f2(name:String): String = name</span></span><br><span class="line"><span class="comment">println(f2("atguigu"))</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（3）返回值类型如果能够推断出来，那么可以省略（:和返回值类型一起省略）</span></span><br><span class="line"><span class="comment">def f3(name:String)= name</span></span><br><span class="line"><span class="comment">println(f3("atguigu"))</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（4）如果有return，则不能省略返回值类型，必须指定</span></span><br><span class="line"><span class="comment">def f4(name:String) =&#123;</span></span><br><span class="line"><span class="comment">  return name</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（5）如果函数明确声明unit，那么即使函数体中使用return关键字也不起作用</span></span><br><span class="line"><span class="comment">def f5(name:String): Unit =&#123;</span></span><br><span class="line"><span class="comment">  return name</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">println(f5("atguigu"))</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（6）Scala如果期望是无返回值类型，可以省略等号   这种形式称为过程</span></span><br><span class="line"><span class="comment">def f6(name:String)&#123;</span></span><br><span class="line"><span class="comment">  println(name)</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">f6("banzhang")</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（7）如果函数无参，但是声明了参数列表，那么调用时，小括号，可加可不加</span></span><br><span class="line"><span class="comment">def f7(): Unit =&#123;</span></span><br><span class="line"><span class="comment">  println("jingjing")</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">f7</span></span><br><span class="line"><span class="comment">f7()</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（8）如果函数没有参数列表，那么小括号可以省略，调用时小括号必须省略</span></span><br><span class="line"><span class="comment">def f8: Unit =&#123;</span></span><br><span class="line"><span class="comment">  println("jingjing")</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">//f8()</span></span><br><span class="line"><span class="comment">f8</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（9）如果不关心名称，只关心逻辑处理，那么函数名（def）可以省略</span></span><br><span class="line"><span class="comment">// 1.扩展f9的功能   2.具体扩展的功能是通过fun函数传递，很灵活</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f9</span></span>(fun:(<span class="type">String</span>)=&gt;<span class="type">Unit</span>): <span class="type">Unit</span> =&#123;</span><br><span class="line">  fun(<span class="string">"jingjing"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//def f10(s:String): Unit =&#123;</span></span><br><span class="line"><span class="comment">//  println(s)</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"><span class="comment">//f9(f10)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//匿名函数 ：没有名字的函数，通过lambda表达式实现     (参数)=&gt;&#123;函数体&#125;</span></span><br><span class="line"><span class="comment">//f9((s:String)=&gt;&#123;println(s)&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（1）参数的类型可以省略，会根据形参进行自动的推导</span></span><br><span class="line"><span class="comment">//f9((s)=&gt;&#123;println(s)&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（2）类型省略之后，发现只有一个参数，则圆括号可以省略；其他情况：没有参数和参数超过1的永远不能省略圆括号。</span></span><br><span class="line"><span class="comment">//f9(s =&gt;&#123;println(s)&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（3）匿名函数如果只有一行，则大括号也可以省略</span></span><br><span class="line"><span class="comment">//f9(s =&gt;println(s))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（4）如果参数只出现一次，则参数省略且后面参数可以用_代替</span></span><br><span class="line"><span class="comment">//f9(println(_))</span></span><br><span class="line">  <span class="comment">//  （5） 如果可以推断出，println是一个函数体，而不是调用语句，那么(_)可以省</span></span><br><span class="line">  <span class="comment">//  f9(println)</span></span><br><span class="line">  <span class="comment">//反推导     f9((s:String)=&gt;println(s))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//加深大家理解</span></span><br><span class="line"><span class="comment">//定义一个函数，接受一个函数类型的参数，该函数类型有两个参数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f11</span></span>(fun:(<span class="type">Int</span>,<span class="type">Int</span>)=&gt;<span class="type">Int</span>):<span class="type">Int</span>=&#123;</span><br><span class="line">  fun(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//println(f11((x:Int,y:Int)=&gt;&#123;x + y&#125;))</span></span><br><span class="line"><span class="comment">//println(f11((x,y)=&gt;x + y))</span></span><br><span class="line">println(f11(_ + _))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/19/scala%EF%BC%9A%E5%87%BD%E6%95%B0%E8%87%B3%E7%AE%80%E5%8E%9F%E5%88%99%E3%80%81%E5%87%BD%E6%95%B0%E7%AE%80%E5%8C%96%E8%BF%87%E7%A8%8B/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1043,7 +1046,7 @@ Ctrl+ Alt+ FN + Home</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-count">129</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1074,6 +1077,9 @@ Ctrl+ Alt+ FN + Home</p>
         </li>
         <li class="links-of-blogroll-item">
           <a href="https://www.ezessay.com/essay/" title="https:&#x2F;&#x2F;www.ezessay.com&#x2F;essay&#x2F;" rel="noopener" target="_blank">essay代写</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.6hww.com/" title="https:&#x2F;&#x2F;www.6hww.com" rel="noopener" target="_blank">偏门项目</a>
         </li>
     </ul>
   </div>

@@ -209,6 +209,90 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/06-1.%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BB%84%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/06-1.%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BB%84%E4%BB%B6/" class="post-title-link" itemprop="url">06-1.部署高可用组件</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-01-07 11:06:10 / 修改时间：16:09:47" itemprop="dateCreated datePublished" datetime="2020-01-07T11:06:10+08:00">2020-01-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>06-1.部署高可用组件</h1>
+<p>本文档讲解使用 keepalived 和 haproxy 实现 kube-apiserver 高可用的步骤：</p>
+<ul>
+<li>keepalived 提供 kube-apiserver 对外服务的 VIP；</li>
+<li>haproxy 监听 VIP，后端连接所有 kube-apiserver 实例，提供健康检查和负载均衡功能；</li>
+</ul>
+<p>运行 keepalived 和 haproxy 的节点称为 LB 节点。由于 keepalived 是一主多备运行模式，故至少两个 LB 节点。</p>
+<p>本文档复用 master 节点的三台机器，haproxy 监听的端口(8443) 需要与 kube-apiserver 的端口 6443 不同，避免冲突。</p>
+<p>keepalived 在运行过程中周期检查本机的 haproxy 进程状态，如果检测到 haproxy 进程异常，则触发重新选主的过程，VIP 将飘移到新选出来的主节点，从而实现 VIP 的高可用。</p>
+<p>所有组件（如 kubeclt、apiserver、controller-manager、scheduler 等）都通过 VIP 和 haproxy 监听的 8443 端口访问 kube-apiserver 服务。</p>
+<h2 id="安装软件包">安装软件包</h2>
+<pre><code>source /opt/k8s/bin/environment.sh
+for node_ip in ${NODE_IPS[@]}
+  do
+    echo &quot;&gt;&gt;&gt; ${node_ip}&quot;
+    ssh root@${node_ip} &quot;yum install -y keepalived haproxy&quot;
+  done
+</code></pre>
+<h2 id="配置和下发-haproxy-配置文件">配置和下发 haproxy 配置文件</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/06-1.%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BB%84%E4%BB%B6/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/06-0-%E9%83%A8%E7%BD%B2-master-%E8%8A%82%E7%82%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1011,87 +1095,6 @@ $ vagrant up
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/solr%20%20command/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/solr%20%20command/" class="post-title-link" itemprop="url">solr  command</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-01-07 09:42:12" itemprop="dateCreated datePublished" datetime="2020-01-07T09:42:12+08:00">2020-01-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-02 10:38:34" itemprop="dateModified" datetime="2020-01-02T10:38:34+08:00">2020-01-02</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="生成本地配置">生成本地配置</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">solrctl instancedir --generate $HOME&#x2F;test_collection_config</span><br></pre></td></tr></table></figure>
-<h3 id="上传到zk">上传到zk</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">solrctl instancedir --create test_collection_config $HOME&#x2F;test_collection_config</span><br></pre></td></tr></table></figure>
-<h3 id="创建collection">创建collection</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">solrctl collection --create test_collection -s 1 -c test_collection_config</span><br></pre></td></tr></table></figure>
-<h3 id="4-post数据">4. post数据</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;share&#x2F;doc&#x2F;solr-doc*&#x2F;example&#x2F;exampledocs</span><br><span class="line">java -Durl&#x3D;http:&#x2F;&#x2F;bigdata-3.baofoo.cn:8983&#x2F;solr&#x2F;test_collection&#x2F;update -jar post.jar *.xml</span><br></pre></td></tr></table></figure>
-<h3 id="查看-hdfs-dir">查看 hdfs dir</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">hadoop fs -ls -R &#x2F;solr&#x2F;test_co*&#x2F;</span><br><span class="line"> </span><br><span class="line">drwxr-xr-x   - solr solr          0 2019-05-08 22:07 &#x2F;solr&#x2F;test_collection&#x2F;core_node2</span><br><span class="line">drwxr-xr-x   - solr solr          0 2019-05-08 22:07 &#x2F;solr&#x2F;test_collection&#x2F;core_node2&#x2F;data</span><br><span class="line">drwxr-xr-x   - solr solr          0 2019-05-08 22:12 &#x2F;solr&#x2F;test_collection&#x2F;core_node2&#x2F;data&#x2F;index</span><br><span class="line">-rwxr-xr-x   3 solr solr         82 2019-05-08 22:12 &#x2F;solr&#x2F;test_collection&#x2F;core_node2&#x2F;data&#x2F;index&#x2F;_0.dii</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/07/solr%20%20command/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1164,7 +1167,7 @@ $ vagrant up
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-count">129</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1195,6 +1198,9 @@ $ vagrant up
         </li>
         <li class="links-of-blogroll-item">
           <a href="https://www.ezessay.com/essay/" title="https:&#x2F;&#x2F;www.ezessay.com&#x2F;essay&#x2F;" rel="noopener" target="_blank">essay代写</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.6hww.com/" title="https:&#x2F;&#x2F;www.6hww.com" rel="noopener" target="_blank">偏门项目</a>
         </li>
     </ul>
   </div>

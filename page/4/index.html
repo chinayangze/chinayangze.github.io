@@ -209,6 +209,80 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/26/nginx%E4%BB%A3%E7%90%86clickhouse/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/01/26/nginx%E4%BB%A3%E7%90%86clickhouse/" class="post-title-link" itemprop="url">nginx代理clickhouse</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-01-26 16:14:14" itemprop="dateCreated datePublished" datetime="2022-01-26T16:14:14+08:00">2022-01-26</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="下载编译源码包">下载编译源码包</h2>
+<p>下载源码包到指定的目录，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://nginx.org/download/nginx-1.20.2.tar.gz</span><br></pre></td></tr></table></figure>
+<p>解压并编译源码</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf  nginx-1.20.2.tar.gz</span><br><span class="line">cd nginx-1.20.2/</span><br></pre></td></tr></table></figure>
+<p>1）配置Nginx编译文件参数</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure --<span class="keyword">with</span>-stream</span><br></pre></td></tr></table></figure>
+<p>2）编译、安装，make &amp;&amp; make install</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">make</span> &amp; <span class="built_in">make</span> install</span><br></pre></td></tr></table></figure>
+<p>vim  /usr/local/nginx/conf/nginx.conf</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/01/26/nginx%E4%BB%A3%E7%90%86clickhouse/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/26/presto%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -877,75 +951,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/23/presto%20%E8%BF%9E%E6%8E%A5clickhouse/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/23/presto%20%E8%BF%9E%E6%8E%A5clickhouse/" class="post-title-link" itemprop="url">presto 连接clickhouse</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-12-23 15:39:26" itemprop="dateCreated datePublished" datetime="2021-12-23T15:39:26+08:00">2021-12-23</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>presto 连接clickhouse</h1>
-<p>presto350版本，不支持clickhouse ，需要升级，</p>
-<p>presto350版本之后 presto改名为trino，导致不兼容，升级后 对应的jdbc驱动 ，客户端都需要换成新的。</p>
-<p>客户端工具用DBeaver比较好，DbVisualizer 不支持trino</p>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/12/23/presto%20%E8%BF%9E%E6%8E%A5clickhouse/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1018,7 +1023,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-count">129</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1049,6 +1054,9 @@
         </li>
         <li class="links-of-blogroll-item">
           <a href="https://www.ezessay.com/essay/" title="https:&#x2F;&#x2F;www.ezessay.com&#x2F;essay&#x2F;" rel="noopener" target="_blank">essay代写</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.6hww.com/" title="https:&#x2F;&#x2F;www.6hww.com" rel="noopener" target="_blank">偏门项目</a>
         </li>
     </ul>
   </div>

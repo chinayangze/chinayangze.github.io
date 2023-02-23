@@ -209,6 +209,75 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/30/conda%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/30/conda%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">conda笔记</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-30 17:21:58" itemprop="dateCreated datePublished" datetime="2021-03-30T17:21:58+08:00">2021-03-30</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>Conda常用命令整理</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">conda --version #查看conda版本，验证是否安装</span><br><span class="line"></span><br><span class="line">conda update conda #更新至最新版本，也会更新其它相关包</span><br><span class="line"></span><br><span class="line">conda update --all #更新所有包</span><br><span class="line"></span><br><span class="line">conda update package_name #更新指定的包</span><br><span class="line"></span><br><span class="line">conda create -n env_name package_name #创建名为env_name的新环境，并在该环境下安装名为package_name 的包，可以指定新环境的版本号，例如：conda create -n python2 python=python2.7 numpy pandas，创建了python2环境，python版本为2.7，同时还安装了numpy pandas包</span><br><span class="line"></span><br><span class="line">conda activate env_name #切换至env_name环境</span><br><span class="line"></span><br><span class="line">conda deactivate #退出环境</span><br><span class="line"></span><br><span class="line">conda info -e #显示所有已经创建的环境</span><br><span class="line"></span><br><span class="line">conda create --name new_env_name --clone old_env_name #复制old_env_name为new_env_name</span><br><span class="line"></span><br><span class="line">conda remove --name env_name –all #删除环境</span><br><span class="line"></span><br><span class="line">conda list #查看所有已经安装的包</span><br><span class="line"></span><br><span class="line">conda install package_name #在当前环境中安装包</span><br><span class="line"></span><br><span class="line">conda install --name env_name package_name #在指定环境中安装包</span><br><span class="line"></span><br><span class="line">conda remove -- name env_name package #删除指定环境中的包</span><br><span class="line"></span><br><span class="line">conda remove package #删除当前环境中的包</span><br><span class="line"></span><br><span class="line">conda create -n tensorflow_env tensorflow</span><br><span class="line"></span><br><span class="line">conda activate tensorflow_env #conda 安装tensorflow的CPU版本</span><br><span class="line"></span><br><span class="line">conda create -n tensorflow_gpuenv tensorflow-gpu</span><br><span class="line"></span><br><span class="line">conda activate tensorflow_gpuenv #conda安装tensorflow的GPU版本</span><br><span class="line"></span><br><span class="line">conda env remove -n env_name #采用第10条的方法删除环境失败时，可采用这种方法</span><br></pre></td></tr></table></figure>
+<p><strong>Conda常用命令整理</strong></p>
+<p><a href="https://blog.csdn.net/menc15/article/details/71477949/" target="_blank" rel="noopener">https://blog.csdn.net/menc15/article/details/71477949/</a></p>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/30/conda%E7%AC%94%E8%AE%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/10/spark%E6%89%93%E5%8C%85%E6%8F%90%E4%BA%A4python%E7%A8%8B%E5%BA%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -892,133 +961,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/12/29/cdh6_hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/29/cdh6_hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/" class="post-title-link" itemprop="url">cdh6_hbase新集群配置项整理</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-29 13:42:22" itemprop="dateCreated datePublished" datetime="2020-12-29T13:42:22+08:00">2020-12-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2018-10-22 15:19:28" itemprop="dateModified" datetime="2018-10-22T15:19:28+08:00">2018-10-22</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>hbase-conf:</p>
-<ul>
-<li>RS堆栈大小: 32G</li>
-<li></li>
-<li>hbase.bucketcache.size=64 =64 * 1024M: 堆外缓存大小，单位为M</li>
-<li></li>
-<li>dfs.replication=3on=3: hdfs副本数</li>
-<li></li>
-<li>hbase.hregion.max.filesize=20G=20G: Region大小</li>
-<li></li>
-<li>hbase.hregion.memstore.flush.size=256=256M: Memstore刷新大小</li>
-<li></li>
-<li>hbase.regionserver.global.memstore.upperLimit=0.t=0.55: 整个RS中Memstore最大比例</li>
-<li></li>
-</ul>
-<h2 id="hbase-regionserver-global-memstore-lowerLimit-0-t-0-5-整个RS中Memstore最小比例-默认0-95">#- hbase.regionserver.global.memstore.lowerLimit=0.t=0.5: 整个RS中Memstore最小比例       默认0.95</h2>
-<ul>
-<li>hbase.bucketcache.ioengine=off=offheap: 使用堆外缓存</li>
-<li></li>
-</ul>
-<h2 id="hbase-bucketcache-percentage-in-combinebinedcache-0-9-堆外读缓存所占比例，剩余为堆内元数据缓存大小">#- hbase.bucketcache.percentage.in.combinebinedcache=0.9: 堆外读缓存所占比例，剩余为堆内元数据缓存大小</h2>
-<ul>
-<li>hfile.block.cache.size=0.2=0.2: 校验项,+upperLimit需要小于0.8</li>
-<li></li>
-<li>hbase.master.handler.count=256=256: Master处理客户端请求最大线程数</li>
-<li></li>
-<li>hbase.regionserver.handler.count=256=256: RS处理客户端请求最大线程数</li>
-<li></li>
-<li>hbase.hstore.blockingStoreFiles=100: storefile个数达到该值则block写入</li>
-<li></li>
-<li>hbase.hregion.memstore.block.multiplier=3:r=3: 强制刷新Memstore大小的倍数</li>
-<li></li>
-<li>hbase.client.retries.number: 3 : 3</li>
-<li></li>
-<li>hbase.rpc.timeout: 50: 5000</li>
-</ul>
-<p>hbase-jvm:</p>
-<p>HBASE_OFFHEAPSIZE=??G<br>
-HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256m -XX:+UseParNewGC -XX:MaxTenuringThreshold=15  -XX:+CMSParallelRemarkEnabled -XX:+UseCMSCompactAtFullCollection -XX:+CMSClassUnloadingEnabled -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSFullGCsBeforeCompaction=0 -XX:CMSInitiatingOccupancyFraction=70 -XX:+PrintTenuringDistribution -XX:SurvivorRatio=2 -XX:+UseConcMarkSweepGC -XX:-DisableExplicitGC $HBASE_OPTS&quot;</p>
-<p>-XX:+UseG1GC<br>
--XX:InitiatingHeapOccupancyPercent=65<br>
--XX:-ResizePLAB<br>
--XX:MaxGCPauseMillis=90<br>
--XX:+UnlockDiagnosticVMOptions<br>
--XX:+G1SummarizeConcMark<br>
--XX:+ParallelRefProcEnabled<br>
--XX:G1HeapRegionSize=32m<br>
--XX:G1HeapWastePercent=20<br>
--XX:ConcGCThreads=4<br>
--XX:ParallelGCThreads=16<br>
--XX:MaxTenuringThreshold=1<br>
--XX:G1MixedGCCountTarget=64<br>
--XX:+UnlockExperimentalVMOptions<br>
--XX:G1NewSizePercent=2<br>
--XX:G1OldCSetRegionThresholdPercent=5</p>
-<p>HDFS:</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/29/cdh6_hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1091,7 +1033,7 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-count">129</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1122,6 +1064,9 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
         </li>
         <li class="links-of-blogroll-item">
           <a href="https://www.ezessay.com/essay/" title="https:&#x2F;&#x2F;www.ezessay.com&#x2F;essay&#x2F;" rel="noopener" target="_blank">essay代写</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.6hww.com/" title="https:&#x2F;&#x2F;www.6hww.com" rel="noopener" target="_blank">偏门项目</a>
         </li>
     </ul>
   </div>
