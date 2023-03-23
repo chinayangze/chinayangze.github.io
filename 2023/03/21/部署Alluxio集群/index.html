@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://www.ask3.cn').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="准备 下载文件：wget https:&#x2F;&#x2F;downloads.alluxio.io&#x2F;downloads&#x2F;files&#x2F;2.8.0&#x2F;alluxio-2.8.0-bin.tar.gz 解压目录：&#x2F;opt&#x2F;servers&#x2F;alluxio 12wget https:&#x2F;&#x2F;downloads.alluxio.io&#x2F;downloads&#x2F;files&#x2F;2.9.2&amp;#x">
+<meta property="og:type" content="article">
+<meta property="og:title" content="部署Alluxio集群">
+<meta property="og:url" content="http://www.ask3.cn/2023/03/21/%E9%83%A8%E7%BD%B2Alluxio%E9%9B%86%E7%BE%A4/index.html">
+<meta property="og:site_name" content="爱思考">
+<meta property="og:description" content="准备 下载文件：wget https:&#x2F;&#x2F;downloads.alluxio.io&#x2F;downloads&#x2F;files&#x2F;2.8.0&#x2F;alluxio-2.8.0-bin.tar.gz 解压目录：&#x2F;opt&#x2F;servers&#x2F;alluxio 12wget https:&#x2F;&#x2F;downloads.alluxio.io&#x2F;downloads&#x2F;files&#x2F;2.9.2&amp;#x">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-03-21T09:59:15.329Z">
+<meta property="article:modified_time" content="2023-03-21T09:59:15.329Z">
+<meta property="article:author" content="datasir">
+<meta property="article:tag" content="爱思考">
+<meta property="article:tag" content="软件学习网">
+<meta property="article:tag" content="软件学习">
+<meta property="article:tag" content="hadoop">
+<meta property="article:tag" content="spark">
+<meta property="article:tag" content="hive">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="cdh">
+<meta property="article:tag" content="hbase">
+<meta property="article:tag" content="kudu">
+<meta property="article:tag" content="impala">
+<meta property="article:tag" content="flink">
+<meta property="article:tag" content="hdfs">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="presto">
+<meta property="article:tag" content="大数据运维">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.ask3.cn/2023/03/21/%E9%83%A8%E7%BD%B2Alluxio%E9%9B%86%E7%BE%A4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>部署Alluxio集群 | 爱思考</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">爱思考</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">分享知识，分享快乐</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/03/21/%E9%83%A8%E7%BD%B2Alluxio%E9%9B%86%E7%BE%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          部署Alluxio集群
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-03-21 17:59:15" itemprop="dateCreated datePublished" datetime="2023-03-21T17:59:15+08:00">2023-03-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>准备<br>
+下载文件：wget <a href="https://downloads.alluxio.io/downloads/files/2.8.0/alluxio-2.8.0-bin.tar.gz" target="_blank" rel="noopener">https://downloads.alluxio.io/downloads/files/2.8.0/alluxio-2.8.0-bin.tar.gz</a></p>
+<p>解压目录：/opt/servers/alluxio</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;downloads.alluxio.io&#x2F;downloads&#x2F;files&#x2F;2.9.2&#x2F;alluxio-2.9.2-bin.tar.gz</span><br><span class="line">tar -xzf alluxio-2.9.2-bin.tar.gz -C &#x2F;opt&#x2F;servers&#x2F;alluxio</span><br></pre></td></tr></table></figure>
+<p>创建目录：mkdir -p /mnt/ramdisk</p>
+<p>机器：10.0.21.190（master，worker）10.0.21.191（master，worker）10.0.21.192（worker）</p>
+<h2 id="HA-配置">HA 配置</h2>
+<p>搭建高可用集群前的准备:</p>
+<ul>
+<li>
+<p>①确保Zookeeper服务已经运行</p>
+</li>
+<li>
+<p>②一个单独安装的可靠的共享日志存储系统(可用HDFS或S3等系统)</p>
+</li>
+<li>
+<p>③这个配置针对Alluxio 2.x版本，不适用于1.x版本</p>
+</li>
+<li>
+<p>④需要事先创建好ramdisk挂载目录</p>
+</li>
+</ul>
+<p>配置hive alluxio文件系统：core-site.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">      &lt;name&gt;fs.alluxio.impl&lt;&#x2F;name&gt;</span><br><span class="line">      &lt;value&gt;alluxio.hadoop.FileSystem&lt;&#x2F;value&gt;</span><br><span class="line">      &lt;description&gt;The Alluxio FileSystem (Hadoop 1.x and 2.x)&lt;&#x2F;description&gt;</span><br><span class="line">  &lt;&#x2F;property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">      &lt;name&gt;fs.AbstractFileSystem.alluxio.impl&lt;&#x2F;name&gt;</span><br><span class="line">      &lt;value&gt;alluxio.hadoop.AlluxioFileSystem&lt;&#x2F;value&gt;</span><br><span class="line">      &lt;description&gt;The Alluxio AbstractFileSystem (Hadoop 2.x)&lt;&#x2F;description&gt;</span><br><span class="line">  &lt;&#x2F;property&gt;</span><br><span class="line">&lt;&#x2F;configuration&gt;</span><br></pre></td></tr></table></figure>
+<p><a href="http://xn--alluxio-env-zp8qf48f1kcf30e98p2xax394at74c.sh" target="_blank" rel="noopener">在所有机器上配置alluxio-env.sh</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ALLUXIO_HOME&#x3D;&#x2F;opt&#x2F;servers&#x2F;alluxio</span><br><span class="line">ALLUXIO_LOGS_DIR&#x3D;&#x2F;opt&#x2F;servers&#x2F;alluxio&#x2F;logs</span><br><span class="line">ALLUXIO_RAM_FOLDER&#x3D;&#x2F;mnt&#x2F;ramdisk</span><br><span class="line">JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk1.8.0_141-cloudera</span><br><span class="line">ALLUXIO_WORKER_JAVA_OPTS&#x3D;&quot; -XX:+PrintGCDetails -XX:+PrintTenuringDistribution -XX:+PrintGCTimeStamps&quot;</span><br><span class="line">ALLUXIO_MASTER_JAVA_OPTS&#x3D;&quot; -Xms2048M -Xmx4096M&quot;</span><br><span class="line">ALLUXIO_JAVA_OPTS+&#x3D;&quot; -Djava.library.path&#x3D;&#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hadoop&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="在10-0-21-190机器上配置Master和Worker：alluxio-site-properties">在10.0.21.190机器上配置Master和Worker：alluxio-site.properties</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"># 10.0.21.190    Master Worker</span><br><span class="line"></span><br><span class="line"># Common properties</span><br><span class="line"></span><br><span class="line">alluxio.master.hostname&#x3D;10.0.21.190</span><br><span class="line">alluxio.underfs.hdfs.configuration&#x3D;&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;core-site.xml:&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;hdfs-site.xml</span><br><span class="line">alluxio.master.mount.table.root.ufs&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;alluxio&#x2F;ha&#x2F;</span><br><span class="line"></span><br><span class="line"># Worker properties</span><br><span class="line"></span><br><span class="line">alluxio.worker.ramdisk.size&#x3D;512MB</span><br><span class="line">alluxio.worker.tieredstore.levels&#x3D;1</span><br><span class="line">alluxio.worker.tieredstore.level0.alias&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.path&#x3D;&#x2F;mnt&#x2F;ramdisk</span><br><span class="line"></span><br><span class="line"># HA properties</span><br><span class="line"></span><br><span class="line">alluxio.zookeeper.enabled&#x3D;true</span><br><span class="line">alluxio.zookeeper.address&#x3D;10.0.21.190:2181,10.0.21.191:2181,10.0.21.192:2181</span><br><span class="line">alluxio.master.journal.type&#x3D;UFS</span><br><span class="line">alluxio.master.journal.folder&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;alluxio&#x2F;journal&#x2F;</span><br><span class="line">alluxio.worker.block.heartbeat.timeout.ms&#x3D;300000</span><br><span class="line">alluxio.zookeeper.session.timeout&#x3D;120s</span><br><span class="line"></span><br><span class="line"># User properties</span><br><span class="line"></span><br><span class="line">alluxio.user.file.readtype.default&#x3D;CACHE_PROMOTE</span><br><span class="line">alluxio.user.file.writetype.default&#x3D;ASYNC_THROUGH</span><br><span class="line">alluxio.user.metrics.collection.enable&#x3D;true</span><br><span class="line">alluxio.master.metrics.time.series.interval&#x3D;1000</span><br><span class="line"></span><br><span class="line"># Security properties</span><br><span class="line"></span><br><span class="line">alluxio.security.authorization.permission.enabled&#x3D;true</span><br><span class="line">alluxio.security.authentication.type&#x3D;SIMPLE</span><br><span class="line">alluxio.master.security.impersonation.hive.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hive.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.groups&#x3D;*</span><br></pre></td></tr></table></figure>
+<h2 id="在10-0-21-191机器上配置Master和Worker：alluxio-site-properties">在10.0.21.191机器上配置Master和Worker：alluxio-site.properties</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"># 10.0.21.191      Master Worker</span><br><span class="line"></span><br><span class="line"># Common properties</span><br><span class="line"></span><br><span class="line">alluxio.master.hostname&#x3D;10.0.21.191</span><br><span class="line">alluxio.underfs.hdfs.configuration&#x3D;&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;core-site.xml:&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;hdfs-site.xml</span><br><span class="line">alluxio.master.mount.table.root.ufs&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;alluxio&#x2F;ha&#x2F;</span><br><span class="line"></span><br><span class="line"># Worker properties</span><br><span class="line"></span><br><span class="line">alluxio.worker.ramdisk.size&#x3D;512MB</span><br><span class="line">alluxio.worker.tieredstore.levels&#x3D;1</span><br><span class="line">alluxio.worker.tieredstore.level0.alias&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.path&#x3D;&#x2F;mnt&#x2F;ramdisk</span><br><span class="line"></span><br><span class="line"># HA properties</span><br><span class="line"></span><br><span class="line">alluxio.zookeeper.enabled&#x3D;true</span><br><span class="line">alluxio.zookeeper.address&#x3D;10.0.21.190:2181,10.0.21.191:2181,10.0.21.192:2181</span><br><span class="line">alluxio.master.journal.type&#x3D;UFS</span><br><span class="line">alluxio.master.journal.folder&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;alluxio&#x2F;journal&#x2F;</span><br><span class="line">alluxio.worker.block.heartbeat.timeout.ms&#x3D;300000</span><br><span class="line">alluxio.zookeeper.session.timeout&#x3D;120s</span><br><span class="line"></span><br><span class="line"># User properties</span><br><span class="line"></span><br><span class="line">alluxio.user.file.readtype.default&#x3D;CACHE_PROMOTE</span><br><span class="line">alluxio.user.file.writetype.default&#x3D;ASYNC_THROUGH</span><br><span class="line">alluxio.user.metrics.collection.enable&#x3D;true</span><br><span class="line">alluxio.master.metrics.time.series.interval&#x3D;1000</span><br><span class="line"></span><br><span class="line"># Security properties</span><br><span class="line"></span><br><span class="line">alluxio.security.authorization.permission.enabled&#x3D;true</span><br><span class="line">alluxio.security.authentication.type&#x3D;SIMPLE</span><br><span class="line">alluxio.master.security.impersonation.hive.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hive.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.groups&#x3D;*</span><br></pre></td></tr></table></figure>
+<h2 id="在10-0-21-192机器上配置Worker：alluxio-site-properties">在10.0.21.192机器上配置Worker：alluxio-site.properties</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"># 10.0.21.192      Worker</span><br><span class="line"></span><br><span class="line"># Common properties</span><br><span class="line"></span><br><span class="line"># Worker不需要写alluxio.master.hostname参数和alluxio.master.journal.folder参数</span><br><span class="line"></span><br><span class="line">alluxio.underfs.hdfs.configuration&#x3D;&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;core-site.xml:&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;hdfs-site.xml</span><br><span class="line">alluxio.master.mount.table.root.ufs&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;alluxio&#x2F;ha&#x2F;</span><br><span class="line"></span><br><span class="line"># Worker properties</span><br><span class="line"></span><br><span class="line">alluxio.worker.ramdisk.size&#x3D;512MB</span><br><span class="line">alluxio.worker.tieredstore.levels&#x3D;1</span><br><span class="line">alluxio.worker.tieredstore.level0.alias&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.path&#x3D;&#x2F;mnt&#x2F;ramdisk</span><br><span class="line"></span><br><span class="line"># HA properties</span><br><span class="line"></span><br><span class="line">alluxio.zookeeper.enabled&#x3D;true</span><br><span class="line">alluxio.zookeeper.address&#x3D;10.0.21.190:2181,10.0.21.191:2181,10.0.21.192:2181</span><br><span class="line">alluxio.worker.block.heartbeat.timeout.ms&#x3D;300000</span><br><span class="line">alluxio.zookeeper.session.timeout&#x3D;120s</span><br><span class="line"></span><br><span class="line"># User properties</span><br><span class="line"></span><br><span class="line">alluxio.user.file.readtype.default&#x3D;CACHE_PROMOTE</span><br><span class="line">alluxio.user.file.writetype.default&#x3D;ASYNC_THROUGH</span><br><span class="line">alluxio.user.metrics.collection.enable&#x3D;true</span><br><span class="line">alluxio.master.metrics.time.series.interval&#x3D;1000</span><br><span class="line"></span><br><span class="line"># Security properties</span><br><span class="line"></span><br><span class="line">alluxio.security.authorization.permission.enabled&#x3D;true</span><br><span class="line">alluxio.security.authentication.type&#x3D;SIMPLE</span><br><span class="line">alluxio.master.security.impersonation.hive.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hive.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.groups&#x3D;*</span><br></pre></td></tr></table></figure>
+<p>在所有机器上指定Master和Worker节点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#vim masters</span><br><span class="line">10.0.21.190</span><br><span class="line">10.0.21.191</span><br><span class="line"></span><br><span class="line">#vim workers</span><br><span class="line">10.0.21.190</span><br><span class="line">10.0.21.191</span><br><span class="line">10.0.21.192</span><br></pre></td></tr></table></figure>
+<p>测试部署是否成功</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;alluxio format</span><br><span class="line">.&#x2F;alluxio-start.sh all SudoMount</span><br><span class="line">.&#x2F;alluxio fsadmin report</span><br><span class="line">.&#x2F;alluxio runTests    # 如果出现Passed the test则说明部署成功</span><br></pre></td></tr></table></figure>
+<p>测试高可用模式的自动故障处理: (假设此时hadoop101位primary master)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ssh hadoop101</span><br><span class="line">jps | grep AlluxioMaster</span><br><span class="line">kill -9 &lt;AlluxioMaster PID&gt;</span><br><span class="line">alluxio fs leader  # 显示新的primary Master(可能需要等待一小段时间选举)</span><br></pre></td></tr></table></figure>
+<h3 id="补充：添加新的worker节点">补充：添加新的worker节点</h3>
+<p>动态添加worker到Alluxio集群就像通过适当配置启动新Alluxio worker进程一样简单。 在大多数情况下，新worker配置应与所有其他worker配置相同。 在新worker上运行以下命令，以将其添加到集群。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh worker SudoMount # 启动本地 worker</span><br></pre></td></tr></table></figure>
+<p>一旦worker启动，它将在Alluxio master上注册，并成为Alluxio集群的一部分。</p>
+<p>减少worker只需要简单停止一个worker进程。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh worker # 停止本地 worker</span><br></pre></td></tr></table></figure>
+<p>一旦worker被停止，master将在预定的超时值（通过master参数alluxio.master.worker.timeout配置）后将此worker标记为缺失。 主机视worker为“丢失”，并且不再将其包括在集群中。</p>
+<p>实际步骤：</p>
+<ul>
+<li>1、修改workers文件，添加新服务器</li>
+<li>2、scp alluxio目录 到新的服务器节点</li>
+<li>3、在新服务节点手动挂载 sudo ./bin/alluxio-mount.sh SudoMount</li>
+<li>4、master节点统一启动</li>
+</ul>
+<h3 id="补充：配置多级存储">补充：配置多级存储</h3>
+<p>1、创建目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir &#x2F;mnt&#x2F;alluxio_data</span><br></pre></td></tr></table></figure>
+<p>2、对于与启动Alluxio服务的用户组同组用户应给予770权限。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod 770 alluxio_data</span><br></pre></td></tr></table></figure>
+<p>3、修改配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">alluxio.worker.tieredstore.levels&#x3D;2</span><br><span class="line">alluxio.worker.tieredstore.level0.alias&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.path&#x3D;&#x2F;mnt&#x2F;ramdisk</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.mediumtype&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.quota&#x3D;1GB</span><br><span class="line"></span><br><span class="line">alluxio.worker.tieredstore.level1.alias&#x3D;HDD</span><br><span class="line">alluxio.worker.tieredstore.level1.dirs.path&#x3D;&#x2F;mnt&#x2F;alluxio_data</span><br><span class="line">alluxio.worker.tieredstore.level1.dirs.mediumtype&#x3D;HDD</span><br><span class="line">alluxio.worker.tieredstore.level1.dirs.quota&#x3D;50GB</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/03/21/Hbase%20Call%20queue%20is%20full%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90%E5%8F%8A%E8%A7%A3%E5%86%B3/" rel="prev" title="Hbase Call queue is full问题分析及解决">
+      <i class="fa fa-chevron-left"></i> Hbase Call queue is full问题分析及解决
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HA-配置"><span class="nav-number">1.</span> <span class="nav-text">HA 配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在10-0-21-190机器上配置Master和Worker：alluxio-site-properties"><span class="nav-number">2.</span> <span class="nav-text">在10.0.21.190机器上配置Master和Worker：alluxio-site.properties</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在10-0-21-191机器上配置Master和Worker：alluxio-site-properties"><span class="nav-number">3.</span> <span class="nav-text">在10.0.21.191机器上配置Master和Worker：alluxio-site.properties</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在10-0-21-192机器上配置Worker：alluxio-site-properties"><span class="nav-number">4.</span> <span class="nav-text">在10.0.21.192机器上配置Worker：alluxio-site.properties</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#补充：添加新的worker节点"><span class="nav-number">4.1.</span> <span class="nav-text">补充：添加新的worker节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#补充：配置多级存储"><span class="nav-number">4.2.</span> <span class="nav-text">补充：配置多级存储</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="datasir"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">datasir</p>
+  <div class="site-description" itemprop="description">小杨随笔</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">131</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chinayangze" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chinayangze" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:info@ask3.cn" title="E-Mail → mailto:info@ask3.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.choiceform.com/" title="https:&#x2F;&#x2F;www.choiceform.com&#x2F;" rel="noopener" target="_blank">NPS调研</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.ezessay.com/essay/" title="https:&#x2F;&#x2F;www.ezessay.com&#x2F;essay&#x2F;" rel="noopener" target="_blank">essay代写</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备13036234号-3 </a>
+      <img src="/images/beian.png" style="display: inline-block;">
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">datasir</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

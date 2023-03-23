@@ -209,6 +209,231 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/05/10/centos7%20%E7%AE%80%E5%8D%95%E5%BC%80%E5%90%AF%E4%BB%A3%E7%90%86%E4%B8%8A%E7%BD%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/10/centos7%20%E7%AE%80%E5%8D%95%E5%BC%80%E5%90%AF%E4%BB%A3%E7%90%86%E4%B8%8A%E7%BD%91/" class="post-title-link" itemprop="url">centos7 简单开启代理上网</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-05-10 16:02:17" itemprop="dateCreated datePublished" datetime="2022-05-10T16:02:17+08:00">2022-05-10</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>centos7 简单开启代理上网</p>
+<p><strong>服务端安装</strong>： 在可以上网的机器安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install squid -y</span><br><span class="line">systemctl restart squid</span><br></pre></td></tr></table></figure>
+<p><strong>客户端安装</strong>：</p>
+<p>yum  配置代理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;proxy&#x3D;http:&#x2F;&#x2F;IP:3128&#x2F;&quot; &gt;&gt; &#x2F;etc&#x2F;yum.conf</span><br></pre></td></tr></table></figure>
+<p>系统全局代理（我测试下来，yum  不能用 ）</p>
+<p>vi /etc/profile</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># export all_proxy&#x3D;http:&#x2F;&#x2F;IP:3128  只导入这个 ，测试下来wget不能用</span><br><span class="line">export http_proxy&#x3D;http:&#x2F;&#x2F;IP:3128</span><br><span class="line">export https_proxy&#x3D;http:&#x2F;&#x2F;IP:3128</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">测试代理是否生效</span><br><span class="line">curl http:&#x2F;&#x2F;myip.ipip.net</span><br><span class="line">curl https:&#x2F;&#x2F;myip.ipip.net&#x2F;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/10/centos7%20%E7%AE%80%E5%8D%95%E5%BC%80%E5%90%AF%E4%BB%A3%E7%90%86%E4%B8%8A%E7%BD%91/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/04/19/Python%E4%B8%80%E7%A7%92%E9%92%9F%E6%90%AD%E5%BB%BA%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E7%BD%91%E9%A1%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/19/Python%E4%B8%80%E7%A7%92%E9%92%9F%E6%90%AD%E5%BB%BA%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E7%BD%91%E9%A1%B5/" class="post-title-link" itemprop="url">Python一秒钟搭建文件分享网页</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-19 17:45:35" itemprop="dateCreated datePublished" datetime="2022-04-19T17:45:35+08:00">2022-04-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>Python一秒钟搭建文件分享网页</h1>
+<p>Python的库是十分丰富的。在局域网内分享文件时，Python的http.server可以创建一个非常基本的Web服务器，相对于当前目录提供文件。http.server模块定义用于实现 HTTP 服务器（Web 服务器）的类。</p>
+<h4 id="一、运行简单网页">一、运行简单网页</h4>
+<p>先来试验一下，在cmd运行：python -m http.server，如果时linux平台的化，注意python版本3 。在浏览器输入IP地址:8000，即可获得的当前目录下的所有文件列表，以提供下载。需要注意的是防火墙要关闭或添加规则。</p>
+<p>在局域网内暂时分享文件的话是十分方便的，比U盘拷贝省心很多。</p>
+<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/image-20220419170008535.png" alt="image-20220419170008535"></p>
+<p>查看官方文档：http请求映射到目录，检查目录中是否有index.html或index.htm文件（按顺序）。如果有，文件的内容将返回：否则，目录列表将通过调用list_directory()方法生成，此方法使用os.listdir()扫描目录。</p>
+<h4 id="二、http-server具体使用方法">二、http.server具体使用方法</h4>
+<p>使用 python -m http.server --help 再来看一下具体的使用方法。</p>
+<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2022/04/image-20220419173412287.png" alt="image-20220419173412287"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/19/Python%E4%B8%80%E7%A7%92%E9%92%9F%E6%90%AD%E5%BB%BA%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E7%BD%91%E9%A1%B5/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/04/19/typora%20+%20hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/19/typora%20+%20hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/" class="post-title-link" itemprop="url">typora + hexo博客中插入图片</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-19 17:32:19" itemprop="dateCreated datePublished" datetime="2022-04-19T17:32:19+08:00">2022-04-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在使用了hexo搭建了博客后，最大的问题便是如何使用一款markdown工具来编辑博客了，我采取的就是Typora，这工具免费简单易用没广告，而且把图片保存到本地还是很方便的，因此大家只要稍微了解点markdown语法就可以上手使用了。</p>
+<p>关于图片和图片路径的设置，有以下教程。</p>
+<h2 id="typora-自动上传图片的教程">typora 自动上传图片的教程</h2>
+<p><a href="https://connor-sun.github.io/posts/38835.html" target="_blank" rel="noopener">https://connor-sun.github.io/posts/38835.html</a></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"picBed"</span>: &#123;</span><br><span class="line">    <span class="attr">"uploader"</span>: <span class="string">"aliyun"</span>,</span><br><span class="line">    <span class="attr">"aliyun"</span>: &#123;</span><br><span class="line">      <span class="attr">"accessKeyId"</span>: <span class="string">"LvX8msYp6t1UQv3h"</span>,</span><br><span class="line">      <span class="attr">"accessKeySecret"</span>: <span class="string">"BOmXyUnZ2ky4DJAIfRJOfrySHGwohV"</span>,</span><br><span class="line">      <span class="attr">"bucket"</span>: <span class="string">"ask3"</span>,</span><br><span class="line">      <span class="attr">"area"</span>: <span class="string">"oss-cn-hangzhou"</span>,</span><br><span class="line">      <span class="attr">"path"</span>: <span class="string">"img/md/"</span>,</span><br><span class="line">      <span class="attr">"customUrl"</span>: <span class="string">""</span>,</span><br><span class="line">      <span class="attr">"options"</span>: <span class="string">""</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 插件设置</span></span><br><span class="line">  <span class="attr">"picgoPlugins"</span>: &#123;</span><br><span class="line">    <span class="attr">"picgo-plugin-super-prefix"</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"picgo-plugin-super-prefix"</span>: &#123;</span><br><span class="line">    <span class="attr">"prefixFormat"</span>: <span class="string">"YYYY/MM/"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意 ：   存储路径比如<code>img/</code>的话，上传的图片会默认放在OSS的<code>img</code>文件夹下。注意存储路径一定要以<code>/</code>结尾！存储路径是可选的，如果不需要请留空。</p>
+<h3 id></h3>
+<h1>让Typora的图片居左的两种方法</h1>
+<ul>
+<li>方法1：空格键</li>
+<li>方法2：tab键</li>
+</ul>
+<p><a href="https://blog.csdn.net/sky0816/article/details/111321812" target="_blank" rel="noopener">https://blog.csdn.net/sky0816/article/details/111321812</a></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/19/typora%20+%20hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/04/19/scala%EF%BC%9A%E5%87%BD%E6%95%B0%E8%87%B3%E7%AE%80%E5%8E%9F%E5%88%99%E3%80%81%E5%87%BD%E6%95%B0%E7%AE%80%E5%8C%96%E8%BF%87%E7%A8%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -769,261 +994,11 @@ keep existing files; don’t overwrite them from archive</p>
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/02/07/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/07/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">CDH集群部署</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-02-07 10:34:00" itemprop="dateCreated datePublished" datetime="2022-02-07T10:34:00+08:00">2022-02-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、集群规划">一、集群规划</h2>
-<p>如果你正准备从0开始搭建一套CDH集群应用于生产环境，那么此时需要做的事情应该是 <strong>结合当前的数据、业务、硬件、节点、服务等对集群做合理的规划</strong>，而不是马上动手去安装软件。</p>
-<p>合理的集群规划应该做到以下几点：</p>
-<ul>
-<li>充分了解当前的数据现状</li>
-<li>与业务方深入沟通，了解将会在集群上运行的业务，集群将会为业务提供什么服务</li>
-<li>结合数据现状与业务，合理预估未来的数据量增长</li>
-<li>盘点当前可用的硬件资源，包括机柜机架、服务器、交换机等</li>
-<li>当前硬件资源不充足的情况下，根据数据评估情况作出采购建议</li>
-<li>根据业务属性与组成，合理规划集群的部署架构</li>
-<li>根据可用硬件资源，对集群节点的服务角色进行合理划分</li>
-</ul>
-<p>以上步骤完成之后才是动手进行安装与部署。</p>
-<p>你将会对集群的架构模式、应用方向与业务场景了然于胸，并确保这个集群（或者是集群组）能够<strong>提供稳定、高效、高性能的服务</strong>，为业务保驾护航。</p>
-<p>并有能力能够提供 <strong>集群建设目标</strong>：</p>
-<ul>
-<li>
-<p>性能需求</p>
-</li>
-<li>
-<ul>
-<li>简单查询100G数据量时，耗时上限</li>
-<li>复杂查询（join）时，耗时上限</li>
-<li>历史数据导入时，耗时上限</li>
-<li>增量数据导入时，耗时上限</li>
-</ul>
-</li>
-<li>
-<p>可靠性需求：每月宕机次数（&lt;1），每月宕机时间（&lt;10min）</p>
-</li>
-<li>
-<p>可用性：每台机器每月的宕机时间</p>
-</li>
-<li>
-<p>容错性：机器故障，数据不丢失</p>
-</li>
-</ul>
-<h3 id="1-1-硬件规划">1.1 硬件规划</h3>
-<p>硬件规划决定集群将使用多少硬件资源，以及什么配置的硬件资源。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/02/07/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/29/DBeaver%20Enterprise%2021.2.0%20%E7%A0%B4%E8%A7%A3%E7%89%88%20%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/01/29/DBeaver%20Enterprise%2021.2.0%20%E7%A0%B4%E8%A7%A3%E7%89%88%20%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/" class="post-title-link" itemprop="url">DBeaver Enterprise 21.2.0 破解版 安装教程</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-01-29 17:18:06" itemprop="dateCreated datePublished" datetime="2022-01-29T17:18:06+08:00">2022-01-29</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>DBeaver Enterprise 21.2.0 破解版 安装教程</h1>
-<h2 id="制作绿色包-开箱即用">制作绿色包  开箱即用</h2>
-<p><a href="https://blog.csdn.net/u012234419/article/details/120091206" target="_blank" rel="noopener">https://blog.csdn.net/u012234419/article/details/120091206</a></p>
-<p>亲测可用，感谢楼主~</p>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/01/29/DBeaver%20Enterprise%2021.2.0%20%E7%A0%B4%E8%A7%A3%E7%89%88%20%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/26/clickhouse%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5mysql%E6%95%B0%E6%8D%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/01/26/clickhouse%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5mysql%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">clickhouse实时同步mysql数据</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-01-26 18:03:14" itemprop="dateCreated datePublished" datetime="2022-01-26T18:03:14+08:00">2022-01-26</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>clickhouse实时同步mysql数据</h1>
-<p>clickhouse-client -m --password ‘admin’</p>
-<h1>使用 MaterializedMySQL 引擎实时同步</h1>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> allow_experimental_database_materialized_mysql = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> dbtest <span class="keyword">ENGINE</span> = MaterializedMySQL(<span class="string">'10.6.123.23:3306'</span>, <span class="string">'dbtest'</span>, <span class="string">'cs_yangz'</span>, <span class="string">'***'</span>) <span class="keyword">SETTINGS</span> allows_query_when_mysql_lost=<span class="literal">true</span>,max_wait_time_when_mysql_unavailable=<span class="number">10000</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看磁盘容量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    <span class="keyword">name</span>,</span><br><span class="line">    <span class="keyword">path</span>,</span><br><span class="line">    formatReadableSize(free_space) <span class="keyword">AS</span> free,</span><br><span class="line">    formatReadableSize(total_space) <span class="keyword">AS</span> total,</span><br><span class="line">    formatReadableSize(keep_free_space) <span class="keyword">AS</span> reserved</span><br><span class="line"><span class="keyword">FROM</span> system.disks</span><br></pre></td></tr></table></figure>
-<h2 id="安装配置-MySQL-同步用户">安装配置 MySQL 同步用户</h2>
-<ul>
-<li>创建用户</li>
-<li>全局赋予 replication client,replication slave, reload 权限</li>
-<li>对同步库 db 赋予 select 权限</li>
-</ul>
-<p>如果赋予权限不正确，会报错，</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">'clickhouse'</span>@<span class="string">'%'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'alitrack'</span>;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">select</span> <span class="keyword">ON</span> db.* <span class="keyword">TO</span> <span class="string">'clickhouse'</span>@<span class="string">'%'</span>;</span><br><span class="line"><span class="keyword">GRANT</span>  <span class="keyword">replication</span> <span class="keyword">client</span>,<span class="keyword">replication</span> <span class="keyword">slave</span>, reload <span class="keyword">on</span> *.* <span class="keyword">to</span> <span class="string">'clickhouse'</span>@<span class="string">'%'</span>;</span><br><span class="line"><span class="keyword">FLUSH</span> <span class="keyword">PRIVILEGES</span>;</span><br></pre></td></tr></table></figure>
-<p>遇到没有主键的表，</p>
-<p>如果没有初始化完成，删掉没有主键的表，直接重启clickhouse就可以了</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/01/26/clickhouse%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5mysql%E6%95%B0%E6%8D%AE/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1091,7 +1066,7 @@ keep existing files; don’t overwrite them from archive</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">129</span>
+          <span class="site-state-item-count">131</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1122,9 +1097,6 @@ keep existing files; don’t overwrite them from archive</p>
         </li>
         <li class="links-of-blogroll-item">
           <a href="https://www.ezessay.com/essay/" title="https:&#x2F;&#x2F;www.ezessay.com&#x2F;essay&#x2F;" rel="noopener" target="_blank">essay代写</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="https://www.6hww.com/" title="https:&#x2F;&#x2F;www.6hww.com" rel="noopener" target="_blank">偏门项目</a>
         </li>
     </ul>
   </div>

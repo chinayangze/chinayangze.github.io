@@ -209,6 +209,154 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/30/%E5%AE%89%E8%A3%85%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC%E7%9A%84php/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/30/%E5%AE%89%E8%A3%85%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC%E7%9A%84php/" class="post-title-link" itemprop="url">安装不同版本的php</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-30 09:20:43" itemprop="dateCreated datePublished" datetime="2021-12-30T09:20:43+08:00">2021-12-30</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="移除php">移除php</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum remove php-common -y</span><br></pre></td></tr></table></figure>
+<p><a href="https://www.cnblogs.com/hongdada/p/9687330.html" target="_blank" rel="noopener">yum仓库中源的配置与使用</a></p>
+<p>yum 仓库管理工具 <code>yum-config-manager</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum-config-manager --add-repo repository_url</span><br></pre></td></tr></table></figure>
+<p>查询仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum repolist enabled # 显示所有启动的仓库</span><br><span class="line">yum repolist disabled # 显示所有禁用的仓库</span><br><span class="line">yum repolist all # 显示所有仓库</span><br></pre></td></tr></table></figure>
+<p>修改仓库</p>
+<p>最常用的修改操作就是启动和停用, 可以使用以下命令实现:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum-config-manager --enable repository…</span><br><span class="line">yum-config-manager --disable repository…</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/30/%E5%AE%89%E8%A3%85%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC%E7%9A%84php/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/24/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/24/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub/" class="post-title-link" itemprop="url">hexo部署到GitHub</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-24 09:23:23" itemprop="dateCreated datePublished" datetime="2021-12-24T09:23:23+08:00">2021-12-24</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>参考这篇文章就可以了</p>
+<p>GitHub+Hexo 搭建个人网站详细教程  <a href="https://zhuanlan.zhihu.com/p/26625249" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/26625249</a></p>
+<p>其他相关笔记</p>
+<p><strong>安装插件</strong></p>
+<p>npm i -S hexo-prism-plugin</p>
+<p><strong>卸载插件</strong></p>
+<p>npm uninstall hexo-prism-plugin --save</p>
+<p><strong>next7.X版本关于设置阅读全文</strong></p>
+<p>网上查了好多资料始终都没得到解决如何去设置“阅读全文”。最后查了最细的next7.6文档才发现还要下载插件 然后在主题配置文件_config.yml配置下就好了。</p>
+<p>一，在博客目录下执行</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/24/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/23/presto%20%E8%BF%9E%E6%8E%A5clickhouse/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -788,265 +936,11 @@ make install</p>
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/06/29/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/06/29/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">Docker常用命令</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-06-29 10:30:08" itemprop="dateCreated datePublished" datetime="2021-06-29T10:30:08+08:00">2021-06-29</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <table>
-<thead>
-<tr>
-<th>COMMAND</th>
-<th>DESC</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>查看</td>
-<td></td>
-</tr>
-<tr>
-<td>docker images</td>
-<td>列出所有镜像(images)</td>
-</tr>
-<tr>
-<td>docker ps</td>
-<td>列出正在运行的容器(containers)</td>
-</tr>
-<tr>
-<td>docker ps -a</td>
-<td>列出所有的容器</td>
-</tr>
-<tr>
-<td>docker pull centos</td>
-<td>下载centos镜像</td>
-</tr>
-<tr>
-<td>docker top ‘container’</td>
-<td>查看容器内部运行程序</td>
-</tr>
-<tr>
-<td>容器</td>
-<td></td>
-</tr>
-<tr>
-<td>docker exec -it 容器ID sh</td>
-<td>进入容器</td>
-</tr>
-<tr>
-<td>docker stop ‘container’</td>
-<td>停止一个正在运行的容器，‘container’可以是容器ID或名称</td>
-</tr>
-<tr>
-<td>docker start ‘container’</td>
-<td>启动一个已经停止的容器</td>
-</tr>
-<tr>
-<td>docker restart ‘container’</td>
-<td>重启容器</td>
-</tr>
-<tr>
-<td>docker rm ‘container’</td>
-<td>删除容器</td>
-</tr>
-<tr>
-<td>docker run -i -t -p :80 LAMP /bin/bash</td>
-<td>运行容器并做http端口转发</td>
-</tr>
-<tr>
-<td>docker exec -it ‘container’ /bin/bash</td>
-<td>进入ubuntu类容器的bash</td>
-</tr>
-<tr>
-<td>docker exec -it /bin/sh</td>
-<td>进入alpine类容器的sh</td>
-</tr>
-<tr>
-<td>docker rm <code>docker ps -a -q</code></td>
-<td>删除所有已经停止的容器</td>
-</tr>
-<tr>
-<td>docker kill $(docker ps -a -q)</td>
-<td>杀死所有正在运行的容器，$()功能同``</td>
-</tr>
-<tr>
-<td>镜像</td>
-<td></td>
-</tr>
-<tr>
-<td>docker build -t wp-api .</td>
-<td>构建1个镜像,-t(镜像的名字及标签) wp-api(镜像名) .(构建的目录)</td>
-</tr>
-<tr>
-<td>docker run -i -t wp-api</td>
-<td>-t -i以交互伪终端模式运行,可以查看输出信息</td>
-</tr>
-<tr>
-<td>docker run -d -p 80:80 wp-api</td>
-<td>镜像端口 -d后台模式运行镜像</td>
-</tr>
-<tr>
-<td>docker rmi [image-id]</td>
-<td>删除镜像</td>
-</tr>
-<tr>
-<td>docker rmi $(docker images -q)</td>
-<td>删除所有镜像</td>
-</tr>
-<tr>
-<td>docker rmi $(sudo docker images --filter “dangling=true” -q --no-trunc)</td>
-<td>删除无用镜像</td>
-</tr>
-<tr>
-<td>docker run --help</td>
-<td>帮助</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>更多命令查看Docker 命令大全 | 菜鸟教程</p>
-</blockquote>
-<h3 id="场景二：下载镜像并直接运行">场景二：下载镜像并直接运行</h3>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run  --name ubuntu -it ubuntu bash </span><br><span class="line">docker cp dd ubuntu:tmp/ #复制文件dd 到容器的/tmp 目录</span><br><span class="line">Ctrl-p Ctrl-q  #退出</span><br></pre></td></tr></table></figure>
-<h3 id="场景三：修改镜像，并保存到私有仓库">场景三：修改镜像，并保存到私有仓库</h3>
-<blockquote>
-<p>期望结果:在ubuntu 镜像中添加 apache，将新的镜像保存到私有仓库中</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it ubuntu bash </span><br><span class="line">apt-<span class="keyword">get</span> update</span><br><span class="line">apt-<span class="keyword">get</span> install apache2</span><br><span class="line">Ctrl-p Ctrl-q  #退出</span><br><span class="line">docker commit -a "mir355" -m "ubuntu add apache2" &#123;ID&#125;  private/ubuntu_apache:v1   #保存镜像</span><br><span class="line">docker stop ubuntu </span><br><span class="line">docker rm ubuntu</span><br><span class="line">docker run -i -t --name apache2 -p <span class="number">8080</span>:<span class="number">80</span> private/ubuntu_apache:v1 /bin/bash</span><br><span class="line">/etc/init.d/apache2 start</span><br><span class="line">Ctrl-p Ctrl-q  #退出</span><br><span class="line">#通过 docker tag重命名镜像，使之与registry匹配</span><br><span class="line">docker tag private/ubuntu_apache:v1 <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">5000</span>/private/ubuntu_apache:v1</span><br><span class="line">#保存到私有仓库</span><br><span class="line">docker push <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">5000</span>/private/ubuntu_apache:v1</span><br><span class="line">curl http:<span class="comment">//127.0.0.1:5000/v2/_catalog</span></span><br><span class="line"></span><br><span class="line">#下载镜像</span><br><span class="line">docker pull <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">5000</span>/private/ubuntu_apache:v1</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/06/29/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/06/25/mapreduce%E3%80%81spark%E7%9A%84%E6%A0%B7%E4%BE%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/06/25/mapreduce%E3%80%81spark%E7%9A%84%E6%A0%B7%E4%BE%8B/" class="post-title-link" itemprop="url">mapreduce、spark的样例</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-06-25 16:04:01" itemprop="dateCreated datePublished" datetime="2021-06-25T16:04:01+08:00">2021-06-25</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>mapreduce、spark的样例</h1>
-<h3 id="指定队列和优先级">指定队列和优先级</h3>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-mapreduce-examples.jar pi \</span><br><span class="line">-D mapreduce.job.queuename=bf_yarn_pool.development \</span><br><span class="line">-D mapreduce.job.priority=VERY_HIGH 5 5</span><br></pre></td></tr></table></figure>
-<h3 id="TestDFSIO">TestDFSIO</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo -u hdfs hadoop jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hadoop-mapreduce&#x2F;hadoop-mapreduce-client-jobclient-3.0.0-cdh6.0.1-tests.jar  TestDFSIO \</span><br><span class="line">-D mapreduce.job.queuename&#x3D;bf_yarn_pool.production \</span><br><span class="line">-D test.build.data&#x3D;&#x2F;tmp&#x2F;benchmark \</span><br><span class="line">-D mapreduce.output.fileoutputformat.compress&#x3D;false \</span><br><span class="line">-write -nrFiles 10 -fileSize 1000</span><br></pre></td></tr></table></figure>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/06/25/mapreduce%E3%80%81spark%E7%9A%84%E6%A0%B7%E4%BE%8B/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1114,7 +1008,7 @@ make install</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">129</span>
+          <span class="site-state-item-count">131</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1145,9 +1039,6 @@ make install</p>
         </li>
         <li class="links-of-blogroll-item">
           <a href="https://www.ezessay.com/essay/" title="https:&#x2F;&#x2F;www.ezessay.com&#x2F;essay&#x2F;" rel="noopener" target="_blank">essay代写</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="https://www.6hww.com/" title="https:&#x2F;&#x2F;www.6hww.com" rel="noopener" target="_blank">偏门项目</a>
         </li>
     </ul>
   </div>

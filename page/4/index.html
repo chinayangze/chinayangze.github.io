@@ -209,6 +209,256 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/02/07/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/07/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">CDH集群部署</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-02-07 10:34:00" itemprop="dateCreated datePublished" datetime="2022-02-07T10:34:00+08:00">2022-02-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、集群规划">一、集群规划</h2>
+<p>如果你正准备从0开始搭建一套CDH集群应用于生产环境，那么此时需要做的事情应该是 <strong>结合当前的数据、业务、硬件、节点、服务等对集群做合理的规划</strong>，而不是马上动手去安装软件。</p>
+<p>合理的集群规划应该做到以下几点：</p>
+<ul>
+<li>充分了解当前的数据现状</li>
+<li>与业务方深入沟通，了解将会在集群上运行的业务，集群将会为业务提供什么服务</li>
+<li>结合数据现状与业务，合理预估未来的数据量增长</li>
+<li>盘点当前可用的硬件资源，包括机柜机架、服务器、交换机等</li>
+<li>当前硬件资源不充足的情况下，根据数据评估情况作出采购建议</li>
+<li>根据业务属性与组成，合理规划集群的部署架构</li>
+<li>根据可用硬件资源，对集群节点的服务角色进行合理划分</li>
+</ul>
+<p>以上步骤完成之后才是动手进行安装与部署。</p>
+<p>你将会对集群的架构模式、应用方向与业务场景了然于胸，并确保这个集群（或者是集群组）能够<strong>提供稳定、高效、高性能的服务</strong>，为业务保驾护航。</p>
+<p>并有能力能够提供 <strong>集群建设目标</strong>：</p>
+<ul>
+<li>
+<p>性能需求</p>
+</li>
+<li>
+<ul>
+<li>简单查询100G数据量时，耗时上限</li>
+<li>复杂查询（join）时，耗时上限</li>
+<li>历史数据导入时，耗时上限</li>
+<li>增量数据导入时，耗时上限</li>
+</ul>
+</li>
+<li>
+<p>可靠性需求：每月宕机次数（&lt;1），每月宕机时间（&lt;10min）</p>
+</li>
+<li>
+<p>可用性：每台机器每月的宕机时间</p>
+</li>
+<li>
+<p>容错性：机器故障，数据不丢失</p>
+</li>
+</ul>
+<h3 id="1-1-硬件规划">1.1 硬件规划</h3>
+<p>硬件规划决定集群将使用多少硬件资源，以及什么配置的硬件资源。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/02/07/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/29/DBeaver%20Enterprise%2021.2.0%20%E7%A0%B4%E8%A7%A3%E7%89%88%20%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/01/29/DBeaver%20Enterprise%2021.2.0%20%E7%A0%B4%E8%A7%A3%E7%89%88%20%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/" class="post-title-link" itemprop="url">DBeaver Enterprise 21.2.0 破解版 安装教程</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-01-29 17:18:06" itemprop="dateCreated datePublished" datetime="2022-01-29T17:18:06+08:00">2022-01-29</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>DBeaver Enterprise 21.2.0 破解版 安装教程</h1>
+<h2 id="制作绿色包-开箱即用">制作绿色包  开箱即用</h2>
+<p><a href="https://blog.csdn.net/u012234419/article/details/120091206" target="_blank" rel="noopener">https://blog.csdn.net/u012234419/article/details/120091206</a></p>
+<p>亲测可用，感谢楼主~</p>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/01/29/DBeaver%20Enterprise%2021.2.0%20%E7%A0%B4%E8%A7%A3%E7%89%88%20%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/26/clickhouse%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5mysql%E6%95%B0%E6%8D%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/01/26/clickhouse%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5mysql%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">clickhouse实时同步mysql数据</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-01-26 18:03:14" itemprop="dateCreated datePublished" datetime="2022-01-26T18:03:14+08:00">2022-01-26</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>clickhouse实时同步mysql数据</h1>
+<p>clickhouse-client -m --password ‘admin’</p>
+<h1>使用 MaterializedMySQL 引擎实时同步</h1>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> allow_experimental_database_materialized_mysql = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> dbtest <span class="keyword">ENGINE</span> = MaterializedMySQL(<span class="string">'10.6.123.23:3306'</span>, <span class="string">'dbtest'</span>, <span class="string">'cs_yangz'</span>, <span class="string">'***'</span>) <span class="keyword">SETTINGS</span> allows_query_when_mysql_lost=<span class="literal">true</span>,max_wait_time_when_mysql_unavailable=<span class="number">10000</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看磁盘容量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    <span class="keyword">name</span>,</span><br><span class="line">    <span class="keyword">path</span>,</span><br><span class="line">    formatReadableSize(free_space) <span class="keyword">AS</span> free,</span><br><span class="line">    formatReadableSize(total_space) <span class="keyword">AS</span> total,</span><br><span class="line">    formatReadableSize(keep_free_space) <span class="keyword">AS</span> reserved</span><br><span class="line"><span class="keyword">FROM</span> system.disks</span><br></pre></td></tr></table></figure>
+<h2 id="安装配置-MySQL-同步用户">安装配置 MySQL 同步用户</h2>
+<ul>
+<li>创建用户</li>
+<li>全局赋予 replication client,replication slave, reload 权限</li>
+<li>对同步库 db 赋予 select 权限</li>
+</ul>
+<p>如果赋予权限不正确，会报错，</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">'clickhouse'</span>@<span class="string">'%'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'alitrack'</span>;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">select</span> <span class="keyword">ON</span> db.* <span class="keyword">TO</span> <span class="string">'clickhouse'</span>@<span class="string">'%'</span>;</span><br><span class="line"><span class="keyword">GRANT</span>  <span class="keyword">replication</span> <span class="keyword">client</span>,<span class="keyword">replication</span> <span class="keyword">slave</span>, reload <span class="keyword">on</span> *.* <span class="keyword">to</span> <span class="string">'clickhouse'</span>@<span class="string">'%'</span>;</span><br><span class="line"><span class="keyword">FLUSH</span> <span class="keyword">PRIVILEGES</span>;</span><br></pre></td></tr></table></figure>
+<p>遇到没有主键的表，</p>
+<p>如果没有初始化完成，删掉没有主键的表，直接重启clickhouse就可以了</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/01/26/clickhouse%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5mysql%E6%95%B0%E6%8D%AE/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/26/nginx%E4%BB%A3%E7%90%86clickhouse/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -515,89 +765,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/12/%E9%83%A8%E7%BD%B2Alluxio%E9%9B%86%E7%BE%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/01/12/%E9%83%A8%E7%BD%B2Alluxio%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">部署Alluxio集群</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-01-12 16:34:59" itemprop="dateCreated datePublished" datetime="2022-01-12T16:34:59+08:00">2022-01-12</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在主节点上，<code>conf/alluxio-site.properties</code>从模板创建配置文件。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp conf&#x2F;alluxio-site.properties.template conf&#x2F;alluxio-site.properties</span><br></pre></td></tr></table></figure>
-<p>在此配置文件 ( <code>conf/alluxio-site.properties</code>) 中设置以下属性：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alluxio.master.hostname&#x3D;&lt;MASTER_HOSTNAME&gt;</span><br><span class="line">alluxio.master.mount.table.root.ufs&#x3D;&lt;STORAGE_URI&gt;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>
-<p>第一个属性<code>alluxio.master.hostname</code>设置单个主节点的主机名。请确保您的工作节点可以访问此地址。示例包括 <code>alluxio.master.hostname=1.2.3.4</code>或<code>alluxio.master.hostname=node1.a.com</code>。</p>
-</li>
-<li>
-<p>第二个属性<code>alluxio.master.mount.table.root.ufs</code>设置为挂载到 Alluxio 根的底层存储的 URI。主节点和所有工作节点必须可以访问此共享存储系统。</p>
-<p>例如，当<a href="https://docs.alluxio.io/os/user/stable/en/ufs/HDFS.html#basic-setup" target="_blank" rel="noopener">HDFS</a> 作为<a href="https://docs.alluxio.io/os/user/stable/en/ufs/HDFS.html#basic-setup" target="_blank" rel="noopener">底层</a>存储系统时，该属性的值可以设置为 <code>alluxio.master.mount.table.root.ufs=hdfs://1.2.3.4:9000/alluxio/root/</code></p>
-<p>使用<a href="https://docs.alluxio.io/os/user/stable/en/ufs/S3.html#basic-setup" target="_blank" rel="noopener">Amazon S3</a> 作为底层存储系统时，该值可以设置为 <code>alluxio.master.mount.table.root.ufs=s3://bucket/dir/</code></p>
-</li>
-</ul>
-<p>将每个节点的主机名附加到<code>conf/masters</code>并<code>conf/workers</code>相应地。将每个 Alluxio 主节点的主机名追加到新的一行 into <code>conf/masters</code>，并将每个工作节点的主机名追加到一个新的行 into <code>conf/worers</code>。<code>localhost</code>如有必要，请注释掉。例如，在 中<code>conf/masters</code>，我们可以添加两个主节点的主机名，格式如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># The multi-master Zookeeper HA mode requires that all the masters can access</span><br><span class="line"># the same journal through a shared medium (e.g. HDFS or NFS).</span><br><span class="line"># localhost</span><br><span class="line">ec2-1-111-11-111.compute-1.amazonaws.com</span><br><span class="line">ec2-2-222-22-222.compute-2.amazonaws.com</span><br></pre></td></tr></table></figure>
-<p>接下来，将配置文件复制到所有 Alluxio 工作节点。以下内置实用程序会将配置文件分别复制到<code>conf/masters</code>和<code>conf/workers</code>文件中指定的所有主节点和工作节点。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio copyDir conf&#x2F;</span><br></pre></td></tr></table></figure>
-<p>一旦这个命令成功，所有的 Alluxio 节点都将被正确配置。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/01/12/%E9%83%A8%E7%BD%B2Alluxio%E9%9B%86%E7%BE%A4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/11/python%E7%9B%B4%E6%8E%A5%E6%93%8D%E4%BD%9Cwordpress/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -803,159 +970,11 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/30/%E5%AE%89%E8%A3%85%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC%E7%9A%84php/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/30/%E5%AE%89%E8%A3%85%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC%E7%9A%84php/" class="post-title-link" itemprop="url">安装不同版本的php</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-12-30 09:20:43" itemprop="dateCreated datePublished" datetime="2021-12-30T09:20:43+08:00">2021-12-30</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="移除php">移除php</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum remove php-common -y</span><br></pre></td></tr></table></figure>
-<p><a href="https://www.cnblogs.com/hongdada/p/9687330.html" target="_blank" rel="noopener">yum仓库中源的配置与使用</a></p>
-<p>yum 仓库管理工具 <code>yum-config-manager</code>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum-config-manager --add-repo repository_url</span><br></pre></td></tr></table></figure>
-<p>查询仓库</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum repolist enabled # 显示所有启动的仓库</span><br><span class="line">yum repolist disabled # 显示所有禁用的仓库</span><br><span class="line">yum repolist all # 显示所有仓库</span><br></pre></td></tr></table></figure>
-<p>修改仓库</p>
-<p>最常用的修改操作就是启动和停用, 可以使用以下命令实现:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum-config-manager --enable repository…</span><br><span class="line">yum-config-manager --disable repository…</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/12/30/%E5%AE%89%E8%A3%85%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC%E7%9A%84php/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/24/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/24/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub/" class="post-title-link" itemprop="url">hexo部署到GitHub</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-12-24 09:23:23" itemprop="dateCreated datePublished" datetime="2021-12-24T09:23:23+08:00">2021-12-24</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>参考这篇文章就可以了</p>
-<p>GitHub+Hexo 搭建个人网站详细教程  <a href="https://zhuanlan.zhihu.com/p/26625249" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/26625249</a></p>
-<p>其他相关笔记</p>
-<p><strong>安装插件</strong></p>
-<p>npm i -S hexo-prism-plugin</p>
-<p><strong>卸载插件</strong></p>
-<p>npm uninstall hexo-prism-plugin --save</p>
-<p><strong>next7.X版本关于设置阅读全文</strong></p>
-<p>网上查了好多资料始终都没得到解决如何去设置“阅读全文”。最后查了最细的next7.6文档才发现还要下载插件 然后在主题配置文件_config.yml配置下就好了。</p>
-<p>一，在博客目录下执行</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/12/24/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1023,7 +1042,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">129</span>
+          <span class="site-state-item-count">131</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1054,9 +1073,6 @@
         </li>
         <li class="links-of-blogroll-item">
           <a href="https://www.ezessay.com/essay/" title="https:&#x2F;&#x2F;www.ezessay.com&#x2F;essay&#x2F;" rel="noopener" target="_blank">essay代写</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="https://www.6hww.com/" title="https:&#x2F;&#x2F;www.6hww.com" rel="noopener" target="_blank">偏门项目</a>
         </li>
     </ul>
   </div>

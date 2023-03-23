@@ -1,6 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>部署Alluxio集群</title>
+    <url>/2023/03/21/%E9%83%A8%E7%BD%B2Alluxio%E9%9B%86%E7%BE%A4/</url>
+    <content><![CDATA[<p>准备<br>
+下载文件：wget <a href="https://downloads.alluxio.io/downloads/files/2.8.0/alluxio-2.8.0-bin.tar.gz" target="_blank" rel="noopener">https://downloads.alluxio.io/downloads/files/2.8.0/alluxio-2.8.0-bin.tar.gz</a></p>
+<p>解压目录：/opt/servers/alluxio</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;downloads.alluxio.io&#x2F;downloads&#x2F;files&#x2F;2.9.2&#x2F;alluxio-2.9.2-bin.tar.gz</span><br><span class="line">tar -xzf alluxio-2.9.2-bin.tar.gz -C &#x2F;opt&#x2F;servers&#x2F;alluxio</span><br></pre></td></tr></table></figure>
+<p>创建目录：mkdir -p /mnt/ramdisk</p>
+<p>机器：10.0.21.190（master，worker）10.0.21.191（master，worker）10.0.21.192（worker）</p>
+<h2 id="HA-配置">HA 配置</h2>
+<p>搭建高可用集群前的准备:</p>
+<ul>
+<li>
+<p>①确保Zookeeper服务已经运行</p>
+</li>
+<li>
+<p>②一个单独安装的可靠的共享日志存储系统(可用HDFS或S3等系统)</p>
+</li>
+<li>
+<p>③这个配置针对Alluxio 2.x版本，不适用于1.x版本</p>
+</li>
+<li>
+<p>④需要事先创建好ramdisk挂载目录</p>
+</li>
+</ul>
+<p>配置hive alluxio文件系统：core-site.xml</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">      &lt;name&gt;fs.alluxio.impl&lt;&#x2F;name&gt;</span><br><span class="line">      &lt;value&gt;alluxio.hadoop.FileSystem&lt;&#x2F;value&gt;</span><br><span class="line">      &lt;description&gt;The Alluxio FileSystem (Hadoop 1.x and 2.x)&lt;&#x2F;description&gt;</span><br><span class="line">  &lt;&#x2F;property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">      &lt;name&gt;fs.AbstractFileSystem.alluxio.impl&lt;&#x2F;name&gt;</span><br><span class="line">      &lt;value&gt;alluxio.hadoop.AlluxioFileSystem&lt;&#x2F;value&gt;</span><br><span class="line">      &lt;description&gt;The Alluxio AbstractFileSystem (Hadoop 2.x)&lt;&#x2F;description&gt;</span><br><span class="line">  &lt;&#x2F;property&gt;</span><br><span class="line">&lt;&#x2F;configuration&gt;</span><br></pre></td></tr></table></figure>
+<p><a href="http://xn--alluxio-env-zp8qf48f1kcf30e98p2xax394at74c.sh" target="_blank" rel="noopener">在所有机器上配置alluxio-env.sh</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALLUXIO_HOME&#x3D;&#x2F;opt&#x2F;servers&#x2F;alluxio</span><br><span class="line">ALLUXIO_LOGS_DIR&#x3D;&#x2F;opt&#x2F;servers&#x2F;alluxio&#x2F;logs</span><br><span class="line">ALLUXIO_RAM_FOLDER&#x3D;&#x2F;mnt&#x2F;ramdisk</span><br><span class="line">JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk1.8.0_141-cloudera</span><br><span class="line">ALLUXIO_WORKER_JAVA_OPTS&#x3D;&quot; -XX:+PrintGCDetails -XX:+PrintTenuringDistribution -XX:+PrintGCTimeStamps&quot;</span><br><span class="line">ALLUXIO_MASTER_JAVA_OPTS&#x3D;&quot; -Xms2048M -Xmx4096M&quot;</span><br><span class="line">ALLUXIO_JAVA_OPTS+&#x3D;&quot; -Djava.library.path&#x3D;&#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hadoop&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="在10-0-21-190机器上配置Master和Worker：alluxio-site-properties">在10.0.21.190机器上配置Master和Worker：alluxio-site.properties</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 10.0.21.190    Master Worker</span><br><span class="line"></span><br><span class="line"># Common properties</span><br><span class="line"></span><br><span class="line">alluxio.master.hostname&#x3D;10.0.21.190</span><br><span class="line">alluxio.underfs.hdfs.configuration&#x3D;&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;core-site.xml:&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;hdfs-site.xml</span><br><span class="line">alluxio.master.mount.table.root.ufs&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;alluxio&#x2F;ha&#x2F;</span><br><span class="line"></span><br><span class="line"># Worker properties</span><br><span class="line"></span><br><span class="line">alluxio.worker.ramdisk.size&#x3D;512MB</span><br><span class="line">alluxio.worker.tieredstore.levels&#x3D;1</span><br><span class="line">alluxio.worker.tieredstore.level0.alias&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.path&#x3D;&#x2F;mnt&#x2F;ramdisk</span><br><span class="line"></span><br><span class="line"># HA properties</span><br><span class="line"></span><br><span class="line">alluxio.zookeeper.enabled&#x3D;true</span><br><span class="line">alluxio.zookeeper.address&#x3D;10.0.21.190:2181,10.0.21.191:2181,10.0.21.192:2181</span><br><span class="line">alluxio.master.journal.type&#x3D;UFS</span><br><span class="line">alluxio.master.journal.folder&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;alluxio&#x2F;journal&#x2F;</span><br><span class="line">alluxio.worker.block.heartbeat.timeout.ms&#x3D;300000</span><br><span class="line">alluxio.zookeeper.session.timeout&#x3D;120s</span><br><span class="line"></span><br><span class="line"># User properties</span><br><span class="line"></span><br><span class="line">alluxio.user.file.readtype.default&#x3D;CACHE_PROMOTE</span><br><span class="line">alluxio.user.file.writetype.default&#x3D;ASYNC_THROUGH</span><br><span class="line">alluxio.user.metrics.collection.enable&#x3D;true</span><br><span class="line">alluxio.master.metrics.time.series.interval&#x3D;1000</span><br><span class="line"></span><br><span class="line"># Security properties</span><br><span class="line"></span><br><span class="line">alluxio.security.authorization.permission.enabled&#x3D;true</span><br><span class="line">alluxio.security.authentication.type&#x3D;SIMPLE</span><br><span class="line">alluxio.master.security.impersonation.hive.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hive.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.groups&#x3D;*</span><br></pre></td></tr></table></figure>
+<h2 id="在10-0-21-191机器上配置Master和Worker：alluxio-site-properties">在10.0.21.191机器上配置Master和Worker：alluxio-site.properties</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 10.0.21.191      Master Worker</span><br><span class="line"></span><br><span class="line"># Common properties</span><br><span class="line"></span><br><span class="line">alluxio.master.hostname&#x3D;10.0.21.191</span><br><span class="line">alluxio.underfs.hdfs.configuration&#x3D;&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;core-site.xml:&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;hdfs-site.xml</span><br><span class="line">alluxio.master.mount.table.root.ufs&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;alluxio&#x2F;ha&#x2F;</span><br><span class="line"></span><br><span class="line"># Worker properties</span><br><span class="line"></span><br><span class="line">alluxio.worker.ramdisk.size&#x3D;512MB</span><br><span class="line">alluxio.worker.tieredstore.levels&#x3D;1</span><br><span class="line">alluxio.worker.tieredstore.level0.alias&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.path&#x3D;&#x2F;mnt&#x2F;ramdisk</span><br><span class="line"></span><br><span class="line"># HA properties</span><br><span class="line"></span><br><span class="line">alluxio.zookeeper.enabled&#x3D;true</span><br><span class="line">alluxio.zookeeper.address&#x3D;10.0.21.190:2181,10.0.21.191:2181,10.0.21.192:2181</span><br><span class="line">alluxio.master.journal.type&#x3D;UFS</span><br><span class="line">alluxio.master.journal.folder&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;alluxio&#x2F;journal&#x2F;</span><br><span class="line">alluxio.worker.block.heartbeat.timeout.ms&#x3D;300000</span><br><span class="line">alluxio.zookeeper.session.timeout&#x3D;120s</span><br><span class="line"></span><br><span class="line"># User properties</span><br><span class="line"></span><br><span class="line">alluxio.user.file.readtype.default&#x3D;CACHE_PROMOTE</span><br><span class="line">alluxio.user.file.writetype.default&#x3D;ASYNC_THROUGH</span><br><span class="line">alluxio.user.metrics.collection.enable&#x3D;true</span><br><span class="line">alluxio.master.metrics.time.series.interval&#x3D;1000</span><br><span class="line"></span><br><span class="line"># Security properties</span><br><span class="line"></span><br><span class="line">alluxio.security.authorization.permission.enabled&#x3D;true</span><br><span class="line">alluxio.security.authentication.type&#x3D;SIMPLE</span><br><span class="line">alluxio.master.security.impersonation.hive.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hive.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.groups&#x3D;*</span><br></pre></td></tr></table></figure>
+<h2 id="在10-0-21-192机器上配置Worker：alluxio-site-properties">在10.0.21.192机器上配置Worker：alluxio-site.properties</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 10.0.21.192      Worker</span><br><span class="line"></span><br><span class="line"># Common properties</span><br><span class="line"></span><br><span class="line"># Worker不需要写alluxio.master.hostname参数和alluxio.master.journal.folder参数</span><br><span class="line"></span><br><span class="line">alluxio.underfs.hdfs.configuration&#x3D;&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;core-site.xml:&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;hdfs-site.xml</span><br><span class="line">alluxio.master.mount.table.root.ufs&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;alluxio&#x2F;ha&#x2F;</span><br><span class="line"></span><br><span class="line"># Worker properties</span><br><span class="line"></span><br><span class="line">alluxio.worker.ramdisk.size&#x3D;512MB</span><br><span class="line">alluxio.worker.tieredstore.levels&#x3D;1</span><br><span class="line">alluxio.worker.tieredstore.level0.alias&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.path&#x3D;&#x2F;mnt&#x2F;ramdisk</span><br><span class="line"></span><br><span class="line"># HA properties</span><br><span class="line"></span><br><span class="line">alluxio.zookeeper.enabled&#x3D;true</span><br><span class="line">alluxio.zookeeper.address&#x3D;10.0.21.190:2181,10.0.21.191:2181,10.0.21.192:2181</span><br><span class="line">alluxio.worker.block.heartbeat.timeout.ms&#x3D;300000</span><br><span class="line">alluxio.zookeeper.session.timeout&#x3D;120s</span><br><span class="line"></span><br><span class="line"># User properties</span><br><span class="line"></span><br><span class="line">alluxio.user.file.readtype.default&#x3D;CACHE_PROMOTE</span><br><span class="line">alluxio.user.file.writetype.default&#x3D;ASYNC_THROUGH</span><br><span class="line">alluxio.user.metrics.collection.enable&#x3D;true</span><br><span class="line">alluxio.master.metrics.time.series.interval&#x3D;1000</span><br><span class="line"></span><br><span class="line"># Security properties</span><br><span class="line"></span><br><span class="line">alluxio.security.authorization.permission.enabled&#x3D;true</span><br><span class="line">alluxio.security.authentication.type&#x3D;SIMPLE</span><br><span class="line">alluxio.master.security.impersonation.hive.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hive.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.groups&#x3D;*</span><br></pre></td></tr></table></figure>
+<p>在所有机器上指定Master和Worker节点</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#vim masters</span><br><span class="line">10.0.21.190</span><br><span class="line">10.0.21.191</span><br><span class="line"></span><br><span class="line">#vim workers</span><br><span class="line">10.0.21.190</span><br><span class="line">10.0.21.191</span><br><span class="line">10.0.21.192</span><br></pre></td></tr></table></figure>
+<p>测试部署是否成功</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;alluxio format</span><br><span class="line">.&#x2F;alluxio-start.sh all SudoMount</span><br><span class="line">.&#x2F;alluxio fsadmin report</span><br><span class="line">.&#x2F;alluxio runTests    # 如果出现Passed the test则说明部署成功</span><br></pre></td></tr></table></figure>
+<p>测试高可用模式的自动故障处理: (假设此时hadoop101位primary master)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ssh hadoop101</span><br><span class="line">jps | grep AlluxioMaster</span><br><span class="line">kill -9 &lt;AlluxioMaster PID&gt;</span><br><span class="line">alluxio fs leader  # 显示新的primary Master(可能需要等待一小段时间选举)</span><br></pre></td></tr></table></figure>
+<h3 id="补充：添加新的worker节点">补充：添加新的worker节点</h3>
+<p>动态添加worker到Alluxio集群就像通过适当配置启动新Alluxio worker进程一样简单。 在大多数情况下，新worker配置应与所有其他worker配置相同。 在新worker上运行以下命令，以将其添加到集群。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh worker SudoMount # 启动本地 worker</span><br></pre></td></tr></table></figure>
+<p>一旦worker启动，它将在Alluxio master上注册，并成为Alluxio集群的一部分。</p>
+<p>减少worker只需要简单停止一个worker进程。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh worker # 停止本地 worker</span><br></pre></td></tr></table></figure>
+<p>一旦worker被停止，master将在预定的超时值（通过master参数alluxio.master.worker.timeout配置）后将此worker标记为缺失。 主机视worker为“丢失”，并且不再将其包括在集群中。</p>
+<p>实际步骤：</p>
+<ul>
+<li>1、修改workers文件，添加新服务器</li>
+<li>2、scp alluxio目录 到新的服务器节点</li>
+<li>3、在新服务节点手动挂载 sudo ./bin/alluxio-mount.sh SudoMount</li>
+<li>4、master节点统一启动</li>
+</ul>
+<h3 id="补充：配置多级存储">补充：配置多级存储</h3>
+<p>1、创建目录</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir &#x2F;mnt&#x2F;alluxio_data</span><br></pre></td></tr></table></figure>
+<p>2、对于与启动Alluxio服务的用户组同组用户应给予770权限。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo chmod 770 alluxio_data</span><br></pre></td></tr></table></figure>
+<p>3、修改配置文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">alluxio.worker.tieredstore.levels&#x3D;2</span><br><span class="line">alluxio.worker.tieredstore.level0.alias&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.path&#x3D;&#x2F;mnt&#x2F;ramdisk</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.mediumtype&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.quota&#x3D;1GB</span><br><span class="line"></span><br><span class="line">alluxio.worker.tieredstore.level1.alias&#x3D;HDD</span><br><span class="line">alluxio.worker.tieredstore.level1.dirs.path&#x3D;&#x2F;mnt&#x2F;alluxio_data</span><br><span class="line">alluxio.worker.tieredstore.level1.dirs.mediumtype&#x3D;HDD</span><br><span class="line">alluxio.worker.tieredstore.level1.dirs.quota&#x3D;50GB</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>Hbase Call queue is full问题分析及解决</title>
+    <url>/2023/03/21/Hbase%20Call%20queue%20is%20full%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90%E5%8F%8A%E8%A7%A3%E5%86%B3/</url>
+    <content><![CDATA[<h1>Hbase Call queue is full问题分析及解决</h1>
+<p><a href="https://hijiazz.gitee.io/hbase-callqueue-isfull/" target="_blank" rel="noopener">https://hijiazz.gitee.io/hbase-callqueue-isfull/</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>集成Flink HistoryServer至CDH</title>
+    <url>/2023/03/10/%E9%9B%86%E6%88%90Flink%20HistoryServer%E8%87%B3CDH/</url>
+    <content><![CDATA[<h1>集成Flink HistoryServer至CDH</h1>
+<p>参考 <a href="https://blog.csdn.net/guiyifei/article/details/109325980" target="_blank" rel="noopener">https://blog.csdn.net/guiyifei/article/details/109325980</a></p>
+<h1>制作Flink的parcel包和<a href="https://so.csdn.net/so/search?q=csd&amp;spm=1001.2101.3001.7020" target="_blank" rel="noopener">csd</a>文件</h1>
+<h2 id="1-下载制作脚本">1. 下载制作脚本</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;EvenGui&#x2F;flink-parcel-master</span><br><span class="line"></span><br><span class="line">cd flink-parcel-master</span><br></pre></td></tr></table></figure>
+<h2 id="修改参数vim-flink-parcel-properties">修改参数vim flink-parcel.properties</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#FLINk 下载地址</span><br><span class="line">FLINK_URL&#x3D;  &#x2F;opt&#x2F;soft&#x2F;flink-1.14.6-bin-scala_2.12.tgz</span><br><span class="line"></span><br><span class="line">#flink版本号</span><br><span class="line">FLINK_VERSION&#x3D;1.14.6</span><br><span class="line"></span><br><span class="line">#扩展版本号</span><br><span class="line">EXTENS_VERSION&#x3D;BIN-SCALA_2.12</span><br><span class="line"></span><br><span class="line">#操作系统版本，以centos为例</span><br><span class="line">OS_VERSION&#x3D;7</span><br><span class="line"></span><br><span class="line">#CDH 小版本</span><br><span class="line">CDH_MIN_FULL&#x3D;5.13.1</span><br><span class="line">CDH_MAX_FULL&#x3D;6.3.2</span><br><span class="line"></span><br><span class="line">#CDH大版本</span><br><span class="line">CDH_MIN&#x3D;5</span><br><span class="line">CDH_MAX&#x3D;6</span><br></pre></td></tr></table></figure>
+<h2 id="编译parcel">编译parcel</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sh build.sh parcel</span><br></pre></td></tr></table></figure>
+<p>./FLINK-1.14.6-BIN-SCALA_2.12/lib/flink/bin/start-scala-shell.sh does not exist.</p>
+<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2023/03/image-20230310160047820.png" alt="image-20230310160047820"></p>
+<p>编译会报错，我是创建一个空文件</p>
+<p>编译完会在flink-parcel项目根目录下生成_build文件夹</p>
+<h2 id="编译csd">编译csd</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sh build.sh csd</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>CDH 6.3.2 集成 flink 1.14.6</title>
+    <url>/2023/03/10/CDH%206.3.2%20%E9%9B%86%E6%88%90%20flink%201.14.6/</url>
+    <content><![CDATA[<h1>CDH 6.3.2 集成 flink 1.14.6</h1>
+<h1>制作Flink的parcel包和<a href="https://so.csdn.net/so/search?q=csd&amp;spm=1001.2101.3001.7020" target="_blank" rel="noopener">csd</a>文件</h1>
+<h2 id="1-下载制作脚本">1. 下载制作脚本</h2>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"># 克隆源码</span><br><span class="line">git clone https:<span class="comment">//github.com/pkeropen/flink-parcel.git</span></span><br><span class="line">cd flink-parcel</span><br></pre></td></tr></table></figure>
+<h2 id="2-修改参数">2 修改参数</h2>
+<p>vim flink-parcel.properties</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="comment">#FLINK 下载地址</span></span><br><span class="line"><span class="attr">FLINK_URL</span>=<span class="string">https://archive.apache.org/dist/flink/flink-1.14.6/flink-1.14.6-bin-scala_2.12.tgz</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#flink版本号</span></span><br><span class="line"><span class="attr">FLINK_VERSION</span>=<span class="string">1.14.6</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#扩展版本号</span></span><br><span class="line"><span class="attr">EXTENS_VERSION</span>=<span class="string">BIN-SCALA_2.12</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#操作系统版本，以centos为例</span></span><br><span class="line"><span class="attr">OS_VERSION</span>=<span class="string">7</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#CDH 小版本</span></span><br><span class="line"><span class="attr">CDH_MIN_FULL</span>=<span class="string">5.13.1</span></span><br><span class="line"><span class="attr">CDH_MAX_FULL</span>=<span class="string">6.3.2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#CDH大版本</span></span><br><span class="line"><span class="attr">CDH_MIN</span>=<span class="string">5</span></span><br><span class="line"><span class="attr">CDH_MAX</span>=<span class="string">6</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-编译parcel">4 编译parcel</h2>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"># 赋予执行权限</span><br><span class="line">chmod +x ./build.sh</span><br><span class="line"># 执行编译脚本</span><br><span class="line">./build.sh parcel</span><br></pre></td></tr></table></figure>
+<p>编译完会在flink-parcel项目根目录下生成_build文件夹</p>
+<h2 id="5-编译csd">5 编译csd</h2>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"># 编译flink on yarn版本</span><br><span class="line">./build.sh  csd_on_yarn</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
     <title>内网穿透</title>
     <url>/2023/02/22/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/</url>
     <content><![CDATA[<h1>内网穿透</h1>
@@ -157,23 +265,6 @@ tar -xf prometheus-2.29.1.linux-amd64.tar.gz -C /usr/local/</p>
 <p>anaconda已安装 在/opt/module/anaconda3/</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">spark.pyspark.python&#x3D;python&#x2F;bin&#x2F;python3</span><br><span class="line">spark.pyspark.driver.python&#x3D;&#x2F;opt&#x2F;module&#x2F;anaconda3&#x2F;bin&#x2F;python3</span><br><span class="line">spark.yarn.dist.archives&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;yarn&#x2F;mapreduce&#x2F;anaconda3.zip#python</span><br></pre></td></tr></table></figure>
 <p>ln -s /opt/module/anaconda3/bin/python3 python3</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>CDH 6.3.2 集成 flink 1.14.6</title>
-    <url>/2022/12/21/CDH%206.3.2%20%E9%9B%86%E6%88%90%20flink%201.14.6/</url>
-    <content><![CDATA[<h1>CDH 6.3.2 集成 flink 1.14.6</h1>
-<h1>制作Flink的parcel包和<a href="https://so.csdn.net/so/search?q=csd&amp;spm=1001.2101.3001.7020" target="_blank" rel="noopener">csd</a>文件</h1>
-<h2 id="1-下载制作脚本">1. 下载制作脚本</h2>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"># 克隆源码</span><br><span class="line">git clone https:<span class="comment">//github.com/pkeropen/flink-parcel.git</span></span><br><span class="line">cd flink-parcel</span><br></pre></td></tr></table></figure>
-<h2 id="2-修改参数">2 修改参数</h2>
-<p>vim flink-parcel.properties</p>
-<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="comment">#FLINK 下载地址</span></span><br><span class="line"><span class="attr">FLINK_URL</span>=<span class="string">https://archive.apache.org/dist/flink/flink-1.14.6/flink-1.14.6-bin-scala_2.12.tgz</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#flink版本号</span></span><br><span class="line"><span class="attr">FLINK_VERSION</span>=<span class="string">1.14.6</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#扩展版本号</span></span><br><span class="line"><span class="attr">EXTENS_VERSION</span>=<span class="string">BIN-SCALA_2.12</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#操作系统版本，以centos为例</span></span><br><span class="line"><span class="attr">OS_VERSION</span>=<span class="string">7</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#CDH 小版本</span></span><br><span class="line"><span class="attr">CDH_MIN_FULL</span>=<span class="string">5.13.1</span></span><br><span class="line"><span class="attr">CDH_MAX_FULL</span>=<span class="string">6.3.2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#CDH大版本</span></span><br><span class="line"><span class="attr">CDH_MIN</span>=<span class="string">5</span></span><br><span class="line"><span class="attr">CDH_MAX</span>=<span class="string">6</span></span><br></pre></td></tr></table></figure>
-<h2 id="4-编译parcel">4 编译parcel</h2>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"># 赋予执行权限</span><br><span class="line">chmod +x ./build.sh</span><br><span class="line"># 执行编译脚本</span><br><span class="line">./build.sh parcel</span><br></pre></td></tr></table></figure>
-<p>编译完会在flink-parcel项目根目录下生成_build文件夹</p>
-<h2 id="5-编译csd">5 编译csd</h2>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"># 编译flink on yarn版本</span><br><span class="line">./build.sh  csd_on_yarn</span><br></pre></td></tr></table></figure>
 ]]></content>
   </entry>
   <entry>
@@ -1301,84 +1392,6 @@ nginx: [error] open() “/usr/local/nginx/logs/nginx.pid” failed (2: No such f
 <p>链接：<a href="https://pan.baidu.com/s/1EvUvweSG58kFToJXB8ugPw" target="_blank" rel="noopener">https://pan.baidu.com/s/1EvUvweSG58kFToJXB8ugPw</a><br>
 提取码：vnkq</p>
 <p><strong>亲测  JetBrains PhpStorm 2018.3.2  同样也能用</strong></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>部署Alluxio集群</title>
-    <url>/2022/01/12/%E9%83%A8%E7%BD%B2Alluxio%E9%9B%86%E7%BE%A4/</url>
-    <content><![CDATA[<p>在主节点上，<code>conf/alluxio-site.properties</code>从模板创建配置文件。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cp conf&#x2F;alluxio-site.properties.template conf&#x2F;alluxio-site.properties</span><br></pre></td></tr></table></figure>
-<p>在此配置文件 ( <code>conf/alluxio-site.properties</code>) 中设置以下属性：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">alluxio.master.hostname&#x3D;&lt;MASTER_HOSTNAME&gt;</span><br><span class="line">alluxio.master.mount.table.root.ufs&#x3D;&lt;STORAGE_URI&gt;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>
-<p>第一个属性<code>alluxio.master.hostname</code>设置单个主节点的主机名。请确保您的工作节点可以访问此地址。示例包括 <code>alluxio.master.hostname=1.2.3.4</code>或<code>alluxio.master.hostname=node1.a.com</code>。</p>
-</li>
-<li>
-<p>第二个属性<code>alluxio.master.mount.table.root.ufs</code>设置为挂载到 Alluxio 根的底层存储的 URI。主节点和所有工作节点必须可以访问此共享存储系统。</p>
-<p>例如，当<a href="https://docs.alluxio.io/os/user/stable/en/ufs/HDFS.html#basic-setup" target="_blank" rel="noopener">HDFS</a> 作为<a href="https://docs.alluxio.io/os/user/stable/en/ufs/HDFS.html#basic-setup" target="_blank" rel="noopener">底层</a>存储系统时，该属性的值可以设置为 <code>alluxio.master.mount.table.root.ufs=hdfs://1.2.3.4:9000/alluxio/root/</code></p>
-<p>使用<a href="https://docs.alluxio.io/os/user/stable/en/ufs/S3.html#basic-setup" target="_blank" rel="noopener">Amazon S3</a> 作为底层存储系统时，该值可以设置为 <code>alluxio.master.mount.table.root.ufs=s3://bucket/dir/</code></p>
-</li>
-</ul>
-<p>将每个节点的主机名附加到<code>conf/masters</code>并<code>conf/workers</code>相应地。将每个 Alluxio 主节点的主机名追加到新的一行 into <code>conf/masters</code>，并将每个工作节点的主机名追加到一个新的行 into <code>conf/worers</code>。<code>localhost</code>如有必要，请注释掉。例如，在 中<code>conf/masters</code>，我们可以添加两个主节点的主机名，格式如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># The multi-master Zookeeper HA mode requires that all the masters can access</span><br><span class="line"># the same journal through a shared medium (e.g. HDFS or NFS).</span><br><span class="line"># localhost</span><br><span class="line">ec2-1-111-11-111.compute-1.amazonaws.com</span><br><span class="line">ec2-2-222-22-222.compute-2.amazonaws.com</span><br></pre></td></tr></table></figure>
-<p>接下来，将配置文件复制到所有 Alluxio 工作节点。以下内置实用程序会将配置文件分别复制到<code>conf/masters</code>和<code>conf/workers</code>文件中指定的所有主节点和工作节点。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio copyDir conf&#x2F;</span><br></pre></td></tr></table></figure>
-<p>一旦这个命令成功，所有的 Alluxio 节点都将被正确配置。</p>
-<p>这是启动 Alluxio 的最小配置。可以根据需要设置其他配置属性。有关 更多详细信息，请参阅<a href="https://docs.alluxio.io/os/user/stable/en/reference/Properties-List.html" target="_blank" rel="noopener">配置属性参考</a>。</p>
-<ul>
-<li>您可能需要设置额外的属性以使 Alluxio 能够访问配置的底层存储（例如，<a href="https://docs.alluxio.io/os/user/stable/en/overview/Getting-Started.html#bonus-configuration-for-aws" target="_blank" rel="noopener">AWS S3 配置</a>）</li>
-</ul>
-<h2 id="启动一个-Alluxio-集群">启动一个 Alluxio 集群</h2>
-<h3 id="格式化-Alluxio">格式化 Alluxio</h3>
-<p>在第一次启动 Alluxio 之前，必须对日志进行格式化。</p>
-<blockquote>
-<p>格式化日志会删除 Alluxio 中的所有元数据。但是，存储中的数据将保持不变。</p>
-</blockquote>
-<p>使用以下命令格式化 Alluxio 主节点的日志：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio formatMasters</span><br></pre></td></tr></table></figure>
-<h3 id="启动-Alluxio">启动 Alluxio</h3>
-<p>要启动 Alluxio 集群，在主节点上确保<code>conf/masters</code>和 <code>conf/workers</code>文件设置了正确的主机名。</p>
-<p>在主节点上，使用以下命令启动 Alluxio 集群：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh all SudoMount</span><br></pre></td></tr></table></figure>
-<p>这将在主节点上启动主节点，并在<code>conf/workers</code>文件中指定的所有工作节点上启动所有工作节点。该<code>SudoMount</code>参数使工作人员能够尝试使用<code>sudo</code> 特权安装 RamFS ，如果尚未安装的话。</p>
-<h3 id="验证-Alluxio-集群">验证 Alluxio 集群</h3>
-<p>要验证Alluxio是否正在运行，请访问<code>http://&lt;alluxio_master_hostname&gt;:19999</code>查看Alluxio master的状态页面。</p>
-<p>Alluxio 带有一个简单的程序，可以在 Alluxio 中写入和读取示例文件。运行示例程序：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio runTests</span><br></pre></td></tr></table></figure>
-<h2 id="常见操作">常见操作</h2>
-<p>以下是在 Alluxio 集群上执行的常见操作。</p>
-<h3 id="停止-Alluxio">停止 Alluxio</h3>
-<p>要停止 Alluxio 服务，请运行：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh all</span><br></pre></td></tr></table></figure>
-<p>这将停止<code>conf/workers</code>和 中列出的所有节点上的所有进程<code>conf/masters</code>。</p>
-<p>您可以使用以下命令仅停止 master 和 worker：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh masters # stops all masters in conf&#x2F;masters</span><br><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh workers # stops all workers in conf&#x2F;workers</span><br></pre></td></tr></table></figure>
-<p>如果您不想使用<code>ssh</code>登录所有节点并停止所有进程，您可以在每个节点上单独运行命令以停止每个组件。对于任何节点，您可以通过以下方式停止主节点或工作节点：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh master # stops the local master</span><br><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh worker # stops the local worker</span><br></pre></td></tr></table></figure>
-<h3 id="重启Alluxio">重启Alluxio</h3>
-<p>启动 Alluxio 是类似的。如果<code>conf/workers</code>和<code>conf/masters</code>都已填充，您可以使用以下命令启动集群：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh all</span><br></pre></td></tr></table></figure>
-<p>您可以使用以下命令仅启动 master 和 worker：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh masters # starts all masters in conf&#x2F;masters</span><br><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh workers # starts all workers in conf&#x2F;workers</span><br></pre></td></tr></table></figure>
-<p>如果您不想使用<code>ssh</code>登录所有节点并启动所有进程，您可以在每个节点上单独运行命令以启动每个组件。对于任何节点，您可以使用以下命令启动主节点或工作节点：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh master # starts the local master</span><br><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh worker # starts the local worker</span><br></pre></td></tr></table></figure>
-<h3 id="格式化日志">格式化日志</h3>
-<p>在任何主节点上，使用以下命令格式化 Alluxio 日志：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio formatMaster</span><br></pre></td></tr></table></figure>
-<p>格式化日志会删除 Alluxio 中的所有元数据。但是，存储中的数据将保持不变。</p>
-<h3 id="动态添加-删除工人">动态添加/删除工人</h3>
-<p>动态地向 Alluxio 集群添加一个 worker 就像使用适当的配置启动一个新的 Alluxio worker 进程一样简单。在大多数情况下，新工作人员的配置应该与所有其他工作人员的配置相同。在新工作人员上运行以下命令以将其添加到集群中。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh worker SudoMount # starts the local worker</span><br></pre></td></tr></table></figure>
-<p>一旦worker启动，它会向Alluxio master注册自己，并成为Alluxio集群的一部分。</p>
-<p>移除一个worker就像停止worker进程一样简单。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh worker # stops the local worker</span><br></pre></td></tr></table></figure>
-<p>一旦 worker 停止，master 将在预定的超时值（由 master 参数配置<code>alluxio.master.worker.timeout</code>）后将 worker 标记为丢失。master 会将 worker 视为“丢失”，不再将其包含在集群中。</p>
-<h3 id="更新主端配置">更新主端配置</h3>
-<p>为了更新主端配置，你必须先<a href="https://docs.alluxio.io/os/user/stable/en/deploy/Running-Alluxio-On-a-Cluster.html#stop-alluxio" target="_blank" rel="noopener">停止服务</a>，更新<code>conf/alluxio-site.properties</code>主节点上的文件，将文件复制到所有节点（例如，使用<code>bin/alluxio copyDir conf/</code>），然后<a href="https://docs.alluxio.io/os/user/stable/en/deploy/Running-Alluxio-On-a-Cluster.html#restart-alluxio" target="_blank" rel="noopener">重新启动服务</a>。</p>
-<h3 id="更新-Worker-端配置">更新 Worker 端配置</h3>
-<p>如果您只需要更新某个worker的本地配置（例如，更改分配给该worker的存储容量挂载或更新存储目录），则不需要停止和重新启动主节点。只需停止所需的工作程序，更新该<code>conf/alluxio-site.properties</code>节点上的配置（例如，）文件，然后重新启动该过程。</p>
-<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2022/01/image-20220112131500586.png" alt="image-20220112131500586"></p>
 ]]></content>
   </entry>
   <entry>
