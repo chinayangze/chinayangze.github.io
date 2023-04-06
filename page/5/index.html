@@ -209,6 +209,147 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/06/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/01/06/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">hexo部署到GitHub出现的问题</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-01-06 13:39:03" itemprop="dateCreated datePublished" datetime="2022-01-06T13:39:03+08:00">2022-01-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>Hexo出现错误err: Error: Spawn failed</h1>
+<p>在 hexo d之后，出现如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fatal: Could not read from remote repository.</span><br><span class="line">Please make sure you have the correct access rights</span><br><span class="line">and the repository exists.</span><br><span class="line">FATAL &#123;</span><br><span class="line">  err: Error: Spawn failed</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+<p>使用上面的命令查看详细错误信息，得到以下结果</p>
+<p>ssh: connect to host <a href="http://github.com" target="_blank" rel="noopener">github.com</a> port 22: Resource temporarily unavailable</p>
+<h1>2、解决方法</h1>
+<p>然后我们进入.ssh的配置目录查看，发现ssh目录里少了配置文件config。</p>
+<p>找到原因后我们进入.ssh的目录，使用命令“touch config”创建一个配置文件，并写入你github的配置信息。（xxxxx@xx.com是你github的注册邮箱）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Host github.com  </span><br><span class="line">User u8888888888@hotmail.com  </span><br><span class="line">Hostname ssh.github.com  </span><br><span class="line">PreferredAuthentications publickey  </span><br><span class="line">IdentityFile ~&#x2F;.ssh&#x2F;id_rsa  </span><br><span class="line">Port 443</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/01/06/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/31/mysql%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%90%8E%E4%BB%A5%E5%89%8D%E7%9A%84%E6%95%B0%E6%8D%AE_%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%90%8E%20%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E4%B9%8B%E5%89%8Dmysql%E6%95%B0%E6%8D%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/31/mysql%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%90%8E%E4%BB%A5%E5%89%8D%E7%9A%84%E6%95%B0%E6%8D%AE_%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%90%8E%20%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E4%B9%8B%E5%89%8Dmysql%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">mysql重装系统后以前的数据_重装系统后 如何使用之前mysql数据</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-31 09:20:35" itemprop="dateCreated datePublished" datetime="2021-12-31T09:20:35+08:00">2021-12-31</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>mysql重装系统后以前的数据_重装系统后 如何使用之前mysql数据</h1>
+<p><a href="https://blog.csdn.net/weixin_28854171/article/details/113467193" target="_blank" rel="noopener">https://blog.csdn.net/weixin_28854171/article/details/113467193</a></p>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/31/mysql%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%90%8E%E4%BB%A5%E5%89%8D%E7%9A%84%E6%95%B0%E6%8D%AE_%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%90%8E%20%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E4%B9%8B%E5%89%8Dmysql%E6%95%B0%E6%8D%AE/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/30/%E5%AE%89%E8%A3%85%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC%E7%9A%84php/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -786,156 +927,6 @@ make install</p>
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/07/14/%E9%BB%91%E9%B2%A8%E6%B8%B8%E6%88%8F%E6%89%8B%E6%9C%BA%E8%A7%A3BL%E9%94%81%EF%BC%8C%E5%88%B7REC%EF%BC%8CROOT%20%E5%92%8C%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/07/14/%E9%BB%91%E9%B2%A8%E6%B8%B8%E6%88%8F%E6%89%8B%E6%9C%BA%E8%A7%A3BL%E9%94%81%EF%BC%8C%E5%88%B7REC%EF%BC%8CROOT%20%E5%92%8C%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">黑鲨游戏手机解BL锁，刷REC，ROOT 和问题总结</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-07-14 13:41:35" itemprop="dateCreated datePublished" datetime="2021-07-14T13:41:35+08:00">2021-07-14</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="黑鲨游戏手机解BL锁，刷REC，ROOT-和问题总结">黑鲨游戏手机解BL锁，刷REC，ROOT 和问题总结</h2>
-<p>参考帮助  <a href="https://www.bilibili.com/video/BV1Cf4y1U7gn?from=search&amp;seid=14731760489436726457" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1Cf4y1U7gn?from=search&amp;seid=14731760489436726457</a></p>
-<h2 id="总的步骤：">总的步骤：</h2>
-<p><img src="/images/image-20210714100219695.png" alt="image-20210714100219695"></p>
-<p>需要用到的文件</p>
-<p><img src="/images/image-20210714110634447.png" alt="image-20210714110634447"></p>
-<h3 id="第一步-系统降级">第一步.系统降级</h3>
-<p>黑鲨1代<br>
-系统版本:G66X1811300CN00MPX安卓版本:8.1下载地址:<a href="https://ota-1256119282.file.myqcloud.com/SKR-A0/2018-11-30_shark_mp_ota11_20180929shark-ota-eng.buildfarm.zip" target="_blank" rel="noopener">https://ota-1256119282.file.myqcloud.com/SKR-A0/2018-11-30_shark_mp_ota11_20180929shark-ota-eng.buildfarm.zip</a><br>
-系统版本:G66X1905170CN00MPP安卓版本:P(安卓9)下载地址:<a href="https://ota-1256119282.file.myqcloud.com/SKR-A0/shark-ota-eng.buildfarm_2019-05-17_sdm845_p_mp_ota1_20190430.zip" target="_blank" rel="noopener">https://ota-1256119282.file.myqcloud.com/SKR-A0/shark-ota-eng.buildfarm_2019-05-17_sdm845_p_mp_ota1_20190430.zip</a></p>
-<p><strong>刷机的准备工作：</strong></p>
-<p>1、根据自己机型下载对应版本型号的黑鲨手机全量包到电脑，将文件重命名为<strong>update.zip</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/07/14/%E9%BB%91%E9%B2%A8%E6%B8%B8%E6%88%8F%E6%89%8B%E6%9C%BA%E8%A7%A3BL%E9%94%81%EF%BC%8C%E5%88%B7REC%EF%BC%8CROOT%20%E5%92%8C%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/07/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AE%A1%E7%90%86%E8%A7%84%E8%8C%83(V1)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/07/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AE%A1%E7%90%86%E8%A7%84%E8%8C%83(V1)/" class="post-title-link" itemprop="url">服务器管理规范(V1)</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-07-13 09:26:43" itemprop="dateCreated datePublished" datetime="2021-07-13T09:26:43+08:00">2021-07-13</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="服务器管理规范-V1">服务器管理规范(V1)</h4>
-<p><strong>一 配置管理规范</strong></p>
-<p>所有设备信息必须录入配置管理系统，在配置系统中能随时查询到现网业务的部署分布情况 具体信息待配置管理系统建立后再补充</p>
-<p>主机命名规范</p>
-<p>网卡vlan规范</p>
-<p>安全策略命名规范</p>
-<p>监控/部署/插件/模块命名规范</p>
-<p>版本命名规范</p>
-<p><strong>二 文件系统管理规范</strong></p>
-<p>2.1 文件布局</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/07/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AE%A1%E7%90%86%E8%A7%84%E8%8C%83(V1)/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1008,7 +999,7 @@ make install</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">131</span>
+          <span class="site-state-item-count">133</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1034,9 +1025,6 @@ make install</p>
       Links
     </div>
     <ul class="links-of-blogroll-list">
-        <li class="links-of-blogroll-item">
-          <a href="https://www.choiceform.com/" title="https:&#x2F;&#x2F;www.choiceform.com&#x2F;" rel="noopener" target="_blank">NPS调研</a>
-        </li>
         <li class="links-of-blogroll-item">
           <a href="https://www.ezessay.com/essay/" title="https:&#x2F;&#x2F;www.ezessay.com&#x2F;essay&#x2F;" rel="noopener" target="_blank">essay代写</a>
         </li>

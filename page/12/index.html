@@ -209,6 +209,199 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/07-0.%E9%83%A8%E7%BD%B2%20worker%20%E8%8A%82%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/07-0.%E9%83%A8%E7%BD%B2%20worker%20%E8%8A%82%E7%82%B9/" class="post-title-link" itemprop="url">07-0.部署 worker 节点</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-01-07 11:07:00 / 修改时间：16:38:04" itemprop="dateCreated datePublished" datetime="2020-01-07T11:07:00+08:00">2020-01-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>07-0.部署 worker 节点</h1>
+<p>kubernetes work 节点运行如下组件：</p>
+<ul>
+<li>docker</li>
+<li>kubelet</li>
+<li>kube-proxy</li>
+</ul>
+<h2 id="安装和配置-flanneld">安装和配置 flanneld</h2>
+<p>参考 <a href="/656">05-部署flannel网络.md</a></p>
+<h2 id="安装依赖包">安装依赖包</h2>
+<p>CentOS:</p>
+<pre><code>source /opt/k8s/bin/environment.sh
+for node_ip in ${NODE_IPS[@]}
+  do
+    echo &quot;&gt;&gt;&gt; ${node_ip}&quot;
+    ssh root@${node_ip} &quot;yum install -y epel-release&quot;
+    ssh root@${node_ip} &quot;yum install -y conntrack ipvsadm ipset jq iptables curl sysstat libseccomp &amp;&amp; /usr/sbin/modprobe ip_vs &quot;
+  done
+</code></pre>
+<p>Ubuntu:</p>
+<pre><code>source /opt/k8s/bin/environment.sh
+for node_ip in ${NODE_IPS[@]}
+  do
+    echo &quot;&gt;&gt;&gt; ${node_ip}&quot;
+    ssh root@${node_ip} &quot;apt-get install -y conntrack ipvsadm ipset jq iptables curl sysstat libseccomp &amp;&amp; /usr/sbin/modprobe ip_vs &quot;
+  done</code></pre>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/07-0.%E9%83%A8%E7%BD%B2%20worker%20%E8%8A%82%E7%82%B9/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/06-4.%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%20kube-scheduler%20%E9%9B%86%E7%BE%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/06-4.%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%20kube-scheduler%20%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">06-4.部署高可用 kube-scheduler 集群</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-01-07 11:06:40 / 修改时间：16:37:28" itemprop="dateCreated datePublished" datetime="2020-01-07T11:06:40+08:00">2020-01-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>06-4.部署高可用 kube-scheduler 集群</h1>
+<p>本文档介绍部署高可用 kube-scheduler 集群的步骤。</p>
+<p>该集群包含 3 个节点，启动后将通过竞争选举机制产生一个 leader 节点，其它节点为阻塞状态。当 leader 节点不可用后，剩余节点将再次进行选举产生新的 leader 节点，从而保证服务的可用性。</p>
+<p>为保证通信安全，本文档先生成 x509 证书和私钥，kube-scheduler 在如下两种情况下使用该证书：</p>
+<ol>
+<li>与 kube-apiserver 的安全端口通信;</li>
+<li>在<strong>安全端口</strong>(https，10251) 输出 prometheus 格式的 metrics；</li>
+</ol>
+<h2 id="准备工作">准备工作</h2>
+<p>下载最新版本的二进制文件、安装和配置 flanneld 参考：<a href="https://www.orchome.com/657" target="_blank" rel="noopener">06-0.部署master节点</a></p>
+<h2 id="创建-kube-scheduler-证书和私钥">创建 kube-scheduler 证书和私钥</h2>
+<p>创建证书签名请求：</p>
+<pre><code>cat &gt; kube-scheduler-csr.json &lt;&lt;EOF
+{
+    &quot;CN&quot;: &quot;system:kube-scheduler&quot;,
+    &quot;hosts&quot;: [
+      &quot;127.0.0.1&quot;,
+      &quot;172.27.129.105&quot;,
+      &quot;172.27.129.111&quot;,
+      &quot;172.27.129.112&quot;
+    ],
+    &quot;key&quot;: {
+        &quot;algo&quot;: &quot;rsa&quot;,
+        &quot;size&quot;: 2048
+    },
+    &quot;names&quot;: [
+      {
+        &quot;C&quot;: &quot;CN&quot;,
+        &quot;ST&quot;: &quot;BeiJing&quot;,
+        &quot;L&quot;: &quot;BeiJing&quot;,
+        &quot;O&quot;: &quot;system:kube-scheduler&quot;,
+        &quot;OU&quot;: &quot;4Paradigm&quot;
+      }
+    ]
+}
+EOF
+</code></pre>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/06-4.%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%20kube-scheduler%20%E9%9B%86%E7%BE%A4/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/06-3.%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%20kube-controller-manager%20%E9%9B%86%E7%BE%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -946,203 +1139,6 @@ export PATH=/opt/k8s/bin:$PATH
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/01.%E7%B3%BB%E7%BB%9F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/01.%E7%B3%BB%E7%BB%9F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F/" class="post-title-link" itemprop="url">01.系统初始化和全局变量</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-01-07 11:01:00 / 修改时间：16:03:49" itemprop="dateCreated datePublished" datetime="2020-01-07T11:01:00+08:00">2020-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>tags: environment</p>
-<h1>01.系统初始化和全局变量</h1>
-<p>集群机器</p>
-<hr>
-<ul>
-<li>kube-node1：172.27.129.105</li>
-<li>kube-node2：172.27.129.111</li>
-<li>kube-node3：172.27.129.112</li>
-</ul>
-<p>本着测试的目的，etcd 集群、kubernetes master 集群、kubernetes node 均使用这三台机器。</p>
-<blockquote>
-<p>若有安装 Vagrant 与 Virtualbox，这三台机器可以用本着提供的 Vagrantfile 来建置：</p>
-</blockquote>
-<pre><code>$ cd vagrant
-$ vagrant up
-</code></pre>
-<p>主机名</p>
-<hr>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/07/01.%E7%B3%BB%E7%BB%9F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/00.%E7%BB%84%E4%BB%B6%E7%89%88%E6%9C%AC%E5%92%8C%E9%85%8D%E7%BD%AE%E7%AD%96%E7%95%A5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/00.%E7%BB%84%E4%BB%B6%E7%89%88%E6%9C%AC%E5%92%8C%E9%85%8D%E7%BD%AE%E7%AD%96%E7%95%A5/" class="post-title-link" itemprop="url">00.组件版本和配置策略</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-01-07 11:00:00 / 修改时间：16:03:31" itemprop="dateCreated datePublished" datetime="2020-01-07T11:00:00+08:00">2020-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>tags: version</p>
-<h1>00.组件版本和配置策略</h1>
-<h2 id="组件版本">组件版本</h2>
-<ul>
-<li>Kubernetes 1.10.4</li>
-<li>Docker 18.03.1-ce</li>
-<li>Etcd 3.3.7</li>
-<li>Flanneld 0.10.0</li>
-<li>插件：
-<ul>
-<li>Coredns
-<ul>
-<li>Dashboard</li>
-<li>Heapster (influxdb、grafana)</li>
-<li>Metrics-Server</li>
-<li>EFK (elasticsearch、fluentd、kibana)</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>镜像仓库：
-<ul>
-<li>docker registry
-<ul>
-<li>harbor</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="主要配置策略">主要配置策略</h2>
-<p>kube-apiserver：</p>
-<ul>
-<li>使用 keepalived 和 haproxy 实现 3 节点高可用；</li>
-<li>关闭非安全端口 8080 和匿名访问；</li>
-<li>在安全端口 6443 接收 https 请求；</li>
-<li>严格的认证和授权策略 (x509、token、RBAC)；</li>
-<li>开启 bootstrap token 认证，支持 kubelet TLS bootstrapping；</li>
-<li>使用 https 访问 kubelet、etcd，加密通信；</li>
-</ul>
-<p>kube-controller-manager：</p>
-<ul>
-<li>3 节点高可用；</li>
-<li>关闭非安全端口，在安全端口 10252 接收 https 请求；</li>
-<li>使用 kubeconfig 访问 apiserver 的安全端口；</li>
-<li>自动 approve kubelet 证书签名请求 (CSR)，证书过期后自动轮转；</li>
-<li>各 controller 使用自己的 ServiceAccount 访问 apiserver；</li>
-</ul>
-<p>kube-scheduler：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/07/00.%E7%BB%84%E4%BB%B6%E7%89%88%E6%9C%AC%E5%92%8C%E9%85%8D%E7%BD%AE%E7%AD%96%E7%95%A5/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1215,7 +1211,7 @@ $ vagrant up
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">131</span>
+          <span class="site-state-item-count">133</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1241,9 +1237,6 @@ $ vagrant up
       Links
     </div>
     <ul class="links-of-blogroll-list">
-        <li class="links-of-blogroll-item">
-          <a href="https://www.choiceform.com/" title="https:&#x2F;&#x2F;www.choiceform.com&#x2F;" rel="noopener" target="_blank">NPS调研</a>
-        </li>
         <li class="links-of-blogroll-item">
           <a href="https://www.ezessay.com/essay/" title="https:&#x2F;&#x2F;www.ezessay.com&#x2F;essay&#x2F;" rel="noopener" target="_blank">essay代写</a>
         </li>

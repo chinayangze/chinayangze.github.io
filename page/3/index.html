@@ -209,6 +209,158 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/05/30/Docker%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/30/Docker%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="post-title-link" itemprop="url">Docker配置代理服务器</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-05-30 17:24:57" itemprop="dateCreated datePublished" datetime="2022-05-30T17:24:57+08:00">2022-05-30</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>Docker配置代理服务器</h1>
+<h2 id="背景环境说明">背景环境说明</h2>
+<p>Docker环境安装在内网，只有一台公共的代理服务器能够上网，<br>
+一般的docker pull会无法下载镜像。</p>
+<p>新配置了代理服务器squid。（搭建squid代理服务器这里不讲，参考另一篇文章。不建议使用nginx坐正向代理，处理不了https。）<br>
+操作系统： Redhat 7.5 X86<br>
+内核: 3.10.0-862.el7.x86_64/docker 18.09<br>
+代理服务器： 10.1.1.1:10000</p>
+<h2 id="修改DockerService文件">修改DockerService文件</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;docker.service</span><br></pre></td></tr></table></figure>
+<p>在[Service]下面添加：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Service</span>]</span><br><span class="line">Environment=<span class="string">"HTTP_PROXY=http://10.1.1.1:10000"</span></span><br><span class="line">Environment=<span class="string">"HTTPS_PROXY=https://proxy.example.com:443"</span></span><br></pre></td></tr></table></figure>
+<h2 id="重启Docker服务">重启Docker服务</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl rstart docker </span><br><span class="line">systemctl <span class="built_in">enable</span> docker</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/30/Docker%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/05/17/Linux%20%E9%98%B2%E6%AD%A2rm%E8%AF%AF%E5%88%A0%E6%96%87%E4%BB%B6%EF%BC%8C%E5%B0%86rm%E9%85%8D%E7%BD%AE%E6%88%90mv%E5%88%B0.trash/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/17/Linux%20%E9%98%B2%E6%AD%A2rm%E8%AF%AF%E5%88%A0%E6%96%87%E4%BB%B6%EF%BC%8C%E5%B0%86rm%E9%85%8D%E7%BD%AE%E6%88%90mv%E5%88%B0.trash/" class="post-title-link" itemprop="url">Linux 防止rm误删文件，将rm配置成mv到.trash</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-05-17 15:05:52" itemprop="dateCreated datePublished" datetime="2022-05-17T15:05:52+08:00">2022-05-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>Linux 防止rm误删文件，将rm配置成mv到.trash</h1>
+<p>今天在服务器上操作想删除文件来着，结果一直提示我mv: 正在访问&quot;/data0/.trash/&quot;: 没有那个文件或目录，原来是为了防止误删把rm命令改写了，这样删错了后果就不会很严重</p>
+<p>操作方法就是在~下的.bashrc或者.bash_profile文件加入如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~&#x2F;.trash</span><br><span class="line">alias rm&#x3D;trash  </span><br><span class="line">alias r&#x3D;trash  </span><br><span class="line">alias rl&#x3D;&#39;ls ~&#x2F;.trash&#39;</span><br><span class="line">alias ur&#x3D;undelfile</span><br><span class="line">undelfile()</span><br><span class="line">&#123;</span><br><span class="line">  mv -i ~&#x2F;.trash&#x2F;$@ .&#x2F;</span><br><span class="line">&#125;</span><br><span class="line">trash()</span><br><span class="line">&#123;</span><br><span class="line">  mv $@ ~&#x2F;.trash&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样删除的文件会出现在家目录下的.trash文件中。</p>
+<p>那么问题来了，如何删除.trash文件中的文件呢</p>
+<p>继续在之前的.bashrc中添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cleartrash()</span><br><span class="line">&#123;</span><br><span class="line">    read -p &quot;clear sure?[n]&quot; confirm</span><br><span class="line">    [ $confirm &#x3D;&#x3D; &#39;y&#39; ] || [ $confirm &#x3D;&#x3D; &#39;Y&#39; ]  &amp;&amp; &#x2F;usr&#x2F;bin&#x2F;rm -rf ~&#x2F;.trash&#x2F;*</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>清理回收站直接使用$cleartrash即可</p>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/17/Linux%20%E9%98%B2%E6%AD%A2rm%E8%AF%AF%E5%88%A0%E6%96%87%E4%BB%B6%EF%BC%8C%E5%B0%86rm%E9%85%8D%E7%BD%AE%E6%88%90mv%E5%88%B0.trash/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/05/10/centos7%20%E7%AE%80%E5%8D%95%E5%BC%80%E5%90%AF%E4%BB%A3%E7%90%86%E4%B8%8A%E7%BD%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -806,194 +958,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/02/14/tar%E4%B8%8D%E8%A6%86%E7%9B%96%E5%B7%B2%E5%AD%98%E5%9C%A8%E6%96%87%E4%BB%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/14/tar%E4%B8%8D%E8%A6%86%E7%9B%96%E5%B7%B2%E5%AD%98%E5%9C%A8%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">tar不覆盖已存在文件</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-02-14 09:58:04" itemprop="dateCreated datePublished" datetime="2022-02-14T09:58:04+08:00">2022-02-14</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>tar在解压或创建的时候一不小心就盖已存在文件</p>
-<p>tar 工具的 -k 参数就提供干这事<br>
--k,–keep-old-files 不覆盖已存在文件<br>
-keep existing files; don’t overwrite them from archive</p>
-<p>如:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxfk filename.tar.gz</span><br></pre></td></tr></table></figure>
-<p>tar 【参数】 【文件或目录】</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#压缩比如把x文件夹打包并用gzip压缩。</span><br><span class="line">tar -zcvf x.tar.gz x</span><br><span class="line"></span><br><span class="line">#解压到当前目录</span><br><span class="line">tar -xzvf x.tar.gz</span><br><span class="line"></span><br><span class="line">#解压到父目录</span><br><span class="line">tar -xzvf x.tar.gz -C ..</span><br></pre></td></tr></table></figure>
-<h4 id="常用参数：">常用参数：</h4>
-<table>
-<thead>
-<tr>
-<th>指定归档</th>
-<th><strong>-f</strong> <strong>后面必须直接跟归档名</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>打包（create）</td>
-<td><strong>-c</strong></td>
-</tr>
-<tr>
-<td>解包</td>
-<td><strong>-x</strong></td>
-</tr>
-<tr>
-<td>详细地列出处理的文件</td>
-<td><strong>-v</strong></td>
-</tr>
-<tr>
-<td>查看打包的文件</td>
-<td><strong>-t</strong></td>
-</tr>
-<tr>
-<td>压缩</td>
-<td><strong>-z</strong> <strong>调用<strong><strong>gzip</strong></strong>压缩</strong>  <strong>-j<strong><strong>调用</strong></strong>bzip2****压缩</strong></td>
-</tr>
-<tr>
-<td>时间限制参数</td>
-<td><strong>-N</strong> **比后面接的日期(yyyy/mm/dd)**<strong>还要新的才会被打包进新建的文件中</strong></td>
-</tr>
-<tr>
-<td>排除指定文件</td>
-<td><strong>–exclude FILE</strong>**：**<strong>不将</strong> <strong>FILE</strong> <strong>打包！</strong></td>
-</tr>
-<tr>
-<td>保留原本文件的属性</td>
-<td><strong>-p</strong></td>
-</tr>
-</tbody>
-</table>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/02/14/tar%E4%B8%8D%E8%A6%86%E7%9B%96%E5%B7%B2%E5%AD%98%E5%9C%A8%E6%96%87%E4%BB%B6/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/02/14/centos7%E5%88%A0%E9%99%A4%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E5%90%8E%E7%A3%81%E7%9B%98%E4%B8%8D%E9%87%8A%E6%94%BE%E7%A9%BA%E9%97%B4%E5%A4%84%E7%90%86%E8%84%9A%E6%9C%AC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/14/centos7%E5%88%A0%E9%99%A4%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E5%90%8E%E7%A3%81%E7%9B%98%E4%B8%8D%E9%87%8A%E6%94%BE%E7%A9%BA%E9%97%B4%E5%A4%84%E7%90%86%E8%84%9A%E6%9C%AC/" class="post-title-link" itemprop="url">centos7删除日志文件后磁盘不释放空间处理脚本</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-02-14 09:14:44" itemprop="dateCreated datePublished" datetime="2022-02-14T09:14:44+08:00">2022-02-14</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>背景：日志文件被人为删除，但日志对应的程序仍然在运行（进程在，IO未关闭），df看磁盘未释放<br>
-但du看磁盘已释放空间。<br>
-操作系统：<a href="https://so.csdn.net/so/search?q=CentOS7&amp;spm=1001.2101.3001.7020" target="_blank" rel="noopener">CentOS7</a>.5</p>
-</blockquote>
-<p>以下脚本可通过找出被删文件彻底释放磁盘空间</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">for p in &#96;ls &#x2F;proc&#x2F; |egrep &#39;^[0-9]&#123;1,5&#125;&#39;&#96;</span><br><span class="line">do</span><br><span class="line">cd &#x2F;proc&#x2F;$&#123;p&#125;&#x2F;fd;ls -l|grep deleted &amp;&amp; &gt;1 &amp;&amp; &gt;2</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/02/14/centos7%E5%88%A0%E9%99%A4%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E5%90%8E%E7%A3%81%E7%9B%98%E4%B8%8D%E9%87%8A%E6%94%BE%E7%A9%BA%E9%97%B4%E5%A4%84%E7%90%86%E8%84%9A%E6%9C%AC/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1066,7 +1030,7 @@ keep existing files; don’t overwrite them from archive</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">131</span>
+          <span class="site-state-item-count">133</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1092,9 +1056,6 @@ keep existing files; don’t overwrite them from archive</p>
       Links
     </div>
     <ul class="links-of-blogroll-list">
-        <li class="links-of-blogroll-item">
-          <a href="https://www.choiceform.com/" title="https:&#x2F;&#x2F;www.choiceform.com&#x2F;" rel="noopener" target="_blank">NPS调研</a>
-        </li>
         <li class="links-of-blogroll-item">
           <a href="https://www.ezessay.com/essay/" title="https:&#x2F;&#x2F;www.ezessay.com&#x2F;essay&#x2F;" rel="noopener" target="_blank">essay代写</a>
         </li>

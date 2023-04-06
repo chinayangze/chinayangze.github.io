@@ -209,6 +209,187 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/10.%E9%83%A8%E7%BD%B2%E7%A7%81%E6%9C%89%20docker%20registry/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/10.%E9%83%A8%E7%BD%B2%E7%A7%81%E6%9C%89%20docker%20registry/" class="post-title-link" itemprop="url">10.部署私有 docker registry</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-01-07 11:10:00 / 修改时间：16:58:41" itemprop="dateCreated datePublished" datetime="2020-01-07T11:10:00+08:00">2020-01-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>tags: registry, ceph</p>
+<h1>10.部署私有 docker registry</h1>
+<p>注意：本文档介绍使用 docker 官方的 registry v2 镜像部署私有仓库的步骤，你也可以部署 Harbor 私有仓库（<a href="https://www.orchome.com/664" target="_blank" rel="noopener">部署 Harbor 私有仓库</a>）。</p>
+<p>本文档讲解部署一个 TLS 加密、HTTP Basic 认证、用 ceph rgw 做后端存储的私有 docker registry 步骤，如果使用其它类型的后端存储，则可以从 “创建 docker registry” 节开始；</p>
+<p>示例两台机器 IP 如下：</p>
+<ul>
+<li>ceph rgw: 172.27.132.66</li>
+<li>docker registry: 172.27.132.67</li>
+</ul>
+<h2 id="部署-ceph-RGW-节点">部署 ceph RGW 节点</h2>
+<pre><code>$ ceph-deploy rgw create 172.27.132.66 # rgw 默认监听7480端口
+$
+</code></pre>
+<h2 id="创建测试账号-demo">创建测试账号 demo</h2>
+<pre><code>$ radosgw-admin user create --uid=demo --display-name=&quot;ceph rgw demo user&quot;
+$
+</code></pre>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/10.%E9%83%A8%E7%BD%B2%E7%A7%81%E6%9C%89%20docker%20registry/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/09-5.%E9%83%A8%E7%BD%B2%20EFK%20%E6%8F%92%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/09-5.%E9%83%A8%E7%BD%B2%20EFK%20%E6%8F%92%E4%BB%B6/" class="post-title-link" itemprop="url">09-5.部署 EFK 插件</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-01-07 11:09:50 / 修改时间：16:58:04" itemprop="dateCreated datePublished" datetime="2020-01-07T11:09:50+08:00">2020-01-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>tags: addons, EFK, fluentd, elasticsearch, kibana</p>
+<h1>09-5.部署 EFK 插件</h1>
+<p>EFK 对应的目录：<code>kubernetes/cluster/addons/fluentd-elasticsearch</code></p>
+<pre><code>$ cd /opt/k8s/kubernetes/cluster/addons/fluentd-elasticsearch
+$ ls *.yaml
+es-service.yaml  es-statefulset.yaml  fluentd-es-configmap.yaml  fluentd-es-ds.yaml  kibana-deployment.yaml  kibana-service.yaml
+</code></pre>
+<h2 id="修改定义文件">修改定义文件</h2>
+<pre><code>$ cp es-statefulset.yaml{,.orig}
+$ diff es-statefulset.yaml{,.orig}
+76c76
+&lt;       - image: longtds/elasticsearch:v5.6.4
+---
+&gt;       - image: k8s.gcr.io/elasticsearch:v5.6.4
+
+$ cp fluentd-es-ds.yaml{,.orig}
+$ diff fluentd-es-ds.yaml{,.orig}
+79c79
+&lt;         image: netonline/fluentd-elasticsearch:v2.0.4
+---
+&gt;         image: k8s.gcr.io/fluentd-elasticsearch:v2.0.4
+</code></pre>
+<h2 id="给-Node-设置标签">给 Node 设置标签</h2>
+<p>DaemonSet <code>fluentd-es</code> 只会调度到设置了标签 <code>beta.kubernetes.io/fluentd-ds-ready=true</code> 的 Node，需要在期望运行 fluentd 的 Node 上设置该标签；</p>
+<pre><code>$ kubectl get nodes
+NAME         STATUS    ROLES     AGE       VERSION
+kube-node1   Ready     &lt;none&gt;    3d        v1.10.4
+kube-node2   Ready     &lt;none&gt;    3d        v1.10.4
+kube-node3   Ready     &lt;none&gt;    3d        v1.10.4
+
+$ kubectl label nodes kube-node3 beta.kubernetes.io/fluentd-ds-ready=true
+node &quot;kube-node3&quot; labeled
+</code></pre>
+<h2 id="执行定义文件">执行定义文件</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/09-5.%E9%83%A8%E7%BD%B2%20EFK%20%E6%8F%92%E4%BB%B6/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/09-4.%E9%83%A8%E7%BD%B2%20metrics-server%20%E6%8F%92%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -949,199 +1130,6 @@ for node_ip in ${NODE_IPS[@]}
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/07-0.%E9%83%A8%E7%BD%B2%20worker%20%E8%8A%82%E7%82%B9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/07-0.%E9%83%A8%E7%BD%B2%20worker%20%E8%8A%82%E7%82%B9/" class="post-title-link" itemprop="url">07-0.部署 worker 节点</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-01-07 11:07:00 / 修改时间：16:38:04" itemprop="dateCreated datePublished" datetime="2020-01-07T11:07:00+08:00">2020-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>07-0.部署 worker 节点</h1>
-<p>kubernetes work 节点运行如下组件：</p>
-<ul>
-<li>docker</li>
-<li>kubelet</li>
-<li>kube-proxy</li>
-</ul>
-<h2 id="安装和配置-flanneld">安装和配置 flanneld</h2>
-<p>参考 <a href="/656">05-部署flannel网络.md</a></p>
-<h2 id="安装依赖包">安装依赖包</h2>
-<p>CentOS:</p>
-<pre><code>source /opt/k8s/bin/environment.sh
-for node_ip in ${NODE_IPS[@]}
-  do
-    echo &quot;&gt;&gt;&gt; ${node_ip}&quot;
-    ssh root@${node_ip} &quot;yum install -y epel-release&quot;
-    ssh root@${node_ip} &quot;yum install -y conntrack ipvsadm ipset jq iptables curl sysstat libseccomp &amp;&amp; /usr/sbin/modprobe ip_vs &quot;
-  done
-</code></pre>
-<p>Ubuntu:</p>
-<pre><code>source /opt/k8s/bin/environment.sh
-for node_ip in ${NODE_IPS[@]}
-  do
-    echo &quot;&gt;&gt;&gt; ${node_ip}&quot;
-    ssh root@${node_ip} &quot;apt-get install -y conntrack ipvsadm ipset jq iptables curl sysstat libseccomp &amp;&amp; /usr/sbin/modprobe ip_vs &quot;
-  done</code></pre>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/07/07-0.%E9%83%A8%E7%BD%B2%20worker%20%E8%8A%82%E7%82%B9/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/06-4.%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%20kube-scheduler%20%E9%9B%86%E7%BE%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/06-4.%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%20kube-scheduler%20%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">06-4.部署高可用 kube-scheduler 集群</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-01-07 11:06:40 / 修改时间：16:37:28" itemprop="dateCreated datePublished" datetime="2020-01-07T11:06:40+08:00">2020-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>06-4.部署高可用 kube-scheduler 集群</h1>
-<p>本文档介绍部署高可用 kube-scheduler 集群的步骤。</p>
-<p>该集群包含 3 个节点，启动后将通过竞争选举机制产生一个 leader 节点，其它节点为阻塞状态。当 leader 节点不可用后，剩余节点将再次进行选举产生新的 leader 节点，从而保证服务的可用性。</p>
-<p>为保证通信安全，本文档先生成 x509 证书和私钥，kube-scheduler 在如下两种情况下使用该证书：</p>
-<ol>
-<li>与 kube-apiserver 的安全端口通信;</li>
-<li>在<strong>安全端口</strong>(https，10251) 输出 prometheus 格式的 metrics；</li>
-</ol>
-<h2 id="准备工作">准备工作</h2>
-<p>下载最新版本的二进制文件、安装和配置 flanneld 参考：<a href="https://www.orchome.com/657" target="_blank" rel="noopener">06-0.部署master节点</a></p>
-<h2 id="创建-kube-scheduler-证书和私钥">创建 kube-scheduler 证书和私钥</h2>
-<p>创建证书签名请求：</p>
-<pre><code>cat &gt; kube-scheduler-csr.json &lt;&lt;EOF
-{
-    &quot;CN&quot;: &quot;system:kube-scheduler&quot;,
-    &quot;hosts&quot;: [
-      &quot;127.0.0.1&quot;,
-      &quot;172.27.129.105&quot;,
-      &quot;172.27.129.111&quot;,
-      &quot;172.27.129.112&quot;
-    ],
-    &quot;key&quot;: {
-        &quot;algo&quot;: &quot;rsa&quot;,
-        &quot;size&quot;: 2048
-    },
-    &quot;names&quot;: [
-      {
-        &quot;C&quot;: &quot;CN&quot;,
-        &quot;ST&quot;: &quot;BeiJing&quot;,
-        &quot;L&quot;: &quot;BeiJing&quot;,
-        &quot;O&quot;: &quot;system:kube-scheduler&quot;,
-        &quot;OU&quot;: &quot;4Paradigm&quot;
-      }
-    ]
-}
-EOF
-</code></pre>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/07/06-4.%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%20kube-scheduler%20%E9%9B%86%E7%BE%A4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1214,7 +1202,7 @@ EOF
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">131</span>
+          <span class="site-state-item-count">133</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1240,9 +1228,6 @@ EOF
       Links
     </div>
     <ul class="links-of-blogroll-list">
-        <li class="links-of-blogroll-item">
-          <a href="https://www.choiceform.com/" title="https:&#x2F;&#x2F;www.choiceform.com&#x2F;" rel="noopener" target="_blank">NPS调研</a>
-        </li>
         <li class="links-of-blogroll-item">
           <a href="https://www.ezessay.com/essay/" title="https:&#x2F;&#x2F;www.ezessay.com&#x2F;essay&#x2F;" rel="noopener" target="_blank">essay代写</a>
         </li>

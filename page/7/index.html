@@ -209,6 +209,173 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/04/19/xfs_repair%20%E7%A3%81%E7%9B%98%E4%BF%AE%E5%A4%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/19/xfs_repair%20%E7%A3%81%E7%9B%98%E4%BF%AE%E5%A4%8D/" class="post-title-link" itemprop="url">xfs_repair 磁盘修复</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-19 14:03:40" itemprop="dateCreated datePublished" datetime="2021-04-19T14:03:40+08:00">2021-04-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="1-现状">1.现状</h3>
+<p>目前网上出现大量的主机输入输出错误，原因是由于主机文件系统损坏。一线人员大部分采用的是umont 和 mount的方式恢复，这种恢复方式不能真正修复已经损坏的文件系统，在后续使用过程中，仍然会再次出现主机端输入输出错误。</p>
+<h3 id="2-需要修复的场景">2.需要修复的场景</h3>
+<p>&lt;1&gt;.主机侧发现存在文件系统不可读写的情况，也可以通过查看主机端日志来确认是否有文件系统异常发生： xfs_force_shutdown 、I/O error <br>
+&lt;2&gt;.出现异常停电，供电恢复正常，主机和阵列系统重起之后<br>
+&lt;3&gt;.存储介质故障：出现LUN失效、RAID失效、以及IO超时或者出现慢盘，对慢盘进行更换，系统恢复正常之后<br>
+&lt;4&gt;.传输介质故障：如光纤、网线等损坏等，数据传输链路断开后又恢复正常之后</p>
+<h3 id="3-检查文件系统">3.检查文件系统</h3>
+<p>注：检查文件系统必须保证将文件系统umount成功。<br>
+在根目录下输入“xfs_check /dev/sdd（盘符）；echo $?”（注意：在执行 此命令之前，必须将文件系统umount，否则会出现警告信 “xfs_check: /dev/sdd contains a mounted and writable filesystem ”）敲回车键，查看命令执行返回值：0表示正常，其他为不正常，说明文件系统 损坏，需要修复。</p>
+<h3 id="4-修复过程">4.修复过程</h3>
+<p>注：修复时需要暂停主机侧的业务，umount 和 mount 无法修复文件系统 。</p>
+<ol>
+<li>先umount要修复的文件系统的分区</li>
+<li>然后输入 “xfs_repair /dev/sdd（盘符）”执行修复命令。<br>
+xfs_check /dev/sdd; echo $?<br>
+A）如果为0===》成功修复。<br>
+B) 如果不为0===》没有成功：请执行 <strong>xfs_repair –L /dev/sdd</strong> 命令，再执 行xfs_repair（反复多修复几次）</li>
+</ol>
+<h3 id="5-xfs常用命令">5.xfs常用命令</h3>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/04/19/xfs_repair%20%E7%A3%81%E7%9B%98%E4%BF%AE%E5%A4%8D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/04/08/DolphinScheduler%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/08/DolphinScheduler%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">DolphinScheduler集群部署</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-08 10:11:48" itemprop="dateCreated datePublished" datetime="2021-04-08T10:11:48+08:00">2021-04-08</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>官网部署文档</p>
+<p><a href="https://dolphinscheduler.apache.org/zh-cn/docs/latest/user_doc/cluster-deployment.html" target="_blank" rel="noopener">https://dolphinscheduler.apache.org/zh-cn/docs/latest/user_doc/cluster-deployment.html</a></p>
+<h1>1、基础软件安装(必装项请自行安装)</h1>
+<ul>
+<li>PostgreSQL (8.2.15+) or MySQL (5.7系列) : 两者任选其一即可, 如MySQL则需要JDBC Driver 5.1.47+</li>
+<li><a href="https://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">JDK</a> (1.8+) : 必装，请安装好后在/etc/profile下配置 JAVA_HOME 及 PATH 变量</li>
+<li>ZooKeeper (3.4.6+) ：必装</li>
+<li>Hadoop (2.6+) or MinIO ：选装，如果需要用到资源上传功能，可以选择上传到Hadoop or MinIO上</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注意：DolphinScheduler本身不依赖Hadoop、Hive、Spark,仅是会调用他们的Client，用于对应任务的提交。</span><br></pre></td></tr></table></figure>
+<h1>2、下载二进制tar.gz包</h1>
+<ul>
+<li>请下载最新版本的后端安装包至服务器部署目录,比如创建 /tmp/dolphinscheduler 做为安装部署目录，下载地址： <a href="https://dolphinscheduler.apache.org/zh-cn/download/download.html" target="_blank" rel="noopener">下载</a>，下载后上传tar包到该目录中，并进行解压</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建部署目录,部署目录请不要创建在/root、/home等高权限目录 </span></span><br><span class="line">mkdir -p /tmp/app/dolphinscheduler;  #安装文件别放到/tmp/dolphinscheduler , 这是特殊路径  创建文件时会用到的临时路径</span><br><span class="line">cd /tmp/app/dolphinscheduler;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 解压缩</span></span><br><span class="line">tar -zxvf apache-dolphinscheduler-incubating-1.3.5-dolphinscheduler-bin.tar.gz -C /opt/dolphinscheduler;</span><br><span class="line"></span><br><span class="line">mv apache-dolphinscheduler-incubating-1.3.5-dolphinscheduler-bin  dolphinscheduler-bin</span><br></pre></td></tr></table></figure>
+<h1>3、创建部署用户和hosts映射</h1>
+<ul>
+<li>在<strong>所有</strong>部署调度的机器上创建部署用户，并且一定要配置sudo免密。假如我们计划在ds1,ds2,ds3,ds4这4台机器上部署调度，首先需要在每台机器上都创建部署用户</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/04/08/DolphinScheduler%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/04/06/ClickHouse%20%E9%83%A8%E7%BD%B2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -775,148 +942,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/02/hudi/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/02/hudi/" class="post-title-link" itemprop="url">hudi</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-03-02 16:50:28" itemprop="dateCreated datePublished" datetime="2021-03-02T16:50:28+08:00">2021-03-02</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><strong>注意：<strong>目前Hudi使用的是</strong>hadoop2.7.3</strong>版本，CDH6.3.0 环境使用的是<strong>hadoop3.0.0</strong>， 所以在打包的时候需要加上**-Dhadoop.version=3.0.0** 参数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean install -DskipTests -DskipITs -Dcheckstyle.skip&#x3D;true -Drat.skip&#x3D;true -Dhadoop.version&#x3D;3.0.0</span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo -u yarn spark-shell  \</span><br><span class="line">  --queue bf_yarn_pool.development \</span><br><span class="line">  --packages org.apache.spark:spark-avro_2.11:2.4.0 \</span><br><span class="line">  --conf 'spark.serializer=org.apache.spark.serializer.KryoSerializer' \</span><br><span class="line">  --jars `ls /opt/hudi/packaging/hudi-spark-bundle/target/hudi-spark-bundle_2.11-*.*.*-SNAPSHOT.jar`</span><br></pre></td></tr></table></figure>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/02/hudi/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/02/20/%E7%94%A8FsImage%E6%9F%A5%E6%89%BEhadoop%E9%9B%86%E7%BE%A4%E5%B0%8F%E6%96%87%E4%BB%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/02/20/%E7%94%A8FsImage%E6%9F%A5%E6%89%BEhadoop%E9%9B%86%E7%BE%A4%E5%B0%8F%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">用FsImage查找hadoop集群小文件</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-02-20 15:55:17" itemprop="dateCreated datePublished" datetime="2021-02-20T15:55:17+08:00">2021-02-20</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd /tmp</span><br><span class="line">hdfs dfsadmin -fetchImage ./tmp_meta</span><br><span class="line">hdfs oiv -i ./tmp_meta -o ./fsimage.csv -p Delimited</span><br><span class="line">hdfs dfs -mkdir -p /tmp/hdfs_metadata/fsimage</span><br><span class="line">hdfs dfs -copyFromLocal ./fsimage.csv /tmp/hdfs_metadata/fsimage</span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">exists</span> hdfs_meta_temp;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">external</span> <span class="keyword">table</span> hdfs_meta_temp (<span class="keyword">path</span> <span class="keyword">string</span> ,</span><br><span class="line">repl <span class="built_in">int</span> ,</span><br><span class="line">modification_time <span class="keyword">string</span> ,accesstime <span class="keyword">string</span> ,</span><br><span class="line">preferredblocksize <span class="built_in">int</span> ,blockcount <span class="keyword">double</span>,</span><br><span class="line">filesize <span class="keyword">double</span> ,nsquota <span class="built_in">int</span> ,</span><br><span class="line">dsquota <span class="built_in">int</span> ,</span><br><span class="line">permission <span class="keyword">string</span> ,username <span class="keyword">string</span> ,groupname <span class="keyword">string</span>)<span class="keyword">row</span> <span class="keyword">format</span> <span class="keyword">delimited</span></span><br><span class="line"><span class="keyword">fields</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">'\t'</span> location <span class="string">'/tmp/hdfs_metadata/fsimage/'</span> ;</span><br><span class="line"></span><br><span class="line"><span class="comment">--将临时表转换为Impala的 Parquet表</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> hdfs_meta</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> hdfs_meta <span class="keyword">stored</span> <span class="keyword">as</span> parquet <span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">path</span>,</span><br><span class="line">repl,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">concat</span>(modification_time, <span class="string">' :00'</span>) <span class="keyword">as</span> <span class="built_in">timestamp</span>) modification_time,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">concat</span>(accesstime,<span class="string">':00'</span>) <span class="keyword">as</span> <span class="built_in">timestamp</span>) accesstime,</span><br><span class="line">preferredblocksize,</span><br><span class="line">blockcount,</span><br><span class="line">filesize,nsquota,dsquota,permission,username,groupname</span><br><span class="line"><span class="keyword">from</span> hdfs_meta_temp;</span><br></pre></td></tr></table></figure>
-<p>instr(path,’/’,1,2)这两个参数主要表示指定统计的HDFS目录以及目录钻取深度，instr()函数中的最后一个参数即为目录钻取深度</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line"><span class="comment">--concat('/',split_part(path,'/',2))  basepath,</span></span><br><span class="line"><span class="comment">--concat('/',split_part(path,'/',2),'/',split_part(path,'/',3))  basepath,</span></span><br><span class="line"><span class="comment">--concat('/',split_part(path,'/',2),'/',split_part(path,'/',3),'/',split_part(path,'/',4))  basepath,</span></span><br><span class="line"><span class="keyword">concat</span>(<span class="string">'/'</span>,split_part(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">2</span>),<span class="string">'/'</span>,split_part(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">3</span>),<span class="string">'/'</span>,split_part(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">4</span>),<span class="string">'/'</span>,split_part(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">5</span>))  basepath,</span><br><span class="line"><span class="keyword">sum</span>(blockcount) blockcounts,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">sum</span>(filesize)/<span class="number">1024</span>/<span class="number">1024</span>/<span class="number">1024</span> <span class="keyword">as</span> <span class="built_in">decimal</span>(<span class="number">18</span>,<span class="number">2</span>) ) filesizes,</span><br><span class="line"><span class="keyword">count</span>(*) file_nums,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">count</span>(*)/<span class="keyword">sum</span>(blockcount) <span class="keyword">as</span> <span class="built_in">decimal</span>(<span class="number">18</span>,<span class="number">2</span>) ) <span class="keyword">as</span> avg_block ,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">sum</span>(filesize)/<span class="keyword">count</span>(*)/<span class="number">1024</span> <span class="keyword">as</span> <span class="built_in">decimal</span>(<span class="number">18</span>,<span class="number">2</span>) ) <span class="keyword">AS</span> avg_filesize</span><br><span class="line"><span class="keyword">FROM</span> tmp.hdfs_meta </span><br><span class="line"><span class="keyword">where</span> <span class="keyword">instr</span>(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">1</span>,<span class="number">4</span>)&gt;<span class="number">0</span></span><br><span class="line"><span class="comment">--and strleft(path, instr(path,'/',1,4)-1)='/user/hive/warehouse'</span></span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> basepath  </span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> file_nums <span class="keyword">desc</span>, avg_filesize </span><br><span class="line"><span class="keyword">limit</span> <span class="number">200</span></span><br></pre></td></tr></table></figure>
-<p><strong>总结</strong></p>
-<p>如上SQL的统计分析可以看到有三个比较重要的统计指标file_nums、blockcounts和avg_filesize。通过这三个指标进行小文件分析，进行如下分析：</p>
-<p>如果file_nums/blockcounts的值越大且avg_filesize越小则说明该HDFS或Hive表的小文件越多。</p>
-<p><strong>方法二、</strong></p>
-<p>使用Sqoop脚本将Hive元数据中关于Hive库和表的信息抽取的Hive中</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">sqoop import \</span><br><span class="line">-D mapred.job.queue.name=bf_yarn_pool.development \</span><br><span class="line">--connect "jdbc:mysql://10.0.20.107:3306/baofoo_hive_2" \</span><br><span class="line">--username cs_yangz \</span><br><span class="line">--password *** \</span><br><span class="line">--query 'select c.NAME,c.DB_LOCATION_URI,a.TBL_NAME,a.OWNER,a.TBL_TYPE,b.LOCATION from TBLS a,SDS b,DBS c where a.SD_ID=b.SD_ID and a.DB_ID=c.DB_ID and $CONDITIONS' \</span><br><span class="line">--fields-terminated-by ',' \</span><br><span class="line">--delete-target-dir \</span><br><span class="line">--hive-database default \</span><br><span class="line">--target-dir /tmp/hive_tables_temp \</span><br><span class="line">--hive-import \</span><br><span class="line">--hive-overwrite \</span><br><span class="line">--hive-table hive_tables_temp \</span><br><span class="line">--m 1</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/02/20/%E7%94%A8FsImage%E6%9F%A5%E6%89%BEhadoop%E9%9B%86%E7%BE%A4%E5%B0%8F%E6%96%87%E4%BB%B6/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -989,7 +1014,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">131</span>
+          <span class="site-state-item-count">133</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1015,9 +1040,6 @@
       Links
     </div>
     <ul class="links-of-blogroll-list">
-        <li class="links-of-blogroll-item">
-          <a href="https://www.choiceform.com/" title="https:&#x2F;&#x2F;www.choiceform.com&#x2F;" rel="noopener" target="_blank">NPS调研</a>
-        </li>
         <li class="links-of-blogroll-item">
           <a href="https://www.ezessay.com/essay/" title="https:&#x2F;&#x2F;www.ezessay.com&#x2F;essay&#x2F;" rel="noopener" target="_blank">essay代写</a>
         </li>

@@ -209,6 +209,195 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/11/10/python%E6%97%B6%E9%97%B4strftime%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%8E%BB%E9%99%A4%E5%89%8D%E5%AF%BC0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/10/python%E6%97%B6%E9%97%B4strftime%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%8E%BB%E9%99%A4%E5%89%8D%E5%AF%BC0/" class="post-title-link" itemprop="url">python时间strftime格式化去除前导0</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-10 17:27:45" itemprop="dateCreated datePublished" datetime="2020-11-10T17:27:45+08:00">2020-11-10</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>python时间strftime格式化去除前导0</h1>
+<p><strong>解决方案：</strong></p>
+<h3 id="linux-加一个“-”符号">linux  (加一个“-”符号)</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">datetime.date(2020, 11, 9).strftime(&quot;%-m月%-d日&quot;)</span><br></pre></td></tr></table></figure>
+<h3 id="windows-加一个“-”符号">windows  (加一个“#”符号)</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">datetime.date(2020, 11, 9).strftime(&quot;%#m月%#d日&quot;)</span><br></pre></td></tr></table></figure>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/10/python%E6%97%B6%E9%97%B4strftime%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%8E%BB%E9%99%A4%E5%89%8D%E5%AF%BC0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/10/23/hive%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%87%BA%EF%BC%8C%E5%B9%B6%E6%8C%87%E5%AE%9A%E5%88%86%E9%9A%94%E7%AC%A6%EF%BC%8C%E5%85%83%E7%B4%A0%E5%8C%85%E5%90%AB%E5%BC%95%E5%8F%B7%E7%AD%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/23/hive%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%87%BA%EF%BC%8C%E5%B9%B6%E6%8C%87%E5%AE%9A%E5%88%86%E9%9A%94%E7%AC%A6%EF%BC%8C%E5%85%83%E7%B4%A0%E5%8C%85%E5%90%AB%E5%BC%95%E5%8F%B7%E7%AD%89/" class="post-title-link" itemprop="url">hive数据导出，并指定分隔符，元素包含引号等</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-23 14:31:30" itemprop="dateCreated datePublished" datetime="2020-10-23T14:31:30+08:00">2020-10-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="hive数据导出，并指定分隔符，元素包含引号等">hive数据导出，并指定分隔符，元素包含引号等</h3>
+<p>语法格式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">beeline -n username -p password -u jdbc:hive2://host:10000 --verbose=<span class="literal">true</span>  --showHeader=<span class="literal">false</span> --outputformat=tsv2  --color=<span class="literal">true</span>  -e <span class="string">"select * from <span class="variable">$&#123;database&#125;</span>.<span class="variable">$&#123;tablename&#125;</span>"</span> &gt; <span class="variable">$&#123;tableName&#125;</span>.csv</span><br></pre></td></tr></table></figure>
+<p>通过 outputformat 指定输出格式</p>
+<blockquote>
+<p>–outputformat=[table/vertical/csv/tsv/dsv/csv2/tsv2] == 指定输出格式</p>
+<p>–delimiterForDSV=&quot;*&quot; ‘&amp;’ 前提（–outputformat=dsv） 指定分隔符</p>
+</blockquote>
+<p>不同格式对应的分隔符如下表：</p>
+<table>
+<thead>
+<tr>
+<th>格式</th>
+<th>分隔符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>table</td>
+<td>表格式</td>
+</tr>
+<tr>
+<td>vertical</td>
+<td>如下所示</td>
+</tr>
+<tr>
+<td>csv</td>
+<td>‘,’ 逗号(元素包含引号)</td>
+</tr>
+<tr>
+<td>tsv</td>
+<td>‘\t’ 制表符(元素包含逗号)</td>
+</tr>
+<tr>
+<td>dsv</td>
+<td>默认‘|’ 竖线分割，可通过delimiterForDSV指定分隔符</td>
+</tr>
+<tr>
+<td>csv2</td>
+<td>‘,’ 逗号(不含引号)</td>
+</tr>
+<tr>
+<td>tsv2</td>
+<td>‘\t’ 制表符(不含引号)</td>
+</tr>
+</tbody>
+</table>
+<p>说明：</p>
+<blockquote>
+<p>csv格式 == 查询元素有’'单引号</p>
+<p>csv2格式没有单引号</p>
+<p>tsv，tsv2同上</p>
+</blockquote>
+<h3 id="实例">实例</h3>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/10/23/hive%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%87%BA%EF%BC%8C%E5%B9%B6%E6%8C%87%E5%AE%9A%E5%88%86%E9%9A%94%E7%AC%A6%EF%BC%8C%E5%85%83%E7%B4%A0%E5%8C%85%E5%90%AB%E5%BC%95%E5%8F%B7%E7%AD%89/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/10/14/%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E6%A8%A1%E6%9D%BF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1137,171 +1326,6 @@ create table xxx stored as RCFile as select…<br>
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/02/25/Linux%E6%9F%A5%E6%89%BE%E5%90%AB%E6%9C%89%E6%9F%90%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/25/Linux%E6%9F%A5%E6%89%BE%E5%90%AB%E6%9C%89%E6%9F%90%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">Linux查找含有某字符串的所有文件</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-25 14:39:58" itemprop="dateCreated datePublished" datetime="2020-02-25T14:39:58+08:00">2020-02-25</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>如果你想在当前目录下 查找&quot;hello,world!&quot;字符串,可以这样:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -rn &quot;hello,world!&quot; *</span><br></pre></td></tr></table></figure>
-<p><code>*</code> : 表示当前目录所有文件，也可以是某个文件名</p>
-<ul>
-<li>-r 是递归查找</li>
-<li>-n 是显示行号</li>
-<li>-R 查找所有文件包含子目录</li>
-<li>-i 忽略大小写</li>
-</ul>
-<h4 id="下面是一些有意思的命令行参数：">下面是一些有意思的命令行参数：</h4>
-<p>grep -i pattern files ：不区分大小写地搜索。默认情况区分大小写，<br>
-grep -l pattern files ：只列出匹配的文件名，<br>
-grep -L pattern files ：列出不匹配的文件名，<br>
-grep -w pattern files ：只匹配整个单词，而不是字符串的一部分（如匹配‘magic’，而不是‘magical’），</p>
-<p>grep -C number pattern files ：匹配的上下文分别显示[number]行，<br>
-grep pattern1 | pattern2 files ：显示匹配 pattern1 或 pattern2 的行，<br>
-grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 pattern2 的行。</p>
-<h4 id="这里还有些用于搜索的特殊符号：">这里还有些用于搜索的特殊符号：</h4>
-<p>&lt; 和 &gt; 分别标注单词的开始与结尾。</p>
-<h4 id="例如：">例如：</h4>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/02/25/Linux%E6%9F%A5%E6%89%BE%E5%90%AB%E6%9C%89%E6%9F%90%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/16/CDH6%20%E6%96%B0%E5%8A%A0%E8%8A%82%E7%82%B9%EF%BC%8C%E4%B8%8D%E8%83%BD%E5%85%B3%E6%8E%89%20Auto-TLS%20%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/16/CDH6%20%E6%96%B0%E5%8A%A0%E8%8A%82%E7%82%B9%EF%BC%8C%E4%B8%8D%E8%83%BD%E5%85%B3%E6%8E%89%20Auto-TLS%20%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/" class="post-title-link" itemprop="url">CDH6 新加节点，不能关掉 Auto-TLS 的解决办法</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-01-16 14:33:48" itemprop="dateCreated datePublished" datetime="2020-01-16T14:33:48+08:00">2020-01-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>CDH6 新加节点，不能关掉 Auto-TLS 的解决办法</h1>
-<p>坑一：新加节点 必须关掉TLS ，但是关不到</p>
-<p>参考官网</p>
-<p><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html" target="_blank" rel="noopener">https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html</a></p>
-<p>使用“添加主机向导”添加主机</p>
-<p>您可以使用“添加主机”向导在主机上安装CDH，Impala和Cloudera Manager Agent。</p>
-<ol>
-<li><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html#cmug_topic_7_5_1__title_214" target="_blank" rel="noopener">禁用TLS加密或身份验证</a></li>
-<li><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html#cmug_topic_7_5_1__section_t4z_zyk_kcb" target="_blank" rel="noopener">在不禁用TLS的情况下安装Cloudera Manager Agent的替代方法</a></li>
-<li><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html#cmug_topic_7_5_1__title_215" target="_blank" rel="noopener">使用“添加主机向导”</a></li>
-<li><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html#cmug_topic_7_5_1__title_217" target="_blank" rel="noopener">启用TLS加密或身份验证</a></li>
-<li><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html#cmug_topic_7_5_1__section_ejz_fdw_yr" target="_blank" rel="noopener">为CDH组件启用TLS / SSL</a></li>
-<li><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html#cmug_topic_7_5_1__section_ny1_bxv_ls" target="_blank" rel="noopener">启用Kerberos</a></li>
-</ol>
-<p>分析：</p>
-<p><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/install_cm_server.html" target="_blank" rel="noopener">https://www.cloudera.com/documentation/enterprise/6/6.1/topics/install_cm_server.html</a></p>
-<p>由于安装的时候设置了</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/16/CDH6%20%E6%96%B0%E5%8A%A0%E8%8A%82%E7%82%B9%EF%BC%8C%E4%B8%8D%E8%83%BD%E5%85%B3%E6%8E%89%20Auto-TLS%20%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1374,7 +1398,7 @@ grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 patter
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">131</span>
+          <span class="site-state-item-count">133</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1400,9 +1424,6 @@ grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 patter
       Links
     </div>
     <ul class="links-of-blogroll-list">
-        <li class="links-of-blogroll-item">
-          <a href="https://www.choiceform.com/" title="https:&#x2F;&#x2F;www.choiceform.com&#x2F;" rel="noopener" target="_blank">NPS调研</a>
-        </li>
         <li class="links-of-blogroll-item">
           <a href="https://www.ezessay.com/essay/" title="https:&#x2F;&#x2F;www.ezessay.com&#x2F;essay&#x2F;" rel="noopener" target="_blank">essay代写</a>
         </li>
