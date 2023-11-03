@@ -209,7 +209,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/02/14/tar%E4%B8%8D%E8%A6%86%E7%9B%96%E5%B7%B2%E5%AD%98%E5%9C%A8%E6%96%87%E4%BB%B6/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/02/21/doris%E9%83%A8%E7%BD%B2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -223,7 +223,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/14/tar%E4%B8%8D%E8%A6%86%E7%9B%96%E5%B7%B2%E5%AD%98%E5%9C%A8%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">tar不覆盖已存在文件</a>
+            <a href="/2023/02/21/doris%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">doris部署</a>
         </h1>
 
         <div class="post-meta">
@@ -233,7 +233,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-02-14 09:58:04" itemprop="dateCreated datePublished" datetime="2022-02-14T09:58:04+08:00">2022-02-14</time>
+              <time title="创建时间：2023-02-21 16:44:03" itemprop="dateCreated datePublished" datetime="2023-02-21T16:44:03+08:00">2023-02-21</time>
             </span>
 
           
@@ -247,61 +247,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>tar在解压或创建的时候一不小心就盖已存在文件</p>
-<p>tar 工具的 -k 参数就提供干这事<br>
--k,–keep-old-files 不覆盖已存在文件<br>
-keep existing files; don’t overwrite them from archive</p>
-<p>如:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxfk filename.tar.gz</span><br></pre></td></tr></table></figure>
-<p>tar 【参数】 【文件或目录】</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#压缩比如把x文件夹打包并用gzip压缩。</span><br><span class="line">tar -zcvf x.tar.gz x</span><br><span class="line"></span><br><span class="line">#解压到当前目录</span><br><span class="line">tar -xzvf x.tar.gz</span><br><span class="line"></span><br><span class="line">#解压到父目录</span><br><span class="line">tar -xzvf x.tar.gz -C ..</span><br></pre></td></tr></table></figure>
-<h4 id="常用参数：">常用参数：</h4>
-<table>
-<thead>
-<tr>
-<th>指定归档</th>
-<th><strong>-f</strong> <strong>后面必须直接跟归档名</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>打包（create）</td>
-<td><strong>-c</strong></td>
-</tr>
-<tr>
-<td>解包</td>
-<td><strong>-x</strong></td>
-</tr>
-<tr>
-<td>详细地列出处理的文件</td>
-<td><strong>-v</strong></td>
-</tr>
-<tr>
-<td>查看打包的文件</td>
-<td><strong>-t</strong></td>
-</tr>
-<tr>
-<td>压缩</td>
-<td><strong>-z</strong> <strong>调用<strong><strong>gzip</strong></strong>压缩</strong>  <strong>-j<strong><strong>调用</strong></strong>bzip2****压缩</strong></td>
-</tr>
-<tr>
-<td>时间限制参数</td>
-<td><strong>-N</strong> **比后面接的日期(yyyy/mm/dd)**<strong>还要新的才会被打包进新建的文件中</strong></td>
-</tr>
-<tr>
-<td>排除指定文件</td>
-<td><strong>–exclude FILE</strong>**：**<strong>不将</strong> <strong>FILE</strong> <strong>打包！</strong></td>
-</tr>
-<tr>
-<td>保留原本文件的属性</td>
-<td><strong>-p</strong></td>
-</tr>
-</tbody>
-</table>
-
+          <p>doris部署</p>
+<h2 id="fe部署">fe部署</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">第一次启动需指定--helper参数，后续再启动无需指定此参数</span><br><span class="line">sh &#x2F;opt&#x2F;module&#x2F;apache-doris-fe&#x2F;bin&#x2F;start_fe.sh --helper cdh192-150:19010 --daemon</span><br><span class="line"></span><br><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-fe&#x2F;bin&#x2F;stop_fe.sh &quot;</span><br><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-fe&#x2F;bin&#x2F;start_fe.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql -h 127.0.0.1 -P9030 -uroot -p</span><br><span class="line">mysql&gt; SHOW PROC '/frontends'\G</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"cdh192-151:19010"</span>;</span><br><span class="line"><span class="comment"># ALTER SYSTEM DROP FOLLOWER "cdh192-151:19010";</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> OBSERVER <span class="string">"cdh192-152:19010"</span>;</span><br><span class="line"><span class="comment"># ALTER SYSTEM drop OBSERVER "cdh192-152:19010";</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"cdh192-153:19010"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"cdh192-146.hadoop.xy:19010"</span>;</span><br><span class="line"></span><br><span class="line">netstat -nap |grep 19010</span><br></pre></td></tr></table></figure>
+<h2 id="be-部署">be 部署</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible be -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;stop_be.sh &quot;</span><br><span class="line">ansible be -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;start_be.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SHOW PROC '/backends'\G</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-150:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-151:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-152:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-146:9050"</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible be -m shell -a &quot;sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;stop_be.sh &quot;</span><br><span class="line">ansible be -m shell -a &quot;sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;start_be.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<h2 id="doris升级">doris升级</h2>
+<p><strong>重要！！在升级之前需要备份元数据（整个目录都需要备份）！！</strong></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/02/14/tar%E4%B8%8D%E8%A6%86%E7%9B%96%E5%B7%B2%E5%AD%98%E5%9C%A8%E6%96%87%E4%BB%B6/#more" rel="contents">
+              <a class="btn" href="/2023/02/21/doris%E9%83%A8%E7%BD%B2/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -325,7 +283,7 @@ keep existing files; don’t overwrite them from archive</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/02/14/centos7%E5%88%A0%E9%99%A4%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E5%90%8E%E7%A3%81%E7%9B%98%E4%B8%8D%E9%87%8A%E6%94%BE%E7%A9%BA%E9%97%B4%E5%A4%84%E7%90%86%E8%84%9A%E6%9C%AC/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/02/10/hk-blockin%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -339,7 +297,7 @@ keep existing files; don’t overwrite them from archive</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/14/centos7%E5%88%A0%E9%99%A4%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E5%90%8E%E7%A3%81%E7%9B%98%E4%B8%8D%E9%87%8A%E6%94%BE%E7%A9%BA%E9%97%B4%E5%A4%84%E7%90%86%E8%84%9A%E6%9C%AC/" class="post-title-link" itemprop="url">centos7删除日志文件后磁盘不释放空间处理脚本</a>
+            <a href="/2023/02/10/hk-blockin%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">hk-blockin系统优化</a>
         </h1>
 
         <div class="post-meta">
@@ -349,7 +307,7 @@ keep existing files; don’t overwrite them from archive</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-02-14 09:14:44" itemprop="dateCreated datePublished" datetime="2022-02-14T09:14:44+08:00">2022-02-14</time>
+              <time title="创建时间：2023-02-10 17:37:33" itemprop="dateCreated datePublished" datetime="2023-02-10T17:37:33+08:00">2023-02-10</time>
             </span>
 
           
@@ -363,17 +321,19 @@ keep existing files; don’t overwrite them from archive</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote>
-<p>背景：日志文件被人为删除，但日志对应的程序仍然在运行（进程在，IO未关闭），df看磁盘未释放<br>
-但du看磁盘已释放空间。<br>
-操作系统：<a href="https://so.csdn.net/so/search?q=CentOS7&amp;spm=1001.2101.3001.7020" target="_blank" rel="noopener">CentOS7</a>.5</p>
-</blockquote>
-<p>以下脚本可通过找出被删文件彻底释放磁盘空间</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">for p in &#96;ls &#x2F;proc&#x2F; |egrep &#39;^[0-9]&#123;1,5&#125;&#39;&#96;</span><br><span class="line">do</span><br><span class="line">cd &#x2F;proc&#x2F;$&#123;p&#125;&#x2F;fd;ls -l|grep deleted &amp;&amp; &gt;1 &amp;&amp; &gt;2</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-
+          <p>群用到了那些组件？ 版本有什么要求？</p>
+<p>trino386，这个是jdk11了，安装两个目录就行了， phoenix5， hive3.1.2, hadoop.3.1.3,spark2.4.8,spark3.2 flink1.12.7, flink和spark都想升级。 iceberg.0.13.2,</p>
+<p>trino ui地址  <a href="http://cdh192-57:8089/ui/" target="_blank" rel="noopener">http://cdh192-57:8089/ui/</a>  用户 presto          jdbc 172.20.192.57  用户presto</p>
+<p>软件都安装在/home/hadoop/bigdata/这个下面</p>
+<p>[root@hadoop102 ~]$ xsync/home/hadoop/bigdata/hadoop/etc/hadoop/capacity-scheduler.xml</p>
+<p>刷新yarn集群的队列</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;HADOOP_HOME&#125;&#x2F;bin&#x2F;yarn rmadmin -refreshQueues&#96; 或&#96;yarn rmadmin -refreshQueues</span><br></pre></td></tr></table></figure>
+<p>hbase</p>
+<p>cdh192-[234-236]</p>
+<p>/opt/local/</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/02/14/centos7%E5%88%A0%E9%99%A4%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E5%90%8E%E7%A3%81%E7%9B%98%E4%B8%8D%E9%87%8A%E6%94%BE%E7%A9%BA%E9%97%B4%E5%A4%84%E7%90%86%E8%84%9A%E6%9C%AC/#more" rel="contents">
+              <a class="btn" href="/2023/02/10/hk-blockin%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -397,7 +357,7 @@ keep existing files; don’t overwrite them from archive</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/02/07/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/12/30/CDH6.3.2%20%E5%8D%87%E7%BA%A7%20Spark3.3.0%20%E7%89%88%E6%9C%AC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -411,7 +371,7 @@ keep existing files; don’t overwrite them from archive</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/07/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">CDH集群部署</a>
+            <a href="/2022/12/30/CDH6.3.2%20%E5%8D%87%E7%BA%A7%20Spark3.3.0%20%E7%89%88%E6%9C%AC/" class="post-title-link" itemprop="url">CDH6.3.2 升级 Spark3.3.0 版本</a>
         </h1>
 
         <div class="post-meta">
@@ -421,7 +381,7 @@ keep existing files; don’t overwrite them from archive</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-02-07 10:34:00" itemprop="dateCreated datePublished" datetime="2022-02-07T10:34:00+08:00">2022-02-07</time>
+              <time title="创建时间：2022-12-30 16:21:28" itemprop="dateCreated datePublished" datetime="2022-12-30T16:21:28+08:00">2022-12-30</time>
             </span>
 
           
@@ -435,48 +395,19 @@ keep existing files; don’t overwrite them from archive</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="一、集群规划">一、集群规划</h2>
-<p>如果你正准备从0开始搭建一套CDH集群应用于生产环境，那么此时需要做的事情应该是 <strong>结合当前的数据、业务、硬件、节点、服务等对集群做合理的规划</strong>，而不是马上动手去安装软件。</p>
-<p>合理的集群规划应该做到以下几点：</p>
-<ul>
-<li>充分了解当前的数据现状</li>
-<li>与业务方深入沟通，了解将会在集群上运行的业务，集群将会为业务提供什么服务</li>
-<li>结合数据现状与业务，合理预估未来的数据量增长</li>
-<li>盘点当前可用的硬件资源，包括机柜机架、服务器、交换机等</li>
-<li>当前硬件资源不充足的情况下，根据数据评估情况作出采购建议</li>
-<li>根据业务属性与组成，合理规划集群的部署架构</li>
-<li>根据可用硬件资源，对集群节点的服务角色进行合理划分</li>
-</ul>
-<p>以上步骤完成之后才是动手进行安装与部署。</p>
-<p>你将会对集群的架构模式、应用方向与业务场景了然于胸，并确保这个集群（或者是集群组）能够<strong>提供稳定、高效、高性能的服务</strong>，为业务保驾护航。</p>
-<p>并有能力能够提供 <strong>集群建设目标</strong>：</p>
-<ul>
-<li>
-<p>性能需求</p>
-</li>
-<li>
-<ul>
-<li>简单查询100G数据量时，耗时上限</li>
-<li>复杂查询（join）时，耗时上限</li>
-<li>历史数据导入时，耗时上限</li>
-<li>增量数据导入时，耗时上限</li>
-</ul>
-</li>
-<li>
-<p>可靠性需求：每月宕机次数（&lt;1），每月宕机时间（&lt;10min）</p>
-</li>
-<li>
-<p>可用性：每台机器每月的宕机时间</p>
-</li>
-<li>
-<p>容错性：机器故障，数据不丢失</p>
-</li>
-</ul>
-<h3 id="1-1-硬件规划">1.1 硬件规划</h3>
-<p>硬件规划决定集群将使用多少硬件资源，以及什么配置的硬件资源。</p>
+          <h1>CDH6.3.2 升级 Spark3.3.0 版本</h1>
+<p><a href="https://juejin.cn/post/7140053569431928845" target="_blank" rel="noopener">https://juejin.cn/post/7140053569431928845</a></p>
+<p>根据上面的文档进行部署  还有下列操作需要补充</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">cp -r &#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;*.xml &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3&#x2F;conf&#x2F;</span><br><span class="line">cp &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;hive-site.xml &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3&#x2F;conf&#x2F;</span><br><span class="line"></span><br><span class="line"># 奇怪用快捷方式就不行</span><br><span class="line">cd &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3&#x2F;conf</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;hive-site.xml hive-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;hdfs-site.xml hdfs-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;core-site.xml core-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;mapred-site.xml mapred-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;yarn-site.xml yarn-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;spark&#x2F;conf&#x2F;spark-defaults.conf spark-defaults.conf</span><br><span class="line">ln -s &#x2F;etc&#x2F;spark&#x2F;conf&#x2F;spark-env.sh spark-env.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;local&#x2F;bin</span><br><span class="line">ln -s &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3&#x2F;bin&#x2F;pyspark pyspark3</span><br></pre></td></tr></table></figure>
+<p>新增一个spark3-shell的快捷方式</p>
+<p>vim  /opt/cloudera/parcels/CDH/bin/spark3-shell</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Autodetect JAVA_HOME <span class="keyword">if</span> not defined</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Reference: http://stackoverflow.com/questions/59895/can<span class="_">-a</span>-bash-script-tell-what-directory-its-stored-in</span></span><br><span class="line">SOURCE="$&#123;BASH_SOURCE[0]&#125;"</span><br><span class="line">BIN_DIR="$( dirname "$SOURCE" )"</span><br><span class="line">while [ -h "$SOURCE" ]</span><br><span class="line">do</span><br><span class="line">SOURCE="$(readlink "$SOURCE")"</span><br><span class="line">[[ $SOURCE != /* ]] &amp;&amp; SOURCE="$DIR/$SOURCE"</span><br><span class="line">BIN_DIR="$( cd -P "$( dirname "$SOURCE"  )" &amp;&amp; pwd )"</span><br><span class="line">done</span><br><span class="line">BIN_DIR="$( cd -P "$( dirname "$SOURCE" )" &amp;&amp; pwd )"</span><br><span class="line">CDH_LIB_DIR=$BIN_DIR/../../CDH/lib</span><br><span class="line">LIB_DIR=$BIN_DIR/../lib</span><br><span class="line">export HADOOP_HOME=$CDH_LIB_DIR/hadoop</span><br><span class="line">. $CDH_LIB_DIR/bigtop-utils/bigtop-detect-javahome</span><br><span class="line">exec $LIB_DIR/spark3/bin/spark-shell "$@"</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;bin&#x2F;spark3-shell</span><br></pre></td></tr></table></figure>
+<p>用法：alternatives --install &lt;链接&gt; &lt;名称&gt; &lt;路径&gt; &lt;优先度&gt;</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/02/07/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/#more" rel="contents">
+              <a class="btn" href="/2022/12/30/CDH6.3.2%20%E5%8D%87%E7%BA%A7%20Spark3.3.0%20%E7%89%88%E6%9C%AC/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -500,7 +431,7 @@ keep existing files; don’t overwrite them from archive</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/29/DBeaver%20Enterprise%2021.2.0%20%E7%A0%B4%E8%A7%A3%E7%89%88%20%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/12/30/anaconda%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -514,7 +445,7 @@ keep existing files; don’t overwrite them from archive</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/01/29/DBeaver%20Enterprise%2021.2.0%20%E7%A0%B4%E8%A7%A3%E7%89%88%20%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/" class="post-title-link" itemprop="url">DBeaver Enterprise 21.2.0 破解版 安装教程</a>
+            <a href="/2022/12/30/anaconda%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/" class="post-title-link" itemprop="url">anaconda部署文档</a>
         </h1>
 
         <div class="post-meta">
@@ -524,7 +455,7 @@ keep existing files; don’t overwrite them from archive</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-01-29 17:18:06" itemprop="dateCreated datePublished" datetime="2022-01-29T17:18:06+08:00">2022-01-29</time>
+              <time title="创建时间：2022-12-30 14:37:19" itemprop="dateCreated datePublished" datetime="2022-12-30T14:37:19+08:00">2022-12-30</time>
             </span>
 
           
@@ -538,14 +469,19 @@ keep existing files; don’t overwrite them from archive</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>DBeaver Enterprise 21.2.0 破解版 安装教程</h1>
-<h2 id="制作绿色包-开箱即用">制作绿色包  开箱即用</h2>
-<p><a href="https://blog.csdn.net/u012234419/article/details/120091206" target="_blank" rel="noopener">https://blog.csdn.net/u012234419/article/details/120091206</a></p>
-<p>亲测可用，感谢楼主~</p>
-
+          <p>anaconda部署文档</p>
+<p><a href="https://docs.anaconda.com/anaconda/install/linux/" target="_blank" rel="noopener">https://docs.anaconda.com/anaconda/install/linux/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash .&#x2F;Anaconda3-2022.10-Linux-x86_64.sh</span><br></pre></td></tr></table></figure>
+<p>退出默认环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda config --set auto_activate_base False</span><br></pre></td></tr></table></figure>
+<p>conda activate</p>
+<p>conda deactivate #退出环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -czvf anaconda3.tar.gz anaconda3&#x2F;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u hdfs hadoop fs -put &#x2F;opt&#x2F;module&#x2F;anaconda3.tar.gz &#x2F;user&#x2F;yarn&#x2F;mapreduce&#x2F;</span><br></pre></td></tr></table></figure>
+<p>anaconda已安装 在/opt/module/anaconda3/</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/01/29/DBeaver%20Enterprise%2021.2.0%20%E7%A0%B4%E8%A7%A3%E7%89%88%20%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/#more" rel="contents">
+              <a class="btn" href="/2022/12/30/anaconda%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -569,7 +505,7 @@ keep existing files; don’t overwrite them from archive</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/26/clickhouse%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5mysql%E6%95%B0%E6%8D%AE/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/12/09/%E8%A7%A3%E5%86%B3freeipa%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -583,7 +519,7 @@ keep existing files; don’t overwrite them from archive</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/01/26/clickhouse%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5mysql%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">clickhouse实时同步mysql数据</a>
+            <a href="/2022/12/09/%E8%A7%A3%E5%86%B3freeipa%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F/" class="post-title-link" itemprop="url">解决freeipa证书过期</a>
         </h1>
 
         <div class="post-meta">
@@ -593,7 +529,7 @@ keep existing files; don’t overwrite them from archive</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-01-26 18:03:14" itemprop="dateCreated datePublished" datetime="2022-01-26T18:03:14+08:00">2022-01-26</time>
+              <time title="创建时间：2022-12-09 10:23:14" itemprop="dateCreated datePublished" datetime="2022-12-09T10:23:14+08:00">2022-12-09</time>
             </span>
 
           
@@ -607,23 +543,20 @@ keep existing files; don’t overwrite them from archive</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>clickhouse实时同步mysql数据</h1>
-<p>clickhouse-client -m --password ‘admin’</p>
-<h1>使用 MaterializedMySQL 引擎实时同步</h1>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> allow_experimental_database_materialized_mysql = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> dbtest <span class="keyword">ENGINE</span> = MaterializedMySQL(<span class="string">'10.6.123.23:3306'</span>, <span class="string">'dbtest'</span>, <span class="string">'cs_yangz'</span>, <span class="string">'***'</span>) <span class="keyword">SETTINGS</span> allows_query_when_mysql_lost=<span class="literal">true</span>,max_wait_time_when_mysql_unavailable=<span class="number">10000</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看磁盘容量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    <span class="keyword">name</span>,</span><br><span class="line">    <span class="keyword">path</span>,</span><br><span class="line">    formatReadableSize(free_space) <span class="keyword">AS</span> free,</span><br><span class="line">    formatReadableSize(total_space) <span class="keyword">AS</span> total,</span><br><span class="line">    formatReadableSize(keep_free_space) <span class="keyword">AS</span> reserved</span><br><span class="line"><span class="keyword">FROM</span> system.disks</span><br></pre></td></tr></table></figure>
-<h2 id="安装配置-MySQL-同步用户">安装配置 MySQL 同步用户</h2>
-<ul>
-<li>创建用户</li>
-<li>全局赋予 replication client,replication slave, reload 权限</li>
-<li>对同步库 db 赋予 select 权限</li>
-</ul>
-<p>如果赋予权限不正确，会报错，</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">'clickhouse'</span>@<span class="string">'%'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'alitrack'</span>;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">select</span> <span class="keyword">ON</span> db.* <span class="keyword">TO</span> <span class="string">'clickhouse'</span>@<span class="string">'%'</span>;</span><br><span class="line"><span class="keyword">GRANT</span>  <span class="keyword">replication</span> <span class="keyword">client</span>,<span class="keyword">replication</span> <span class="keyword">slave</span>, reload <span class="keyword">on</span> *.* <span class="keyword">to</span> <span class="string">'clickhouse'</span>@<span class="string">'%'</span>;</span><br><span class="line"><span class="keyword">FLUSH</span> <span class="keyword">PRIVILEGES</span>;</span><br></pre></td></tr></table></figure>
-<p>遇到没有主键的表，</p>
-<p>如果没有初始化完成，删掉没有主键的表，直接重启clickhouse就可以了</p>
+          <h1>FreeIPA 服务器在重启后不会启动</h1>
+<p>参考   <a href="https://redhatlinux.guru/2020/10/09/freeipa-server-will-not-start-after-reboot/" target="_blank" rel="noopener">https://redhatlinux.guru/2020/10/09/freeipa-server-will-not-start-after-reboot/</a></p>
+<p><strong>原因 证书过期：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[root@freeipa ~]# ipa-getcert list </span><br><span class="line">Number of certificates and requests being tracked: 9.</span><br><span class="line">Request ID &#39;20190830074301&#39;:</span><br><span class="line">	status: CA_UNREACHABLE</span><br><span class="line">	ca-error: Server at https:&#x2F;&#x2F;freeipa.baofoo.cn&#x2F;ipa&#x2F;xml failed request, will retry: -504 (libcurl failed to execute the HTTP POST transaction, explaining:  Failed connect to freeipa.baofoo.cn:443; Connection refused).</span><br><span class="line">	stuck: no</span><br><span class="line">	key pair storage: type&#x3D;NSSDB,location&#x3D;&#39;&#x2F;etc&#x2F;dirsrv&#x2F;slapd-BAOFOO-CN&#39;,nickname&#x3D;&#39;Server-Cert&#39;,token&#x3D;&#39;NSS Certificate DB&#39;,pinfile&#x3D;&#39;&#x2F;etc&#x2F;dirsrv&#x2F;slapd-BAOFOO-CN&#x2F;pwdfile.txt&#39;</span><br><span class="line">	certificate: type&#x3D;NSSDB,location&#x3D;&#39;&#x2F;etc&#x2F;dirsrv&#x2F;slapd-BAOFOO-CN&#39;,nickname&#x3D;&#39;Server-Cert&#39;,token&#x3D;&#39;NSS Certificate DB&#39;</span><br><span class="line">	CA: IPA</span><br><span class="line">	issuer: CN&#x3D;Certificate Authority,O&#x3D;BAOFOO.CN</span><br><span class="line">	subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">	expires: 2021-08-30 07:43:01 UTC</span><br><span class="line">	dns: freeipa.baofoo.cn</span><br><span class="line">	principal name: ldap&#x2F;freeipa.baofoo.cn@BAOFOO.CN</span><br><span class="line">	key usage: digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment</span><br><span class="line">	eku: id-kp-serverAuth,id-kp-clientAuth</span><br><span class="line">	pre-save command: </span><br><span class="line">	post-save command: &#x2F;usr&#x2F;libexec&#x2F;ipa&#x2F;certmonger&#x2F;restart_dirsrv BAOFOO-CN</span><br><span class="line">	track: yes</span><br><span class="line">	auto-renew: yes</span><br></pre></td></tr></table></figure>
+<p>问题<br>
+这更多是利基问题。但可能对其他人有用。我在家里有一个用于 DNS 的 FreeIPA 服务器设置。在简单的重新启动以向 VM 添加一些 RAM 后，服务器将无法启动。我收到如下错误。</p>
+<p>IPA 服务器错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status ipa</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">● ipa.service - Identity, Policy, Audit</span><br><span class="line">Loaded: loaded (&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;ipa.service; enabled; vendor preset: disabled)</span><br><span class="line">Active: failed (Result: exit-code) since Fri 2020-10-09 14:57:15 EDT; 1s ago</span><br><span class="line">Process: 1110 ExecStart&#x3D;&#x2F;usr&#x2F;sbin&#x2F;ipactl start (code&#x3D;exited, status&#x3D;1&#x2F;FAILURE)</span><br><span class="line">Main PID: 1110 (code&#x3D;exited, status&#x3D;1&#x2F;FAILURE)</span><br><span class="line"></span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Aborting ipactl</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting Directory Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting krb5kdc Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting kadmin Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting named Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting httpd Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: ipa.service: main process exited, code&#x3D;exited, status&#x3D;1&#x2F;FAILURE</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: Failed to start Identity, Policy, Audit.</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: Unit ipa.service entered failed state.</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: ipa.service failed.</span><br></pre></td></tr></table></figure>
+<h5 id="Apache-服务错误">Apache 服务错误</h5>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status httpd -l</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/01/26/clickhouse%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5mysql%E6%95%B0%E6%8D%AE/#more" rel="contents">
+              <a class="btn" href="/2022/12/09/%E8%A7%A3%E5%86%B3freeipa%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -647,7 +580,7 @@ keep existing files; don’t overwrite them from archive</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/26/nginx%E4%BB%A3%E7%90%86clickhouse/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/11/14/cdh%20%E5%AE%89%E8%A3%85Pheonix5.12/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -661,7 +594,7 @@ keep existing files; don’t overwrite them from archive</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/01/26/nginx%E4%BB%A3%E7%90%86clickhouse/" class="post-title-link" itemprop="url">nginx代理clickhouse</a>
+            <a href="/2022/11/14/cdh%20%E5%AE%89%E8%A3%85Pheonix5.12/" class="post-title-link" itemprop="url">cdh 安装Pheonix5.12</a>
         </h1>
 
         <div class="post-meta">
@@ -671,7 +604,7 @@ keep existing files; don’t overwrite them from archive</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-01-26 16:14:14" itemprop="dateCreated datePublished" datetime="2022-01-26T16:14:14+08:00">2022-01-26</time>
+              <time title="创建时间：2022-11-14 15:49:27" itemprop="dateCreated datePublished" datetime="2022-11-14T15:49:27+08:00">2022-11-14</time>
             </span>
 
           
@@ -685,19 +618,20 @@ keep existing files; don’t overwrite them from archive</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="下载编译源码包">下载编译源码包</h2>
-<p>下载源码包到指定的目录，</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://nginx.org/download/nginx-1.20.2.tar.gz</span><br></pre></td></tr></table></figure>
-<p>解压并编译源码</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf  nginx-1.20.2.tar.gz</span><br><span class="line">cd nginx-1.20.2/</span><br></pre></td></tr></table></figure>
-<p>1）配置Nginx编译文件参数</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure --<span class="keyword">with</span>-stream</span><br></pre></td></tr></table></figure>
-<p>2）编译、安装，make &amp;&amp; make install</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">make</span> &amp; <span class="built_in">make</span> install</span><br></pre></td></tr></table></figure>
-<p>vim  /usr/local/nginx/conf/nginx.conf</p>
+          <h1>cdh 安装Pheonix5.12</h1>
+<p>Phoenix5.12-之安装部署（Hbase-2.1.1）<br>
+Phoenix与Hbase的版本兼容是很严格的，我们需要使用Phoenix去适配Hbase，有很严格的版本标准，具体的版本匹配如下图。</p>
+<p>具体版本的选择请查阅官网下载页面：<a href="https://phoenix.apache.org/download.html" target="_blank" rel="noopener">https://phoenix.apache.org/download.html</a></p>
+<h1>1 解压</h1>
+<p>tar -zxvf phoenix-hbase-2.1-5.1.2-bin.tar.gz -C /opt/module/</p>
+<h1>2 重新命名</h1>
+<p>mv phoenix-hbase-2.1-5.1.2-bin/ phoenix-hbase-2.1-5.1.2</p>
+<h1>3 将phoenix-server-hbase-2.1-5.1.2.jar拷贝到Hbase的Master和Slave节点的lib目录下</h1>
+<p>cp phoenix-server-hbase-2.1-5.1.2.jar …/hbase-2.1.1/lib/</p>
+<h1>4 配置环境变量 hbase和phoenix 在/etc/profile</h1>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/01/26/nginx%E4%BB%A3%E7%90%86clickhouse/#more" rel="contents">
+              <a class="btn" href="/2022/11/14/cdh%20%E5%AE%89%E8%A3%85Pheonix5.12/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -721,7 +655,7 @@ keep existing files; don’t overwrite them from archive</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/26/presto%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/11/12/Dbeaver%E8%BF%9E%E6%8E%A5phoenix/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -735,7 +669,7 @@ keep existing files; don’t overwrite them from archive</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/01/26/presto%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86/" class="post-title-link" itemprop="url">presto集群管理</a>
+            <a href="/2022/11/12/Dbeaver%E8%BF%9E%E6%8E%A5phoenix/" class="post-title-link" itemprop="url">Dbeaver连接phoenix</a>
         </h1>
 
         <div class="post-meta">
@@ -745,7 +679,7 @@ keep existing files; don’t overwrite them from archive</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-01-26 11:12:57" itemprop="dateCreated datePublished" datetime="2022-01-26T11:12:57+08:00">2022-01-26</time>
+              <time title="创建时间：2022-11-12 17:10:16" itemprop="dateCreated datePublished" datetime="2022-11-12T17:10:16+08:00">2022-11-12</time>
             </span>
 
           
@@ -759,16 +693,19 @@ keep existing files; don’t overwrite them from archive</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>在ansible环境下，控制其他机器，除了/etc/profile文件需要修改，还需要修改/root/.bashrc文件中的值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ansible presto -m copy -a &quot;src&#x3D;&#x2F;root&#x2F;.bashrc dest&#x3D;&#x2F;root&#x2F;.bashrc &quot;</span><br><span class="line"></span><br><span class="line">ansible presto -m shell -a &quot;java -version &quot;</span><br><span class="line"></span><br><span class="line">ansible presto -m copy -a &quot;src&#x3D;&#x2F;opt&#x2F;presto&#x2F;etc&#x2F;catalog  dest&#x3D;&#x2F;opt&#x2F;presto&#x2F;etc&#x2F;&quot;</span><br><span class="line"></span><br><span class="line">ansible presto -m shell -a &quot;ls &#x2F;opt&#x2F;presto&#x2F;etc&#x2F;catalog &quot;</span><br></pre></td></tr></table></figure>
-<h3 id="增加新的连接">增加新的连接</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ansible presto -m copy -a &quot;src&#x3D;&#x2F;opt&#x2F;presto&#x2F;etc&#x2F;catalog&#x2F;mysql_80_20.properties  dest&#x3D;&#x2F;opt&#x2F;presto&#x2F;etc&#x2F;catalog&#x2F;mysql_80_20.properties&quot;</span><br><span class="line"></span><br><span class="line"> ansible presto -m shell -a &quot;&#x2F;opt&#x2F;presto&#x2F;bin&#x2F;launcher restart &quot;</span><br></pre></td></tr></table></figure>
-<p><a href="https://repo1.maven.org/maven2/io/prestosql/presto-server/350/" target="_blank" rel="noopener">https://repo1.maven.org/maven2/io/prestosql/presto-server/350/</a></p>
-<p>350版本之后更名成trino</p>
+          <h1>Dbeaver连接phoenix</h1>
+<p>1.切换到/opt/cloudera/parcels/PHOENIX-5.0.0-cdh6.2.0.p0.1308267/lib/phoenix，下载</p>
+<p>phoenix-5.0.0-cdh6.2.0-client.jar这个jar包</p>
+<p>2.下载客户端配置</p>
+<p>里面有个phoenix-5.0.0-cdh6.2.0-client.jar下载下来</p>
+<p>3.执行下面命令:</p>
+<p>jar -uf phoenix-5.0.0-cdh6.2.0-client.jar hbase-site.xml 将hbase-site.xml添加到phoenix-5.0.0-cdh6.2.0-client.jar里</p>
+<p>4.打开Dbeaver，创建新链接-&gt;编辑驱动-&gt;添加文件(刚才的jar包)-&gt;找到类-&gt;确定</p>
+<p>5.填写连接信息，点击测试连接，成功！</p>
 
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/01/26/presto%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86/#more" rel="contents">
+              <a class="btn" href="/2022/11/12/Dbeaver%E8%BF%9E%E6%8E%A5phoenix/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -792,7 +729,7 @@ keep existing files; don’t overwrite them from archive</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/25/Alluxio%E8%BF%90%E7%BB%B4/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/11/07/Docker%E8%AE%BE%E7%BD%AE%E5%AE%B9%E5%99%A8%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -806,7 +743,7 @@ keep existing files; don’t overwrite them from archive</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/01/25/Alluxio%E8%BF%90%E7%BB%B4/" class="post-title-link" itemprop="url">Alluxio运维</a>
+            <a href="/2022/11/07/Docker%E8%AE%BE%E7%BD%AE%E5%AE%B9%E5%99%A8%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF/" class="post-title-link" itemprop="url">Docker设置容器开机自启</a>
         </h1>
 
         <div class="post-meta">
@@ -816,7 +753,7 @@ keep existing files; don’t overwrite them from archive</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-01-25 11:01:01" itemprop="dateCreated datePublished" datetime="2022-01-25T11:01:01+08:00">2022-01-25</time>
+              <time title="创建时间：2022-11-07 10:36:26" itemprop="dateCreated datePublished" datetime="2022-11-07T10:36:26+08:00">2022-11-07</time>
             </span>
 
           
@@ -830,32 +767,25 @@ keep existing files; don’t overwrite them from archive</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="Alluxio命令">Alluxio命令</h2>
-<h3 id="alluxio-fsadmin">alluxio fsadmin</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 查看服务状态</span><br><span class="line">alluxio fsadmin report</span><br><span class="line"></span><br><span class="line"># 查看挂掉的服务ip</span><br><span class="line">alluxio fsadmin report capacity -lost</span><br></pre></td></tr></table></figure>
-<h3 id="alluxio-getConf">alluxio getConf</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查看配置参数</span><br><span class="line">alluxio getConf --master</span><br></pre></td></tr></table></figure>
-<h2 id="Alluxio运维实战">Alluxio运维实战</h2>
-<h3 id="Worker节点挂掉">Worker节点挂掉</h3>
-<ol>
-<li>
-<p>查看服务状态，发现有一台worker节点丢失</p>
-<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2022/01/5586288e0f4a956c99cfbba8eb4ffbba.webp" alt="img"></p>
-</li>
-<li>
-<p>查看丢失的节点是哪一台</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ alluxio fsadmin report capacity -lost</span><br><span class="line">sjsysc-hh405-zbhx700w</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>登录到丢失的worker节点，启动worker</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ssh sjsysc-hh405-zbhx700w</span><br><span class="line">$ alluxio-start.sh worker SudoMount</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="设置子目录挂载点">设置子目录挂载点</h3>
-<p>待Alluxio启动完毕之后，用户可以在挂载其他子目录，例如，将另一个hadoop集群的hdfs目录挂载到alluxio中。</p>
+          <p><strong>Docker设置容器开机自启</strong></p>
+<p>设置docker开机自启</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable docker</span><br></pre></td></tr></table></figure>
+<p>设置docker容器开机自启<br>
+创建docker容器时设置开机自启<br>
+#在使用docker run启动容器时，使用–restart参数来设置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --restart&#x3D;always --name imagesName</span><br></pre></td></tr></table></figure>
+<p>修改已创建的docker容器开机自启<br>
+#如果创建时未指定 --restart=always ,可通过update 命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker update --restart&#x3D;always imagesName</span><br></pre></td></tr></table></figure>
+<p>参数说明<br>
+  --restart具体参数值详细信息：</p>
+<p>no - 容器退出时，不重启容器；<br>
+on-failure - 只有在非0状态退出时才从新启动容器；<br>
+always - 无论退出状态是如何，都重启容器；</p>
+<p>还可以在使用on - failure策略时，指定Docker将尝试重新启动容器的最大次数。默认情况下，Docker将尝试永远重新启动容器。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/01/25/Alluxio%E8%BF%90%E7%BB%B4/#more" rel="contents">
+              <a class="btn" href="/2022/11/07/Docker%E8%AE%BE%E7%BD%AE%E5%AE%B9%E5%99%A8%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -879,7 +809,7 @@ keep existing files; don’t overwrite them from archive</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/21/%E7%A0%B4%E8%A7%A3PyCharm%202018.3.2/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/10/28/jpsall%20xsync%E5%91%BD%E4%BB%A4%E8%84%9A%E6%9C%AC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -893,7 +823,7 @@ keep existing files; don’t overwrite them from archive</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/01/21/%E7%A0%B4%E8%A7%A3PyCharm%202018.3.2/" class="post-title-link" itemprop="url">破解PyCharm 2018.3.2</a>
+            <a href="/2022/10/28/jpsall%20xsync%E5%91%BD%E4%BB%A4%E8%84%9A%E6%9C%AC/" class="post-title-link" itemprop="url">jpsall xsync命令脚本</a>
         </h1>
 
         <div class="post-meta">
@@ -903,7 +833,7 @@ keep existing files; don’t overwrite them from archive</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-01-21 10:38:55" itemprop="dateCreated datePublished" datetime="2022-01-21T10:38:55+08:00">2022-01-21</time>
+              <time title="创建时间：2022-10-28 13:27:46" itemprop="dateCreated datePublished" datetime="2022-10-28T13:27:46+08:00">2022-10-28</time>
             </span>
 
           
@@ -917,19 +847,15 @@ keep existing files; don’t overwrite them from archive</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>破解PyCharm 2018.3.2</h1>
-<p><strong>亲测可以用</strong></p>
-<p>破解教程：<a href="https://www.jianshu.com/p/76a30aeb8f9d" target="_blank" rel="noopener">https://www.jianshu.com/p/76a30aeb8f9d</a></p>
-<h4 id="1、key">1、key</h4>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">K71U8DBPNE</span>-eyJsaWNlbnNlSWQiOiJLNzFVOERCUE5FIiwibGljZW5zZWVOYW1lIjoibGFuIHl1IiwiYXNzaWduZWVOYW1lIjoiIiwiYXNzaWduZWVFbWFpbCI6IiIsImxpY2Vuc2VSZXN0cmljdGlvbiI6IkZvciBlZHVjYXRpb25hbCB1c2Ugb25seSIsImNoZWNrQ29uY3VycmVudFVzZSI6ZmFsc2UsInByb2R1Y3RzIjpbeyJjb2RlIjoiSUkiLCJwYWlkVXBUbyI6IjIwMTktMDUtMDQifSx7ImNvZGUiOiJSUzAiLCJwYWlkVXBUbyI6IjIwMTktMDUtMDQifSx7ImNvZGUiOiJXUyIsInBhaWRVcFRvIjoiMjAxOS0wNS0wNCJ9LHsiY29kZSI6IlJEIiwicGFpZFVwVG8iOiIyMDE5LTA1LTA0In0seyJjb2RlIjoiUkMiLCJwYWlkVXBUbyI6IjIwMTktMDUtMDQifSx7ImNvZGUiOiJEQyIsInBhaWRVcFRvIjoiMjAxOS0wNS0wNCJ9LHsiY29kZSI6IkRCIiwicGFpZFVwVG8iOiIyMDE5LTA1LTA0In0seyJjb2RlIjoiUk0iLCJwYWlkVXBUbyI6IjIwMTktMDUtMDQifSx7ImNvZGUiOiJETSIsInBhaWRVcFRvIjoiMjAxOS0wNS0wNCJ9LHsiY29kZSI6IkFDIiwicGFpZFVwVG8iOiIyMDE5LTA1LTA0In0seyJjb2RlIjoiRFBOIiwicGFpZFVwVG8iOiIyMDE5LTA1LTA0In0seyJjb2RlIjoiR08iLCJwYWlkVXBUbyI6IjIwMTktMDUtMDQifSx7ImNvZGUiOiJQUyIsInBhaWRVcFRvIjoiMjAxOS0wNS0wNCJ9LHsiY29kZSI6IkNMIiwicGFpZFVwVG8iOiIyMDE5LTA1LTA0In0seyJjb2RlIjoiUEMiLCJwYWlkVXBUbyI6IjIwMTktMDUtMDQifSx7ImNvZGUiOiJSU1UiLCJwYWlkVXBUbyI6IjIwMTktMDUtMDQifV0sImhhc2giOiI4OTA4Mjg5LzAiLCJncmFjZVBlcmlvZERheXMiOjAsImF1dG9Qcm9sb25nYXRlZCI6ZmFsc2UsImlzQXV0b1Byb2xvbmdhdGVkIjpmYWxzZX0=-<span class="type">Owt3</span>/+<span class="type">LdCpedvF0eQ8635yYt0</span>+<span class="type">ZLtCfIHOKzSrx5hBtbKGYRPFDrdgQAK6lJjexl2emLBcUq729K1</span>+ukY9Js0nx1NH09l9Rw4c7k9wUksLl6RWx7Hcdcma1AHolfSp79NynSMZzQQLFohNyjD+dXfXM5GYd2OTHya0zYjTNMmAJuuRsapJMP9F1z7UTpMpLMxS/<span class="type">JaCWdyX6qIs</span>+funJdPF7bjzYAQBvtbz+6SANBgN36gG1B2xHhccTn6WE8vagwwSNuM70egpahcTktoHxI7uS1JGN9gKAr6nbp+8DbFz3a2wd+<span class="type">XoF3nSJb</span>/d2f/6zJR8yJF8AOyb30kwg3zf5cWw==-<span class="type">MIIEPjCCAiagAwIBAgIBBTANBgkqhkiG9w0BAQsFADAYMRYwFAYDVQQDDA1KZXRQcm9maWxlIENBMB4XDTE1MTEwMjA4MjE0OFoXDTE4MTEwMTA4MjE0OFowETEPMA0GA1UEAwwGcHJvZDN5MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxcQkq</span>+zdxlR2mmRYBPzGbUNdMN6OaXiXzxIWtMEkrJMO/5oUfQJbLLuMSMK0QHFmaI37WShyxZcfRCidwXjot4zmNBKnlyHodDij/78TmVqFl8nOeD5+07B8VEaIu7c3E1N+e1doC6wht4I4+<span class="type">IEmtsPAdoaj5WCQVQbrI8KeT8M9VcBIWX7fD0fhexfg3ZRt0xqwMcXGNp3DdJHiO0rCdU</span>+<span class="type">Itv7EmtnSVq9jBG1usMSFvMowR25mju2JcPFp1</span>+<span class="type">I4ZI</span>+<span class="type">FqgR8gyG8oiNDyNEoAbsR3lOpI7grUYSvkB</span>/xVy/<span class="type">VoklPCK2h0f0GJxFjnye8NT1PAywoyl7RmiAVRE</span>/<span class="type">EKwIDAQABo4GZMIGWMAkGA1UdEwQCMAAwHQYDVR0OBBYEFGEpG9oZGcfLMGNBkY7SgHiMGgTcMEgGA1UdIwRBMD</span>+<span class="type">AFKOetkhnQhI2Qb1t4Lm0oFKLl</span>/<span class="type">GzoRykGjAYMRYwFAYDVQQDDA1KZXRQcm9maWxlIENBggkA0myxg7KDeeEwEwYDVR0lBAwwCgYIKwYBBQUHAwEwCwYDVR0PBAQDAgWgMA0GCSqGSIb3DQEBCwUAA4ICAQC9WZuYgQedSuOc5TOUSrRigMw4</span>/+wuC5EtZBfvdl4HT/8vzMW/oUlIP4YCvA0XKyBaCJ2iX+<span class="type">ZCDKoPfiYXiaSiH</span>+<span class="type">HxAPV6J79vvouxKrWg2XV6ShFtPLP</span>+0gPdGq3x9R3+kJbmAm8w+<span class="type">FOdlWqAfJrLvpzMGNeDU14YGXiZ9bVzmIQbwrBA</span>+<span class="built_in">c</span>/<span class="type">F4tlK</span>/<span class="type">DV07dsNExihqFoibnqDiVNTGombaU2dDup2gwKdL81ua8EIcGNExHe82kjF4zwfadHk3bQVvbfdAwxcDy4xBjs3L4raPLU3yenSzr</span>/<span class="type">OEur1</span>+jfOxnQSmEcMXKXgrAQ9U55gwjcOFKrgOxEdek/<span class="type">Sk1VfOjvS</span>+nuM4eyEruFMfaZHzoQiuw4IqgGc45ohFH0UUyjYcuFxxDSU9lMCv8qdHKm+wnPRb0l9l5vXsCBDuhAGYD6ss+<span class="type">Ga</span>+aDY6f/qXZuUCEUOH3QUNbbCUlviSz6+<span class="type">GiRnt1kA9N2Qachl</span>+2yBfaqUqr8h7Z2gsx5LcIf5kYNsqJ0GavXTVyWh7PYiKX4bs354ZQLUwwa/cG++<span class="number">2</span>+wNWP+<span class="type">HtBhVxMRNTdVhSm38AknZlD</span>+<span class="type">PTAsWGu9GyLmhti2EnVwGybSD2Dxmhxk3IPCkhKAK</span>+pl0eWYGZWG3tJ9mZ7SowcXLWDFAk0lRJnKGFMTggrWjV8GYpw5bq23VmIqqDLgkNzuoog==</span><br></pre></td></tr></table></figure>
-<h4 id="2、破解补丁下载">2、破解补丁下载</h4>
-<p>链接：<a href="https://pan.baidu.com/s/1EvUvweSG58kFToJXB8ugPw" target="_blank" rel="noopener">https://pan.baidu.com/s/1EvUvweSG58kFToJXB8ugPw</a><br>
-提取码：vnkq</p>
-<p><strong>亲测  JetBrains PhpStorm 2018.3.2  同样也能用</strong></p>
+          <p>vim  /usr/bin/xsync</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash">1. 判断参数个数</span></span><br><span class="line">if [ $# -lt 1 ]</span><br><span class="line">then</span><br><span class="line"> echo Not Enough Arguement!</span><br><span class="line"> exit;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">2. 遍历集群所有机器</span></span><br><span class="line">for host in usdp01 usdp02 usdp03</span><br><span class="line">do</span><br><span class="line"> echo ==================== $host ====================</span><br><span class="line"><span class="meta"> #</span><span class="bash">3. 遍历所有目录，挨个发送</span></span><br><span class="line"> for file in $@</span><br><span class="line"> do</span><br><span class="line"><span class="meta"> #</span><span class="bash">4. 判断文件是否存在</span></span><br><span class="line"> if [ -e $file ]</span><br><span class="line"> then</span><br><span class="line"><span class="meta"> #</span><span class="bash">5. 获取父目录</span></span><br><span class="line"> pdir=$(cd -P $(dirname $file); pwd)</span><br><span class="line"><span class="meta"> #</span><span class="bash">6. 获取当前文件的名称</span></span><br><span class="line"> fname=$(basename $file)</span><br><span class="line"> ssh $host "mkdir -p $pdir"</span><br><span class="line"> rsync -av $pdir/$fname $host:$pdir</span><br><span class="line"> else</span><br><span class="line"> echo $file does not exists!</span><br><span class="line"> fi</span><br><span class="line"> done</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p><strong><a href="http://jpsall.sh" target="_blank" rel="noopener">jpsall.sh</a> 脚本：</strong></p>
+<p>vim /usr/bin/jpsall</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行jps命令查询每台服务器上的节点状态</span></span><br><span class="line">echo ======================集群节点状态====================</span><br><span class="line"></span><br><span class="line">for i in usdp01 usdp02 usdp03</span><br><span class="line">do</span><br><span class="line">        echo ====================== $i ====================</span><br><span class="line">        ssh $i "/opt/module/jdk1.8.0_202/bin/jps"</span><br><span class="line">done</span><br><span class="line">echo ======================执行完毕====================</span><br></pre></td></tr></table></figure>
 
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/01/21/%E7%A0%B4%E8%A7%A3PyCharm%202018.3.2/#more" rel="contents">
+              <a class="btn" href="/2022/10/28/jpsall%20xsync%E5%91%BD%E4%BB%A4%E8%84%9A%E6%9C%AC/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -953,7 +879,7 @@ keep existing files; don’t overwrite them from archive</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/11/python%E7%9B%B4%E6%8E%A5%E6%93%8D%E4%BD%9Cwordpress/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/10/10/StartRocks%E8%A1%A5%E6%95%B0%E6%8D%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -967,7 +893,7 @@ keep existing files; don’t overwrite them from archive</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/01/11/python%E7%9B%B4%E6%8E%A5%E6%93%8D%E4%BD%9Cwordpress/" class="post-title-link" itemprop="url">python直接操作wordpress</a>
+            <a href="/2022/10/10/StartRocks%E8%A1%A5%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">StartRocks补数据</a>
         </h1>
 
         <div class="post-meta">
@@ -977,7 +903,7 @@ keep existing files; don’t overwrite them from archive</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-01-11 09:17:37" itemprop="dateCreated datePublished" datetime="2022-01-11T09:17:37+08:00">2022-01-11</time>
+              <time title="创建时间：2022-10-10 17:25:50" itemprop="dateCreated datePublished" datetime="2022-10-10T17:25:50+08:00">2022-10-10</time>
             </span>
 
           
@@ -991,13 +917,39 @@ keep existing files; don’t overwrite them from archive</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>111</p>
-<h1><a href="https://vulsee.com/archives/vulsee_2021/0119_13534.html" target="_blank" rel="noopener">python直接操作wordpress的模块：python-wordpress-xmlrpc</a></h1>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">from wordpress_xmlrpc import Client, WordPressPost</span><br><span class="line">from wordpress_xmlrpc.methods.posts import GetPosts, NewPost</span><br><span class="line">from wordpress_xmlrpc.methods.users import GetUserInfo</span><br><span class="line"></span><br><span class="line">wp &#x3D; Client(&#39;http:&#x2F;&#x2F;ask3.cn&#x2F;xmlrpc.php&#39;, &#39;A3&#39;, &#39;AAaa11@@&#39;)</span><br><span class="line">wp.call(GetPosts())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">wp.call(GetUserInfo())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">post &#x3D; WordPressPost()</span><br><span class="line">post.title &#x3D; &#39;My new title&#39;</span><br><span class="line">post.content &#x3D; &#39;This is the body of my new post.&#39;</span><br><span class="line">post.terms_names &#x3D; &#123;</span><br><span class="line">&#39;post_tag&#39;: [&#39;test&#39;, &#39;firstpost&#39;],</span><br><span class="line">&#39;category&#39;: [&#39;Introductions&#39;, &#39;Tests&#39;]</span><br><span class="line">&#125;</span><br><span class="line">wp.call(NewPost(post))</span><br></pre></td></tr></table></figure>
-
+          <h1>StartRocks补数据</h1>
+<h2 id="创建catalog">创建catalog</h2>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">CATALOG</span> hive_catalog0 </span><br><span class="line">PROPERTIES(</span><br><span class="line">  <span class="string">"type"</span>=<span class="string">"hive"</span>, </span><br><span class="line">  <span class="string">"hive.metastore.uris"</span>=<span class="string">"thrift://172.20.85.29:9083,thrift://172.20.85.29:9083"</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">SHOW</span> RESOURCES;</span><br><span class="line"></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">databases</span> <span class="keyword">from</span> hive_catalog0</span><br></pre></td></tr></table></figure>
+<h2 id="创建parquet文件格式的临时表">创建parquet文件格式的临时表</h2>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> PAY_TRADECENTER.T_TC_BASE_P </span><br><span class="line"> <span class="keyword">STORED</span> <span class="keyword">AS</span> parquet  </span><br><span class="line"> <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">SELECT</span>  *  <span class="keyword">from</span>  PAY_TRADECENTER.T_TC_BASE <span class="keyword">where</span> pk_day &gt;= <span class="string">'2022-07-16'</span> <span class="keyword">and</span>  pk_day &lt; <span class="string">'2022-08-17'</span></span><br></pre></td></tr></table></figure>
+<h2 id="导入数据">导入数据</h2>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> query_timeout = <span class="number">259200</span>;</span><br><span class="line"><span class="keyword">set</span> exec_mem_limit=<span class="number">21474836480</span>;</span><br><span class="line"><span class="keyword">SET</span> enable_insert_strict = <span class="literal">false</span>; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span>  <span class="keyword">into</span> PAY_TRADECENTER.<span class="string">`T_TC_BASE`</span> (CREATED_AT ,<span class="keyword">ID</span>, TRADE_NO, OUT_TRADE_NO, PRODUCT_TYPE, SUB_PRODUCT_TYPE, PRODUCT_CHANNEL, TRADE_CHANNEL, REQUEST_DATE, REQUEST_SYSTEM, TRADE_AMT, SERVICE_FEE, CCY, MERCHANT_NO, MERCHANT_TRADE_NO, ORIG_TRADE_NO, TRADE_FINISH_DATE, MEMO, EXTEND, SUBJECT, TRADE_STATUS, TRADE_FAIL_STATUS, TRADE_TYPE, REFUND_AMT, RESULT_CODE, RESULT_DESC, TRACE_LOG_ID, SETTLE_ACCOUNT_NO, SETTLE_ACCOUNT_TYPE, FEE_ACCOUNT_NO, FEE_ACCOUNT_TYPE, SUB_MERCHANT_ID, AGENT_NO, STORE_ID, EXTEND1, EXTEND2, EXTEND3, CREATED_BY, UPDATED_AT, UPDATED_BY, USER_ID, EXTEND4, EXTEND5, EXTEND6, TOTAL_ORDER_AMT, UNION_INFO)</span><br><span class="line"><span class="keyword">SELECT</span> CREATED_AT ,<span class="keyword">ID</span>, TRADE_NO, OUT_TRADE_NO, PRODUCT_TYPE, SUB_PRODUCT_TYPE, PRODUCT_CHANNEL, TRADE_CHANNEL, REQUEST_DATE, REQUEST_SYSTEM, TRADE_AMT, SERVICE_FEE, CCY, MERCHANT_NO, MERCHANT_TRADE_NO, ORIG_TRADE_NO, TRADE_FINISH_DATE, MEMO, EXTEND, SUBJECT, TRADE_STATUS, TRADE_FAIL_STATUS, TRADE_TYPE, REFUND_AMT, RESULT_CODE, RESULT_DESC, TRACE_LOG_ID, SETTLE_ACCOUNT_NO, SETTLE_ACCOUNT_TYPE, FEE_ACCOUNT_NO, FEE_ACCOUNT_TYPE, SUB_MERCHANT_ID, AGENT_NO, STORE_ID, EXTEND1, EXTEND2, EXTEND3, CREATED_BY, UPDATED_AT, UPDATED_BY, USER_ID, EXTEND4, EXTEND5, EXTEND6, TOTAL_ORDER_AMT, UNION_INFO</span><br><span class="line"><span class="keyword">FROM</span>  hive_catalog0.PAY_TRADECENTER.T_TC_BASE_P</span><br></pre></td></tr></table></figure>
+<h2 id="删除临时表">删除临时表</h2>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> PAY_TRADECENTER.T_TC_BASE_P</span><br></pre></td></tr></table></figure>
+<p>PAY_AGGREGATE        T_ORDER_EXTERNAL        CREATED_AT<br>
+PAY_BENEFIT        T_BIZ_CMD        CREATED_AT<br>
+PAY_BENEFIT        T_ORDER_BASE        CREATED_AT<br>
+PAY_BENEFIT        T_ORDER_BASE_BENEFIT        CREATED_AT<br>
+<s>PAY_GATEWAY        T_ACQ_AGGREGATE        CREATED_AT</s><br>
+<s>PAY_GATEWAY        T_ACQ_AGGREGATE_DYNAMIC        CREATED_AT</s><br>
+<s>PAY_GATEWAY        T_ACQ_NOTIFY        CREATED_AT</s><br>
+<s>PAY_GATEWAY        T_ACQ_REFUND        CREATED_AT</s><br>
+<s>PAY_GATEWAY        T_RISK_INFO        CREATED_AT</s><br>
+PAY_SETTLE        T_SETTLE_ORDER_ACQUIRING        TRADE_FINISH_DATE<br>
+PAY_SETTLE        T_SETTLE_ORDER_RE·FUND        TRADE_FINISH_DATE<br>
+PAY_TRADECENTER        T_BIZ_CMD        CREATED_AT<br>
+PAY_TRADECENTER        T_TC_ACCOUNT_TRANS        CREATED_AT<br>
+<s>PAY_TRADECENTER        T_TC_AGGREGATE_TRANS        CREATED_AT</s><br>
+<s>PAY_TRADECENTER        T_TC_BASE        CREATED_AT</s><br>
+<s>PAY_TRADECENTER        T_TC_CHANNEL_MSG        CREATED_AT</s><br>
+<s>PAY_TRADECENTER        T_TC_CHANNEL_TRANS        CREATED_AT</s><br>
+PAY_VERIFY        T_VERIFY_BANK_TRANS        VERIFY_DATE<br>
+PAY_VERIFY        T_VERIFY_CHANNEL_COST        VERIFY_DATE<br>
+PAY_VERIFY        T_VERIFY_CHANNEL_TRANS        VERIFY_DATE<br>
+PAY_VERIFY        T_VERIFY_RESULT        VERIFY_DATE</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/01/11/python%E7%9B%B4%E6%8E%A5%E6%93%8D%E4%BD%9Cwordpress/#more" rel="contents">
+              <a class="btn" href="/2022/10/10/StartRocks%E8%A1%A5%E6%95%B0%E6%8D%AE/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1021,7 +973,7 @@ keep existing files; don’t overwrite them from archive</p>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1089,7 +1041,7 @@ keep existing files; don’t overwrite them from archive</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">133</span>
+          <span class="site-state-item-count">155</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1101,7 +1053,7 @@ keep existing files; don’t overwrite them from archive</p>
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/chinayangze" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chinayangze" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+        <a href="http://106.54.147.3:3002/" title="ChatGPT → http:&#x2F;&#x2F;106.54.147.3:3002" rel="noopener" target="_blank"><i class="fa fa-fw fa-ChatGPT"></i>ChatGPT</a>
       </span>
       <span class="links-of-author-item">
         <a href="mailto:info@ask3.cn" title="E-Mail → mailto:info@ask3.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>

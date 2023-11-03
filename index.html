@@ -209,7 +209,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/04/06/trino%E9%9B%86%E7%BE%A4%E4%BC%98%E5%8C%96/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/11/02/tidb%E9%83%A8%E7%BD%B2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -223,7 +223,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2023/04/06/trino%E9%9B%86%E7%BE%A4%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">trino集群优化</a>
+            <a href="/2023/11/02/tidb%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">tidb部署</a>
         </h1>
 
         <div class="post-meta">
@@ -233,7 +233,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-04-06 13:29:50" itemprop="dateCreated datePublished" datetime="2023-04-06T13:29:50+08:00">2023-04-06</time>
+              <time title="创建时间：2023-11-02 10:51:26" itemprop="dateCreated datePublished" datetime="2023-11-02T10:51:26+08:00">2023-11-02</time>
             </span>
 
           
@@ -247,543 +247,50 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>trino集群优化</p>
-<p><a href="https://www.cnblogs.com/erlou96/p/16878170.html" target="_blank" rel="noopener">https://www.cnblogs.com/erlou96/p/16878170.html</a></p>
-<h2 id="config-properties">config.properties</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">coordinator&#x3D;true</span><br><span class="line">node-scheduler.include-coordinator&#x3D;true</span><br><span class="line">http-server.http.port&#x3D;8089</span><br><span class="line">#query.max-total-memory-per-node&#x3D;2GB</span><br><span class="line">discovery-server.enabled&#x3D;true</span><br><span class="line">discovery.uri&#x3D;http:&#x2F;&#x2F;cdh192-147.hadoop.xy:8089</span><br><span class="line"></span><br><span class="line">#禁用保留池  (新版本已经删除了)</span><br><span class="line">#experimental.reserved-pool-enabled&#x3D;false</span><br><span class="line">#在单个 worker 上面可以使用的最大的user memory值 （默认JVM max memory * 0.1）调整到 JVM max memory * 0.25</span><br><span class="line">#query.max-memory-per-node&#x3D;100GB</span><br><span class="line">#单个Query在单个Worker上允许的最大user memory + system memory 调整到 JVM max memory * 0.4</span><br><span class="line">#query.max-total-memory-per-node&#x3D;16GB</span><br><span class="line">#这个内存主要是第三方库的内存分配，无法统计跟踪。 （默认JVM max memory * 0.3）调整到 JVM max memory * 0.2</span><br><span class="line">#memory.heap-headroom-per-node&#x3D;8GB</span><br><span class="line">#单个查询在所有任务调度的节点上瞬间最大能用的内存（单个查询的峰值内存） 调整到 &lt;&#x3D; query.max-total-memory-per-node * workers * 0.8</span><br><span class="line">query.max-memory&#x3D;300GB</span><br><span class="line">#当presto集群发生OOM时的内存保护策略，配置 total-reservation 是kill 掉占用内存最大的任务</span><br><span class="line">query.low-memory-killer.policy&#x3D;total-reservation</span><br><span class="line"></span><br><span class="line">#延长等待时间</span><br><span class="line">exchange.http-client.request-timeout&#x3D;10s</span><br><span class="line">#从其他Presto节点获取数据的线程数。较高的值可以提高大型群集或具有很高并发性的群集的性能(默认值：25)</span><br><span class="line">exchange.client-threads&#x3D;128</span><br><span class="line">exchange.http-client.idle-timeout &#x3D; 10s</span><br><span class="line">#并行运算符（例如联接和聚合）的默认本地并发性。较低的值对于同时运行许多查询的集群更好（默认值：16，必须是2的幂次）</span><br><span class="line">task.concurrency&#x3D;2</span><br><span class="line">task.max-worker-threads&#x3D;256</span><br><span class="line">#可以创建用于处理HTTP响应的最大线程数。在具有大量并发查询的群集上或在具有数百或数千个工作程序的群集上，可以调高（默认值:100）</span><br><span class="line">task.http-response-threads&#x3D;2000</span><br><span class="line">join-distribution-type&#x3D;AUTOMATIC</span><br><span class="line">node-scheduler.max-splits-per-node&#x3D;2000</span><br><span class="line">query.max-stage-count&#x3D;4000</span><br><span class="line"></span><br><span class="line">#自动kill运行时长超过20分钟的sql（代替脚本kill任务，让presto 自动管理）：</span><br><span class="line">query.max-run-time&#x3D;1200s</span><br><span class="line">#解决新版本 remote too large 报错 </span><br><span class="line">exchange.http-client.max-content-length&#x3D;128MB</span><br><span class="line">node-manager.http-client.max-content-length&#x3D;64MB</span><br></pre></td></tr></table></figure>
-<h2 id="jvm-config">jvm.config</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-Xmx1024G</span><br><span class="line">-Xms1024G</span><br><span class="line">-XX:+UseG1GC</span><br><span class="line">-XX:+ExplicitGCInvokesConcurrent</span><br><span class="line">-XX:+HeapDumpOnOutOfMemoryError</span><br><span class="line">-XX:+UseGCOverheadLimit</span><br><span class="line">-XX:OnOutOfMemoryError&#x3D;kill -9 %p</span><br><span class="line">-DHADOOP_USER_NAME&#x3D;hdfs</span><br><span class="line">-Duser.timezone&#x3D;Asia&#x2F;Shanghai</span><br><span class="line">-Djdk.attach.allowAttachSelf&#x3D;true</span><br><span class="line">-XX:G1ReservePercent&#x3D;15</span><br><span class="line">-XX:InitiatingHeapOccupancyPercent&#x3D;40</span><br><span class="line">-XX:ConcGCThreads&#x3D;8</span><br></pre></td></tr></table></figure>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/04/06/trino%E9%9B%86%E7%BE%A4%E4%BC%98%E5%8C%96/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/03/30/starRocks%E9%83%A8%E7%BD%B2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/03/30/starRocks%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">starRocks部署</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-03-30 10:52:47" itemprop="dateCreated datePublished" datetime="2023-03-30T10:52:47+08:00">2023-03-30</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>[clickhouse]<br>
-172.20.85.[111:113]<br>
-172.20.85.[138:142]</p>
-<p>[fe]<br>
-172.20.85.[111:113]</p>
-<p>[be]<br>
-172.20.85.[138:142]</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible clickhouse -m copy -a &quot;src&#x3D;&#x2F;root&#x2F;.bashrc dest&#x3D;&#x2F;root&#x2F;.bashrc &quot;</span><br><span class="line">ansible clickhouse -m shell -a &quot;java -version  &quot;</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ansible clickhouse -m shell -a <span class="string">"yum install -y rsync  "</span></span><br><span class="line">ansible clickhouse  -m synchronize  -a <span class="string">"src=/opt/module/StarRocks dest=/opt/module/"</span>  </span><br><span class="line">ansible clickhouse -m shell -a <span class="string">" ls /opt/module/StarRocks "</span></span><br></pre></td></tr></table></figure>
-<h2 id="fe部署">fe部署</h2>
-<p>第一次启动需指定–helper参数，后续再启动无需指定此参数<br>
-sh /opt/module/StarRocks/fe/bin/start_fe.sh --helper 172.20.85.111:9010 --daemon</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;fe&#x2F;bin&#x2F;stop_fe.sh &quot;</span><br><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;fe&#x2F;bin&#x2F;start_fe.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mysql -h 127.0.0.1 -P9030 -uroot -p</span><br><span class="line">mysql&gt; SHOW PROC '/frontends'\G</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"172.20.85.112:9010"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"172.20.85.142:9010"</span>;</span><br><span class="line"><span class="comment"># ALTER SYSTEM DROP FOLLOWER "172.20.85.142:9010";</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> OBSERVER <span class="string">"172.20.85.113:9010"</span>;</span><br></pre></td></tr></table></figure>
-<h2 id="be-部署">be 部署</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/03/30/starRocks%E9%83%A8%E7%BD%B2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/03/29/hbase%E7%9A%84master%E5%92%8Cregionserver%E7%9A%84jvm%E8%B0%83%E4%BC%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/03/29/hbase%E7%9A%84master%E5%92%8Cregionserver%E7%9A%84jvm%E8%B0%83%E4%BC%98/" class="post-title-link" itemprop="url">hbase的master和regionserver的jvm调优</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-03-29 14:27:58" itemprop="dateCreated datePublished" datetime="2023-03-29T14:27:58+08:00">2023-03-29</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>hbase的master和regionserver的jvm调优</h1>
-<p><a href="https://blog.csdn.net/Robots_/article/details/112475758" target="_blank" rel="noopener">https://blog.csdn.net/Robots_/article/details/112475758</a></p>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/03/29/hbase%E7%9A%84master%E5%92%8Cregionserver%E7%9A%84jvm%E8%B0%83%E4%BC%98/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/03/21/%E9%83%A8%E7%BD%B2Alluxio%E9%9B%86%E7%BE%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/03/21/%E9%83%A8%E7%BD%B2Alluxio%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">部署Alluxio集群</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-03-21 17:59:15" itemprop="dateCreated datePublished" datetime="2023-03-21T17:59:15+08:00">2023-03-21</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>准备<br>
-下载文件：wget <a href="https://downloads.alluxio.io/downloads/files/2.8.0/alluxio-2.8.0-bin.tar.gz" target="_blank" rel="noopener">https://downloads.alluxio.io/downloads/files/2.8.0/alluxio-2.8.0-bin.tar.gz</a></p>
-<p>解压目录：/opt/servers/alluxio</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;downloads.alluxio.io&#x2F;downloads&#x2F;files&#x2F;2.9.2&#x2F;alluxio-2.9.2-bin.tar.gz</span><br><span class="line">tar -xzf alluxio-2.9.2-bin.tar.gz -C &#x2F;opt&#x2F;servers&#x2F;alluxio</span><br></pre></td></tr></table></figure>
-<p>创建目录：mkdir -p /mnt/ramdisk</p>
-<p>机器：10.0.21.190（master，worker）10.0.21.191（master，worker）10.0.21.192（worker）</p>
-<h2 id="HA-配置">HA 配置</h2>
-<p>搭建高可用集群前的准备:</p>
-<ul>
-<li>
-<p>①确保Zookeeper服务已经运行</p>
-</li>
-<li>
-<p>②一个单独安装的可靠的共享日志存储系统(可用HDFS或S3等系统)</p>
-</li>
-<li>
-<p>③这个配置针对Alluxio 2.x版本，不适用于1.x版本</p>
-</li>
-<li>
-<p>④需要事先创建好ramdisk挂载目录</p>
-</li>
-</ul>
-<p>配置hive alluxio文件系统：core-site.xml</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">      &lt;name&gt;fs.alluxio.impl&lt;&#x2F;name&gt;</span><br><span class="line">      &lt;value&gt;alluxio.hadoop.FileSystem&lt;&#x2F;value&gt;</span><br><span class="line">      &lt;description&gt;The Alluxio FileSystem (Hadoop 1.x and 2.x)&lt;&#x2F;description&gt;</span><br><span class="line">  &lt;&#x2F;property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">      &lt;name&gt;fs.AbstractFileSystem.alluxio.impl&lt;&#x2F;name&gt;</span><br><span class="line">      &lt;value&gt;alluxio.hadoop.AlluxioFileSystem&lt;&#x2F;value&gt;</span><br><span class="line">      &lt;description&gt;The Alluxio AbstractFileSystem (Hadoop 2.x)&lt;&#x2F;description&gt;</span><br><span class="line">  &lt;&#x2F;property&gt;</span><br><span class="line">&lt;&#x2F;configuration&gt;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/03/21/%E9%83%A8%E7%BD%B2Alluxio%E9%9B%86%E7%BE%A4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/03/21/Hbase%20Call%20queue%20is%20full%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90%E5%8F%8A%E8%A7%A3%E5%86%B3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/03/21/Hbase%20Call%20queue%20is%20full%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90%E5%8F%8A%E8%A7%A3%E5%86%B3/" class="post-title-link" itemprop="url">Hbase Call queue is full问题分析及解决</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-03-21 13:30:00" itemprop="dateCreated datePublished" datetime="2023-03-21T13:30:00+08:00">2023-03-21</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>Hbase Call queue is full问题分析及解决</h1>
-<p><a href="https://hijiazz.gitee.io/hbase-callqueue-isfull/" target="_blank" rel="noopener">https://hijiazz.gitee.io/hbase-callqueue-isfull/</a></p>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/03/21/Hbase%20Call%20queue%20is%20full%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90%E5%8F%8A%E8%A7%A3%E5%86%B3/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/03/10/%E9%9B%86%E6%88%90Flink%20HistoryServer%E8%87%B3CDH/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/03/10/%E9%9B%86%E6%88%90Flink%20HistoryServer%E8%87%B3CDH/" class="post-title-link" itemprop="url">集成Flink HistoryServer至CDH</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-03-10 16:11:27" itemprop="dateCreated datePublished" datetime="2023-03-10T16:11:27+08:00">2023-03-10</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>集成Flink HistoryServer至CDH</h1>
-<p>参考 <a href="https://blog.csdn.net/guiyifei/article/details/109325980" target="_blank" rel="noopener">https://blog.csdn.net/guiyifei/article/details/109325980</a></p>
-<h1>制作Flink的parcel包和<a href="https://so.csdn.net/so/search?q=csd&amp;spm=1001.2101.3001.7020" target="_blank" rel="noopener">csd</a>文件</h1>
-<h2 id="1-下载制作脚本">1. 下载制作脚本</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;EvenGui&#x2F;flink-parcel-master</span><br><span class="line"></span><br><span class="line">cd flink-parcel-master</span><br></pre></td></tr></table></figure>
-<h2 id="修改参数vim-flink-parcel-properties">修改参数vim flink-parcel.properties</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#FLINk 下载地址</span><br><span class="line">FLINK_URL&#x3D;  &#x2F;opt&#x2F;soft&#x2F;flink-1.14.6-bin-scala_2.12.tgz</span><br><span class="line"></span><br><span class="line">#flink版本号</span><br><span class="line">FLINK_VERSION&#x3D;1.14.6</span><br><span class="line"></span><br><span class="line">#扩展版本号</span><br><span class="line">EXTENS_VERSION&#x3D;BIN-SCALA_2.12</span><br><span class="line"></span><br><span class="line">#操作系统版本，以centos为例</span><br><span class="line">OS_VERSION&#x3D;7</span><br><span class="line"></span><br><span class="line">#CDH 小版本</span><br><span class="line">CDH_MIN_FULL&#x3D;5.13.1</span><br><span class="line">CDH_MAX_FULL&#x3D;6.3.2</span><br><span class="line"></span><br><span class="line">#CDH大版本</span><br><span class="line">CDH_MIN&#x3D;5</span><br><span class="line">CDH_MAX&#x3D;6</span><br></pre></td></tr></table></figure>
-<h2 id="编译parcel">编译parcel</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh build.sh parcel</span><br></pre></td></tr></table></figure>
-<p>./FLINK-1.14.6-BIN-SCALA_2.12/lib/flink/bin/start-scala-shell.sh does not exist.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/03/10/%E9%9B%86%E6%88%90Flink%20HistoryServer%E8%87%B3CDH/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/03/10/CDH%206.3.2%20%E9%9B%86%E6%88%90%20flink%201.14.6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/03/10/CDH%206.3.2%20%E9%9B%86%E6%88%90%20flink%201.14.6/" class="post-title-link" itemprop="url">CDH 6.3.2 集成 flink 1.14.6</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-03-10 15:55:24" itemprop="dateCreated datePublished" datetime="2023-03-10T15:55:24+08:00">2023-03-10</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>CDH 6.3.2 集成 flink 1.14.6</h1>
-<h1>制作Flink的parcel包和<a href="https://so.csdn.net/so/search?q=csd&amp;spm=1001.2101.3001.7020" target="_blank" rel="noopener">csd</a>文件</h1>
-<h2 id="1-下载制作脚本">1. 下载制作脚本</h2>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 克隆源码</span><br><span class="line">git clone https:<span class="comment">//github.com/pkeropen/flink-parcel.git</span></span><br><span class="line">cd flink-parcel</span><br></pre></td></tr></table></figure>
-<h2 id="2-修改参数">2 修改参数</h2>
-<p>vim flink-parcel.properties</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#FLINK 下载地址</span></span><br><span class="line"><span class="attr">FLINK_URL</span>=<span class="string">https://archive.apache.org/dist/flink/flink-1.14.6/flink-1.14.6-bin-scala_2.12.tgz</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#flink版本号</span></span><br><span class="line"><span class="attr">FLINK_VERSION</span>=<span class="string">1.14.6</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#扩展版本号</span></span><br><span class="line"><span class="attr">EXTENS_VERSION</span>=<span class="string">BIN-SCALA_2.12</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#操作系统版本，以centos为例</span></span><br><span class="line"><span class="attr">OS_VERSION</span>=<span class="string">7</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#CDH 小版本</span></span><br><span class="line"><span class="attr">CDH_MIN_FULL</span>=<span class="string">5.13.1</span></span><br><span class="line"><span class="attr">CDH_MAX_FULL</span>=<span class="string">6.3.2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#CDH大版本</span></span><br><span class="line"><span class="attr">CDH_MIN</span>=<span class="string">5</span></span><br><span class="line"><span class="attr">CDH_MAX</span>=<span class="string">6</span></span><br></pre></td></tr></table></figure>
-<h2 id="4-编译parcel">4 编译parcel</h2>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 赋予执行权限</span><br><span class="line">chmod +x ./build.sh</span><br><span class="line"># 执行编译脚本</span><br><span class="line">./build.sh parcel</span><br></pre></td></tr></table></figure>
-<p>编译完会在flink-parcel项目根目录下生成_build文件夹</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/03/10/CDH%206.3.2%20%E9%9B%86%E6%88%90%20flink%201.14.6/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/02/22/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/02/22/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/" class="post-title-link" itemprop="url">内网穿透</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-02-22 17:56:32" itemprop="dateCreated datePublished" datetime="2023-02-22T17:56:32+08:00">2023-02-22</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>内网穿透</h1>
-<p>花生壳的http不能免费使用了，网上找了资料实测下面这2款可以用</p>
-<h2 id="localhost-run">localhost.run</h2>
-<p><a href="http://localhost.run/" target="_blank" rel="noopener">http://localhost.run/</a></p>
-<p>1、这个使用最简单，不需要下载任何软件，简单一行ssh命令就行。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -R 80:localhost:8080 nokey@localhost.run</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-R命令表示反向端口转发</span><br><span class="line">80是被指定的转发端口</span><br><span class="line">localhost是你局域网ip地址（对应127.0.0.1）</span><br><span class="line">8080是你的局域网端口号</span><br><span class="line">nokey@localhost.run是一台处在公网的服务器</span><br></pre></td></tr></table></figure>
-<h2 id="FastTunnel">FastTunnel</h2>
-<p><a href="https://suidao.io/" target="_blank" rel="noopener">https://suidao.io/</a></p>
+          <p>新建用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">useradd tidb</span><br><span class="line">su - tidb</span><br></pre></td></tr></table></figure>
+<h2 id="在中控机上部署-TiUP-组件">在中控机上部署 TiUP 组件</h2>
+<p>在中控机上部署 TiUP 组件有两种方式：在线部署和离线部署。</p>
+<h3 id="在线部署">在线部署</h3>
+<p>以普通用户身份登录中控机。以 <code>tidb</code> 用户为例，后续安装 TiUP 及集群管理操作均通过该用户完成：</p>
 <ol>
-<li>在个人中心获取用于客户端登录的<code>AccessKey</code></li>
-<li>在创建隧道页面，创建需要穿透的隧道信息。</li>
-<li>下载并启动客户端软件, 根据提示录入<code>AccessKey</code>进行登录, 登录成功后根据映射信息提示进行访问你的服务。</li>
+<li>
+<p>执行如下命令安装 TiUP 工具：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --proto <span class="string">'=https'</span> --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>按如下步骤设置 TiUP 环境变量：</p>
+<ol>
+<li>
+<p>重新声明全局环境变量：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> .bash_profile</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>确认 TiUP 工具是否安装：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span> tiup</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
+</li>
+<li>
+<p>安装 TiUP cluster 组件：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tiup cluster</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>如果已经安装，则更新 TiUP cluster 组件至最新版本：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tiup update --self &amp;&amp; tiup update cluster</span><br></pre></td></tr></table></figure>
+<p>预期输出 <code>“Update successfully!”</code> 字样。</p>
+</li>
+<li>
+<p>验证当前 TiUP cluster 版本信息。执行如下命令查看 TiUP cluster 组件版本：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tiup --binary cluster</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="优化系统配置">优化系统配置</h2>
+<p>vim /etc/sysctl.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">net.ipv4.tcp_tw_recycle &#x3D; 0</span><br><span class="line">net.ipv4.tcp_syncookies &#x3D; 0</span><br><span class="line">net.core.somaxconn &#x3D; 32768</span><br><span class="line">vm.swappiness &#x3D; 0</span><br><span class="line">vm.overcommit_memory &#x3D; 0</span><br><span class="line">fs.file-max &#x3D; 1000000</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/02/22/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/#more" rel="contents">
+              <a class="btn" href="/2023/11/02/tidb%E9%83%A8%E7%BD%B2/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -807,7 +314,7 @@ sh /opt/module/StarRocks/fe/bin/start_fe.sh --helper 172.20.85.111:9010 --daemon
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/02/21/doris%E9%83%A8%E7%BD%B2/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/10/31/%E4%BB%8E%20TiDB%20%E9%9B%86%E7%BE%A4%E8%BF%81%E7%A7%BB%E6%95%B0%E6%8D%AE%E8%87%B3%E5%8F%A6%E4%B8%80%20TiDB%20%E9%9B%86%E7%BE%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -821,7 +328,7 @@ sh /opt/module/StarRocks/fe/bin/start_fe.sh --helper 172.20.85.111:9010 --daemon
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2023/02/21/doris%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">doris部署</a>
+            <a href="/2023/10/31/%E4%BB%8E%20TiDB%20%E9%9B%86%E7%BE%A4%E8%BF%81%E7%A7%BB%E6%95%B0%E6%8D%AE%E8%87%B3%E5%8F%A6%E4%B8%80%20TiDB%20%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">从 TiDB 集群迁移数据至另一 TiDB 集群</a>
         </h1>
 
         <div class="post-meta">
@@ -831,7 +338,7 @@ sh /opt/module/StarRocks/fe/bin/start_fe.sh --helper 172.20.85.111:9010 --daemon
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-02-21 16:44:03" itemprop="dateCreated datePublished" datetime="2023-02-21T16:44:03+08:00">2023-02-21</time>
+              <time title="创建时间：2023-10-31 10:46:18" itemprop="dateCreated datePublished" datetime="2023-10-31T10:46:18+08:00">2023-10-31</time>
             </span>
 
           
@@ -845,19 +352,19 @@ sh /opt/module/StarRocks/fe/bin/start_fe.sh --helper 172.20.85.111:9010 --daemon
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>doris部署</p>
-<h2 id="fe部署">fe部署</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">第一次启动需指定--helper参数，后续再启动无需指定此参数</span><br><span class="line">sh &#x2F;opt&#x2F;module&#x2F;apache-doris-fe&#x2F;bin&#x2F;start_fe.sh --helper cdh192-150:19010 --daemon</span><br><span class="line"></span><br><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-fe&#x2F;bin&#x2F;stop_fe.sh &quot;</span><br><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-fe&#x2F;bin&#x2F;start_fe.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql -h 127.0.0.1 -P9030 -uroot -p</span><br><span class="line">mysql&gt; SHOW PROC '/frontends'\G</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"cdh192-151:19010"</span>;</span><br><span class="line"><span class="comment"># ALTER SYSTEM DROP FOLLOWER "cdh192-151:19010";</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> OBSERVER <span class="string">"cdh192-152:19010"</span>;</span><br><span class="line"><span class="comment"># ALTER SYSTEM drop OBSERVER "cdh192-152:19010";</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"cdh192-153:19010"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"cdh192-146.hadoop.xy:19010"</span>;</span><br><span class="line"></span><br><span class="line">netstat -nap |grep 19010</span><br></pre></td></tr></table></figure>
-<h2 id="be-部署">be 部署</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible be -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;stop_be.sh &quot;</span><br><span class="line">ansible be -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;start_be.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SHOW PROC '/backends'\G</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-150:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-151:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-152:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh192-146:9050"</span>;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible be -m shell -a &quot;sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;stop_be.sh &quot;</span><br><span class="line">ansible be -m shell -a &quot;sh &#x2F;opt&#x2F;module&#x2F;apache-doris-be&#x2F;bin&#x2F;start_be.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
-<h2 id="doris升级">doris升级</h2>
-<p><strong>重要！！在升级之前需要备份元数据（整个目录都需要备份）！！</strong></p>
+          <h2 id="迁移全量数据">迁移全量数据</h2>
+<p>关闭 GC。</p>
+<p>为了保证增量迁移过程中新写入的数据不丢失，在开始备份之前，需要关闭上游集群的垃圾回收 (GC) 机制，以确保系统不再清理历史数据。</p>
+<p>执行如下命令关闭 GC：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; SET GLOBAL tidb_gc_enable=FALSE;</span><br></pre></td></tr></table></figure>
+<p>备份数据。</p>
+<p>在上游集群中执行 BACKUP 语句备份数据：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MySQL [(none)]&gt; BACKUP DATABASE * TO 's3://backup?access-key=minio&amp;secret-access-key=miniostorage&amp;endpoint=http://$&#123;HOST_IP&#125;:6060&amp;force-path-style=true' RATE_LIMIT = 120 MB/SECOND;</span><br></pre></td></tr></table></figure>
+<p>恢复数据。</p>
+<p>在下游集群中执行 RESTORE 语句恢复数据：</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/02/21/doris%E9%83%A8%E7%BD%B2/#more" rel="contents">
+              <a class="btn" href="/2023/10/31/%E4%BB%8E%20TiDB%20%E9%9B%86%E7%BE%A4%E8%BF%81%E7%A7%BB%E6%95%B0%E6%8D%AE%E8%87%B3%E5%8F%A6%E4%B8%80%20TiDB%20%E9%9B%86%E7%BE%A4/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -881,7 +388,7 @@ sh /opt/module/StarRocks/fe/bin/start_fe.sh --helper 172.20.85.111:9010 --daemon
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/02/10/hk-blockin%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/09/13/SR%E8%BF%90%E7%BB%B4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -895,7 +402,7 @@ sh /opt/module/StarRocks/fe/bin/start_fe.sh --helper 172.20.85.111:9010 --daemon
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2023/02/10/hk-blockin%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">hk-blockin系统优化</a>
+            <a href="/2023/09/13/SR%E8%BF%90%E7%BB%B4/" class="post-title-link" itemprop="url">SR运维</a>
         </h1>
 
         <div class="post-meta">
@@ -905,7 +412,7 @@ sh /opt/module/StarRocks/fe/bin/start_fe.sh --helper 172.20.85.111:9010 --daemon
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-02-10 17:37:33" itemprop="dateCreated datePublished" datetime="2023-02-10T17:37:33+08:00">2023-02-10</time>
+              <time title="创建时间：2023-09-13 10:56:11" itemprop="dateCreated datePublished" datetime="2023-09-13T10:56:11+08:00">2023-09-13</time>
             </span>
 
           
@@ -919,19 +426,543 @@ sh /opt/module/StarRocks/fe/bin/start_fe.sh --helper 172.20.85.111:9010 --daemon
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>群用到了那些组件？ 版本有什么要求？</p>
-<p>trino386，这个是jdk11了，安装两个目录就行了， phoenix5， hive3.1.2, hadoop.3.1.3,spark2.4.8,spark3.2 flink1.12.7, flink和spark都想升级。 iceberg.0.13.2,</p>
-<p>trino ui地址  <a href="http://cdh192-57:8089/ui/" target="_blank" rel="noopener">http://cdh192-57:8089/ui/</a>  用户 presto          jdbc 172.20.192.57  用户presto</p>
-<p>软件都安装在/home/hadoop/bigdata/这个下面</p>
-<p>[root@hadoop102 ~]$ xsync/home/hadoop/bigdata/hadoop/etc/hadoop/capacity-scheduler.xml</p>
-<p>刷新yarn集群的队列</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;HADOOP_HOME&#125;&#x2F;bin&#x2F;yarn rmadmin -refreshQueues&#96; 或&#96;yarn rmadmin -refreshQueues</span><br></pre></td></tr></table></figure>
-<p>hbase</p>
-<p>cdh192-[234-236]</p>
-<p>/opt/local/</p>
+          <h2 id="修复tablet">修复tablet</h2>
+<p><strong>注意： 要连接fe的leader节点</strong></p>
+<p>找到错误的tablet</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW PROC &#39;&#x2F;statistic&#x2F;12026&#39;;</span><br></pre></td></tr></table></figure>
+<p>找到tablet对应错误的 IsErrorState 的节点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">show tablet 341603</span><br><span class="line">SHOW PROC &#39;&#x2F;dbs&#x2F;12026&#x2F;335109&#x2F;partitions&#x2F;335078&#x2F;335110&#x2F;341603&#39;;</span><br></pre></td></tr></table></figure>
+<p>setBad</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ADMIN SET REPLICA STATUS PROPERTIES(&quot;tablet_id&quot; &#x3D; &quot;341603&quot;, &quot;backend_id&quot; &#x3D; &quot;10006&quot; , &quot;status&quot; &#x3D; &quot;bad&quot;);</span><br></pre></td></tr></table></figure>
+
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/02/10/hk-blockin%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96/#more" rel="contents">
+              <a class="btn" href="/2023/09/13/SR%E8%BF%90%E7%BB%B4/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/09/05/Minio%20%E6%A8%A1%E6%8B%9F%E5%85%BC%E5%AE%B9%20S3%20%E7%9A%84%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/05/Minio%20%E6%A8%A1%E6%8B%9F%E5%85%BC%E5%AE%B9%20S3%20%E7%9A%84%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1/" class="post-title-link" itemprop="url">Minio 模拟兼容 S3 的存储服务</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-09-05 09:35:51" itemprop="dateCreated datePublished" datetime="2023-09-05T09:35:51+08:00">2023-09-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="搭建-MinIO-作为备份存储系统-，兼容S3">搭建 MinIO 作为备份存储系统 ，兼容S3</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;dl.min.io&#x2F;server&#x2F;minio&#x2F;release&#x2F;linux-amd64&#x2F;minio</span><br><span class="line">chmod +x minio</span><br><span class="line"></span><br><span class="line"># 配置访问 minio 的 access-key access-screct-id</span><br><span class="line"></span><br><span class="line">export HOST_IP&#x3D;&#39;172.20.192.151&#39; </span><br><span class="line">export MINIO_ROOT_USER&#x3D;&#39;minio&#39;</span><br><span class="line">export MINIO_ROOT_PASSWORD&#x3D;&#39;miniostorage&#39;</span><br><span class="line"></span><br><span class="line"># 创建数据目录,  其中 backup 为 bucket 的名称</span><br><span class="line"></span><br><span class="line">mkdir -p data&#x2F;backup</span><br><span class="line"></span><br><span class="line"># 启动 minio, 暴露端口在 6060</span><br><span class="line"></span><br><span class="line">&#x2F;opt&#x2F;module&#x2F;minio server &#x2F;opt&#x2F;module&#x2F;data --address :6060 &amp;</span><br></pre></td></tr></table></figure>
+<h2 id="单节点部署多磁盘">单节点部署多磁盘</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;opt&#x2F;module&#x2F;minio server --address :6060  &#x2F;dfs&#x2F;data1&#x2F;s3data &#x2F;dfs&#x2F;data2&#x2F;s3data &#x2F;dfs&#x2F;data3&#x2F;s3d &amp;</span><br></pre></td></tr></table></figure>
+<h2 id="备份-还原-TIDB数据">备份 还原 TIDB数据</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mycli -h172.20.192.70 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">BACKUP DATABASE test TO &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39; RATE_LIMIT &#x3D; 120 MB&#x2F;SECOND;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mycli -h172.20.192.115 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">mysql&gt; RESTORE DATABASE test FROM &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39;;</span><br></pre></td></tr></table></figure>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/09/05/Minio%20%E6%A8%A1%E6%8B%9F%E5%85%BC%E5%AE%B9%20S3%20%E7%9A%84%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/08/22/cloudcanl%202.2.4%20%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/22/cloudcanl%202.2.4%20%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">cloudcanl 2.2.4 安装部署</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-08-22 10:31:59" itemprop="dateCreated datePublished" datetime="2023-08-22T10:31:59+08:00">2023-08-22</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>cloudcanl 2.2.4 安装部署</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">sudo yum update</span><br><span class="line"></span><br><span class="line"># base util</span><br><span class="line"></span><br><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum install -y lsof</span><br><span class="line">sudo yum install -y bc</span><br><span class="line">sudo yum install -y p7zip p7zip-plugins</span><br><span class="line"></span><br><span class="line"># install docker</span><br><span class="line"></span><br><span class="line">sudo yum-config-manager --add-repo https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br><span class="line">sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</span><br><span class="line">sudo systemctl start docker</span><br><span class="line">systemctl enable docker</span><br><span class="line">sudo wget &quot;https:&#x2F;&#x2F;pc.clougence.com&#x2F;docker-compose-1.28.3&quot; -O &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br><span class="line">sudo chmod +x &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br><span class="line"></span><br><span class="line"># check</span><br><span class="line"></span><br><span class="line">docker -v</span><br><span class="line">docker compose version</span><br></pre></td></tr></table></figure>
+<h2 id="系统准备">系统准备</h2>
+<p>clougence用户ulimit上限调整为102400</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vi  &#x2F;etc&#x2F;security&#x2F;limits.d&#x2F;20-nproc.conf</span><br><span class="line">## 调节clougence用户的资源限制</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 解压*</span><br><span class="line">7z x cloudcanal-2.2.4.7z -o.&#x2F;cloudcanal_home</span><br><span class="line">cd cloudcanal_home</span><br></pre></td></tr></table></figure>
+<h2 id="5-启动CloudCanal">5. 启动CloudCanal</h2>
+<ul>
+<li>执行启动命令: <code>sh startup.sh</code></li>
+<li>当终端出现 cloudcanal start 时，即启动成功<br>
+<a href="https://www.askcug.com/assets/uploads/files/1620979032983-7b00e562-cd45-4905-a626-1356503d8213-image.png" target="_blank" rel="noopener"><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2023/04/1620979032983-7b00e562-cd45-4905-a626-1356503d8213-image-resized.png" alt="7b00e562-cd45-4905-a626-1356503d8213-image.png"></a></li>
+</ul>
+<h2 id="6-确认启动成功">6. 确认启动成功</h2>
+<ul>
+<li>启动过程将耗时 1 分钟左右，访问控制台 <code>http://{您部署机器的ip}:8111</code> 正确登录并开始操作</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/22/cloudcanl%202.2.4%20%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/08/16/tidb%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/16/tidb%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">tidb常用操作</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-08-16 15:58:05" itemprop="dateCreated datePublished" datetime="2023-08-16T15:58:05+08:00">2023-08-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>tidb常用操作</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">tiup cluster deploy tidb-test-v1 v6.5.2 ./topology.yaml --user root -p</span><br><span class="line">tiup cluster list</span><br><span class="line">tiup cluster clean tidb-test-v1 --all</span><br><span class="line"><span class="meta">#</span><span class="bash"> tiup cluster destroy tidb-test-v1</span></span><br><span class="line">tiup cluster start tidb-test-v1 --init</span><br><span class="line">tiup cluster display tidb-test-v1</span><br><span class="line">tiup cluster stop tidb-test-v1</span><br><span class="line">tiup cluster restart tidb-test-v1 </span><br><span class="line">tiup cluster edit-config tidb-test-v1 </span><br><span class="line">tiup cluster check tidb-test-v1 scale-out.yml --cluster --user root -p</span><br><span class="line">tiup cluster check tidb-test-v1 scale-out.yml --cluster --apply --user root -p</span><br><span class="line">tiup cluster scale-out tidb-test-v1 scale-out.yml --user root -p</span><br><span class="line">tiup ctl:v6.5.2 pd -u http://172.20.192.70:2379 store limit all engine tiflash 200 add-peer</span><br><span class="line">-- 如果你使用 TiUP 部署，可以用 tiup ctl:v&lt;CLUSTER_VERSION&gt; pd 代替 pd-ctl -u &lt;pd_ip:pd_port&gt; 命令。</span><br><span class="line">tiup ctl:v6.5.2 pd store</span><br><span class="line">tiup ctl:v6.5.2 pd -u http://172.20.192.70:2379 store limit store id 8487838  220 add-peer</span><br><span class="line">tiup ctl:v6.5.2 pd -i -u http://172.20.192.70:2379</span><br><span class="line">tiup cluster restart tidb-test-v1 -N 172.20.192.74:9090</span><br><span class="line">tiup cluster reload tidb-test-v1</span><br><span class="line">tiup install bench</span><br><span class="line">tiup diag config clinic.token eyJrIjoicFpJaDJ1a042ZjQ0a2E2NyIsInUiOjYwMywiaWQiOjU3Nn0=</span><br><span class="line">tiup diag collect tidb-test-v1</span><br></pre></td></tr></table></figure>
+<h3 id="备份与恢复">备份与恢复</h3>
+<p>如果是 BR 备份，还原之后是同名的；<br>
+dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复到的数据库。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mycli -h172.20.192.70 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">BACKUP DATABASE test TO &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39; RATE_LIMIT &#x3D; 120 MB&#x2F;SECOND;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mycli -h172.20.192.115 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">mysql&gt; RESTORE DATABASE test FROM &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39;;</span><br></pre></td></tr></table></figure>
+<h4 id="不停机升级">不停机升级</h4>
+<p>tiup cluster upgrade tidb-prod v6.5.3</p>
+<p>重启grafana</p>
+<p>tiup cluster restart tidb-prod -R grafana</p>
+<h2 id="备份">备份</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/16/tidb%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/08/10/Nginx%20%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%20Nginx%20+%20Keepalived/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/10/Nginx%20%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%20Nginx%20+%20Keepalived/" class="post-title-link" itemprop="url">Nginx 高可用集群解决方案 Nginx + Keepalived</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-08-10 14:00:39" itemprop="dateCreated datePublished" datetime="2023-08-10T14:00:39+08:00">2023-08-10</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Nginx-高可用集群解决方案-Nginx-Keepalived">Nginx 高可用集群解决方案 Nginx + Keepalived</h2>
+<ol>
+<li>
+<p>修改 vim /opt/nginx/nginx.conf</p>
+</li>
+<li>
+<p>重启容器</p>
+</li>
+</ol>
+<p>docker restart 1f163b3a620a</p>
+<p>172.20.192.151</p>
+<p>172.20.192.152</p>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/10/Nginx%20%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%20Nginx%20+%20Keepalived/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/08/03/%E7%94%A8%20arthas%20%E6%9D%A5%E5%88%86%E6%9E%90%E5%BC%82%E5%B8%B8%E8%BF%9B%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/03/%E7%94%A8%20arthas%20%E6%9D%A5%E5%88%86%E6%9E%90%E5%BC%82%E5%B8%B8%E8%BF%9B%E7%A8%8B/" class="post-title-link" itemprop="url">用 arthas 来分析异常进程</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-08-03 17:18:55" itemprop="dateCreated datePublished" datetime="2023-08-03T17:18:55+08:00">2023-08-03</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="用-arthas-来分析异常进程">用 arthas 来分析异常进程</h2>
+<p>arthas使用参考：  <a href="https://arthas.aliyun.com/doc/quick-start.html" target="_blank" rel="noopener">https://arthas.aliyun.com/doc/quick-start.html</a></p>
+<p>使用和目标进程一致的用户启动，否则可能 attach 失败</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u hbase env PATH&#x3D;$PATH java -jar arthas-boot.jar</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dashboard</span><br></pre></td></tr></table></figure>
+<p>运行 dashboard 命令回车，就可以查看该进程占用资源的总体情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">thread -n 3</span><br></pre></td></tr></table></figure>
+<p>输出资源占用前三名的线程</p>
+<h2 id="通过-thread-命令来获取到进程的-Main-Class">通过 thread 命令来获取到进程的 Main Class</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ thread 1 | grep &#39;main(&#39;</span><br><span class="line">    at demo.MathGame.main(MathGame.java:17)</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/03/%E7%94%A8%20arthas%20%E6%9D%A5%E5%88%86%E6%9E%90%E5%BC%82%E5%B8%B8%E8%BF%9B%E7%A8%8B/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/07/26/EFAK%20-%20Kafka%E5%8F%AF%E8%A7%86%E5%8C%96%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/26/EFAK%20-%20Kafka%E5%8F%AF%E8%A7%86%E5%8C%96%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/" class="post-title-link" itemprop="url">EFAK - Kafka可视化管理工具</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-07-26 13:36:10" itemprop="dateCreated datePublished" datetime="2023-07-26T13:36:10+08:00">2023-07-26</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>EFAK - Kafka可视化管理工具</h1>
+<p><strong>提取 EFAK</strong></p>
+<p>这里我们解压到<code>/data/soft/new</code>目录并解压：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">tar -zxvf efak-xxx-bin.tar.gz</span><br></pre></td></tr></table></figure>
+<p>如果之前安装过版本，删除修改后的版本，重命名当前版本，如下图：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf efakmv efak-xxx efak</span><br></pre></td></tr></table></figure>
+<p>然后，配置 EFAK 配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profileexport KE_HOME=/data/soft/new/efakexport PATH=<span class="variable">$PATH</span>:<span class="variable">$KE_HOME</span>/bin</span><br></pre></td></tr></table></figure>
+<p>最后，我们使用<code>. /etc/profile</code>使配置立即生效。</p>
+<p>配置EFAK系统文件 根据自身Kafka集群的实际情况配置EFAK，例如zookeeper地址、Kafka集群的版本类型（zk为低版本，kafka为高版本）、开启安全认证的Kafka集群等。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/07/26/EFAK%20-%20Kafka%E5%8F%AF%E8%A7%86%E5%8C%96%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/07/21/%E7%94%A8%20Sysbench%20%E6%B5%8B%E8%AF%95%20TiDB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/21/%E7%94%A8%20Sysbench%20%E6%B5%8B%E8%AF%95%20TiDB/" class="post-title-link" itemprop="url">用 Sysbench 测试 TiDB</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-07-21 16:55:40" itemprop="dateCreated datePublished" datetime="2023-07-21T16:55:40+08:00">2023-07-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>用 Sysbench 测试 TiDB</h1>
+<h3 id="Sysbench-配置">Sysbench 配置</h3>
+<p>以下为 Sysbench 配置文件样例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mysql-host&#x3D;&#123;TIDB_HOST&#125;</span><br><span class="line">mysql-port&#x3D;4000</span><br><span class="line">mysql-user&#x3D;root</span><br><span class="line">mysql-password&#x3D;password</span><br><span class="line">mysql-db&#x3D;sbtest</span><br><span class="line">time&#x3D;600</span><br><span class="line">threads&#x3D;&#123;8, 16, 32, 64, 128, 256&#125;</span><br><span class="line">report-interval&#x3D;10</span><br><span class="line">db-driver&#x3D;mysql</span><br></pre></td></tr></table></figure>
+<p>可根据实际需求调整其参数，其中 <code>TIDB_HOST</code> 为 TiDB server 的 IP 地址（配置文件中不能写多个地址），<code>threads</code> 为测试中的并发连接数，可在 “8, 16, 32, 64, 128, 256” 中调整，导入数据时，建议设置 threads = 8 或者 16。调整后，将该文件保存为名为 <strong>config</strong> 的文件。</p>
+<p><strong>配置文件</strong>参考示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mysql-host&#x3D;172.16.30.33</span><br><span class="line">mysql-port&#x3D;4000</span><br><span class="line">mysql-user&#x3D;root</span><br><span class="line">mysql-password&#x3D;password</span><br><span class="line">mysql-db&#x3D;sbtest</span><br><span class="line">time&#x3D;600</span><br><span class="line">threads&#x3D;16</span><br><span class="line">report-interval&#x3D;10</span><br><span class="line">db-driver&#x3D;mysql</span><br></pre></td></tr></table></figure>
+<h3 id="数据导入">数据导入</h3>
+<p>注意</p>
+<p>如果 TiDB 启用了乐观事务模型（默认为悲观锁模式），当发现并发冲突时，会回滚事务。将 <code>tidb_disable_txn_auto_retry</code> 设置为 <code>off</code> 会开启事务冲突后的自动重试机制，可以尽可能避免事务冲突报错导致 Sysbench 程序退出的问题。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/07/21/%E7%94%A8%20Sysbench%20%E6%B5%8B%E8%AF%95%20TiDB/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -955,7 +986,7 @@ sh /opt/module/StarRocks/fe/bin/start_fe.sh --helper 172.20.85.111:9010 --daemon
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1023,7 +1054,7 @@ sh /opt/module/StarRocks/fe/bin/start_fe.sh --helper 172.20.85.111:9010 --daemon
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">133</span>
+          <span class="site-state-item-count">155</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1035,7 +1066,7 @@ sh /opt/module/StarRocks/fe/bin/start_fe.sh --helper 172.20.85.111:9010 --daemon
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/chinayangze" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chinayangze" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+        <a href="http://106.54.147.3:3002/" title="ChatGPT → http:&#x2F;&#x2F;106.54.147.3:3002" rel="noopener" target="_blank"><i class="fa fa-fw fa-ChatGPT"></i>ChatGPT</a>
       </span>
       <span class="links-of-author-item">
         <a href="mailto:info@ask3.cn" title="E-Mail → mailto:info@ask3.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>

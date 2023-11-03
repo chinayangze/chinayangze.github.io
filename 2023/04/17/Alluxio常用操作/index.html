@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://www.ask3.cn').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="Alluxio常用操作 启动一个Alluxio集群 格式化Alluxio 在首次启动Alluxio之前，必须先格式化日志。  格式化日记将删除Alluxio中的所有元数据。 但是，格式化不会涉及底层存储的数据。  在master节点上，使用以下命令格式化Alluxio： 1$ .&#x2F;bin&#x2F;alluxio formatMaster 启动Alluxio 启动Alluxio集群，在m">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Alluxio常用操作">
+<meta property="og:url" content="http://www.ask3.cn/2023/04/17/Alluxio%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/index.html">
+<meta property="og:site_name" content="爱思考">
+<meta property="og:description" content="Alluxio常用操作 启动一个Alluxio集群 格式化Alluxio 在首次启动Alluxio之前，必须先格式化日志。  格式化日记将删除Alluxio中的所有元数据。 但是，格式化不会涉及底层存储的数据。  在master节点上，使用以下命令格式化Alluxio： 1$ .&#x2F;bin&#x2F;alluxio formatMaster 启动Alluxio 启动Alluxio集群，在m">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-17T06:02:57.072Z">
+<meta property="article:modified_time" content="2023-04-17T06:02:57.072Z">
+<meta property="article:author" content="datasir">
+<meta property="article:tag" content="爱思考">
+<meta property="article:tag" content="软件学习网">
+<meta property="article:tag" content="软件学习">
+<meta property="article:tag" content="hadoop">
+<meta property="article:tag" content="spark">
+<meta property="article:tag" content="hive">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="cdh">
+<meta property="article:tag" content="hbase">
+<meta property="article:tag" content="kudu">
+<meta property="article:tag" content="impala">
+<meta property="article:tag" content="flink">
+<meta property="article:tag" content="hdfs">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="presto">
+<meta property="article:tag" content="大数据运维">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.ask3.cn/2023/04/17/Alluxio%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Alluxio常用操作 | 爱思考</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">爱思考</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">分享知识，分享快乐</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/04/17/Alluxio%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Alluxio常用操作
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-04-17 14:02:57" itemprop="dateCreated datePublished" datetime="2023-04-17T14:02:57+08:00">2023-04-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Alluxio常用操作">Alluxio常用操作</h2>
+<h2 id="启动一个Alluxio集群">启动一个Alluxio集群</h2>
+<h3 id="格式化Alluxio">格式化Alluxio</h3>
+<p>在首次启动Alluxio之前，必须先格式化日志。</p>
+<blockquote>
+<p>格式化日记将删除Alluxio中的所有元数据。 但是，格式化不会涉及底层存储的数据。</p>
+</blockquote>
+<p>在master节点上，使用以下命令格式化Alluxio：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio formatMaster</span><br></pre></td></tr></table></figure>
+<h3 id="启动Alluxio">启动Alluxio</h3>
+<p>启动Alluxio集群，在master点上确保<code>conf/workers</code>文件中所有worker的主机名都是正确的。</p>
+<p>在master点上，运行以下命令启动Alluxio集群：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh all SudoMount</span><br></pre></td></tr></table></figure>
+<p>这将在此节点上启动master，并在<code>conf/workers</code>文件中指定的所有节点上启动所有workers。 <code>SudoMount</code>参数使workers可以尝试使用<code>sudo</code>特权（如果尚未挂载）来挂载RamFS。</p>
+<h3 id="验证Alluxio集群是否在运行">验证Alluxio集群是否在运行</h3>
+<p>要验证Alluxio是否正在运行，请访问<code>http://&lt;alluxio_master_hostname&gt;:19999</code>以查看Alluxio master的状态页面。</p>
+<p>Alluxio带有一个简单的程序可以在Alluxio中读写示例文件。 使用以下命令运行示例程序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio runTests</span><br></pre></td></tr></table></figure>
+<p>以下是在Alluxio集群上执行的常见操作。</p>
+<h3 id="停止Alluxio">停止Alluxio</h3>
+<p>停止一个Alluxio服务，运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh all</span><br></pre></td></tr></table></figure>
+<p>这将停止<code>conf/workers</code>和<code>conf/masters</code>中列出的所有节点上的所有进程。</p>
+<p>可以使用以下命令仅停止master和workers：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh masters # 停止所有conf&#x2F;masters的masters</span><br><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh workers # 停止所有conf&#x2F;workers的workers</span><br></pre></td></tr></table></figure>
+<p>如果不想使用ssh登录所有节点来停止所有进程，可以在每个节点上运行命令以停止每个组件。 对于任何节点，可以使用以下命令停止master或worker：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh master # 停止本地master</span><br><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh worker # 停止本地worker</span><br></pre></td></tr></table></figure>
+<h3 id="重新启动Alluxio">重新启动Alluxio</h3>
+<p>与启动Alluxio类似。 如果已经配置了<code>conf/workers</code>和<code>conf/masters</code>，可以使用以下命令启动集群：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh all</span><br></pre></td></tr></table></figure>
+<p>可以使用以下命令仅启动masters或workers：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh masters # 启动conf&#x2F;masters中全部的master</span><br><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh workers # 启动conf&#x2F;workers中全部的worker</span><br></pre></td></tr></table></figure>
+<p>如果不想使用<code>ssh</code>登录所有节点来启动所有进程，可以在每个节点上运行命令以启动每个组件。 对于任何节点，可以使用以下命令启动master或worker：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh master # 启动本地master</span><br><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh worker # 启动本地worker</span><br></pre></td></tr></table></figure>
+<h3 id="格式化日志">格式化日志</h3>
+<p>在任何master节点上，运行以下命令格式化Alluxio日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio formatMaster</span><br></pre></td></tr></table></figure>
+<p>格式化日记将删除Alluxio中的所有元数据。 但是，将不会触及底层存储的数据。</p>
+<h3 id="动态添加-减少worker">动态添加/减少worker</h3>
+<p>动态添加worker到Alluxio集群就像通过适当配置启动新Alluxio worker进程一样简单。 在大多数情况下，新worker配置应与所有其他worker配置相同。 在新worker上运行以下命令，以将其添加到集群。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh worker SudoMount # 启动本地 worker</span><br></pre></td></tr></table></figure>
+<p>一旦worker启动，它将在Alluxio master上注册，并成为Alluxio集群的一部分。</p>
+<p>减少worker只需要简单停止一个worker进程。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh worker # 停止本地 worker</span><br></pre></td></tr></table></figure>
+<p>一旦worker被停止，master将在预定的超时值（通过master参数<code>alluxio.master.worker.timeout</code>配置）后将此worker标记为缺失。 主机视worker为”丢失”，并且不再将其包括在集群中。</p>
+<h3 id="更新master配置">更新master配置</h3>
+<p>为了更新master配置，必须首先停止服务，更新master节点上的<code>conf/alluxio-site.properties</code>文件，并将文件复制到所有节点（例如，使用<code>bin/alluxio copyDir conf/</code>），<a href="https://docs.alluxio.io/os/user/stable/cn/deploy/Running-Alluxio-on-a-Cluster.html?q=workers#restart-alluxio" target="_blank" rel="noopener">然后重新启动服务</a>。</p>
+<h3 id="更新worker配置">更新worker配置</h3>
+<p>如果只需要为worker节点更新某些本地配置（例如，更改分配给该worker的存储容量或更新存储路径），则无需停止并重新启动master节点。 可以只停止本地worker，更新此worker上的配置（例如<code>conf/alluxio-site.properties</code>）文件，然后重新启动此worker</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/04/17/%E9%83%A8%E7%BD%B2Alluxio%E9%9B%86%E7%BE%A4/" rel="prev" title="部署Alluxio集群">
+      <i class="fa fa-chevron-left"></i> 部署Alluxio集群
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/04/18/win10%E5%A4%9A%E7%94%A8%E6%88%B7%E5%90%8C%E6%97%B6%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5/" rel="next" title="win10多用户同时远程连接">
+      win10多用户同时远程连接 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Alluxio常用操作"><span class="nav-number">1.</span> <span class="nav-text">Alluxio常用操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动一个Alluxio集群"><span class="nav-number">2.</span> <span class="nav-text">启动一个Alluxio集群</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#格式化Alluxio"><span class="nav-number">2.1.</span> <span class="nav-text">格式化Alluxio</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动Alluxio"><span class="nav-number">2.2.</span> <span class="nav-text">启动Alluxio</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证Alluxio集群是否在运行"><span class="nav-number">2.3.</span> <span class="nav-text">验证Alluxio集群是否在运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#停止Alluxio"><span class="nav-number">2.4.</span> <span class="nav-text">停止Alluxio</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重新启动Alluxio"><span class="nav-number">2.5.</span> <span class="nav-text">重新启动Alluxio</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#格式化日志"><span class="nav-number">2.6.</span> <span class="nav-text">格式化日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态添加-减少worker"><span class="nav-number">2.7.</span> <span class="nav-text">动态添加&#x2F;减少worker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新master配置"><span class="nav-number">2.8.</span> <span class="nav-text">更新master配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新worker配置"><span class="nav-number">2.9.</span> <span class="nav-text">更新worker配置</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="datasir"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">datasir</p>
+  <div class="site-description" itemprop="description">小杨随笔</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">155</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="http://106.54.147.3:3002/" title="ChatGPT → http:&#x2F;&#x2F;106.54.147.3:3002" rel="noopener" target="_blank"><i class="fa fa-fw fa-ChatGPT"></i>ChatGPT</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:info@ask3.cn" title="E-Mail → mailto:info@ask3.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备13036234号-3 </a>
+      <img src="/images/beian.png" style="display: inline-block;">
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">datasir</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

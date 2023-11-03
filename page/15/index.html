@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://www.ask3.cn').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="小杨随笔">
+<meta property="og:type" content="website">
+<meta property="og:title" content="爱思考">
+<meta property="og:url" content="http://www.ask3.cn/page/15/index.html">
+<meta property="og:site_name" content="爱思考">
+<meta property="og:description" content="小杨随笔">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="datasir">
+<meta property="article:tag" content="爱思考">
+<meta property="article:tag" content="软件学习网">
+<meta property="article:tag" content="软件学习">
+<meta property="article:tag" content="hadoop">
+<meta property="article:tag" content="spark">
+<meta property="article:tag" content="hive">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="cdh">
+<meta property="article:tag" content="hbase">
+<meta property="article:tag" content="kudu">
+<meta property="article:tag" content="impala">
+<meta property="article:tag" content="flink">
+<meta property="article:tag" content="hdfs">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="presto">
+<meta property="article:tag" content="大数据运维">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.ask3.cn/page/15/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: true,
+    isPost: false
+  };
+</script>
+
+  <title>爱思考</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">爱思考</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">分享知识，分享快乐</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/03-%E9%83%A8%E7%BD%B2-kubectl-%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/03-%E9%83%A8%E7%BD%B2-kubectl-%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7/" class="post-title-link" itemprop="url">03.部署 kubectl 命令行工具</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-01-07 11:03:37 / 修改时间：16:04:28" itemprop="dateCreated datePublished" datetime="2020-01-07T11:03:37+08:00">2020-01-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>tags: kubectl</p>
+<h1>03.部署 kubectl 命令行工具</h1>
+<p>kubectl 是 kubernetes 集群的命令行管理工具，本文档介绍安装和配置它的步骤。</p>
+<p>kubectl 默认从 <code>~/.kube/config</code> 文件读取 kube-apiserver 地址、证书、用户名等信息，如果没有配置，执行 kubectl 命令时可能会出错：</p>
+<pre><code>$ kubectl get pods
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+</code></pre>
+<p>本文档只需要<strong>部署一次</strong>，生成的 kubeconfig 文件与机器无关。</p>
+<h2 id="下载和分发-kubectl-二进制文件">下载和分发 kubectl 二进制文件</h2>
+<p>下载和解压：</p>
+<pre><code>wget https://dl.k8s.io/v1.10.4/kubernetes-client-linux-amd64.tar.gz
+tar -xzvf kubernetes-client-linux-amd64.tar.gz
+</code></pre>
+<p>分发到所有使用 kubectl 的节点：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/03-%E9%83%A8%E7%BD%B2-kubectl-%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/02-%E5%88%9B%E5%BB%BA-CA-%E8%AF%81%E4%B9%A6%E5%92%8C%E7%A7%98%E9%92%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/02-%E5%88%9B%E5%BB%BA-CA-%E8%AF%81%E4%B9%A6%E5%92%8C%E7%A7%98%E9%92%A5/" class="post-title-link" itemprop="url">02.创建 CA 证书和秘钥</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-01-07 11:02:00 / 修改时间：16:04:09" itemprop="dateCreated datePublished" datetime="2020-01-07T11:02:00+08:00">2020-01-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>tags: TLS, CA, x509</p>
+<h1>02.创建 CA 证书和秘钥</h1>
+<p>为确保安全，<code>kubernetes</code> 系统各组件需要使用 <code>x509</code> 证书对通信进行加密和认证。</p>
+<p>CA (Certificate Authority) 是自签名的根证书，用来签名后续创建的其它证书。</p>
+<p>本文档使用 <code>CloudFlare</code> 的 PKI 工具集 <a href="https://github.com/cloudflare/cfssl" target="_blank" rel="noopener">cfssl</a> 创建所有证书。</p>
+<h2 id="安装-cfssl-工具集">安装 cfssl 工具集</h2>
+<pre><code>sudo mkdir -p /opt/k8s/cert &amp;&amp; sudo chown -R k8s /opt/k8s &amp;&amp; cd /opt/k8s
+wget https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
+mv cfssl_linux-amd64 /opt/k8s/bin/cfssl
+
+wget https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
+mv cfssljson_linux-amd64 /opt/k8s/bin/cfssljson
+
+wget https://pkg.cfssl.org/R1.2/cfssl-certinfo_linux-amd64
+mv cfssl-certinfo_linux-amd64 /opt/k8s/bin/cfssl-certinfo
+
+chmod +x /opt/k8s/bin/*
+export PATH=/opt/k8s/bin:$PATH
+</code></pre>
+<h2 id="创建根证书-CA">创建根证书 (CA)</h2>
+<p>CA 证书是集群所有节点共享的，<strong>只需要创建一个 CA 证书</strong>，后续创建的所有证书都由它签名。</p>
+<h3 id="创建配置文件">创建配置文件</h3>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/02-%E5%88%9B%E5%BB%BA-CA-%E8%AF%81%E4%B9%A6%E5%92%8C%E7%A7%98%E9%92%A5/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/01.%E7%B3%BB%E7%BB%9F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/01.%E7%B3%BB%E7%BB%9F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F/" class="post-title-link" itemprop="url">01.系统初始化和全局变量</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-01-07 11:01:00 / 修改时间：16:03:49" itemprop="dateCreated datePublished" datetime="2020-01-07T11:01:00+08:00">2020-01-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>tags: environment</p>
+<h1>01.系统初始化和全局变量</h1>
+<p>集群机器</p>
+<hr>
+<ul>
+<li>kube-node1：172.27.129.105</li>
+<li>kube-node2：172.27.129.111</li>
+<li>kube-node3：172.27.129.112</li>
+</ul>
+<p>本着测试的目的，etcd 集群、kubernetes master 集群、kubernetes node 均使用这三台机器。</p>
+<blockquote>
+<p>若有安装 Vagrant 与 Virtualbox，这三台机器可以用本着提供的 Vagrantfile 来建置：</p>
+</blockquote>
+<pre><code>$ cd vagrant
+$ vagrant up
+</code></pre>
+<p>主机名</p>
+<hr>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/01.%E7%B3%BB%E7%BB%9F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/00.%E7%BB%84%E4%BB%B6%E7%89%88%E6%9C%AC%E5%92%8C%E9%85%8D%E7%BD%AE%E7%AD%96%E7%95%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/00.%E7%BB%84%E4%BB%B6%E7%89%88%E6%9C%AC%E5%92%8C%E9%85%8D%E7%BD%AE%E7%AD%96%E7%95%A5/" class="post-title-link" itemprop="url">00.组件版本和配置策略</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-01-07 11:00:00 / 修改时间：16:03:31" itemprop="dateCreated datePublished" datetime="2020-01-07T11:00:00+08:00">2020-01-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>tags: version</p>
+<h1>00.组件版本和配置策略</h1>
+<h2 id="组件版本">组件版本</h2>
+<ul>
+<li>Kubernetes 1.10.4</li>
+<li>Docker 18.03.1-ce</li>
+<li>Etcd 3.3.7</li>
+<li>Flanneld 0.10.0</li>
+<li>插件：
+<ul>
+<li>Coredns
+<ul>
+<li>Dashboard</li>
+<li>Heapster (influxdb、grafana)</li>
+<li>Metrics-Server</li>
+<li>EFK (elasticsearch、fluentd、kibana)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>镜像仓库：
+<ul>
+<li>docker registry
+<ul>
+<li>harbor</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="主要配置策略">主要配置策略</h2>
+<p>kube-apiserver：</p>
+<ul>
+<li>使用 keepalived 和 haproxy 实现 3 节点高可用；</li>
+<li>关闭非安全端口 8080 和匿名访问；</li>
+<li>在安全端口 6443 接收 https 请求；</li>
+<li>严格的认证和授权策略 (x509、token、RBAC)；</li>
+<li>开启 bootstrap token 认证，支持 kubelet TLS bootstrapping；</li>
+<li>使用 https 访问 kubelet、etcd，加密通信；</li>
+</ul>
+<p>kube-controller-manager：</p>
+<ul>
+<li>3 节点高可用；</li>
+<li>关闭非安全端口，在安全端口 10252 接收 https 请求；</li>
+<li>使用 kubeconfig 访问 apiserver 的安全端口；</li>
+<li>自动 approve kubelet 证书签名请求 (CSR)，证书过期后自动轮转；</li>
+<li>各 controller 使用自己的 ServiceAccount 访问 apiserver；</li>
+</ul>
+<p>kube-scheduler：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/00.%E7%BB%84%E4%BB%B6%E7%89%88%E6%9C%AC%E5%92%8C%E9%85%8D%E7%BD%AE%E7%AD%96%E7%95%A5/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/%E6%9C%89%E9%81%93markdown%E7%A6%BB%E7%BA%BF%E6%B5%8B%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/%E6%9C%89%E9%81%93markdown%E7%A6%BB%E7%BA%BF%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">有道markdown离线测试</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-07 09:42:12" itemprop="dateCreated datePublished" datetime="2020-01-07T09:42:12+08:00">2020-01-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-23 14:01:33" itemprop="dateModified" datetime="2019-12-23T14:01:33+08:00">2019-12-23</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <table>
+<thead>
+<tr>
+<th>header 1</th>
+<th>header 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>row 1 col 1</td>
+<td>row 1 col 2</td>
+</tr>
+<tr>
+<td>row 2 col 1</td>
+<td>row 2 col 2</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">E &#x3D; mc^2</span><br></pre></td></tr></table></figure>
+<html>
+<!--在这里插入内容-->
+</html>
+<ul>
+<li>
+<ol>
+<li></li>
+</ol>
+</li>
+</ul>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/%E6%9C%89%E9%81%93markdown%E7%A6%BB%E7%BA%BF%E6%B5%8B%E8%AF%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/solr%E6%B7%BB%E5%8A%A0ik%E5%88%86%E8%AF%8D%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/solr%E6%B7%BB%E5%8A%A0ik%E5%88%86%E8%AF%8D%E5%99%A8/" class="post-title-link" itemprop="url">solr添加ik分词器</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-07 09:42:12" itemprop="dateCreated datePublished" datetime="2020-01-07T09:42:12+08:00">2020-01-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-01-02 10:37:24" itemprop="dateModified" datetime="2020-01-02T10:37:24+08:00">2020-01-02</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="查找solr服务器web地址">查找solr服务器web地址</h3>
+<p>find / -name WEB-INF</p>
+<p>[root@bigdata-3 lib]# pwd<br>
+/opt/cloudera/parcels/CDH-6.2.0-1.cdh6.2.0.p0.967373/lib/solr/server/solr-webapp/webapp/WEB-INF/lib</p>
+<p>/opt/cloudera/parcels/CDH-6.2.0-1.cdh6.2.0.p0.967373/lib/solr/server/solr-webapp/webapp/WEB-INF/lib</p>
+<p>/opt/cloudera/parcels/CDH/lib/solr/server/solr-webapp/webapp/WEB-INF/lib</p>
+<h3 id="添加ik-jar包到指定位置-并修改权限">添加ik jar包到指定位置 并修改权限</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-rwxr-xr-x 1 root root 1184820 May  7 10:29 ik-analyzer-7.5.0.jar</span><br><span class="line">[root@bigdata-3 lib]#</span><br></pre></td></tr></table></figure>
+<h3 id="WEB-INF-创建classes-我们把IKAnalyzer-cfg-xml、stopword-dic拷贝到需要使用分词器的core的conf下面，">WEB-INF 创建classes  我们把IKAnalyzer.cfg.xml、stopword.dic拷贝到需要使用分词器的core的conf下面，</h3>
+<p>将resources目录下的5个配置文件放入solr服务的Jetty或Tomcat的webapp/WEB-INF/classes/目录下；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">① IKAnalyzer.cfg.xml</span><br><span class="line">② ext.dic</span><br><span class="line">③ stopword.dic</span><br><span class="line">④ ik.conf</span><br><span class="line">⑤ dynamicdic.txt</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/solr%E6%B7%BB%E5%8A%A0ik%E5%88%86%E8%AF%8D%E5%99%A8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/solr%20%20command/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/solr%20%20command/" class="post-title-link" itemprop="url">solr  command</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-07 09:42:12" itemprop="dateCreated datePublished" datetime="2020-01-07T09:42:12+08:00">2020-01-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-01-02 10:38:34" itemprop="dateModified" datetime="2020-01-02T10:38:34+08:00">2020-01-02</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="生成本地配置">生成本地配置</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">solrctl instancedir --generate $HOME&#x2F;test_collection_config</span><br></pre></td></tr></table></figure>
+<h3 id="上传到zk">上传到zk</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">solrctl instancedir --create test_collection_config $HOME&#x2F;test_collection_config</span><br></pre></td></tr></table></figure>
+<h3 id="创建collection">创建collection</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">solrctl collection --create test_collection -s 1 -c test_collection_config</span><br></pre></td></tr></table></figure>
+<h3 id="4-post数据">4. post数据</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;share&#x2F;doc&#x2F;solr-doc*&#x2F;example&#x2F;exampledocs</span><br><span class="line">java -Durl&#x3D;http:&#x2F;&#x2F;bigdata-3.baofoo.cn:8983&#x2F;solr&#x2F;test_collection&#x2F;update -jar post.jar *.xml</span><br></pre></td></tr></table></figure>
+<h3 id="查看-hdfs-dir">查看 hdfs dir</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">hadoop fs -ls -R &#x2F;solr&#x2F;test_co*&#x2F;</span><br><span class="line"> </span><br><span class="line">drwxr-xr-x   - solr solr          0 2019-05-08 22:07 &#x2F;solr&#x2F;test_collection&#x2F;core_node2</span><br><span class="line">drwxr-xr-x   - solr solr          0 2019-05-08 22:07 &#x2F;solr&#x2F;test_collection&#x2F;core_node2&#x2F;data</span><br><span class="line">drwxr-xr-x   - solr solr          0 2019-05-08 22:12 &#x2F;solr&#x2F;test_collection&#x2F;core_node2&#x2F;data&#x2F;index</span><br><span class="line">-rwxr-xr-x   3 solr solr         82 2019-05-08 22:12 &#x2F;solr&#x2F;test_collection&#x2F;core_node2&#x2F;data&#x2F;index&#x2F;_0.dii</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/solr%20%20command/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/Linux%E4%B8%AD%E6%96%87%E7%BC%96%E7%A0%81%E8%BD%AC%E6%8D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/Linux%E4%B8%AD%E6%96%87%E7%BC%96%E7%A0%81%E8%BD%AC%E6%8D%A2/" class="post-title-link" itemprop="url">Linux中文编码转换</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-07 09:42:12" itemprop="dateCreated datePublished" datetime="2020-01-07T09:42:12+08:00">2020-01-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-04-28 18:00:25" itemprop="dateModified" datetime="2019-04-28T18:00:25+08:00">2019-04-28</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>linux shell 配置文件中默认的字符集编码为UTF－8</p>
+<p>accii 文件显示中文乱码</p>
+<p>用iconv进行转换就可以了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iconv -f GBK -t UTF-8 1.csv &gt; 3.csv</span><br></pre></td></tr></table></figure>
+<p>查了下iconv命令用法如下：</p>
+<p>iconv [选项…] [文件…]</p>
+<p>有如下选项可用:</p>
+<p>输入/输出格式规范：<br>
+-f, --from-code=名称 原始文本编码<br>
+-t, --to-code=名称 输出编码</p>
+<p>信息：<br>
+-l, --list 列举所有已知的字符集</p>
+<p>输出控制：<br>
+-c 从输出中忽略无效的字符<br>
+-o, --output=FILE 输出文件<br>
+-s, --silent 关闭警告<br>
+–verbose 打印进度信息</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/Linux%E4%B8%AD%E6%96%87%E7%BC%96%E7%A0%81%E8%BD%AC%E6%8D%A2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/JanusGraph%20Server%E6%90%AD%E5%BB%BA%20hbase+%20solr/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/JanusGraph%20Server%E6%90%AD%E5%BB%BA%20hbase+%20solr/" class="post-title-link" itemprop="url">JanusGraph Server搭建 hbase+ solr</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-07 09:42:12" itemprop="dateCreated datePublished" datetime="2020-01-07T09:42:12+08:00">2020-01-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-08-19 11:13:34" itemprop="dateModified" datetime="2019-08-19T11:13:34+08:00">2019-08-19</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>JanusGraph Server搭建 hbase+ solr</p>
+<p><a href="https://blog.csdn.net/goandozhf/article/details/80105895#2068-1524796329245" target="_blank" rel="noopener">https://blog.csdn.net/goandozhf/article/details/80105895#2068-1524796329245</a></p>
+<p>创建janusgraph-hbase-solr-server.properties文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">gremlin.graph&#x3D;org.janusgraph.core.JanusGraphFactory</span><br><span class="line">storage.backend&#x3D;hbase</span><br><span class="line">storage.batch-loading&#x3D;true</span><br><span class="line">storage.hbase.table &#x3D; janusgraph-test</span><br><span class="line">storage.hostname&#x3D;172.20.85.111</span><br><span class="line">cache.db-cache &#x3D; true</span><br><span class="line">cache.db-cache-clean-wait &#x3D; 20</span><br><span class="line">cache.db-cache-time &#x3D; 180000</span><br><span class="line">cache.db-cache-size &#x3D; 0.5</span><br><span class="line">ids.block-size&#x3D;100000000</span><br><span class="line">storage.buffer-size&#x3D;102400</span><br><span class="line">storage.hbase.region-count &#x3D; 15</span><br><span class="line">index.search.backend&#x3D;solr</span><br><span class="line">index.search.solr.mode&#x3D;http</span><br><span class="line">index.search.solr.http-urls&#x3D;http:&#x2F;&#x2F;172.20.85.111:8983&#x2F;solr</span><br><span class="line">index.search.hostname&#x3D;172.20.85.111</span><br><span class="line">index.search.index-name&#x3D;janusgraph-test</span><br></pre></td></tr></table></figure>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/JanusGraph%20Server%E6%90%AD%E5%BB%BA%20hbase+%20solr/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/HBase%20%E5%B7%A5%E5%85%B7%E5%92%8C%E5%AE%9E%E7%94%A8%E7%A8%8B%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/HBase%20%E5%B7%A5%E5%85%B7%E5%92%8C%E5%AE%9E%E7%94%A8%E7%A8%8B%E5%BA%8F/" class="post-title-link" itemprop="url">HBase 工具和实用程序</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-07 09:42:12" itemprop="dateCreated datePublished" datetime="2020-01-07T09:42:12+08:00">2020-01-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-24 14:07:37" itemprop="dateModified" datetime="2019-10-24T14:07:37+08:00">2019-10-24</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="hbase-pe">hbase pe</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ bin&#x2F;hbase org.apache.hadoop.hbase.PerformanceEvaluation --rows&#x3D;10 --nomapred increment 10</span><br></pre></td></tr></table></figure>
+<h3 id="hbase-ltt">hbase ltt</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hbase org.apache.hadoop.hbase.util.LoadTestTool -compression NONE -write 8:8 -num_keys 1048576</span><br><span class="line"></span><br><span class="line">hbase ltt -compression NONE -write 8:8 -num_keys 1048576</span><br></pre></td></tr></table></figure>
+<h3 id="hbase-canary">hbase canary</h3>
+<p>Canary 工具可以帮助用户“测试”HBase 集群状态</p>
+<p><strong>测试每个表的每个区域的每个列族</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hbase canary</span><br></pre></td></tr></table></figure>
+<p><strong>对特定表格的每个区域的每个列族进行 Canary 测试</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hbase canary test-01 test-02</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/HBase%20%E5%B7%A5%E5%85%B7%E5%92%8C%E5%AE%9E%E7%94%A8%E7%A8%8B%E5%BA%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+  </div>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/14/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/16/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="datasir"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">datasir</p>
+  <div class="site-description" itemprop="description">小杨随笔</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">155</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="http://106.54.147.3:3002/" title="ChatGPT → http:&#x2F;&#x2F;106.54.147.3:3002" rel="noopener" target="_blank"><i class="fa fa-fw fa-ChatGPT"></i>ChatGPT</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:info@ask3.cn" title="E-Mail → mailto:info@ask3.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备13036234号-3 </a>
+      <img src="/images/beian.png" style="display: inline-block;">
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">datasir</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

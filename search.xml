@@ -1,14 +1,646 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>tidb部署</title>
+    <url>/2023/11/02/tidb%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<p>新建用户</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">useradd tidb</span><br><span class="line">su - tidb</span><br></pre></td></tr></table></figure>
+<h2 id="在中控机上部署-TiUP-组件">在中控机上部署 TiUP 组件</h2>
+<p>在中控机上部署 TiUP 组件有两种方式：在线部署和离线部署。</p>
+<h3 id="在线部署">在线部署</h3>
+<p>以普通用户身份登录中控机。以 <code>tidb</code> 用户为例，后续安装 TiUP 及集群管理操作均通过该用户完成：</p>
+<ol>
+<li>
+<p>执行如下命令安装 TiUP 工具：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">curl --proto <span class="string">'=https'</span> --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>按如下步骤设置 TiUP 环境变量：</p>
+<ol>
+<li>
+<p>重新声明全局环境变量：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> .bash_profile</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>确认 TiUP 工具是否安装：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">which</span> tiup</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li>
+<p>安装 TiUP cluster 组件：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">tiup cluster</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>如果已经安装，则更新 TiUP cluster 组件至最新版本：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">tiup update --self &amp;&amp; tiup update cluster</span><br></pre></td></tr></table></figure>
+<p>预期输出 <code>“Update successfully!”</code> 字样。</p>
+</li>
+<li>
+<p>验证当前 TiUP cluster 版本信息。执行如下命令查看 TiUP cluster 组件版本：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">tiup --binary cluster</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="优化系统配置">优化系统配置</h2>
+<p>vim /etc/sysctl.conf</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">net.ipv4.tcp_tw_recycle &#x3D; 0</span><br><span class="line">net.ipv4.tcp_syncookies &#x3D; 0</span><br><span class="line">net.core.somaxconn &#x3D; 32768</span><br><span class="line">vm.swappiness &#x3D; 0</span><br><span class="line">vm.overcommit_memory &#x3D; 0</span><br><span class="line">fs.file-max &#x3D; 1000000</span><br></pre></td></tr></table></figure>
+<p>/etc/security/limits.conf</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">* soft nofile 1048576</span><br><span class="line">* hard nofile 1048576</span><br><span class="line">* soft nproc unlimited</span><br><span class="line">* hard nproc unlimited</span><br><span class="line">tidb    soft    nofile    1000000</span><br><span class="line">tidb    hard    nofile    1000000</span><br><span class="line">tidb    soft    stack    10240</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible tidb101 -m shell -a &quot; yum -y install numactl.x86_64 &quot;</span><br><span class="line"></span><br><span class="line">ansible tidb101 -m copy -a &quot; src&#x3D;&#x2F;etc&#x2F;security&#x2F;limits.conf  dest&#x3D;&#x2F;etc&#x2F;security&#x2F;limits.conf &quot;</span><br><span class="line">ansible tidb101 -m copy -a &quot; src&#x3D;&#x2F;etc&#x2F;sysctl.conf  dest&#x3D;&#x2F;etc&#x2F;sysctl.conf&quot;</span><br><span class="line"></span><br><span class="line">ansible tidb101 -m shell -a &quot;sysctl -p&quot;</span><br><span class="line"></span><br><span class="line">ansible tidb101 -m shell -a &quot;cpupower frequency-set -g performance&quot;</span><br><span class="line"></span><br><span class="line"># 重新挂载一下磁盘，让noatime参数生效</span><br><span class="line">mount -o remount &#x2F;dfs&#x2F;data1</span><br><span class="line">mount -o remount &#x2F;dfs&#x2F;data2</span><br><span class="line">mount -o remount &#x2F;dfs&#x2F;data3</span><br><span class="line">mount -o remount &#x2F;dfs&#x2F;data4</span><br><span class="line">mount -o remount &#x2F;dfs&#x2F;data5</span><br><span class="line">mount -o remount &#x2F;dfs&#x2F;data6</span><br><span class="line">mount -o remount &#x2F;dfs&#x2F;data7</span><br><span class="line">mount -o remount &#x2F;dfs&#x2F;data8</span><br></pre></td></tr></table></figure>
+<h2 id="执行部署命令">执行部署命令</h2>
+<ol>
+<li>
+<p>检查集群存在的潜在风险：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">tiup cluster check ./blockin-topology-101.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>自动修复集群存在的潜在风险：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">tiup cluster check ./blockin-topology-101.yaml --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>部署 TiDB 集群：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">tiup cluster deploy tidb-prod-101 v6.5.5 ./blockin-topology-101.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>tiup cluster list</p>
+<p>tiup cluster display  tidb-prod-101</p>
+<p>tiup cluster scale-in <cluster-name> --node 10.0.1.4:8300</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>从 TiDB 集群迁移数据至另一 TiDB 集群</title>
+    <url>/2023/10/31/%E4%BB%8E%20TiDB%20%E9%9B%86%E7%BE%A4%E8%BF%81%E7%A7%BB%E6%95%B0%E6%8D%AE%E8%87%B3%E5%8F%A6%E4%B8%80%20TiDB%20%E9%9B%86%E7%BE%A4/</url>
+    <content><![CDATA[<h2 id="迁移全量数据">迁移全量数据</h2>
+<p>关闭 GC。</p>
+<p>为了保证增量迁移过程中新写入的数据不丢失，在开始备份之前，需要关闭上游集群的垃圾回收 (GC) 机制，以确保系统不再清理历史数据。</p>
+<p>执行如下命令关闭 GC：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">MySQL [test]&gt; SET GLOBAL tidb_gc_enable=FALSE;</span><br></pre></td></tr></table></figure>
+<p>备份数据。</p>
+<p>在上游集群中执行 BACKUP 语句备份数据：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">MySQL [(none)]&gt; BACKUP DATABASE * TO 's3://backup?access-key=minio&amp;secret-access-key=miniostorage&amp;endpoint=http://$&#123;HOST_IP&#125;:6060&amp;force-path-style=true' RATE_LIMIT = 120 MB/SECOND;</span><br></pre></td></tr></table></figure>
+<p>恢复数据。</p>
+<p>在下游集群中执行 RESTORE 语句恢复数据：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">BACKUP</span> <span class="keyword">DATABASE</span> BASE <span class="keyword">TO</span> <span class="string">'s3://tidb/BASE_BAK20231031?access-key=minio&amp;secret-access-key=miniostorage&amp;endpoint=http://172.20.192.151:6060&amp;force-path-style=true'</span> RATE_LIMIT = <span class="number">120</span> MB/<span class="keyword">SECOND</span>;</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>SR运维</title>
+    <url>/2023/09/13/SR%E8%BF%90%E7%BB%B4/</url>
+    <content><![CDATA[<h2 id="修复tablet">修复tablet</h2>
+<p><strong>注意： 要连接fe的leader节点</strong></p>
+<p>找到错误的tablet</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SHOW PROC &#39;&#x2F;statistic&#x2F;12026&#39;;</span><br></pre></td></tr></table></figure>
+<p>找到tablet对应错误的 IsErrorState 的节点</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">show tablet 341603</span><br><span class="line">SHOW PROC &#39;&#x2F;dbs&#x2F;12026&#x2F;335109&#x2F;partitions&#x2F;335078&#x2F;335110&#x2F;341603&#39;;</span><br></pre></td></tr></table></figure>
+<p>setBad</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ADMIN SET REPLICA STATUS PROPERTIES(&quot;tablet_id&quot; &#x3D; &quot;341603&quot;, &quot;backend_id&quot; &#x3D; &quot;10006&quot; , &quot;status&quot; &#x3D; &quot;bad&quot;);</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>Minio 模拟兼容 S3 的存储服务</title>
+    <url>/2023/09/05/Minio%20%E6%A8%A1%E6%8B%9F%E5%85%BC%E5%AE%B9%20S3%20%E7%9A%84%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1/</url>
+    <content><![CDATA[<h3 id="搭建-MinIO-作为备份存储系统-，兼容S3">搭建 MinIO 作为备份存储系统 ，兼容S3</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;dl.min.io&#x2F;server&#x2F;minio&#x2F;release&#x2F;linux-amd64&#x2F;minio</span><br><span class="line">chmod +x minio</span><br><span class="line"></span><br><span class="line"># 配置访问 minio 的 access-key access-screct-id</span><br><span class="line"></span><br><span class="line">export HOST_IP&#x3D;&#39;172.20.192.151&#39; </span><br><span class="line">export MINIO_ROOT_USER&#x3D;&#39;minio&#39;</span><br><span class="line">export MINIO_ROOT_PASSWORD&#x3D;&#39;miniostorage&#39;</span><br><span class="line"></span><br><span class="line"># 创建数据目录,  其中 backup 为 bucket 的名称</span><br><span class="line"></span><br><span class="line">mkdir -p data&#x2F;backup</span><br><span class="line"></span><br><span class="line"># 启动 minio, 暴露端口在 6060</span><br><span class="line"></span><br><span class="line">&#x2F;opt&#x2F;module&#x2F;minio server &#x2F;opt&#x2F;module&#x2F;data --address :6060 &amp;</span><br></pre></td></tr></table></figure>
+<h2 id="单节点部署多磁盘">单节点部署多磁盘</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;opt&#x2F;module&#x2F;minio server --address :6060  &#x2F;dfs&#x2F;data1&#x2F;s3data &#x2F;dfs&#x2F;data2&#x2F;s3data &#x2F;dfs&#x2F;data3&#x2F;s3d &amp;</span><br></pre></td></tr></table></figure>
+<h2 id="备份-还原-TIDB数据">备份 还原 TIDB数据</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mycli -h172.20.192.70 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">BACKUP DATABASE test TO &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39; RATE_LIMIT &#x3D; 120 MB&#x2F;SECOND;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mycli -h172.20.192.115 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">mysql&gt; RESTORE DATABASE test FROM &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39;;</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>cloudcanl 2.2.4 安装部署</title>
+    <url>/2023/08/22/cloudcanl%202.2.4%20%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<p>cloudcanl 2.2.4 安装部署</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo yum update</span><br><span class="line"></span><br><span class="line"># base util</span><br><span class="line"></span><br><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum install -y lsof</span><br><span class="line">sudo yum install -y bc</span><br><span class="line">sudo yum install -y p7zip p7zip-plugins</span><br><span class="line"></span><br><span class="line"># install docker</span><br><span class="line"></span><br><span class="line">sudo yum-config-manager --add-repo https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br><span class="line">sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</span><br><span class="line">sudo systemctl start docker</span><br><span class="line">systemctl enable docker</span><br><span class="line">sudo wget &quot;https:&#x2F;&#x2F;pc.clougence.com&#x2F;docker-compose-1.28.3&quot; -O &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br><span class="line">sudo chmod +x &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br><span class="line"></span><br><span class="line"># check</span><br><span class="line"></span><br><span class="line">docker -v</span><br><span class="line">docker compose version</span><br></pre></td></tr></table></figure>
+<h2 id="系统准备">系统准备</h2>
+<p>clougence用户ulimit上限调整为102400</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi  &#x2F;etc&#x2F;security&#x2F;limits.d&#x2F;20-nproc.conf</span><br><span class="line">## 调节clougence用户的资源限制</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 解压*</span><br><span class="line">7z x cloudcanal-2.2.4.7z -o.&#x2F;cloudcanal_home</span><br><span class="line">cd cloudcanal_home</span><br></pre></td></tr></table></figure>
+<h2 id="5-启动CloudCanal">5. 启动CloudCanal</h2>
+<ul>
+<li>执行启动命令: <code>sh startup.sh</code></li>
+<li>当终端出现 cloudcanal start 时，即启动成功<br>
+<a href="https://www.askcug.com/assets/uploads/files/1620979032983-7b00e562-cd45-4905-a626-1356503d8213-image.png" target="_blank" rel="noopener"><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2023/04/1620979032983-7b00e562-cd45-4905-a626-1356503d8213-image-resized.png" alt="7b00e562-cd45-4905-a626-1356503d8213-image.png"></a></li>
+</ul>
+<h2 id="6-确认启动成功">6. 确认启动成功</h2>
+<ul>
+<li>启动过程将耗时 1 分钟左右，访问控制台 <code>http://{您部署机器的ip}:8111</code> 正确登录并开始操作</li>
+</ul>
+<h1>使用教程(必读)</h1>
+<ul>
+<li>为了方便您一开始快速体验 CloudCanal ，我们已自动帮您做好了一些初始化的工作</li>
+<li><strong>请务必使用提供的默认账号登入，方便您快速体验</strong></li>
+<li>用户名：test@clougence.com</li>
+<li>密码：clougence2021</li>
+<li>默认添加的测试 MySQL 数据库
+<ul>
+<li>cloudcanal_test_a(源端)和cloudcanal_test_b(目标端)这两个库中已准备用于测试的表和数据</li>
+</ul>
+</li>
+<li>默认已添加了一台运行机器，用于执行具体的数据同步任务</li>
+<li>如遇到需要发送短信的场景，<strong>先点击获取验证码，然后输入短信验证码 777777 即可</strong></li>
+</ul>
+<p>)</p>
+<h1>CloudCanal社区版高可用部署教程</h1>
+<p><a href="https://www.askcug.com/topic/111/cloudcanal%E7%A4%BE%E5%8C%BA%E7%89%88%E9%AB%98%E5%8F%AF%E7%94%A8%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">https://www.askcug.com/topic/111/cloudcanal社区版高可用部署教程</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>tidb常用操作</title>
+    <url>/2023/08/16/tidb%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<p>tidb常用操作</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tiup cluster deploy tidb-test-v1 v6.5.2 ./topology.yaml --user root -p</span><br><span class="line">tiup cluster list</span><br><span class="line">tiup cluster clean tidb-test-v1 --all</span><br><span class="line"><span class="meta">#</span><span class="bash"> tiup cluster destroy tidb-test-v1</span></span><br><span class="line">tiup cluster start tidb-test-v1 --init</span><br><span class="line">tiup cluster display tidb-test-v1</span><br><span class="line">tiup cluster stop tidb-test-v1</span><br><span class="line">tiup cluster restart tidb-test-v1 </span><br><span class="line">tiup cluster edit-config tidb-test-v1 </span><br><span class="line">tiup cluster check tidb-test-v1 scale-out.yml --cluster --user root -p</span><br><span class="line">tiup cluster check tidb-test-v1 scale-out.yml --cluster --apply --user root -p</span><br><span class="line">tiup cluster scale-out tidb-test-v1 scale-out.yml --user root -p</span><br><span class="line">tiup ctl:v6.5.2 pd -u http://172.20.192.70:2379 store limit all engine tiflash 200 add-peer</span><br><span class="line">-- 如果你使用 TiUP 部署，可以用 tiup ctl:v&lt;CLUSTER_VERSION&gt; pd 代替 pd-ctl -u &lt;pd_ip:pd_port&gt; 命令。</span><br><span class="line">tiup ctl:v6.5.2 pd store</span><br><span class="line">tiup ctl:v6.5.2 pd -u http://172.20.192.70:2379 store limit store id 8487838  220 add-peer</span><br><span class="line">tiup ctl:v6.5.2 pd -i -u http://172.20.192.70:2379</span><br><span class="line">tiup cluster restart tidb-test-v1 -N 172.20.192.74:9090</span><br><span class="line">tiup cluster reload tidb-test-v1</span><br><span class="line">tiup install bench</span><br><span class="line">tiup diag config clinic.token eyJrIjoicFpJaDJ1a042ZjQ0a2E2NyIsInUiOjYwMywiaWQiOjU3Nn0=</span><br><span class="line">tiup diag collect tidb-test-v1</span><br></pre></td></tr></table></figure>
+<h3 id="备份与恢复">备份与恢复</h3>
+<p>如果是 BR 备份，还原之后是同名的；<br>
+dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复到的数据库。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mycli -h172.20.192.70 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">BACKUP DATABASE test TO &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39; RATE_LIMIT &#x3D; 120 MB&#x2F;SECOND;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mycli -h172.20.192.115 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">mysql&gt; RESTORE DATABASE test FROM &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39;;</span><br></pre></td></tr></table></figure>
+<h4 id="不停机升级">不停机升级</h4>
+<p>tiup cluster upgrade tidb-prod v6.5.3</p>
+<p>重启grafana</p>
+<p>tiup cluster restart tidb-prod -R grafana</p>
+<h2 id="备份">备份</h2>
+<p>tiup br log start --task-name=pitr --pd=&quot;${PD_IP}:2379&quot; \ --storage=‘s3://tidb-pitr-bucket/backup-data/log-backup’</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Nginx 高可用集群解决方案 Nginx + Keepalived</title>
+    <url>/2023/08/10/Nginx%20%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%20Nginx%20+%20Keepalived/</url>
+    <content><![CDATA[<h2 id="Nginx-高可用集群解决方案-Nginx-Keepalived">Nginx 高可用集群解决方案 Nginx + Keepalived</h2>
+<ol>
+<li>
+<p>修改 vim /opt/nginx/nginx.conf</p>
+</li>
+<li>
+<p>重启容器</p>
+</li>
+</ol>
+<p>docker restart 1f163b3a620a</p>
+<p>172.20.192.151</p>
+<p>172.20.192.152</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>用 arthas 来分析异常进程</title>
+    <url>/2023/08/03/%E7%94%A8%20arthas%20%E6%9D%A5%E5%88%86%E6%9E%90%E5%BC%82%E5%B8%B8%E8%BF%9B%E7%A8%8B/</url>
+    <content><![CDATA[<h2 id="用-arthas-来分析异常进程">用 arthas 来分析异常进程</h2>
+<p>arthas使用参考：  <a href="https://arthas.aliyun.com/doc/quick-start.html" target="_blank" rel="noopener">https://arthas.aliyun.com/doc/quick-start.html</a></p>
+<p>使用和目标进程一致的用户启动，否则可能 attach 失败</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo -u hbase env PATH&#x3D;$PATH java -jar arthas-boot.jar</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dashboard</span><br></pre></td></tr></table></figure>
+<p>运行 dashboard 命令回车，就可以查看该进程占用资源的总体情况</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">thread -n 3</span><br></pre></td></tr></table></figure>
+<p>输出资源占用前三名的线程</p>
+<h2 id="通过-thread-命令来获取到进程的-Main-Class">通过 thread 命令来获取到进程的 Main Class</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ thread 1 | grep &#39;main(&#39;</span><br><span class="line">    at demo.MathGame.main(MathGame.java:17)</span><br></pre></td></tr></table></figure>
+<h2 id="通过-jad-来反编译-Main-Class">通过 jad 来反编译 Main Class</h2>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">$ jad demo.MathGame</span><br></pre></td></tr></table></figure>]]></content>
+  </entry>
+  <entry>
+    <title>EFAK - Kafka可视化管理工具</title>
+    <url>/2023/07/26/EFAK%20-%20Kafka%E5%8F%AF%E8%A7%86%E5%8C%96%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/</url>
+    <content><![CDATA[<h1>EFAK - Kafka可视化管理工具</h1>
+<p><strong>提取 EFAK</strong></p>
+<p>这里我们解压到<code>/data/soft/new</code>目录并解压：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">tar -zxvf efak-xxx-bin.tar.gz</span><br></pre></td></tr></table></figure>
+<p>如果之前安装过版本，删除修改后的版本，重命名当前版本，如下图：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rm -rf efakmv efak-xxx efak</span><br></pre></td></tr></table></figure>
+<p>然后，配置 EFAK 配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vi /etc/profileexport KE_HOME=/data/soft/new/efakexport PATH=<span class="variable">$PATH</span>:<span class="variable">$KE_HOME</span>/bin</span><br></pre></td></tr></table></figure>
+<p>最后，我们使用<code>. /etc/profile</code>使配置立即生效。</p>
+<p>配置EFAK系统文件 根据自身Kafka集群的实际情况配置EFAK，例如zookeeper地址、Kafka集群的版本类型（zk为低版本，kafka为高版本）、开启安全认证的Kafka集群等。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$&#123;KE_HOME&#125;</span>/conf</span><br><span class="line">vi system-config.properties</span><br><span class="line"></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line"><span class="comment"># multi zookeeper &amp; kafka cluster list</span></span><br><span class="line"><span class="comment"># Settings prefixed with 'kafka.eagle.' will be deprecated, use 'efak.' instead</span></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line">efak.zk.cluster.alias=cluster1,cluster2</span><br><span class="line">cluster1.zk.list=cdh192-35.hadoop.xy:2181,cdh192-36.hadoop.xy:2181,cdh192-159.hadoop.xy:2181</span><br><span class="line">cluster2.zk.list=cdh192-150.hadoop.xy:2181,cdh192-150.hadoop.xy:2181,cdh192-150.hadoop.xy:2181</span><br><span class="line"></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line"><span class="comment"># zookeeper enable acl</span></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line">cluster1.zk.acl.enable=<span class="literal">false</span></span><br><span class="line">cluster1.zk.acl.schema=digest</span><br><span class="line">cluster1.zk.acl.username=<span class="built_in">test</span></span><br><span class="line">cluster1.zk.acl.password=test123</span><br><span class="line"></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line"><span class="comment"># broker size online list</span></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line">cluster1.efak.broker.size=20</span><br><span class="line">cluster2.efak.broker.size=20</span><br><span class="line"></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line"><span class="comment"># zk client thread limit</span></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line">kafka.zk.limit.size=16</span><br><span class="line"></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line"><span class="comment"># EFAK webui port</span></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line">efak.webui.port=8048</span><br><span class="line"></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line"><span class="comment"># EFAK enable distributed</span></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line">efak.distributed.enable=<span class="literal">false</span></span><br><span class="line">efak.cluster.mode.status=master</span><br><span class="line">efak.worknode.master.host=localhost</span><br><span class="line">efak.worknode.port=8085</span><br><span class="line"></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line"><span class="comment"># kafka jmx acl and ssl authenticate</span></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line">cluster1.efak.jmx.acl=<span class="literal">false</span></span><br><span class="line">cluster1.efak.jmx.user=keadmin</span><br><span class="line">cluster1.efak.jmx.password=keadmin123</span><br><span class="line">cluster1.efak.jmx.ssl=<span class="literal">false</span></span><br><span class="line">cluster1.efak.jmx.truststore.location=/data/ssl/certificates/kafka.truststore</span><br><span class="line">cluster1.efak.jmx.truststore.password=ke123456</span><br><span class="line"></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line"><span class="comment"># kafka offset storage</span></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line">cluster1.efak.offset.storage=kafka</span><br><span class="line">cluster2.efak.offset.storage=kafka</span><br><span class="line"></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line"><span class="comment"># kafka jmx uri</span></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line">cluster1.efak.jmx.uri=service:jmx:rmi:///jndi/rmi://172.20.192.147:9393/jmxrmi</span><br><span class="line">cluster2.efak.jmx.uri=service:jmx:rmi:///jndi/rmi://172.20.192.102:9393/jmxrmi</span><br><span class="line"></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line"><span class="comment"># kafka metrics, 15 days by default</span></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line">efak.metrics.charts=<span class="literal">true</span></span><br><span class="line">efak.metrics.retain=15</span><br><span class="line"></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line"><span class="comment"># kafka sql topic records max</span></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line">efak.sql.topic.records.max=5000</span><br><span class="line">efak.sql.topic.preview.records.max=10</span><br><span class="line"></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line"><span class="comment"># delete kafka topic token</span></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line">efak.topic.token=keadmin</span><br><span class="line"></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line"><span class="comment"># kafka sasl authenticate</span></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line">cluster1.efak.sasl.enable=<span class="literal">false</span></span><br><span class="line">cluster1.efak.sasl.protocol=SASL_PLAINTEXT</span><br><span class="line">cluster1.efak.sasl.mechanism=SCRAM-SHA-256</span><br><span class="line">cluster1.efak.sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=<span class="string">"kafka"</span> password=<span class="string">"kafka-eagle"</span>;</span><br><span class="line">cluster1.efak.sasl.client.id=</span><br><span class="line">cluster1.efak.blacklist.topics=</span><br><span class="line">cluster1.efak.sasl.cgroup.enable=<span class="literal">false</span></span><br><span class="line">cluster1.efak.sasl.cgroup.topics=</span><br><span class="line">cluster2.efak.sasl.enable=<span class="literal">false</span></span><br><span class="line">cluster2.efak.sasl.protocol=SASL_PLAINTEXT</span><br><span class="line">cluster2.efak.sasl.mechanism=PLAIN</span><br><span class="line">cluster2.efak.sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username=<span class="string">"kafka"</span> password=<span class="string">"kafka-eagle"</span>;</span><br><span class="line">cluster2.efak.sasl.client.id=</span><br><span class="line">cluster2.efak.blacklist.topics=</span><br><span class="line">cluster2.efak.sasl.cgroup.enable=<span class="literal">false</span></span><br><span class="line">cluster2.efak.sasl.cgroup.topics=</span><br><span class="line"></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line"><span class="comment"># kafka ssl authenticate</span></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line">cluster3.efak.ssl.enable=<span class="literal">false</span></span><br><span class="line">cluster3.efak.ssl.protocol=SSL</span><br><span class="line">cluster3.efak.ssl.truststore.location=</span><br><span class="line">cluster3.efak.ssl.truststore.password=</span><br><span class="line">cluster3.efak.ssl.keystore.location=</span><br><span class="line">cluster3.efak.ssl.keystore.password=</span><br><span class="line">cluster3.efak.ssl.key.password=</span><br><span class="line">cluster3.efak.ssl.endpoint.identification.algorithm=https</span><br><span class="line">cluster3.efak.blacklist.topics=</span><br><span class="line">cluster3.efak.ssl.cgroup.enable=<span class="literal">false</span></span><br><span class="line">cluster3.efak.ssl.cgroup.topics=</span><br><span class="line"></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line"><span class="comment"># kafka sqlite jdbc driver address</span></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line"><span class="comment">#efak.driver=org.sqlite.JDBC</span></span><br><span class="line"><span class="comment">#efak.url=jdbc:sqlite:/hadoop/kafka-eagle/db/ke.db</span></span><br><span class="line"><span class="comment">#efak.username=root</span></span><br><span class="line"><span class="comment">#efak.password=www.kafka-eagle.org</span></span><br><span class="line"></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line"><span class="comment"># kafka mysql jdbc driver address</span></span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line">efak.driver=com.mysql.cj.jdbc.Driver</span><br><span class="line">efak.url=jdbc:mysql://172.20.192.240:3306/ke?useUnicode=<span class="literal">true</span>&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull</span><br><span class="line">efak.username=scm</span><br><span class="line">efak.password=*****</span><br></pre></td></tr></table></figure>
+<p><strong>启动EFAK服务器（独立）</strong> 在$KE_HOME/bin目录中，有一个ke.sh脚本文件。执行启动命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$&#123;KE_HOME&#125;</span>/binchmod +x ke.sh ke.sh start</span><br></pre></td></tr></table></figure>
+<p>之后，当 EFAK 服务器重新启动或停止时，执行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ke.sh restartke.sh stop</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>用 Sysbench 测试 TiDB</title>
+    <url>/2023/07/21/%E7%94%A8%20Sysbench%20%E6%B5%8B%E8%AF%95%20TiDB/</url>
+    <content><![CDATA[<h1>用 Sysbench 测试 TiDB</h1>
+<h3 id="Sysbench-配置">Sysbench 配置</h3>
+<p>以下为 Sysbench 配置文件样例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql-host&#x3D;&#123;TIDB_HOST&#125;</span><br><span class="line">mysql-port&#x3D;4000</span><br><span class="line">mysql-user&#x3D;root</span><br><span class="line">mysql-password&#x3D;password</span><br><span class="line">mysql-db&#x3D;sbtest</span><br><span class="line">time&#x3D;600</span><br><span class="line">threads&#x3D;&#123;8, 16, 32, 64, 128, 256&#125;</span><br><span class="line">report-interval&#x3D;10</span><br><span class="line">db-driver&#x3D;mysql</span><br></pre></td></tr></table></figure>
+<p>可根据实际需求调整其参数，其中 <code>TIDB_HOST</code> 为 TiDB server 的 IP 地址（配置文件中不能写多个地址），<code>threads</code> 为测试中的并发连接数，可在 “8, 16, 32, 64, 128, 256” 中调整，导入数据时，建议设置 threads = 8 或者 16。调整后，将该文件保存为名为 <strong>config</strong> 的文件。</p>
+<p><strong>配置文件</strong>参考示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql-host&#x3D;172.16.30.33</span><br><span class="line">mysql-port&#x3D;4000</span><br><span class="line">mysql-user&#x3D;root</span><br><span class="line">mysql-password&#x3D;password</span><br><span class="line">mysql-db&#x3D;sbtest</span><br><span class="line">time&#x3D;600</span><br><span class="line">threads&#x3D;16</span><br><span class="line">report-interval&#x3D;10</span><br><span class="line">db-driver&#x3D;mysql</span><br></pre></td></tr></table></figure>
+<h3 id="数据导入">数据导入</h3>
+<p>注意</p>
+<p>如果 TiDB 启用了乐观事务模型（默认为悲观锁模式），当发现并发冲突时，会回滚事务。将 <code>tidb_disable_txn_auto_retry</code> 设置为 <code>off</code> 会开启事务冲突后的自动重试机制，可以尽可能避免事务冲突报错导致 Sysbench 程序退出的问题。</p>
+<p>在数据导入前，需要对 TiDB 进行简单设置。在 MySQL 客户端中执行如下命令：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> tidb_disable_txn_auto_retry = <span class="keyword">off</span>;</span><br></pre></td></tr></table></figure>
+<p>然后退出客户端。</p>
+<p>重新启动 MySQL 客户端执行以下 SQL 语句，创建数据库 <code>sbtest</code>：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> sbtest;</span><br></pre></td></tr></table></figure>
+<p>调整 Sysbench 脚本创建索引的顺序。Sysbench 按照“建表-&gt;插入数据-&gt;创建索引”的顺序导入数据。对于 TiDB 而言，该方式会花费更多的导入时间。你可以通过调整顺序来加速数据的导入。</p>
+<p>假设使用的 Sysbench 版本为 <a href="https://github.com/akopytov/sysbench/tree/1.0.20" target="_blank" rel="noopener">1.0.20</a>，可以通过以下两种方式来修改：</p>
+<ol>
+<li>直接下载为 TiDB 修改好的 <a href="https://raw.githubusercontent.com/pingcap/tidb-bench/master/sysbench/sysbench-patch/oltp_common.lua" target="_blank" rel="noopener">oltp_common.lua</a> 文件，覆盖 <code>/usr/share/sysbench/oltp_common.lua</code> 文件。</li>
+<li>将 <code>/usr/share/sysbench/oltp_common.lua</code> 的第 <a href="https://github.com/akopytov/sysbench/blob/1.0.20/src/lua/oltp_common.lua#L235-L240" target="_blank" rel="noopener">235-240</a> 行移动到第 198 行以后。</li>
+</ol>
+<p>注意</p>
+<p>此操作为可选操作，仅节约了数据导入时间。</p>
+<p>命令行输入以下命令，开始导入数据，config 文件为上一步中配置的文件：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 prepare</span><br></pre></td></tr></table></figure>]]></content>
+  </entry>
+  <entry>
+    <title>tidb 批量导入历史数据</title>
+    <url>/2023/07/21/tidb%20%E6%89%B9%E9%87%8F%E5%AF%BC%E5%85%A5%E5%8E%86%E5%8F%B2%E6%95%B0%E6%8D%AE/</url>
+    <content><![CDATA[<p>tidb 批量导入历史数据</p>
+<p>cdh192-150:/opt/script/tidb-import-data.bash</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">for i in &#123;4..9&#125;;</span><br><span class="line">do</span><br><span class="line">if [ ! -d "/dfs/data3/data-source-dir" ]; then</span><br><span class="line">mkdir /dfs/data3/data-source-dir</span><br><span class="line">chmod 777 /dfs/data3/data-source-dir</span><br><span class="line">sudo -u hdfs hadoop fs -get hdfs://172.20.192.36:8020/user/hive/warehouse/test.db/history_ethereum/part-$i* /dfs/data3/data-source-dir/</span><br><span class="line">fi</span><br><span class="line">source /home/tidb/.bash_profile</span><br><span class="line">tiup tidb-lightning -config /home/tidb/tidb-lightning.toml</span><br><span class="line">rm -rf /dfs/data3/data-source-dir</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p>vim tidb-lightning.toml</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">[lightning]</span></span><br><span class="line"><span class="comment"># 日志</span></span><br><span class="line"><span class="string">level</span> <span class="string">=</span> <span class="string">"info"</span></span><br><span class="line"><span class="string">file</span> <span class="string">=</span> <span class="string">"tidb-lightning.log"</span></span><br><span class="line"><span class="string">max-error</span> <span class="string">=</span> <span class="number">10000</span></span><br><span class="line"></span><br><span class="line"><span class="string">[tikv-importer]</span></span><br><span class="line"><span class="string">incremental-import</span> <span class="string">=</span> <span class="literal">true</span></span><br><span class="line"><span class="comment"># "local"：默认使用该模式，适用于 TiB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。</span></span><br><span class="line"><span class="string">backend</span> <span class="string">=</span> <span class="string">"local"</span></span><br><span class="line"><span class="comment"># # "tidb"：TiB 级以下数据量也可以采用 `tidb` 后端模式，下游 TiDB 可正常提供服务。关于导入模式更多信息请参阅：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview#tidb-lightning-整体架构</span></span><br><span class="line"><span class="comment"># 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小。建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 I/O 会获得更好的导入性能。</span></span><br><span class="line"><span class="string">sorted-kv-dir</span> <span class="string">=</span> <span class="string">"/dfs/data2/sorted-kv-dir"</span></span><br><span class="line"></span><br><span class="line"><span class="string">[mydumper]</span></span><br><span class="line"><span class="comment"># 源数据目录</span></span><br><span class="line"><span class="string">data-source-dir</span> <span class="string">=</span> <span class="string">"/dfs/data3/data-source-dir"</span> <span class="comment"># 本地或 S3 路径，例如：'s3://my-bucket/sql-backup'</span></span><br><span class="line"></span><br><span class="line"><span class="string">[[mydumper.files]]</span></span><br><span class="line"><span class="comment"># 解析 AWS Aurora parquet 文件所需的表达式   part-00000-34e0bdac-df83-46a1-a198-b5c51a745cc2-c000.snappy.parquet</span></span><br><span class="line"><span class="string">pattern</span> <span class="string">=</span> <span class="string">'.*.snappy.parquet'</span></span><br><span class="line"><span class="string">schema</span> <span class="string">=</span> <span class="string">'ADDRESS'</span></span><br><span class="line"><span class="string">table</span> <span class="string">=</span> <span class="string">'T_HISTORY_TRANS_ETHEREUM'</span></span><br><span class="line"><span class="string">type</span> <span class="string">=</span> <span class="string">'parquet'</span></span><br><span class="line"></span><br><span class="line"><span class="string">[tidb]</span></span><br><span class="line"><span class="comment"># 目标集群的信息</span></span><br><span class="line"><span class="string">host</span> <span class="string">=</span> <span class="string">"172.20.192.115"</span>                <span class="comment"># 例如：172.16.32.1</span></span><br><span class="line"><span class="string">port</span> <span class="string">=</span> <span class="number">4000</span>                <span class="comment"># 例如：4000</span></span><br><span class="line"><span class="string">user</span> <span class="string">=</span> <span class="string">"root"</span>         <span class="comment"># 例如："root"</span></span><br><span class="line"><span class="string">password</span> <span class="string">=</span> <span class="string">""</span>      <span class="comment"># 例如："rootroot"</span></span><br><span class="line"><span class="string">status-port</span> <span class="string">=</span> <span class="number">10080</span>  <span class="comment"># 导入过程 Lightning 需要在从 TiDB 的“状态端口”获取表结构信息，例如：10080</span></span><br><span class="line"><span class="string">pd-addr</span> <span class="string">=</span> <span class="string">"172.20.192.115:2379"</span>     <span class="comment"># 集群 PD 的地址，Lightning 通过 PD 获取部分信息，例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。</span></span><br><span class="line"></span><br><span class="line"><span class="string">[checkpoint]</span></span><br><span class="line"><span class="string">enable</span> <span class="string">=</span> <span class="literal">true</span></span><br><span class="line"><span class="string">driver</span> <span class="string">=</span> <span class="string">"file"</span></span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>用broker导入数据 ，全部be节点cpu 100%</title>
+    <url>/2023/07/13/%E7%94%A8broker%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE%20%EF%BC%8C%E5%85%A8%E9%83%A8be%E8%8A%82%E7%82%B9cpu%20100%25/</url>
+    <content><![CDATA[<p>用broker导80亿数据 ，全部be节点cpu 100%</p>
+<p>【详述】全部be节点cpu 100%<br>
+【做过哪些操作】<br>
+【业务影响】已经不能查询<br>
+【StarRocks版本】2.5.5<br>
+【集群规模】4fe（3 follower+1observer）4be（fe与be混部）<br>
+【机器信息】256C/1024G/万兆</p>
+<h3 id="方法1：">方法1：</h3>
+<p>vim conf/be.conf   开启下列2个参数，然后重启，在be.info日志里找到TabletId ，然后根据TabletId 找到table_id</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># sys_log_verbose_modules &#x3D; *</span><br><span class="line"># log_buffer_level &#x3D; -1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">grep &quot;apply_rowset_commit start&quot; log&#x2F;be.INFO | less</span><br></pre></td></tr></table></figure>
+<p>– 多个磁盘循环删掉元数据</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for i in &#123;1..8&#125;;do bin&#x2F;meta_tool.sh --operation&#x3D;delete_meta --root_path&#x3D;&#x2F;dfs&#x2F;data$&#123;i&#125;&#x2F;storage --table_id&#x3D;20642901;done</span><br></pre></td></tr></table></figure>
+<h3 id="方法2：">方法2：</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">RECOVER TABLE [db_name.]table_name;  -- 恢复 table</span><br><span class="line">show tablet from ADDRESS.T_HISTORY_TRANS_BSC   -- 找到TabletId </span><br><span class="line">show tablet 20882137    -- 根据TabletId找到table_id</span><br><span class="line">-- 多个磁盘循环删掉元数据</span><br><span class="line">for i in &#123;1..8&#125;;do bin&#x2F;meta_tool.sh --operation&#x3D;delete_meta --root_path&#x3D;&#x2F;dfs&#x2F;data$&#123;i&#125;&#x2F;storage --table_id&#x3D;20642901;done</span><br></pre></td></tr></table></figure>
+<h3 id="方法3：">方法3：</h3>
+<p>强制删除应该也是可以的（没有验证）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">DROP TABLE my_table FORCE;  -- 强制删除表，并清理磁盘文件。</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>cloudcanal监控配置</title>
+    <url>/2023/07/05/cloudcanal%E7%9B%91%E6%8E%A7%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<p>cloudcanal监控配置</p>
+<p>mysql -uclougence -h127.0.0.1 -P25000 -p123456</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>starRocks副本数修改</title>
+    <url>/2023/06/29/starRocks%E5%89%AF%E6%9C%AC%E6%95%B0%E4%BF%AE%E6%94%B9/</url>
+    <content><![CDATA[<p>前面提到过，我们可以为分区设置单独的存储策略，比如增加分区时使用新的副本数：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER TABLE starrocks.table07</span><br><span class="line">ADD PARTITION p20210313 VALUES LESS THAN (&quot;2021-03-14&quot;)</span><br><span class="line">(&quot;replication_num&quot;&#x3D;&quot;1&quot;);</span><br></pre></td></tr></table></figure>
+<p>修改分区副本数：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER TABLE starrocks.table07</span><br><span class="line">MODIFY PARTITION p20210313 SET(&quot;replication_num&quot;&#x3D;&quot;2&quot;);</span><br></pre></td></tr></table></figure>
+<p>修改表的默认副本数量，新建分区副本数量默认使用此值：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER TABLE starrocks.table07</span><br><span class="line">SET (&quot;default.replication_num&quot; &#x3D; &quot;2&quot;);</span><br></pre></td></tr></table></figure>
+<p>修改单分区表的实际副本数量（只限单分区表）：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER TABLE starrocks.table06</span><br><span class="line">SET (&quot;replication_num&quot; &#x3D; &quot;1&quot;);</span><br></pre></td></tr></table></figure>
+<p>修改表所有分区的副本数：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER TABLE starrocks.table01</span><br><span class="line">MODIFY PARTITION(*)</span><br><span class="line">SET (&quot;replication_num&quot; &#x3D; &quot;3&quot;);</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>mycli安装</title>
+    <url>/2023/06/25/mycli%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<p>Linux Centos7安装python3.7  <a href="https://blog.csdn.net/fen_fen/article/details/123520752" target="_blank" rel="noopener">https://blog.csdn.net/fen_fen/article/details/123520752</a></p>
+<p>pip3 install mycli</p>
+<p>设置环境变量</p>
+<p>vim  ~/.bash_profile</p>
+<p>export PATH=/usr/local/python3/bin:$PATH</p>
+]]></content>
+  </entry>
+  <entry>
     <title>trino集群优化</title>
-    <url>/2023/04/06/trino%E9%9B%86%E7%BE%A4%E4%BC%98%E5%8C%96/</url>
+    <url>/2023/05/08/trino%E9%9B%86%E7%BE%A4%E4%BC%98%E5%8C%96/</url>
     <content><![CDATA[<p>trino集群优化</p>
 <p><a href="https://www.cnblogs.com/erlou96/p/16878170.html" target="_blank" rel="noopener">https://www.cnblogs.com/erlou96/p/16878170.html</a></p>
 <h2 id="config-properties">config.properties</h2>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">coordinator&#x3D;true</span><br><span class="line">node-scheduler.include-coordinator&#x3D;true</span><br><span class="line">http-server.http.port&#x3D;8089</span><br><span class="line">#query.max-total-memory-per-node&#x3D;2GB</span><br><span class="line">discovery-server.enabled&#x3D;true</span><br><span class="line">discovery.uri&#x3D;http:&#x2F;&#x2F;cdh192-147.hadoop.xy:8089</span><br><span class="line"></span><br><span class="line">#禁用保留池  (新版本已经删除了)</span><br><span class="line">#experimental.reserved-pool-enabled&#x3D;false</span><br><span class="line">#在单个 worker 上面可以使用的最大的user memory值 （默认JVM max memory * 0.1）调整到 JVM max memory * 0.25</span><br><span class="line">#query.max-memory-per-node&#x3D;100GB</span><br><span class="line">#单个Query在单个Worker上允许的最大user memory + system memory 调整到 JVM max memory * 0.4</span><br><span class="line">#query.max-total-memory-per-node&#x3D;16GB</span><br><span class="line">#这个内存主要是第三方库的内存分配，无法统计跟踪。 （默认JVM max memory * 0.3）调整到 JVM max memory * 0.2</span><br><span class="line">#memory.heap-headroom-per-node&#x3D;8GB</span><br><span class="line">#单个查询在所有任务调度的节点上瞬间最大能用的内存（单个查询的峰值内存） 调整到 &lt;&#x3D; query.max-total-memory-per-node * workers * 0.8</span><br><span class="line">query.max-memory&#x3D;300GB</span><br><span class="line">#当presto集群发生OOM时的内存保护策略，配置 total-reservation 是kill 掉占用内存最大的任务</span><br><span class="line">query.low-memory-killer.policy&#x3D;total-reservation</span><br><span class="line"></span><br><span class="line">#延长等待时间</span><br><span class="line">exchange.http-client.request-timeout&#x3D;10s</span><br><span class="line">#从其他Presto节点获取数据的线程数。较高的值可以提高大型群集或具有很高并发性的群集的性能(默认值：25)</span><br><span class="line">exchange.client-threads&#x3D;128</span><br><span class="line">exchange.http-client.idle-timeout &#x3D; 10s</span><br><span class="line">#并行运算符（例如联接和聚合）的默认本地并发性。较低的值对于同时运行许多查询的集群更好（默认值：16，必须是2的幂次）</span><br><span class="line">task.concurrency&#x3D;2</span><br><span class="line">task.max-worker-threads&#x3D;256</span><br><span class="line">#可以创建用于处理HTTP响应的最大线程数。在具有大量并发查询的群集上或在具有数百或数千个工作程序的群集上，可以调高（默认值:100）</span><br><span class="line">task.http-response-threads&#x3D;2000</span><br><span class="line">join-distribution-type&#x3D;AUTOMATIC</span><br><span class="line">node-scheduler.max-splits-per-node&#x3D;2000</span><br><span class="line">query.max-stage-count&#x3D;4000</span><br><span class="line"></span><br><span class="line">#自动kill运行时长超过20分钟的sql（代替脚本kill任务，让presto 自动管理）：</span><br><span class="line">query.max-run-time&#x3D;1200s</span><br><span class="line">#解决新版本 remote too large 报错 </span><br><span class="line">exchange.http-client.max-content-length&#x3D;128MB</span><br><span class="line">node-manager.http-client.max-content-length&#x3D;64MB</span><br></pre></td></tr></table></figure>
 <h2 id="jvm-config">jvm.config</h2>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-Xmx1024G</span><br><span class="line">-Xms1024G</span><br><span class="line">-XX:+UseG1GC</span><br><span class="line">-XX:+ExplicitGCInvokesConcurrent</span><br><span class="line">-XX:+HeapDumpOnOutOfMemoryError</span><br><span class="line">-XX:+UseGCOverheadLimit</span><br><span class="line">-XX:OnOutOfMemoryError&#x3D;kill -9 %p</span><br><span class="line">-DHADOOP_USER_NAME&#x3D;hdfs</span><br><span class="line">-Duser.timezone&#x3D;Asia&#x2F;Shanghai</span><br><span class="line">-Djdk.attach.allowAttachSelf&#x3D;true</span><br><span class="line">-XX:G1ReservePercent&#x3D;15</span><br><span class="line">-XX:InitiatingHeapOccupancyPercent&#x3D;40</span><br><span class="line">-XX:ConcGCThreads&#x3D;8</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>集成Flink HistoryServer至CDH</title>
+    <url>/2023/05/08/%E9%9B%86%E6%88%90Flink%20HistoryServer%E8%87%B3CDH/</url>
+    <content><![CDATA[<h1>集成Flink HistoryServer至CDH</h1>
+<p>参考 <a href="https://blog.csdn.net/guiyifei/article/details/109325980" target="_blank" rel="noopener">https://blog.csdn.net/guiyifei/article/details/109325980</a></p>
+<h1>制作Flink的parcel包和<a href="https://so.csdn.net/so/search?q=csd&amp;spm=1001.2101.3001.7020" target="_blank" rel="noopener">csd</a>文件</h1>
+<h2 id="1-下载制作脚本">1. 下载制作脚本</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;EvenGui&#x2F;flink-parcel-master</span><br><span class="line"></span><br><span class="line">cd flink-parcel-master</span><br></pre></td></tr></table></figure>
+<h2 id="修改参数vim-flink-parcel-properties">修改参数vim flink-parcel.properties</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#FLINk 下载地址</span><br><span class="line">FLINK_URL&#x3D;  &#x2F;opt&#x2F;soft&#x2F;flink-1.14.6-bin-scala_2.12.tgz</span><br><span class="line"></span><br><span class="line">#flink版本号</span><br><span class="line">FLINK_VERSION&#x3D;1.14.6</span><br><span class="line"></span><br><span class="line">#扩展版本号</span><br><span class="line">EXTENS_VERSION&#x3D;BIN-SCALA_2.12</span><br><span class="line"></span><br><span class="line">#操作系统版本，以centos为例</span><br><span class="line">OS_VERSION&#x3D;7</span><br><span class="line"></span><br><span class="line">#CDH 小版本</span><br><span class="line">CDH_MIN_FULL&#x3D;5.13.1</span><br><span class="line">CDH_MAX_FULL&#x3D;6.3.2</span><br><span class="line"></span><br><span class="line">#CDH大版本</span><br><span class="line">CDH_MIN&#x3D;5</span><br><span class="line">CDH_MAX&#x3D;6</span><br></pre></td></tr></table></figure>
+<h2 id="编译parcel">编译parcel</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sh build.sh parcel</span><br></pre></td></tr></table></figure>
+<p>./FLINK-1.14.6-BIN-SCALA_2.12/lib/flink/bin/start-scala-shell.sh does not exist.</p>
+<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2023/03/image-20230310160047820.png" alt="image-20230310160047820"></p>
+<p>编译会报错，我是创建一个空文件</p>
+<p>编译完会在flink-parcel项目根目录下生成_build文件夹</p>
+<h2 id="编译csd">编译csd</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sh build.sh csd</span><br></pre></td></tr></table></figure>
+<h2 id="配置参考">配置参考</h2>
+<ol>
+<li>
+<p>修改flink-conf.yaml文件<br>
+# 是否清理不存在的作业(即已经过期的)<br>
+historyserver.archive.clean-expired-jobs：false</p>
+<p># 每一个归档目录下可以保留的最大job数，设置为-1即不限制<br>
+historyserver.archive.retained-jobs：-1</p>
+<p># HistoryServer 地址<br>
+historyserver.web.address：0.0.0.0</p>
+<p># HistoryServer web地址<br>
+historyserver.web.port：9999</p>
+<p># web端刷新间隔<br>
+historyserver.web.refresh-interval: 10000</p>
+<p># 配置已归档jm路径<br>
+jobmanager.archive.fs.dir: hdfs:///project/flink/history-server/</p>
+<p>#historyserver监控归档路径，该路径要和jm配置的一样<br>
+historyserver.archive.fs.dir：hdfs:///project/flink/history-server/</p>
+<p># 每10s扫描一次归档路径<br>
+historyserver.archive.fs.refresh-interval: 10000</p>
+</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>MongoDB6.0集群搭建(Centos7)</title>
+    <url>/2023/04/28/MongoDB6.0%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA(Centos7)/</url>
+    <content><![CDATA[<h1>MongoDB6.0集群搭建(Centos7)</h1>
+<p>wget  <a href="https://downloads.mongodb.com/compass/mongosh-1.8.1-linux-x64.tgz" target="_blank" rel="noopener">https://downloads.mongodb.com/compass/mongosh-1.8.1-linux-x64.tgz</a></p>
+<p>wget <a href="https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-6.0.5.tgz" target="_blank" rel="noopener">https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-6.0.5.tgz</a></p>
+<p>参考   <a href="https://www.jianshu.com/p/21d33d6cb56c" target="_blank" rel="noopener">https://www.jianshu.com/p/21d33d6cb56c</a></p>
+<p><a href="https://blog.csdn.net/networken/article/details/115409367" target="_blank" rel="noopener">https://blog.csdn.net/networken/article/details/115409367</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Apache Kyuubi on CDH 部署</title>
+    <url>/2023/04/25/Apache%20Kyuubi%20on%20CDH%20%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<h1>Apache Kyuubi on CDH 部署</h1>
+<p><a href="https://shmily-qjj.top/ee1c2df4/" target="_blank" rel="noopener">https://shmily-qjj.top/ee1c2df4/</a></p>
+<h1>Apache Kyuubi on Spark 在 CDH 上的深度实践</h1>
+<p><a href="https://www.slidestalk.com/openLooKeng/22" target="_blank" rel="noopener">https://www.slidestalk.com/openLooKeng/22</a></p>
+<p>sudo -u hdfs bin/kyuubi start<br>
+sudo -u hdfs bin/kyuubi stop</p>
+<p>bin/beeline -u ‘jdbc:hive2://10.0.19.132:10009/’ -n hadoop</p>
+<p>bin/beeline -u ‘jdbc:hive2://172.20.192.36:10009/’ -n hadoop</p>
+<p>jdbc:hive2://172.20.192.36:10009/?spark.app.name=test_kyuubi_application;spark.sql.adaptive.enabled=true;spark.driver.memory=4G;spark.executor.instances=256;spark.executor.cores=4;spark.executor.memory=16g</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>HBase常用的Filter</title>
+    <url>/2023/04/23/HBase%E5%B8%B8%E7%94%A8%E7%9A%84Filter/</url>
+    <content><![CDATA[<h1>HBase常用的Filter</h1>
+<p>简介：</p>
+<p>​    根据技术调研的过程可以明显的体会到hbase的存储方式和数据库的存储有着明显的区别，查询的方式也有着很大不同，HBase主要是通过这种filter来对数据进行筛选。同时对于数据的体量较大（10亿级别以上的数据数据量），检索和修改的场景较多时是比较适合使用hbase。</p>
+<p>HBase过滤器可以根据分为：列簇与列类型过滤器，行键过滤器，其他过滤器<br>
+HBase Filter 概览<br>
+查询hbase支持的filter 列表</p>
+<p>[<img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码">](javascript:void(0);)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">base(main):001:0&gt; show_filters</span><br><span class="line">DependentColumnFilter                                                                                                                                                  </span><br><span class="line">KeyOnlyFilter                                                                                                                                                          </span><br><span class="line">ColumnCountGetFilter                                                                                                                                                   </span><br><span class="line">SingleColumnValueFilter                                                                                                                                                </span><br><span class="line">PrefixFilter                                                                                                                                                           </span><br><span class="line">SingleColumnValueExcludeFilter                                                                                                                                         </span><br><span class="line">FirstKeyOnlyFilter                                                                                                                                                     </span><br><span class="line">ColumnRangeFilter                                                                                                                                                      </span><br><span class="line">ColumnValueFilter                                                                                                                                                      </span><br><span class="line">TimestampsFilter                                                                                                                                                       </span><br><span class="line">FamilyFilter                                                                                                                                                           </span><br><span class="line">QualifierFilter                                                                                                                                                        </span><br><span class="line">ColumnPrefixFilter                                                                                                                                                     </span><br><span class="line">RowFilter                                                                                                                                                              </span><br><span class="line">MultipleColumnPrefixFilter                                                                                                                                             </span><br><span class="line">InclusiveStopFilter                                                                                                                                                    </span><br><span class="line">PageFilter                                                                                                                                                             </span><br><span class="line">ValueFilter                                                                                                                                                            </span><br><span class="line">ColumnPaginationFilter                                                                                                                                                 </span><br><span class="line">Took 0.0033 seconds</span><br></pre></td></tr></table></figure>
+<p>[<img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码">](javascript:void(0);)</p>
+<p>HBase Filter 使用简单例子<br>
+行键过滤器<br>
+RowFilter:针对行键进行过滤</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">scan &#39;test&#39;,FILTER&#x3D;&gt;&quot;RowFilter(&#x3D;,&#39;binaryprefix:row&#39;)&quot;</span><br></pre></td></tr></table></figure>
+<p>说明:把test表中rowkey 以row开头的数据查出来</p>
+<p>支持的比较运算符：= != &gt; &gt;= &lt; &lt;= 。</p>
+<p>PrefixFilter:行键前缀过滤器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">scan &#39;test&#39;,FILTER&#x3D;&gt;&quot;PrefixFilter(&#39;row0&#39;)&quot;</span><br></pre></td></tr></table></figure>
+<p>说明：把test表中rowkey 以row0开头的数据查出来</p>
+<p>FirstKeyOnlyFilter:扫描全表，显示每个逻辑行的第一个键值对</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">scan &#39;test&#39;,FILTER&#x3D;&gt;&quot;FirstKeyOnlyFilter()&quot;</span><br></pre></td></tr></table></figure>
+<p>说明：一个rowkey可以有多个version,同一个rowkey的同一个column也会有多个的值,只拿出key中的第一个column的第一个version</p>
+<p>列簇与列过滤器</p>
+<p>FamilyFilter:针对列族进行比较和过滤</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">scan &#39;test&#39;,FILTER&#x3D;&gt;&quot;FamilyFilter(&#x3D;,&#39;substring:f1&#39;)&quot;</span><br></pre></td></tr></table></figure>
+<p>说明：查询列簇前缀以“f1”开头的数据</p>
+<p>QualifierFilter:列标识过滤器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">scan &#39;test&#39;,FILTER&#x3D;&gt;&quot;QualifierFilter(&#x3D;,&#39;substring:name&#39;)&quot;</span><br></pre></td></tr></table></figure>
+<p>说明：查询所有列簇中列名是name的列数据</p>
+<p>ColumnPrefixFilter:对列名前缀进行过滤</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">scan &#39;test&#39;,FILTER&#x3D;&gt;&quot;ColumnPrefixFilter(&#39;n&#39;)&quot;</span><br></pre></td></tr></table></figure>
+<p>说明：查询所有列簇中列以“n”开头的数据</p>
+<p>MultipleColumnPrefixFilter:可以指定多个前缀</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">scan &#39;test&#39;,FILTER&#x3D;&gt;&quot;MultipleColumnPrefixFilter(&#39;n&#39;,&#39;m&#39;)&quot;</span><br></pre></td></tr></table></figure>
+<p>说明：查询test表，所有列簇中列名以“n“或者”m&quot;开头的数据</p>
+<p>ColumnRangeFilter:设置范围按字典序对列名进行过滤</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">scan &#39;test&#39;,FILTER&#x3D;&gt;&quot;ColumnRangeFilter(&#39;name&#39;,true,&#39;music&#39;,false)&quot;</span><br></pre></td></tr></table></figure>
+<p>说明：ColumnRangeFilter过滤器则可以扫描出符合过滤条件的列范围，起始和终止列名用单引号引用，true 和 false 参数可指明结果中包含的起始或终止列。</p>
+<p>值过滤器</p>
+<p>ValueFilter：值过滤器，找到符合值条件的键值对</p>
+<p>[<img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码">](javascript:void(0);)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">模糊查找：scan &#39;test&#39;, FILTER &#x3D;&gt; &quot;ValueFilter(&#x3D;,&#39;substring:张&#39;)&quot;</span><br><span class="line"></span><br><span class="line">说明：查询test表中，所有列值为以“张”开头的数据</span><br><span class="line"></span><br><span class="line">精确查询：scan &#39;test&#39;, FILTER &#x3D;&gt; &quot;ValueFilter(&#x3D;,&#39;binary:张三&#39;)&quot;</span><br><span class="line"></span><br><span class="line">说明：查询test表中，所有列值为“张三”的数据</span><br><span class="line"></span><br><span class="line">注意1：ValueFilter 过滤器可以利用 get 和 scan 方法对单元格进行过滤，但是使用 get 方法时，需要指定行键</span><br></pre></td></tr></table></figure>
+<p>[<img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码">](javascript:void(0);)</p>
+<p>SingleColumnValueFilter：在指定的列族和列中进行比较的值过滤器</p>
+<p>[<img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码">](javascript:void(0);)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">scan &#39;test&#39;, &#123;FILTER &#x3D;&gt; &quot;SingleColumnValueFilter(&#39;liecuA&#39;, &#39;name&#39;, &#x3D;, &#39;substring:张&#39;)&quot;,FORMATTER &#x3D;&gt; &#39;toString&#39;&#125;</span><br><span class="line"></span><br><span class="line">   说明：查询test表，列簇：liecuA 下 name列以“张”开头的数据</span><br><span class="line"></span><br><span class="line">   注意：如果查询的数据存在没有liecuA：name 对应值得数据也会展示出啦</span><br><span class="line"></span><br><span class="line">   解决方案：HBase入门：shell模糊查询_u011236069的博客-CSDN博客   注意事项2</span><br></pre></td></tr></table></figure>
+<p>[<img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码">](javascript:void(0);)</p>
+<p>SingleColumnValueExcludeFilter：排除匹配成功的值</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">scan &#39;test&#39;, &#123;FILTER &#x3D;&gt; &quot;SingleColumnValueExcludeFilter(&#39;liecuA&#39;, &#39;name&#39;, &#x3D;, &#39;substring:张&#39;)&quot;,FORMATTER &#x3D;&gt; &#39;toString&#39;&#125;</span><br></pre></td></tr></table></figure>
+<p>其他过滤器</p>
+<p>​    还有一些其他的过滤器，比如与分页，时间等</p>
+<p>ColumnCountGetFilter：限制每个逻辑行返回键值对的个数，在 get 方法中使用</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">get &#39;test&#39;, &#39;row1&#39;, FILTER &#x3D;&gt; &quot;ColumnCountGetFilter(3)&quot;</span><br><span class="line"></span><br><span class="line">  说明：查询test表行键为“row1”的数据，只允许显示3列</span><br></pre></td></tr></table></figure>
+<p>TimestampsFilter：时间戳过滤，支持等值，可以设置多个时间戳</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">scan &#39;test&#39;, Filter &#x3D;&gt; &quot;TimestampsFilter(1636561062,1636993106)&quot;</span><br><span class="line"></span><br><span class="line">说明： 注意Filter需要再使用前进行导入</span><br></pre></td></tr></table></figure>
+<p>PageFilter：对查询结果按行进行分页显示</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">scan &#39;test&#39;, &#123; STARTROW &#x3D;&gt; &#39;row1&#39;, ENDROW &#x3D;&gt; &#39;row5&#39;, FILTER &#x3D;&gt; &quot;PageFilter(3)&quot; &#125;</span><br><span class="line"></span><br><span class="line">  说明：查询test表根据行键从“row1”到“row5” 查询3行数据</span><br></pre></td></tr></table></figure>
+<p>ColumnPaginationFilter：对一行的所有列分页，只返回 [offset,offset+limit] 范围内的列</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">scan &#39;test&#39;, &#123; STARTROW &#x3D;&gt; &#39;row1&#39;, ENDROW &#x3D;&gt; &#39;row5&#39;, FILTER &#x3D;&gt; &quot;ColumnPaginationFilter(2,1)&quot; &#125;</span><br><span class="line"></span><br><span class="line">  说明：ColumnPaginationFilter过滤器对一个逻辑行的所有列进行分页显示。</span><br></pre></td></tr></table></figure>
+<p>总结</p>
+<p>​    一次查询可以使用多个Filter进行多维度筛选 ，各Filter之间使用关系运算符：AND 或 OR 进行连接，请使用大些字母避免使用shell 方式查找无效！！！</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>centos绑定虚拟IP</title>
+    <url>/2023/04/19/centos%E7%BB%91%E5%AE%9A%E8%99%9A%E6%8B%9FIP/</url>
+    <content><![CDATA[<p>配置虚拟IP</p>
+<p>/sbin/ifconfig bond0:2 172.20.192.241 netmask 255.255.255.0 up</p>
+<p>广播通知</p>
+<p>/sbin/arping -c 5 -U -I bond0 172.20.192.241 &gt;/dev/null 2&gt;&amp;1</p>
+<p>关闭虚拟IP</p>
+<p>/sbin/ifconfig bond0:2 172.20.192.241 netmask 255.255.255.0 down</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Trino 开启用户名密码校验</title>
+    <url>/2023/04/19/Trino%20%E5%BC%80%E5%90%AF%E7%94%A8%E6%88%B7%E5%90%8D%E5%AF%86%E7%A0%81%E6%A0%A1%E9%AA%8C/</url>
+    <content><![CDATA[<p><a href="https://sslover.me/2022/03/15/trino-deploy-tutorials/" target="_blank" rel="noopener">https://sslover.me/2022/03/15/trino-deploy-tutorials/</a></p>
+<h4 id="开启-TLS-支持">开启 TLS 支持</h4>
+<p>当采用用户名/密码的方式进行认证时，Trino 强制要求我们使用 TLS，所以我们需要对其进行配置。</p>
+<p>首先我们需要创建 HTTPS 证书，由于是本地测试，所以我们直接自己签发一个。Trino 支持 PEM 文件和 JKS 文件，我们使用标准的 PEM 文件进行配置。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 生成私钥</span><br><span class="line">[root@cdh192-150 ssl]# openssl genrsa -out server.key 2048</span><br><span class="line"># 生成 CSR </span><br><span class="line">[root@cdh192-150 ssl]# openssl req -new -key server.key -out server.csr</span><br><span class="line"># 自己派发证书</span><br><span class="line">[root@cdh192-150 ssl]# openssl x509 -req -days 36500 -in server.csr -signkey server.key -out server.crt</span><br><span class="line"># 生成 PEM 格式文件</span><br><span class="line">[root@cdh192-150 ssl]# cat server.key server.crt &gt; server.pem</span><br><span class="line"># 校验 PEM 文件</span><br><span class="line">[root@cdh192-150 ssl]# openssl rsa -in server.pem -check -noout</span><br><span class="line">[root@cdh192-150 ssl]# openssl x509 -in server.pem -text -noout</span><br></pre></td></tr></table></figure>
+<p>生成完证书后，在 <code>config.properties</code> 文件中添加如下配置即可开启 TLS 支持：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 开启 https</span><br><span class="line">http-server.https.enabled&#x3D;true</span><br><span class="line"># 指定 https 端口</span><br><span class="line">http-server.https.port&#x3D;8443</span><br><span class="line"># 指定证书文件</span><br><span class="line">http-server.https.keystore.path&#x3D;&#x2F;opt&#x2F;module&#x2F;trino-server-405&#x2F;etc&#x2F;ssl&#x2F;server.pem</span><br><span class="line"># 开启web-ui访问 </span><br><span class="line">http-server.authentication.allow-insecure-over-http&#x3D;true</span><br></pre></td></tr></table></figure>
+<p>最后修改 JDBC 连接地址，由于是自签证书，所以我们需要关闭证书校验：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">jdbc:trino:&#x2F;&#x2F;127.0.0.1:8443?SSL&#x3D;true&amp;SSLVerification&#x3D;NONE</span><br></pre></td></tr></table></figure>
+<p>同理，CLI 命令修改为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">trino --server https:&#x2F;&#x2F;localhost:8443 --user user --password --execute &#39;SELECT * FROM mysql.test.user&#39; --insecure</span><br></pre></td></tr></table></figure>
+<h2 id="开启-Trino-内部通讯-Internal-Communication">开启 Trino 内部通讯 (Internal Communication)</h2>
+<p>使用 TLS 以及一个 configured shared secret 是使用基于文件的用户名密码认证的必要条件。 本节阐述如何开启 Internal Communication 并配置一个 configured shared secret。</p>
+<p>在本例中我们使用 <code>lhoOHWfehuKgkXnu4E6Gq5L5K4i8iMPlHFwUzrj25r5lUKUZSn</code> 作为内部通信密码进行示范。</p>
+<h3 id="配置-shared-secert">配置 shared secert</h3>
+<p>编辑配置文件，将内部通讯的密文配置在所有 Trino 节点的配置文件中。注意，该密文必须一致，否则 worker 节点无法连接至 coordinator。</p>
+<p>打开 Trino 的配置文件: <code>vim $TRINO_HOME/etc/config.properties</code></p>
+<p>在配置文件中配好 <code>internal-communication.shared-secret</code> 配置项:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Set the shared secret to the same value in config.properties on all nodes of the cluster </span><br><span class="line">internal-communication.shared-secret&#x3D;lhoOHWfehuKgkXnu4E6Gq5L5K4i8iMPlHFwUzrj25r5lUKUZSn</span><br></pre></td></tr></table></figure>
+<h2 id="创建用户名密码文件">创建用户名密码文件</h2>
+<p>至此，TLS 和内部通讯都已经配置成功。接下来，我们要为 Trino 添加用户名密码校验功能。</p>
+<h3 id="修改-Trino-配置文件">修改 Trino 配置文件</h3>
+<p>打开 Trino 的配置文件: <code>vim $TRINO_HOME/etc/config.properties</code></p>
+<p>在配置文件中配好 <code>http-server.authentication.type</code> 配置项:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Password file authentication http-server.authentication.type&#x3D;PASSWORD</span><br></pre></td></tr></table></figure>
+<p>根据文档，一旦上述配置项配置完毕，我们就需要创建一个新文件 <code>$TRINO_HOME/etc/password-authenticator.properties</code>， 并在该文件中添加部分配置。</p>
+<p>创建该配置文件: <code>vim $TRINO_HOME/etc/password-authenticator.properties</code></p>
+<p>在该配置文件中添加如下配置:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">password-authenticator.name&#x3D;file </span><br><span class="line">file.password-file&#x3D;&#x2F;opt&#x2F;trino-server-392&#x2F;etc&#x2F;password.db</span><br></pre></td></tr></table></figure>
+<h3 id="添加用户与密码至-password-db">添加用户与密码至 password.db</h3>
+<p>根据上述配置文件内 <code>password.db</code> 的位置，创建一个空的 password 文件:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">touch password.db</span><br></pre></td></tr></table></figure>
+<p>使用如下命令添加或更新名为 <code>flinkrt</code> 用户的密码。备注: 在本示例中，<code>flinkrt</code> 用户的密码同样为 <code>flinkrt</code>:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">htpasswd -B -C 10 password.db flinkrt</span><br></pre></td></tr></table></figure>
+<p>执行结果如下:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@p0-tkldmp-rc01 etc]# htpasswd -B -C 10 password.db flinkrt </span><br><span class="line">New password:  </span><br><span class="line">Re-type new password:  Adding password for user flinkrt</span><br></pre></td></tr></table></figure>
+<h4 id="权限控制">权限控制</h4>
+<p>默认在不开启权限控制的情况下，用户都拥有最大权限，这显示是很不安全的，所以需要配置权限控制。</p>
+<p>创建 <code>access-control.properties</code> 文件，指定权限控制文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">access-control.name&#x3D;file</span><br><span class="line"># 指定控制文件位置</span><br><span class="line">security.config-file&#x3D;&#x2F;opt&#x2F;module&#x2F;trino-server-405&#x2F;etc&#x2F;rules.json</span><br><span class="line"># 自动刷新间隔，不再需要重启 Trino 即可自动生效</span><br><span class="line">security.refresh-period&#x3D;1s</span><br></pre></td></tr></table></figure>
+<p>创建 <code>group-provider.properties</code> 文件，指定群组配置文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">group-provider.name&#x3D;file</span><br><span class="line">file.group-file&#x3D;&#x2F;opt&#x2F;module&#x2F;trino-server-405&#x2F;etc&#x2F;group.txt</span><br></pre></td></tr></table></figure>
+<p>然后编辑群组映射关系 <code>group.txt</code>：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">admin:admin-user</span><br><span class="line">user:user1,user2</span><br></pre></td></tr></table></figure>
+<p>然后创建 <code>rules.json</code> 文件编写规则，具体的权限控制比较复杂，可以参考 <a href="https://trino.io/docs/current/security/file-system-access-control.html" target="_blank" rel="noopener">File-based access control</a>，这里我们只写一个基础的权限控制规则，实现 <code>admin</code> 组的用户可以进行所有操作，任意用户可以访问 <code>mysql</code>，user 可以读取 <code>postgresql</code> 的数据，<code>system</code> 没有用户可以访问。权限匹配是从上到下的，如果没有匹配到，则默认拒绝权限。具体配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;catalogs&quot;:[</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;group&quot;:&quot;admin&quot;,</span><br><span class="line">            &quot;allow&quot;:&quot;all&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;catalog&quot;:&quot;mysql&quot;,</span><br><span class="line">            &quot;allow&quot;:&quot;all&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;user&quot;:&quot;user1&quot;,</span><br><span class="line">            &quot;catalog&quot;:&quot;hive&quot;,</span><br><span class="line">            &quot;allow&quot;:&quot;read-only&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;catalog&quot;:&quot;system&quot;,</span><br><span class="line">            &quot;allow&quot;:&quot;none&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再创建用户 user2 及 admin-user，来测试一下效果</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>win10多用户同时远程连接</title>
+    <url>/2023/04/18/win10%E5%A4%9A%E7%94%A8%E6%88%B7%E5%90%8C%E6%97%B6%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5/</url>
+    <content><![CDATA[<h2 id="win10-解决多用户同时远程连接">win10 解决多用户同时远程连接</h2>
+<p>下载破解软件，用管理员身份运行</p>
+<p><a href="https://github.com/stascorp/rdpwrap" target="_blank" rel="noopener">https://github.com/stascorp/rdpwrap</a></p>
+<p>修改配置文件 ，从 <a href="https://github.com/sebaxakerhtc/rdpwrap.ini" target="_blank" rel="noopener">https://github.com/sebaxakerhtc/rdpwrap.ini</a> 下载</p>
+<p>C:\Program Files\RDP Wrapper\rdpwrap.ini</p>
+<p>重启服务器就可以了。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Alluxio常用操作</title>
+    <url>/2023/04/17/Alluxio%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h2 id="Alluxio常用操作">Alluxio常用操作</h2>
+<h2 id="启动一个Alluxio集群">启动一个Alluxio集群</h2>
+<h3 id="格式化Alluxio">格式化Alluxio</h3>
+<p>在首次启动Alluxio之前，必须先格式化日志。</p>
+<blockquote>
+<p>格式化日记将删除Alluxio中的所有元数据。 但是，格式化不会涉及底层存储的数据。</p>
+</blockquote>
+<p>在master节点上，使用以下命令格式化Alluxio：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio formatMaster</span><br></pre></td></tr></table></figure>
+<h3 id="启动Alluxio">启动Alluxio</h3>
+<p>启动Alluxio集群，在master点上确保<code>conf/workers</code>文件中所有worker的主机名都是正确的。</p>
+<p>在master点上，运行以下命令启动Alluxio集群：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh all SudoMount</span><br></pre></td></tr></table></figure>
+<p>这将在此节点上启动master，并在<code>conf/workers</code>文件中指定的所有节点上启动所有workers。 <code>SudoMount</code>参数使workers可以尝试使用<code>sudo</code>特权（如果尚未挂载）来挂载RamFS。</p>
+<h3 id="验证Alluxio集群是否在运行">验证Alluxio集群是否在运行</h3>
+<p>要验证Alluxio是否正在运行，请访问<code>http://&lt;alluxio_master_hostname&gt;:19999</code>以查看Alluxio master的状态页面。</p>
+<p>Alluxio带有一个简单的程序可以在Alluxio中读写示例文件。 使用以下命令运行示例程序：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio runTests</span><br></pre></td></tr></table></figure>
+<p>以下是在Alluxio集群上执行的常见操作。</p>
+<h3 id="停止Alluxio">停止Alluxio</h3>
+<p>停止一个Alluxio服务，运行：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh all</span><br></pre></td></tr></table></figure>
+<p>这将停止<code>conf/workers</code>和<code>conf/masters</code>中列出的所有节点上的所有进程。</p>
+<p>可以使用以下命令仅停止master和workers：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh masters # 停止所有conf&#x2F;masters的masters</span><br><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh workers # 停止所有conf&#x2F;workers的workers</span><br></pre></td></tr></table></figure>
+<p>如果不想使用ssh登录所有节点来停止所有进程，可以在每个节点上运行命令以停止每个组件。 对于任何节点，可以使用以下命令停止master或worker：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh master # 停止本地master</span><br><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh worker # 停止本地worker</span><br></pre></td></tr></table></figure>
+<h3 id="重新启动Alluxio">重新启动Alluxio</h3>
+<p>与启动Alluxio类似。 如果已经配置了<code>conf/workers</code>和<code>conf/masters</code>，可以使用以下命令启动集群：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh all</span><br></pre></td></tr></table></figure>
+<p>可以使用以下命令仅启动masters或workers：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh masters # 启动conf&#x2F;masters中全部的master</span><br><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh workers # 启动conf&#x2F;workers中全部的worker</span><br></pre></td></tr></table></figure>
+<p>如果不想使用<code>ssh</code>登录所有节点来启动所有进程，可以在每个节点上运行命令以启动每个组件。 对于任何节点，可以使用以下命令启动master或worker：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh master # 启动本地master</span><br><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh worker # 启动本地worker</span><br></pre></td></tr></table></figure>
+<h3 id="格式化日志">格式化日志</h3>
+<p>在任何master节点上，运行以下命令格式化Alluxio日志：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio formatMaster</span><br></pre></td></tr></table></figure>
+<p>格式化日记将删除Alluxio中的所有元数据。 但是，将不会触及底层存储的数据。</p>
+<h3 id="动态添加-减少worker">动态添加/减少worker</h3>
+<p>动态添加worker到Alluxio集群就像通过适当配置启动新Alluxio worker进程一样简单。 在大多数情况下，新worker配置应与所有其他worker配置相同。 在新worker上运行以下命令，以将其添加到集群。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh worker SudoMount # 启动本地 worker</span><br></pre></td></tr></table></figure>
+<p>一旦worker启动，它将在Alluxio master上注册，并成为Alluxio集群的一部分。</p>
+<p>减少worker只需要简单停止一个worker进程。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh worker # 停止本地 worker</span><br></pre></td></tr></table></figure>
+<p>一旦worker被停止，master将在预定的超时值（通过master参数<code>alluxio.master.worker.timeout</code>配置）后将此worker标记为缺失。 主机视worker为”丢失”，并且不再将其包括在集群中。</p>
+<h3 id="更新master配置">更新master配置</h3>
+<p>为了更新master配置，必须首先停止服务，更新master节点上的<code>conf/alluxio-site.properties</code>文件，并将文件复制到所有节点（例如，使用<code>bin/alluxio copyDir conf/</code>），<a href="https://docs.alluxio.io/os/user/stable/cn/deploy/Running-Alluxio-on-a-Cluster.html?q=workers#restart-alluxio" target="_blank" rel="noopener">然后重新启动服务</a>。</p>
+<h3 id="更新worker配置">更新worker配置</h3>
+<p>如果只需要为worker节点更新某些本地配置（例如，更改分配给该worker的存储容量或更新存储路径），则无需停止并重新启动master节点。 可以只停止本地worker，更新此worker上的配置（例如<code>conf/alluxio-site.properties</code>）文件，然后重新启动此worker</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>部署Alluxio集群</title>
+    <url>/2023/04/17/%E9%83%A8%E7%BD%B2Alluxio%E9%9B%86%E7%BE%A4/</url>
+    <content><![CDATA[<p>准备<br>
+下载文件：wget <a href="https://downloads.alluxio.io/downloads/files/2.9.2/alluxio-2.9.2-bin.tar.gz" target="_blank" rel="noopener">https://downloads.alluxio.io/downloads/files/2.9.2/alluxio-2.9.2-bin.tar.gz</a></p>
+<p>解压目录：/opt/servers/alluxio</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;downloads.alluxio.io&#x2F;downloads&#x2F;files&#x2F;2.9.2&#x2F;alluxio-2.9.2-bin.tar.gz</span><br><span class="line">tar -xzf alluxio-2.9.2-bin.tar.gz -C &#x2F;opt&#x2F;servers&#x2F;alluxio</span><br></pre></td></tr></table></figure>
+<p>创建目录：mkdir -p /mnt/ramdisk</p>
+<p>机器：10.0.21.190（master，worker）10.0.21.191（master，worker）10.0.21.192（worker）</p>
+<h2 id="HA-配置">HA 配置</h2>
+<p>搭建高可用集群前的准备:</p>
+<ul>
+<li>
+<p>①确保Zookeeper服务已经运行</p>
+</li>
+<li>
+<p>②一个单独安装的可靠的共享日志存储系统(可用HDFS或S3等系统)</p>
+</li>
+<li>
+<p>③这个配置针对Alluxio 2.x版本，不适用于1.x版本</p>
+</li>
+<li>
+<p>④需要事先创建好ramdisk挂载目录</p>
+</li>
+</ul>
+<p>配置hive alluxio文件系统：core-site.xml</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">      &lt;name&gt;fs.alluxio.impl&lt;&#x2F;name&gt;</span><br><span class="line">      &lt;value&gt;alluxio.hadoop.FileSystem&lt;&#x2F;value&gt;</span><br><span class="line">      &lt;description&gt;The Alluxio FileSystem (Hadoop 1.x and 2.x)&lt;&#x2F;description&gt;</span><br><span class="line">  &lt;&#x2F;property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">      &lt;name&gt;fs.AbstractFileSystem.alluxio.impl&lt;&#x2F;name&gt;</span><br><span class="line">      &lt;value&gt;alluxio.hadoop.AlluxioFileSystem&lt;&#x2F;value&gt;</span><br><span class="line">      &lt;description&gt;The Alluxio AbstractFileSystem (Hadoop 2.x)&lt;&#x2F;description&gt;</span><br><span class="line">  &lt;&#x2F;property&gt;</span><br><span class="line">&lt;&#x2F;configuration&gt;</span><br></pre></td></tr></table></figure>
+<p><a href="http://xn--alluxio-env-zp8qf48f1kcf30e98p2xax394at74c.sh" target="_blank" rel="noopener">在所有机器上配置alluxio-env.sh</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALLUXIO_HOME&#x3D;&#x2F;opt&#x2F;servers&#x2F;alluxio</span><br><span class="line">ALLUXIO_LOGS_DIR&#x3D;&#x2F;opt&#x2F;servers&#x2F;alluxio&#x2F;logs</span><br><span class="line">ALLUXIO_RAM_FOLDER&#x3D;&#x2F;mnt&#x2F;ramdisk</span><br><span class="line">JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk1.8.0_141-cloudera</span><br><span class="line">ALLUXIO_WORKER_JAVA_OPTS&#x3D;&quot; -XX:+PrintGCDetails -XX:+PrintTenuringDistribution -XX:+PrintGCTimeStamps&quot;</span><br><span class="line">ALLUXIO_MASTER_JAVA_OPTS&#x3D;&quot; -Xms2048M -Xmx4096M&quot;</span><br><span class="line">ALLUXIO_JAVA_OPTS+&#x3D;&quot; -Djava.library.path&#x3D;&#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hadoop&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="在10-0-21-190机器上配置Master和Worker：alluxio-site-properties">在10.0.21.190机器上配置Master和Worker：alluxio-site.properties</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 10.0.21.190    Master Worker</span><br><span class="line"></span><br><span class="line"># Common properties</span><br><span class="line"></span><br><span class="line">alluxio.master.hostname&#x3D;10.0.21.190</span><br><span class="line">alluxio.underfs.hdfs.configuration&#x3D;&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;core-site.xml:&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;hdfs-site.xml</span><br><span class="line">alluxio.master.mount.table.root.ufs&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;alluxio&#x2F;ha&#x2F;</span><br><span class="line"></span><br><span class="line"># Worker properties</span><br><span class="line"></span><br><span class="line">alluxio.worker.ramdisk.size&#x3D;512MB</span><br><span class="line">alluxio.worker.tieredstore.levels&#x3D;1</span><br><span class="line">alluxio.worker.tieredstore.level0.alias&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.path&#x3D;&#x2F;mnt&#x2F;ramdisk</span><br><span class="line"></span><br><span class="line"># HA properties</span><br><span class="line"></span><br><span class="line">alluxio.zookeeper.enabled&#x3D;true</span><br><span class="line">alluxio.zookeeper.address&#x3D;10.0.21.190:2181,10.0.21.191:2181,10.0.21.192:2181</span><br><span class="line">alluxio.master.journal.type&#x3D;UFS</span><br><span class="line">alluxio.master.journal.folder&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;alluxio&#x2F;journal&#x2F;</span><br><span class="line">alluxio.worker.block.heartbeat.timeout.ms&#x3D;300000</span><br><span class="line">alluxio.zookeeper.session.timeout&#x3D;120s</span><br><span class="line"></span><br><span class="line"># User properties</span><br><span class="line"></span><br><span class="line">alluxio.user.file.readtype.default&#x3D;CACHE_PROMOTE</span><br><span class="line">alluxio.user.file.writetype.default&#x3D;ASYNC_THROUGH</span><br><span class="line">alluxio.user.metrics.collection.enable&#x3D;true</span><br><span class="line">alluxio.master.metrics.time.series.interval&#x3D;1000</span><br><span class="line"></span><br><span class="line"># Security properties</span><br><span class="line"></span><br><span class="line">alluxio.security.authorization.permission.enabled&#x3D;true</span><br><span class="line">alluxio.security.authentication.type&#x3D;SIMPLE</span><br><span class="line">alluxio.master.security.impersonation.hive.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hive.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.groups&#x3D;*</span><br></pre></td></tr></table></figure>
+<h2 id="在10-0-21-191机器上配置Master和Worker：alluxio-site-properties">在10.0.21.191机器上配置Master和Worker：alluxio-site.properties</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 10.0.21.191      Master Worker</span><br><span class="line"></span><br><span class="line"># Common properties</span><br><span class="line"></span><br><span class="line">alluxio.master.hostname&#x3D;10.0.21.191</span><br><span class="line">alluxio.underfs.hdfs.configuration&#x3D;&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;core-site.xml:&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;hdfs-site.xml</span><br><span class="line">alluxio.master.mount.table.root.ufs&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;alluxio&#x2F;ha&#x2F;</span><br><span class="line"></span><br><span class="line"># Worker properties</span><br><span class="line"></span><br><span class="line">alluxio.worker.ramdisk.size&#x3D;512MB</span><br><span class="line">alluxio.worker.tieredstore.levels&#x3D;1</span><br><span class="line">alluxio.worker.tieredstore.level0.alias&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.path&#x3D;&#x2F;mnt&#x2F;ramdisk</span><br><span class="line"></span><br><span class="line"># HA properties</span><br><span class="line"></span><br><span class="line">alluxio.zookeeper.enabled&#x3D;true</span><br><span class="line">alluxio.zookeeper.address&#x3D;10.0.21.190:2181,10.0.21.191:2181,10.0.21.192:2181</span><br><span class="line">alluxio.master.journal.type&#x3D;UFS</span><br><span class="line">alluxio.master.journal.folder&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;alluxio&#x2F;journal&#x2F;</span><br><span class="line">alluxio.worker.block.heartbeat.timeout.ms&#x3D;300000</span><br><span class="line">alluxio.zookeeper.session.timeout&#x3D;120s</span><br><span class="line"></span><br><span class="line"># User properties</span><br><span class="line"></span><br><span class="line">alluxio.user.file.readtype.default&#x3D;CACHE_PROMOTE</span><br><span class="line">alluxio.user.file.writetype.default&#x3D;ASYNC_THROUGH</span><br><span class="line">alluxio.user.metrics.collection.enable&#x3D;true</span><br><span class="line">alluxio.master.metrics.time.series.interval&#x3D;1000</span><br><span class="line"></span><br><span class="line"># Security properties</span><br><span class="line"></span><br><span class="line">alluxio.security.authorization.permission.enabled&#x3D;true</span><br><span class="line">alluxio.security.authentication.type&#x3D;SIMPLE</span><br><span class="line">alluxio.master.security.impersonation.hive.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hive.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.groups&#x3D;*</span><br></pre></td></tr></table></figure>
+<h2 id="在10-0-21-192机器上配置Worker：alluxio-site-properties">在10.0.21.192机器上配置Worker：alluxio-site.properties</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 10.0.21.192      Worker</span><br><span class="line"></span><br><span class="line"># Common properties</span><br><span class="line"></span><br><span class="line"># Worker不需要写alluxio.master.hostname参数和alluxio.master.journal.folder参数</span><br><span class="line"></span><br><span class="line">alluxio.underfs.hdfs.configuration&#x3D;&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;core-site.xml:&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;hdfs-site.xml</span><br><span class="line">alluxio.master.mount.table.root.ufs&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;alluxio&#x2F;ha&#x2F;</span><br><span class="line"></span><br><span class="line"># Worker properties</span><br><span class="line"></span><br><span class="line">alluxio.worker.ramdisk.size&#x3D;512MB</span><br><span class="line">alluxio.worker.tieredstore.levels&#x3D;1</span><br><span class="line">alluxio.worker.tieredstore.level0.alias&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.path&#x3D;&#x2F;mnt&#x2F;ramdisk</span><br><span class="line"></span><br><span class="line"># HA properties</span><br><span class="line"></span><br><span class="line">alluxio.zookeeper.enabled&#x3D;true</span><br><span class="line">alluxio.zookeeper.address&#x3D;10.0.21.190:2181,10.0.21.191:2181,10.0.21.192:2181</span><br><span class="line">alluxio.worker.block.heartbeat.timeout.ms&#x3D;300000</span><br><span class="line">alluxio.zookeeper.session.timeout&#x3D;120s</span><br><span class="line"></span><br><span class="line"># User properties</span><br><span class="line"></span><br><span class="line">alluxio.user.file.readtype.default&#x3D;CACHE_PROMOTE</span><br><span class="line">alluxio.user.file.writetype.default&#x3D;ASYNC_THROUGH</span><br><span class="line">alluxio.user.metrics.collection.enable&#x3D;true</span><br><span class="line">alluxio.master.metrics.time.series.interval&#x3D;1000</span><br><span class="line"></span><br><span class="line"># Security properties</span><br><span class="line"></span><br><span class="line">alluxio.security.authorization.permission.enabled&#x3D;true</span><br><span class="line">alluxio.security.authentication.type&#x3D;SIMPLE</span><br><span class="line">alluxio.master.security.impersonation.hive.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hive.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.groups&#x3D;*</span><br></pre></td></tr></table></figure>
+<p>在所有机器上指定Master和Worker节点</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#vim masters</span><br><span class="line">10.0.21.190</span><br><span class="line">10.0.21.191</span><br><span class="line"></span><br><span class="line">#vim workers</span><br><span class="line">10.0.21.190</span><br><span class="line">10.0.21.191</span><br><span class="line">10.0.21.192</span><br></pre></td></tr></table></figure>
+<p>测试部署是否成功</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;alluxio format</span><br><span class="line">.&#x2F;alluxio-start.sh all SudoMount</span><br><span class="line">.&#x2F;alluxio fsadmin report</span><br><span class="line">.&#x2F;alluxio runTests    # 如果出现Passed the test则说明部署成功</span><br></pre></td></tr></table></figure>
+<p>测试高可用模式的自动故障处理: (假设此时hadoop101位primary master)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ssh hadoop101</span><br><span class="line">jps | grep AlluxioMaster</span><br><span class="line">kill -9 &lt;AlluxioMaster PID&gt;</span><br><span class="line">alluxio fs leader  # 显示新的primary Master(可能需要等待一小段时间选举)</span><br></pre></td></tr></table></figure>
+<h3 id="补充：添加新的worker节点">补充：添加新的worker节点</h3>
+<p>动态添加worker到Alluxio集群就像通过适当配置启动新Alluxio worker进程一样简单。 在大多数情况下，新worker配置应与所有其他worker配置相同。 在新worker上运行以下命令，以将其添加到集群。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh worker SudoMount # 启动本地 worker</span><br></pre></td></tr></table></figure>
+<p>一旦worker启动，它将在Alluxio master上注册，并成为Alluxio集群的一部分。</p>
+<p>减少worker只需要简单停止一个worker进程。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh worker # 停止本地 worker</span><br></pre></td></tr></table></figure>
+<p>一旦worker被停止，master将在预定的超时值（通过master参数alluxio.master.worker.timeout配置）后将此worker标记为缺失。 主机视worker为“丢失”，并且不再将其包括在集群中。</p>
+<p>实际步骤：</p>
+<ul>
+<li>1、修改workers文件，添加新服务器</li>
+<li>2、scp alluxio目录 到新的服务器节点</li>
+<li>3、在新服务节点手动挂载 sudo ./bin/alluxio-mount.sh SudoMount</li>
+<li>4、master节点统一启动</li>
+</ul>
+<h3 id="补充：配置多级存储">补充：配置多级存储</h3>
+<p>1、创建目录</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir &#x2F;mnt&#x2F;alluxio_data</span><br></pre></td></tr></table></figure>
+<p>2、对于与启动Alluxio服务的用户组同组用户应给予770权限。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo chmod 770 alluxio_data</span><br></pre></td></tr></table></figure>
+<p>3、修改配置文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">alluxio.worker.tieredstore.levels&#x3D;2</span><br><span class="line">alluxio.worker.tieredstore.level0.alias&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.path&#x3D;&#x2F;mnt&#x2F;ramdisk</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.mediumtype&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.quota&#x3D;1GB</span><br><span class="line"></span><br><span class="line">alluxio.worker.tieredstore.level1.alias&#x3D;HDD</span><br><span class="line">alluxio.worker.tieredstore.level1.dirs.path&#x3D;&#x2F;mnt&#x2F;alluxio_data</span><br><span class="line">alluxio.worker.tieredstore.level1.dirs.mediumtype&#x3D;HDD</span><br><span class="line">alluxio.worker.tieredstore.level1.dirs.quota&#x3D;50GB</span><br></pre></td></tr></table></figure>
 ]]></content>
   </entry>
   <entry>
@@ -75,94 +707,10 @@ tar -xf prometheus-2.29.1.linux-amd64.tar.gz -C /usr/local/</p>
 ]]></content>
   </entry>
   <entry>
-    <title>部署Alluxio集群</title>
-    <url>/2023/03/21/%E9%83%A8%E7%BD%B2Alluxio%E9%9B%86%E7%BE%A4/</url>
-    <content><![CDATA[<p>准备<br>
-下载文件：wget <a href="https://downloads.alluxio.io/downloads/files/2.8.0/alluxio-2.8.0-bin.tar.gz" target="_blank" rel="noopener">https://downloads.alluxio.io/downloads/files/2.8.0/alluxio-2.8.0-bin.tar.gz</a></p>
-<p>解压目录：/opt/servers/alluxio</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;downloads.alluxio.io&#x2F;downloads&#x2F;files&#x2F;2.9.2&#x2F;alluxio-2.9.2-bin.tar.gz</span><br><span class="line">tar -xzf alluxio-2.9.2-bin.tar.gz -C &#x2F;opt&#x2F;servers&#x2F;alluxio</span><br></pre></td></tr></table></figure>
-<p>创建目录：mkdir -p /mnt/ramdisk</p>
-<p>机器：10.0.21.190（master，worker）10.0.21.191（master，worker）10.0.21.192（worker）</p>
-<h2 id="HA-配置">HA 配置</h2>
-<p>搭建高可用集群前的准备:</p>
-<ul>
-<li>
-<p>①确保Zookeeper服务已经运行</p>
-</li>
-<li>
-<p>②一个单独安装的可靠的共享日志存储系统(可用HDFS或S3等系统)</p>
-</li>
-<li>
-<p>③这个配置针对Alluxio 2.x版本，不适用于1.x版本</p>
-</li>
-<li>
-<p>④需要事先创建好ramdisk挂载目录</p>
-</li>
-</ul>
-<p>配置hive alluxio文件系统：core-site.xml</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">      &lt;name&gt;fs.alluxio.impl&lt;&#x2F;name&gt;</span><br><span class="line">      &lt;value&gt;alluxio.hadoop.FileSystem&lt;&#x2F;value&gt;</span><br><span class="line">      &lt;description&gt;The Alluxio FileSystem (Hadoop 1.x and 2.x)&lt;&#x2F;description&gt;</span><br><span class="line">  &lt;&#x2F;property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">      &lt;name&gt;fs.AbstractFileSystem.alluxio.impl&lt;&#x2F;name&gt;</span><br><span class="line">      &lt;value&gt;alluxio.hadoop.AlluxioFileSystem&lt;&#x2F;value&gt;</span><br><span class="line">      &lt;description&gt;The Alluxio AbstractFileSystem (Hadoop 2.x)&lt;&#x2F;description&gt;</span><br><span class="line">  &lt;&#x2F;property&gt;</span><br><span class="line">&lt;&#x2F;configuration&gt;</span><br></pre></td></tr></table></figure>
-<p><a href="http://xn--alluxio-env-zp8qf48f1kcf30e98p2xax394at74c.sh" target="_blank" rel="noopener">在所有机器上配置alluxio-env.sh</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALLUXIO_HOME&#x3D;&#x2F;opt&#x2F;servers&#x2F;alluxio</span><br><span class="line">ALLUXIO_LOGS_DIR&#x3D;&#x2F;opt&#x2F;servers&#x2F;alluxio&#x2F;logs</span><br><span class="line">ALLUXIO_RAM_FOLDER&#x3D;&#x2F;mnt&#x2F;ramdisk</span><br><span class="line">JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk1.8.0_141-cloudera</span><br><span class="line">ALLUXIO_WORKER_JAVA_OPTS&#x3D;&quot; -XX:+PrintGCDetails -XX:+PrintTenuringDistribution -XX:+PrintGCTimeStamps&quot;</span><br><span class="line">ALLUXIO_MASTER_JAVA_OPTS&#x3D;&quot; -Xms2048M -Xmx4096M&quot;</span><br><span class="line">ALLUXIO_JAVA_OPTS+&#x3D;&quot; -Djava.library.path&#x3D;&#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hadoop&quot;</span><br></pre></td></tr></table></figure>
-<h2 id="在10-0-21-190机器上配置Master和Worker：alluxio-site-properties">在10.0.21.190机器上配置Master和Worker：alluxio-site.properties</h2>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 10.0.21.190    Master Worker</span><br><span class="line"></span><br><span class="line"># Common properties</span><br><span class="line"></span><br><span class="line">alluxio.master.hostname&#x3D;10.0.21.190</span><br><span class="line">alluxio.underfs.hdfs.configuration&#x3D;&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;core-site.xml:&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;hdfs-site.xml</span><br><span class="line">alluxio.master.mount.table.root.ufs&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;alluxio&#x2F;ha&#x2F;</span><br><span class="line"></span><br><span class="line"># Worker properties</span><br><span class="line"></span><br><span class="line">alluxio.worker.ramdisk.size&#x3D;512MB</span><br><span class="line">alluxio.worker.tieredstore.levels&#x3D;1</span><br><span class="line">alluxio.worker.tieredstore.level0.alias&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.path&#x3D;&#x2F;mnt&#x2F;ramdisk</span><br><span class="line"></span><br><span class="line"># HA properties</span><br><span class="line"></span><br><span class="line">alluxio.zookeeper.enabled&#x3D;true</span><br><span class="line">alluxio.zookeeper.address&#x3D;10.0.21.190:2181,10.0.21.191:2181,10.0.21.192:2181</span><br><span class="line">alluxio.master.journal.type&#x3D;UFS</span><br><span class="line">alluxio.master.journal.folder&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;alluxio&#x2F;journal&#x2F;</span><br><span class="line">alluxio.worker.block.heartbeat.timeout.ms&#x3D;300000</span><br><span class="line">alluxio.zookeeper.session.timeout&#x3D;120s</span><br><span class="line"></span><br><span class="line"># User properties</span><br><span class="line"></span><br><span class="line">alluxio.user.file.readtype.default&#x3D;CACHE_PROMOTE</span><br><span class="line">alluxio.user.file.writetype.default&#x3D;ASYNC_THROUGH</span><br><span class="line">alluxio.user.metrics.collection.enable&#x3D;true</span><br><span class="line">alluxio.master.metrics.time.series.interval&#x3D;1000</span><br><span class="line"></span><br><span class="line"># Security properties</span><br><span class="line"></span><br><span class="line">alluxio.security.authorization.permission.enabled&#x3D;true</span><br><span class="line">alluxio.security.authentication.type&#x3D;SIMPLE</span><br><span class="line">alluxio.master.security.impersonation.hive.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hive.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.groups&#x3D;*</span><br></pre></td></tr></table></figure>
-<h2 id="在10-0-21-191机器上配置Master和Worker：alluxio-site-properties">在10.0.21.191机器上配置Master和Worker：alluxio-site.properties</h2>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 10.0.21.191      Master Worker</span><br><span class="line"></span><br><span class="line"># Common properties</span><br><span class="line"></span><br><span class="line">alluxio.master.hostname&#x3D;10.0.21.191</span><br><span class="line">alluxio.underfs.hdfs.configuration&#x3D;&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;core-site.xml:&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;hdfs-site.xml</span><br><span class="line">alluxio.master.mount.table.root.ufs&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;alluxio&#x2F;ha&#x2F;</span><br><span class="line"></span><br><span class="line"># Worker properties</span><br><span class="line"></span><br><span class="line">alluxio.worker.ramdisk.size&#x3D;512MB</span><br><span class="line">alluxio.worker.tieredstore.levels&#x3D;1</span><br><span class="line">alluxio.worker.tieredstore.level0.alias&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.path&#x3D;&#x2F;mnt&#x2F;ramdisk</span><br><span class="line"></span><br><span class="line"># HA properties</span><br><span class="line"></span><br><span class="line">alluxio.zookeeper.enabled&#x3D;true</span><br><span class="line">alluxio.zookeeper.address&#x3D;10.0.21.190:2181,10.0.21.191:2181,10.0.21.192:2181</span><br><span class="line">alluxio.master.journal.type&#x3D;UFS</span><br><span class="line">alluxio.master.journal.folder&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;alluxio&#x2F;journal&#x2F;</span><br><span class="line">alluxio.worker.block.heartbeat.timeout.ms&#x3D;300000</span><br><span class="line">alluxio.zookeeper.session.timeout&#x3D;120s</span><br><span class="line"></span><br><span class="line"># User properties</span><br><span class="line"></span><br><span class="line">alluxio.user.file.readtype.default&#x3D;CACHE_PROMOTE</span><br><span class="line">alluxio.user.file.writetype.default&#x3D;ASYNC_THROUGH</span><br><span class="line">alluxio.user.metrics.collection.enable&#x3D;true</span><br><span class="line">alluxio.master.metrics.time.series.interval&#x3D;1000</span><br><span class="line"></span><br><span class="line"># Security properties</span><br><span class="line"></span><br><span class="line">alluxio.security.authorization.permission.enabled&#x3D;true</span><br><span class="line">alluxio.security.authentication.type&#x3D;SIMPLE</span><br><span class="line">alluxio.master.security.impersonation.hive.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hive.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.groups&#x3D;*</span><br></pre></td></tr></table></figure>
-<h2 id="在10-0-21-192机器上配置Worker：alluxio-site-properties">在10.0.21.192机器上配置Worker：alluxio-site.properties</h2>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 10.0.21.192      Worker</span><br><span class="line"></span><br><span class="line"># Common properties</span><br><span class="line"></span><br><span class="line"># Worker不需要写alluxio.master.hostname参数和alluxio.master.journal.folder参数</span><br><span class="line"></span><br><span class="line">alluxio.underfs.hdfs.configuration&#x3D;&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;core-site.xml:&#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;hdfs-site.xml</span><br><span class="line">alluxio.master.mount.table.root.ufs&#x3D;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;alluxio&#x2F;ha&#x2F;</span><br><span class="line"></span><br><span class="line"># Worker properties</span><br><span class="line"></span><br><span class="line">alluxio.worker.ramdisk.size&#x3D;512MB</span><br><span class="line">alluxio.worker.tieredstore.levels&#x3D;1</span><br><span class="line">alluxio.worker.tieredstore.level0.alias&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.path&#x3D;&#x2F;mnt&#x2F;ramdisk</span><br><span class="line"></span><br><span class="line"># HA properties</span><br><span class="line"></span><br><span class="line">alluxio.zookeeper.enabled&#x3D;true</span><br><span class="line">alluxio.zookeeper.address&#x3D;10.0.21.190:2181,10.0.21.191:2181,10.0.21.192:2181</span><br><span class="line">alluxio.worker.block.heartbeat.timeout.ms&#x3D;300000</span><br><span class="line">alluxio.zookeeper.session.timeout&#x3D;120s</span><br><span class="line"></span><br><span class="line"># User properties</span><br><span class="line"></span><br><span class="line">alluxio.user.file.readtype.default&#x3D;CACHE_PROMOTE</span><br><span class="line">alluxio.user.file.writetype.default&#x3D;ASYNC_THROUGH</span><br><span class="line">alluxio.user.metrics.collection.enable&#x3D;true</span><br><span class="line">alluxio.master.metrics.time.series.interval&#x3D;1000</span><br><span class="line"></span><br><span class="line"># Security properties</span><br><span class="line"></span><br><span class="line">alluxio.security.authorization.permission.enabled&#x3D;true</span><br><span class="line">alluxio.security.authentication.type&#x3D;SIMPLE</span><br><span class="line">alluxio.master.security.impersonation.hive.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hive.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.yarn.groups&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.users&#x3D;*</span><br><span class="line">alluxio.master.security.impersonation.hdfs.groups&#x3D;*</span><br></pre></td></tr></table></figure>
-<p>在所有机器上指定Master和Worker节点</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#vim masters</span><br><span class="line">10.0.21.190</span><br><span class="line">10.0.21.191</span><br><span class="line"></span><br><span class="line">#vim workers</span><br><span class="line">10.0.21.190</span><br><span class="line">10.0.21.191</span><br><span class="line">10.0.21.192</span><br></pre></td></tr></table></figure>
-<p>测试部署是否成功</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;alluxio format</span><br><span class="line">.&#x2F;alluxio-start.sh all SudoMount</span><br><span class="line">.&#x2F;alluxio fsadmin report</span><br><span class="line">.&#x2F;alluxio runTests    # 如果出现Passed the test则说明部署成功</span><br></pre></td></tr></table></figure>
-<p>测试高可用模式的自动故障处理: (假设此时hadoop101位primary master)</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ssh hadoop101</span><br><span class="line">jps | grep AlluxioMaster</span><br><span class="line">kill -9 &lt;AlluxioMaster PID&gt;</span><br><span class="line">alluxio fs leader  # 显示新的primary Master(可能需要等待一小段时间选举)</span><br></pre></td></tr></table></figure>
-<h3 id="补充：添加新的worker节点">补充：添加新的worker节点</h3>
-<p>动态添加worker到Alluxio集群就像通过适当配置启动新Alluxio worker进程一样简单。 在大多数情况下，新worker配置应与所有其他worker配置相同。 在新worker上运行以下命令，以将其添加到集群。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-start.sh worker SudoMount # 启动本地 worker</span><br></pre></td></tr></table></figure>
-<p>一旦worker启动，它将在Alluxio master上注册，并成为Alluxio集群的一部分。</p>
-<p>减少worker只需要简单停止一个worker进程。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio-stop.sh worker # 停止本地 worker</span><br></pre></td></tr></table></figure>
-<p>一旦worker被停止，master将在预定的超时值（通过master参数alluxio.master.worker.timeout配置）后将此worker标记为缺失。 主机视worker为“丢失”，并且不再将其包括在集群中。</p>
-<p>实际步骤：</p>
-<ul>
-<li>1、修改workers文件，添加新服务器</li>
-<li>2、scp alluxio目录 到新的服务器节点</li>
-<li>3、在新服务节点手动挂载 sudo ./bin/alluxio-mount.sh SudoMount</li>
-<li>4、master节点统一启动</li>
-</ul>
-<h3 id="补充：配置多级存储">补充：配置多级存储</h3>
-<p>1、创建目录</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir &#x2F;mnt&#x2F;alluxio_data</span><br></pre></td></tr></table></figure>
-<p>2、对于与启动Alluxio服务的用户组同组用户应给予770权限。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo chmod 770 alluxio_data</span><br></pre></td></tr></table></figure>
-<p>3、修改配置文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">alluxio.worker.tieredstore.levels&#x3D;2</span><br><span class="line">alluxio.worker.tieredstore.level0.alias&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.path&#x3D;&#x2F;mnt&#x2F;ramdisk</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.mediumtype&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.quota&#x3D;1GB</span><br><span class="line"></span><br><span class="line">alluxio.worker.tieredstore.level1.alias&#x3D;HDD</span><br><span class="line">alluxio.worker.tieredstore.level1.dirs.path&#x3D;&#x2F;mnt&#x2F;alluxio_data</span><br><span class="line">alluxio.worker.tieredstore.level1.dirs.mediumtype&#x3D;HDD</span><br><span class="line">alluxio.worker.tieredstore.level1.dirs.quota&#x3D;50GB</span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
     <title>Hbase Call queue is full问题分析及解决</title>
     <url>/2023/03/21/Hbase%20Call%20queue%20is%20full%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90%E5%8F%8A%E8%A7%A3%E5%86%B3/</url>
     <content><![CDATA[<h1>Hbase Call queue is full问题分析及解决</h1>
 <p><a href="https://hijiazz.gitee.io/hbase-callqueue-isfull/" target="_blank" rel="noopener">https://hijiazz.gitee.io/hbase-callqueue-isfull/</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>集成Flink HistoryServer至CDH</title>
-    <url>/2023/03/10/%E9%9B%86%E6%88%90Flink%20HistoryServer%E8%87%B3CDH/</url>
-    <content><![CDATA[<h1>集成Flink HistoryServer至CDH</h1>
-<p>参考 <a href="https://blog.csdn.net/guiyifei/article/details/109325980" target="_blank" rel="noopener">https://blog.csdn.net/guiyifei/article/details/109325980</a></p>
-<h1>制作Flink的parcel包和<a href="https://so.csdn.net/so/search?q=csd&amp;spm=1001.2101.3001.7020" target="_blank" rel="noopener">csd</a>文件</h1>
-<h2 id="1-下载制作脚本">1. 下载制作脚本</h2>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;EvenGui&#x2F;flink-parcel-master</span><br><span class="line"></span><br><span class="line">cd flink-parcel-master</span><br></pre></td></tr></table></figure>
-<h2 id="修改参数vim-flink-parcel-properties">修改参数vim flink-parcel.properties</h2>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#FLINk 下载地址</span><br><span class="line">FLINK_URL&#x3D;  &#x2F;opt&#x2F;soft&#x2F;flink-1.14.6-bin-scala_2.12.tgz</span><br><span class="line"></span><br><span class="line">#flink版本号</span><br><span class="line">FLINK_VERSION&#x3D;1.14.6</span><br><span class="line"></span><br><span class="line">#扩展版本号</span><br><span class="line">EXTENS_VERSION&#x3D;BIN-SCALA_2.12</span><br><span class="line"></span><br><span class="line">#操作系统版本，以centos为例</span><br><span class="line">OS_VERSION&#x3D;7</span><br><span class="line"></span><br><span class="line">#CDH 小版本</span><br><span class="line">CDH_MIN_FULL&#x3D;5.13.1</span><br><span class="line">CDH_MAX_FULL&#x3D;6.3.2</span><br><span class="line"></span><br><span class="line">#CDH大版本</span><br><span class="line">CDH_MIN&#x3D;5</span><br><span class="line">CDH_MAX&#x3D;6</span><br></pre></td></tr></table></figure>
-<h2 id="编译parcel">编译parcel</h2>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sh build.sh parcel</span><br></pre></td></tr></table></figure>
-<p>./FLINK-1.14.6-BIN-SCALA_2.12/lib/flink/bin/start-scala-shell.sh does not exist.</p>
-<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2023/03/image-20230310160047820.png" alt="image-20230310160047820"></p>
-<p>编译会报错，我是创建一个空文件</p>
-<p>编译完会在flink-parcel项目根目录下生成_build文件夹</p>
-<h2 id="编译csd">编译csd</h2>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sh build.sh csd</span><br></pre></td></tr></table></figure>
 ]]></content>
   </entry>
   <entry>

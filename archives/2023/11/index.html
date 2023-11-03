@@ -46,16 +46,13 @@
   };
 </script>
 
-  <meta name="description" content="集成Flink HistoryServer至CDH 参考 https:&#x2F;&#x2F;blog.csdn.net&#x2F;guiyifei&#x2F;article&#x2F;details&#x2F;109325980 制作Flink的parcel包和csd文件 1. 下载制作脚本 123git clone https:&#x2F;&#x2F;github.com&#x2F;EvenGui&#x2F;flink-parcel-mastercd">
-<meta property="og:type" content="article">
-<meta property="og:title" content="集成Flink HistoryServer至CDH">
-<meta property="og:url" content="http://www.ask3.cn/2023/03/10/%E9%9B%86%E6%88%90Flink%20HistoryServer%E8%87%B3CDH/index.html">
+  <meta name="description" content="小杨随笔">
+<meta property="og:type" content="website">
+<meta property="og:title" content="爱思考">
+<meta property="og:url" content="http://www.ask3.cn/archives/2023/11/index.html">
 <meta property="og:site_name" content="爱思考">
-<meta property="og:description" content="集成Flink HistoryServer至CDH 参考 https:&#x2F;&#x2F;blog.csdn.net&#x2F;guiyifei&#x2F;article&#x2F;details&#x2F;109325980 制作Flink的parcel包和csd文件 1. 下载制作脚本 123git clone https:&#x2F;&#x2F;github.com&#x2F;EvenGui&#x2F;flink-parcel-mastercd">
+<meta property="og:description" content="小杨随笔">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2023/03/image-20230310160047820.png">
-<meta property="article:published_time" content="2023-03-10T08:11:27.430Z">
-<meta property="article:modified_time" content="2023-03-10T08:11:27.430Z">
 <meta property="article:author" content="datasir">
 <meta property="article:tag" content="爱思考">
 <meta property="article:tag" content="软件学习网">
@@ -74,9 +71,8 @@
 <meta property="article:tag" content="presto">
 <meta property="article:tag" content="大数据运维">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2023/03/image-20230310160047820.png">
 
-<link rel="canonical" href="http://www.ask3.cn/2023/03/10/%E9%9B%86%E6%88%90Flink%20HistoryServer%E8%87%B3CDH/">
+<link rel="canonical" href="http://www.ask3.cn/archives/2023/11/">
 
 
 <script id="page-configurations">
@@ -84,11 +80,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: true
+    isPost: false
   };
 </script>
 
-  <title>集成Flink HistoryServer至CDH | 爱思考</title>
+  <title>归档 | 爱思考</title>
   
 
 
@@ -208,94 +204,50 @@
           <div class="content">
             
 
-  <div class="posts-expand">
-      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/03/10/%E9%9B%86%E6%88%90Flink%20HistoryServer%E8%87%B3CDH/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          集成Flink HistoryServer至CDH
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-03-10 16:11:27" itemprop="dateCreated datePublished" datetime="2023-03-10T16:11:27+08:00">2023-03-10</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+  
+  <div class="post-block">
+    <div class="posts-collapse">
+      <div class="collection-title">
+        
+        <span class="collection-header">非常好! 目前共计 155 篇日志。 继续努力。</span>
+      </div>
 
       
-        <h1>集成Flink HistoryServer至CDH</h1>
-<p>参考 <a href="https://blog.csdn.net/guiyifei/article/details/109325980" target="_blank" rel="noopener">https://blog.csdn.net/guiyifei/article/details/109325980</a></p>
-<h1>制作Flink的parcel包和<a href="https://so.csdn.net/so/search?q=csd&amp;spm=1001.2101.3001.7020" target="_blank" rel="noopener">csd</a>文件</h1>
-<h2 id="1-下载制作脚本">1. 下载制作脚本</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;EvenGui&#x2F;flink-parcel-master</span><br><span class="line"></span><br><span class="line">cd flink-parcel-master</span><br></pre></td></tr></table></figure>
-<h2 id="修改参数vim-flink-parcel-properties">修改参数vim flink-parcel.properties</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#FLINk 下载地址</span><br><span class="line">FLINK_URL&#x3D;  &#x2F;opt&#x2F;soft&#x2F;flink-1.14.6-bin-scala_2.12.tgz</span><br><span class="line"></span><br><span class="line">#flink版本号</span><br><span class="line">FLINK_VERSION&#x3D;1.14.6</span><br><span class="line"></span><br><span class="line">#扩展版本号</span><br><span class="line">EXTENS_VERSION&#x3D;BIN-SCALA_2.12</span><br><span class="line"></span><br><span class="line">#操作系统版本，以centos为例</span><br><span class="line">OS_VERSION&#x3D;7</span><br><span class="line"></span><br><span class="line">#CDH 小版本</span><br><span class="line">CDH_MIN_FULL&#x3D;5.13.1</span><br><span class="line">CDH_MAX_FULL&#x3D;6.3.2</span><br><span class="line"></span><br><span class="line">#CDH大版本</span><br><span class="line">CDH_MIN&#x3D;5</span><br><span class="line">CDH_MAX&#x3D;6</span><br></pre></td></tr></table></figure>
-<h2 id="编译parcel">编译parcel</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh build.sh parcel</span><br></pre></td></tr></table></figure>
-<p>./FLINK-1.14.6-BIN-SCALA_2.12/lib/flink/bin/start-scala-shell.sh does not exist.</p>
-<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2023/03/image-20230310160047820.png" alt="image-20230310160047820"></p>
-<p>编译会报错，我是创建一个空文件</p>
-<p>编译完会在flink-parcel项目根目录下生成_build文件夹</p>
-<h2 id="编译csd">编译csd</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh build.sh csd</span><br></pre></td></tr></table></figure>
-
+    <div class="collection-year">
+      <h1 class="collection-header">2023</h1>
     </div>
 
-    
-    
-    
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
 
-      <footer class="post-footer">
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2023-11-02T10:51:26+08:00"
+              content="2023-11-02">
+          11-02
+        </time>
+      </div>
 
-        
+      <h2 class="post-title">
+          <a class="post-title-link" href="/2023/11/02/tidb%E9%83%A8%E7%BD%B2/" itemprop="url">
+            <span itemprop="name">tidb部署</span>
+          </a>
+      </h2>
 
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2023/03/10/CDH%206.3.2%20%E9%9B%86%E6%88%90%20flink%201.14.6/" rel="prev" title="CDH 6.3.2 集成 flink 1.14.6">
-      <i class="fa fa-chevron-left"></i> CDH 6.3.2 集成 flink 1.14.6
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2023/03/21/Hbase%20Call%20queue%20is%20full%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90%E5%8F%8A%E8%A7%A3%E5%86%B3/" rel="next" title="Hbase Call queue is full问题分析及解决">
-      Hbase Call queue is full问题分析及解决 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
+    </header>
   </article>
+
+
+    </div>
+  </div>
   
   
   
 
-  </div>
+  
+
 
 
           </div>
@@ -346,7 +298,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">1.</span> <span class="nav-text">集成Flink HistoryServer至CDH</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">2.</span> <span class="nav-text">制作Flink的parcel包和csd文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-下载制作脚本"><span class="nav-number">2.1.</span> <span class="nav-text">1. 下载制作脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改参数vim-flink-parcel-properties"><span class="nav-number">2.2.</span> <span class="nav-text">修改参数vim flink-parcel.properties</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译parcel"><span class="nav-number">2.3.</span> <span class="nav-text">编译parcel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译csd"><span class="nav-number">2.4.</span> <span class="nav-text">编译csd</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -362,7 +313,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">133</span>
+          <span class="site-state-item-count">155</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -374,7 +325,7 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/chinayangze" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chinayangze" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+        <a href="http://106.54.147.3:3002/" title="ChatGPT → http:&#x2F;&#x2F;106.54.147.3:3002" rel="noopener" target="_blank"><i class="fa fa-fw fa-ChatGPT"></i>ChatGPT</a>
       </span>
       <span class="links-of-author-item">
         <a href="mailto:info@ask3.cn" title="E-Mail → mailto:info@ask3.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>

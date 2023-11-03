@@ -209,7 +209,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/02/hudi/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/10/28/%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99%E6%B5%8B%E8%AF%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -223,7 +223,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/03/02/hudi/" class="post-title-link" itemprop="url">hudi</a>
+            <a href="/2021/10/28/%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">磁盘读写测试</a>
         </h1>
 
         <div class="post-meta">
@@ -233,7 +233,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-03-02 16:50:28" itemprop="dateCreated datePublished" datetime="2021-03-02T16:50:28+08:00">2021-03-02</time>
+              <time title="创建时间：2021-10-28 16:44:32" itemprop="dateCreated datePublished" datetime="2021-10-28T16:44:32+08:00">2021-10-28</time>
             </span>
 
           
@@ -247,13 +247,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><strong>注意：<strong>目前Hudi使用的是</strong>hadoop2.7.3</strong>版本，CDH6.3.0 环境使用的是<strong>hadoop3.0.0</strong>， 所以在打包的时候需要加上**-Dhadoop.version=3.0.0** 参数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean install -DskipTests -DskipITs -Dcheckstyle.skip&#x3D;true -Drat.skip&#x3D;true -Dhadoop.version&#x3D;3.0.0</span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo -u yarn spark-shell  \</span><br><span class="line">  --queue bf_yarn_pool.development \</span><br><span class="line">  --packages org.apache.spark:spark-avro_2.11:2.4.0 \</span><br><span class="line">  --conf 'spark.serializer=org.apache.spark.serializer.KryoSerializer' \</span><br><span class="line">  --jars `ls /opt/hudi/packaging/hudi-spark-bundle/target/hudi-spark-bundle_2.11-*.*.*-SNAPSHOT.jar`</span><br></pre></td></tr></table></figure>
+          <h2 id="磁盘读写测试">磁盘读写测试</h2>
+<p>FIO安装<br>
+wget <a href="http://brick.kernel.dk/snaps/fio-2.2.5.tar.gz" target="_blank" rel="noopener">http://brick.kernel.dk/snaps/fio-2.2.5.tar.gz</a></p>
+<p>yum install libaio-devel<br>
+tar -zxvf fio-2.2.5.tar.gz<br>
+cd fio-2.2.5<br>
+make<br>
+make install</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">测试：</span><br><span class="line">顺序读：</span><br><span class="line">fio -filename=/dev/sda -direct=1 -iodepth 1 -thread -rw=read -ioengine=psync -bs=16k -size=2G -numjobs=10 -runtime=60 -group_reporting -name=mytest</span><br><span class="line"></span><br><span class="line">随机写：</span><br><span class="line">fio -filename=/dev/sda -direct=1 -iodepth 1 -thread -rw=randwrite -ioengine=psync -bs=16k -size=2G -numjobs=10 -runtime=60 -group_reporting -name=mytest</span><br><span class="line"></span><br><span class="line">顺序写：</span><br><span class="line">fio -filename=/dev/sda -direct=1 -iodepth 1 -thread -rw=write -ioengine=psync -bs=16k -size=2G -numjobs=10 -runtime=60 -group_reporting -name=mytest</span><br><span class="line"></span><br><span class="line">混合随机读写：</span><br><span class="line">fio -filename=/dev/sda -direct=1 -iodepth 1 -thread -rw=randrw -rwmixread=70 -ioengine=psync -bs=16k -size=2G -numjobs=10 -runtime=60 -group_reporting -name=mytest -ioscheduler=noop</span><br></pre></td></tr></table></figure>
 
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/03/02/hudi/#more" rel="contents">
+              <a class="btn" href="/2021/10/28/%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99%E6%B5%8B%E8%AF%95/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -277,7 +283,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/02/20/%E7%94%A8FsImage%E6%9F%A5%E6%89%BEhadoop%E9%9B%86%E7%BE%A4%E5%B0%8F%E6%96%87%E4%BB%B6/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/07/20/%E6%99%BA%E8%83%BD%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0USDP%E6%93%8D%E4%BD%9C%E9%83%A8%E7%BD%B2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -291,7 +297,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/02/20/%E7%94%A8FsImage%E6%9F%A5%E6%89%BEhadoop%E9%9B%86%E7%BE%A4%E5%B0%8F%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">用FsImage查找hadoop集群小文件</a>
+            <a href="/2021/07/20/%E6%99%BA%E8%83%BD%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0USDP%E6%93%8D%E4%BD%9C%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">智能大数据平台USDP操作部署</a>
         </h1>
 
         <div class="post-meta">
@@ -301,7 +307,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-02-20 15:55:17" itemprop="dateCreated datePublished" datetime="2021-02-20T15:55:17+08:00">2021-02-20</time>
+              <time title="创建时间：2021-07-20 13:48:23" itemprop="dateCreated datePublished" datetime="2021-07-20T13:48:23+08:00">2021-07-20</time>
             </span>
 
           
@@ -315,19 +321,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd /tmp</span><br><span class="line">hdfs dfsadmin -fetchImage ./tmp_meta</span><br><span class="line">hdfs oiv -i ./tmp_meta -o ./fsimage.csv -p Delimited</span><br><span class="line">hdfs dfs -mkdir -p /tmp/hdfs_metadata/fsimage</span><br><span class="line">hdfs dfs -copyFromLocal ./fsimage.csv /tmp/hdfs_metadata/fsimage</span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">exists</span> hdfs_meta_temp;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">external</span> <span class="keyword">table</span> hdfs_meta_temp (<span class="keyword">path</span> <span class="keyword">string</span> ,</span><br><span class="line">repl <span class="built_in">int</span> ,</span><br><span class="line">modification_time <span class="keyword">string</span> ,accesstime <span class="keyword">string</span> ,</span><br><span class="line">preferredblocksize <span class="built_in">int</span> ,blockcount <span class="keyword">double</span>,</span><br><span class="line">filesize <span class="keyword">double</span> ,nsquota <span class="built_in">int</span> ,</span><br><span class="line">dsquota <span class="built_in">int</span> ,</span><br><span class="line">permission <span class="keyword">string</span> ,username <span class="keyword">string</span> ,groupname <span class="keyword">string</span>)<span class="keyword">row</span> <span class="keyword">format</span> <span class="keyword">delimited</span></span><br><span class="line"><span class="keyword">fields</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">'\t'</span> location <span class="string">'/tmp/hdfs_metadata/fsimage/'</span> ;</span><br><span class="line"></span><br><span class="line"><span class="comment">--将临时表转换为Impala的 Parquet表</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> hdfs_meta</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> hdfs_meta <span class="keyword">stored</span> <span class="keyword">as</span> parquet <span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">path</span>,</span><br><span class="line">repl,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">concat</span>(modification_time, <span class="string">' :00'</span>) <span class="keyword">as</span> <span class="built_in">timestamp</span>) modification_time,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">concat</span>(accesstime,<span class="string">':00'</span>) <span class="keyword">as</span> <span class="built_in">timestamp</span>) accesstime,</span><br><span class="line">preferredblocksize,</span><br><span class="line">blockcount,</span><br><span class="line">filesize,nsquota,dsquota,permission,username,groupname</span><br><span class="line"><span class="keyword">from</span> hdfs_meta_temp;</span><br></pre></td></tr></table></figure>
-<p>instr(path,’/’,1,2)这两个参数主要表示指定统计的HDFS目录以及目录钻取深度，instr()函数中的最后一个参数即为目录钻取深度</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line"><span class="comment">--concat('/',split_part(path,'/',2))  basepath,</span></span><br><span class="line"><span class="comment">--concat('/',split_part(path,'/',2),'/',split_part(path,'/',3))  basepath,</span></span><br><span class="line"><span class="comment">--concat('/',split_part(path,'/',2),'/',split_part(path,'/',3),'/',split_part(path,'/',4))  basepath,</span></span><br><span class="line"><span class="keyword">concat</span>(<span class="string">'/'</span>,split_part(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">2</span>),<span class="string">'/'</span>,split_part(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">3</span>),<span class="string">'/'</span>,split_part(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">4</span>),<span class="string">'/'</span>,split_part(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">5</span>))  basepath,</span><br><span class="line"><span class="keyword">sum</span>(blockcount) blockcounts,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">sum</span>(filesize)/<span class="number">1024</span>/<span class="number">1024</span>/<span class="number">1024</span> <span class="keyword">as</span> <span class="built_in">decimal</span>(<span class="number">18</span>,<span class="number">2</span>) ) filesizes,</span><br><span class="line"><span class="keyword">count</span>(*) file_nums,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">count</span>(*)/<span class="keyword">sum</span>(blockcount) <span class="keyword">as</span> <span class="built_in">decimal</span>(<span class="number">18</span>,<span class="number">2</span>) ) <span class="keyword">as</span> avg_block ,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">sum</span>(filesize)/<span class="keyword">count</span>(*)/<span class="number">1024</span> <span class="keyword">as</span> <span class="built_in">decimal</span>(<span class="number">18</span>,<span class="number">2</span>) ) <span class="keyword">AS</span> avg_filesize</span><br><span class="line"><span class="keyword">FROM</span> tmp.hdfs_meta </span><br><span class="line"><span class="keyword">where</span> <span class="keyword">instr</span>(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">1</span>,<span class="number">4</span>)&gt;<span class="number">0</span></span><br><span class="line"><span class="comment">--and strleft(path, instr(path,'/',1,4)-1)='/user/hive/warehouse'</span></span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> basepath  </span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> file_nums <span class="keyword">desc</span>, avg_filesize </span><br><span class="line"><span class="keyword">limit</span> <span class="number">200</span></span><br></pre></td></tr></table></figure>
-<p><strong>总结</strong></p>
-<p>如上SQL的统计分析可以看到有三个比较重要的统计指标file_nums、blockcounts和avg_filesize。通过这三个指标进行小文件分析，进行如下分析：</p>
-<p>如果file_nums/blockcounts的值越大且avg_filesize越小则说明该HDFS或Hive表的小文件越多。</p>
-<p><strong>方法二、</strong></p>
-<p>使用Sqoop脚本将Hive元数据中关于Hive库和表的信息抽取的Hive中</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">sqoop import \</span><br><span class="line">-D mapred.job.queue.name=bf_yarn_pool.development \</span><br><span class="line">--connect "jdbc:mysql://10.0.20.107:3306/baofoo_hive_2" \</span><br><span class="line">--username cs_yangz \</span><br><span class="line">--password *** \</span><br><span class="line">--query 'select c.NAME,c.DB_LOCATION_URI,a.TBL_NAME,a.OWNER,a.TBL_TYPE,b.LOCATION from TBLS a,SDS b,DBS c where a.SD_ID=b.SD_ID and a.DB_ID=c.DB_ID and $CONDITIONS' \</span><br><span class="line">--fields-terminated-by ',' \</span><br><span class="line">--delete-target-dir \</span><br><span class="line">--hive-database default \</span><br><span class="line">--target-dir /tmp/hive_tables_temp \</span><br><span class="line">--hive-import \</span><br><span class="line">--hive-overwrite \</span><br><span class="line">--hive-table hive_tables_temp \</span><br><span class="line">--m 1</span><br></pre></td></tr></table></figure>
+          <h2 id="智能大数据平台USDP操作部署">智能大数据平台USDP操作部署</h2>
+<p>USDP部署操作指南：<a href="https://mp.weixin.qq.com/s/COnkLXPTWL5OK1PFYooThw?scene=25#wechat_redirect" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/COnkLXPTWL5OK1PFYooThw?scene=25#wechat_redirect</a></p>
+<p>bash <a href="http://repair.sh" target="_blank" rel="noopener">repair.sh</a> initAll   这个步骤大约要30多分钟，重复执行也慢。</p>
+<p>注意：</p>
+<p>1.在repair-host-info-add.properties文件中，仅需配置每次新增的节点信息即可，若存在已修复过的节点信息时，在下次运行“<a href="http://repair.sh" target="_blank" rel="noopener">repair.sh</a> initSingle”指令前，请清除。</p>
+<p>2.jdk 安装在 /opt/module 下面，不允许随意删除，否则 java 环境失效。</p>
+<p>3.数据库密码中不得包含 “@” 。</p>
+<p>4.主机名设置不得包含 “_”，&quot;-&quot; 。</p>
+<p>启动服务  bin/stop-udp-server.sh</p>
+<p>查看日志目录  /var/log/udp</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/02/20/%E7%94%A8FsImage%E6%9F%A5%E6%89%BEhadoop%E9%9B%86%E7%BE%A4%E5%B0%8F%E6%96%87%E4%BB%B6/#more" rel="contents">
+              <a class="btn" href="/2021/07/20/%E6%99%BA%E8%83%BD%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0USDP%E6%93%8D%E4%BD%9C%E9%83%A8%E7%BD%B2/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -351,7 +357,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/01/19/hdfs%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/07/14/%E9%BB%91%E9%B2%A8%E6%B8%B8%E6%88%8F%E6%89%8B%E6%9C%BA%E8%A7%A3BL%E9%94%81%EF%BC%8C%E5%88%B7REC%EF%BC%8CROOT%20%E5%92%8C%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -365,7 +371,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/01/19/hdfs%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">hdfs性能测试</a>
+            <a href="/2021/07/14/%E9%BB%91%E9%B2%A8%E6%B8%B8%E6%88%8F%E6%89%8B%E6%9C%BA%E8%A7%A3BL%E9%94%81%EF%BC%8C%E5%88%B7REC%EF%BC%8CROOT%20%E5%92%8C%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">黑鲨游戏手机解BL锁，刷REC，ROOT 和问题总结</a>
         </h1>
 
         <div class="post-meta">
@@ -375,7 +381,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-01-19 15:55:58" itemprop="dateCreated datePublished" datetime="2021-01-19T15:55:58+08:00">2021-01-19</time>
+              <time title="创建时间：2021-07-14 13:41:35" itemprop="dateCreated datePublished" datetime="2021-07-14T13:41:35+08:00">2021-07-14</time>
             </span>
 
           
@@ -389,62 +395,279 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="hdfs性能测试">hdfs性能测试</h2>
-<p>hadoop自带TestDFSIO测试</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;tmp</span><br><span class="line">sudo -u hdfs hadoop jar \</span><br><span class="line">&#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hadoop-mapreduce&#x2F;hadoop-mapreduce-client-jobclient-3.0.0-cdh6.0.1-tests.jar TestDFSIO \</span><br><span class="line">-D mapreduce.job.queuename&#x3D;bf_yarn_pool.production \</span><br><span class="line">-D test.build.data&#x3D;&#x2F;tmp&#x2F;benchmark \</span><br><span class="line">-D mapreduce.output.fileoutputformat.compress&#x3D;false \</span><br><span class="line">-write -nrFiles 10 -fileSize 1000</span><br></pre></td></tr></table></figure>
-<p>–结果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO: ----- TestDFSIO ----- : write</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:             Date &amp; time: Tue Jan 19 15:29:04 CST 2021</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:         Number of files: 10</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:  Total MBytes processed: 10000</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:       Throughput mb&#x2F;sec: 23.96</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:  Average IO rate mb&#x2F;sec: 32.37</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:   IO rate std deviation: 29.51</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:      Test exec time sec: 68</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:</span><br></pre></td></tr></table></figure>
-<p>结果说明：</p>
-<blockquote>
-<p>Total MBytes processed ： 总共需要写入的数据量 ＝＝》 256*1000</p>
-<p>Throughput mb/sec ：总共需要写入的数据量/（每个map任务实际写入数据的执行时间之和（这个时间会远小于Test exec time sec））＝＝》256000/(map1写时间+map2写时间+…)</p>
-<p>Average IO rate mb/sec ：（每个map需要写入的数据量/每个map任务实际写入数据的执行时间）之和/任务数＝＝》(1000/map1写时间＋1000/map2写时间+…)/256，所以这个值跟上面一个值总是存在差异。</p>
-<p>IO rate std deviation ：上一个值的标准差</p>
-<p>Test exec time sec ：整个job的执行时间</p>
-</blockquote>
-<p>testDFSIO的参数如下：</p>
-<table>
+          <h2 id="黑鲨游戏手机解BL锁，刷REC，ROOT-和问题总结">黑鲨游戏手机解BL锁，刷REC，ROOT 和问题总结</h2>
+<p>参考帮助  <a href="https://www.bilibili.com/video/BV1Cf4y1U7gn?from=search&amp;seid=14731760489436726457" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1Cf4y1U7gn?from=search&amp;seid=14731760489436726457</a></p>
+<h2 id="总的步骤：">总的步骤：</h2>
+<p><img src="/images/image-20210714100219695.png" alt="image-20210714100219695"></p>
+<p>需要用到的文件</p>
+<p><img src="/images/image-20210714110634447.png" alt="image-20210714110634447"></p>
+<h3 id="第一步-系统降级">第一步.系统降级</h3>
+<p>黑鲨1代<br>
+系统版本:G66X1811300CN00MPX安卓版本:8.1下载地址:<a href="https://ota-1256119282.file.myqcloud.com/SKR-A0/2018-11-30_shark_mp_ota11_20180929shark-ota-eng.buildfarm.zip" target="_blank" rel="noopener">https://ota-1256119282.file.myqcloud.com/SKR-A0/2018-11-30_shark_mp_ota11_20180929shark-ota-eng.buildfarm.zip</a><br>
+系统版本:G66X1905170CN00MPP安卓版本:P(安卓9)下载地址:<a href="https://ota-1256119282.file.myqcloud.com/SKR-A0/shark-ota-eng.buildfarm_2019-05-17_sdm845_p_mp_ota1_20190430.zip" target="_blank" rel="noopener">https://ota-1256119282.file.myqcloud.com/SKR-A0/shark-ota-eng.buildfarm_2019-05-17_sdm845_p_mp_ota1_20190430.zip</a></p>
+<p><strong>刷机的准备工作：</strong></p>
+<p>1、根据自己机型下载对应版本型号的黑鲨手机全量包到电脑，将文件重命名为<strong>update.zip</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/14/%E9%BB%91%E9%B2%A8%E6%B8%B8%E6%88%8F%E6%89%8B%E6%9C%BA%E8%A7%A3BL%E9%94%81%EF%BC%8C%E5%88%B7REC%EF%BC%8CROOT%20%E5%92%8C%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/07/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AE%A1%E7%90%86%E8%A7%84%E8%8C%83(V1)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AE%A1%E7%90%86%E8%A7%84%E8%8C%83(V1)/" class="post-title-link" itemprop="url">服务器管理规范(V1)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-13 09:26:43" itemprop="dateCreated datePublished" datetime="2021-07-13T09:26:43+08:00">2021-07-13</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="服务器管理规范-V1">服务器管理规范(V1)</h4>
+<p><strong>一 配置管理规范</strong></p>
+<p>所有设备信息必须录入配置管理系统，在配置系统中能随时查询到现网业务的部署分布情况 具体信息待配置管理系统建立后再补充</p>
+<p>主机命名规范</p>
+<p>网卡vlan规范</p>
+<p>安全策略命名规范</p>
+<p>监控/部署/插件/模块命名规范</p>
+<p>版本命名规范</p>
+<p><strong>二 文件系统管理规范</strong></p>
+<p>2.1 文件布局</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AE%A1%E7%90%86%E8%A7%84%E8%8C%83(V1)/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/06/29/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/29/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">Docker常用命令</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-06-29 10:30:08" itemprop="dateCreated datePublished" datetime="2021-06-29T10:30:08+08:00">2021-06-29</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <table>
 <thead>
 <tr>
-<th>read</th>
-<th>读测试。执行该测试之前，需要先做write测试</th>
+<th>COMMAND</th>
+<th>DESC</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>write</td>
-<td>写测试</td>
+<td>查看</td>
+<td></td>
 </tr>
 <tr>
-<td>nfFiles</td>
-<td>文件个数，默认为1</td>
+<td>docker images</td>
+<td>列出所有镜像(images)</td>
 </tr>
 <tr>
-<td>fileSize</td>
-<td>文件大小，默认为1MB</td>
+<td>docker ps</td>
+<td>列出正在运行的容器(containers)</td>
 </tr>
 <tr>
-<td>resFile</td>
-<td>结果文件名，默认为” TestDFSIO_results.log”</td>
+<td>docker ps -a</td>
+<td>列出所有的容器</td>
 </tr>
 <tr>
-<td>bufferSize</td>
-<td>设置缓存大小，默认为1000000</td>
+<td>docker pull centos</td>
+<td>下载centos镜像</td>
 </tr>
 <tr>
-<td>clean</td>
-<td>清理数据</td>
+<td>docker top ‘container’</td>
+<td>查看容器内部运行程序</td>
 </tr>
 <tr>
-<td>seq</td>
-<td>数据是否有序，默认无序</td>
+<td>容器</td>
+<td></td>
+</tr>
+<tr>
+<td>docker exec -it 容器ID sh</td>
+<td>进入容器</td>
+</tr>
+<tr>
+<td>docker stop ‘container’</td>
+<td>停止一个正在运行的容器，‘container’可以是容器ID或名称</td>
+</tr>
+<tr>
+<td>docker start ‘container’</td>
+<td>启动一个已经停止的容器</td>
+</tr>
+<tr>
+<td>docker restart ‘container’</td>
+<td>重启容器</td>
+</tr>
+<tr>
+<td>docker rm ‘container’</td>
+<td>删除容器</td>
+</tr>
+<tr>
+<td>docker run -i -t -p :80 LAMP /bin/bash</td>
+<td>运行容器并做http端口转发</td>
+</tr>
+<tr>
+<td>docker exec -it ‘container’ /bin/bash</td>
+<td>进入ubuntu类容器的bash</td>
+</tr>
+<tr>
+<td>docker exec -it /bin/sh</td>
+<td>进入alpine类容器的sh</td>
+</tr>
+<tr>
+<td>docker rm <code>docker ps -a -q</code></td>
+<td>删除所有已经停止的容器</td>
+</tr>
+<tr>
+<td>docker kill $(docker ps -a -q)</td>
+<td>杀死所有正在运行的容器，$()功能同``</td>
+</tr>
+<tr>
+<td>镜像</td>
+<td></td>
+</tr>
+<tr>
+<td>docker build -t wp-api .</td>
+<td>构建1个镜像,-t(镜像的名字及标签) wp-api(镜像名) .(构建的目录)</td>
+</tr>
+<tr>
+<td>docker run -i -t wp-api</td>
+<td>-t -i以交互伪终端模式运行,可以查看输出信息</td>
+</tr>
+<tr>
+<td>docker run -d -p 80:80 wp-api</td>
+<td>镜像端口 -d后台模式运行镜像</td>
+</tr>
+<tr>
+<td>docker rmi [image-id]</td>
+<td>删除镜像</td>
+</tr>
+<tr>
+<td>docker rmi $(docker images -q)</td>
+<td>删除所有镜像</td>
+</tr>
+<tr>
+<td>docker rmi $(sudo docker images --filter “dangling=true” -q --no-trunc)</td>
+<td>删除无用镜像</td>
+</tr>
+<tr>
+<td>docker run --help</td>
+<td>帮助</td>
 </tr>
 </tbody>
 </table>
-<p><strong>备注</strong>：</p>
+<blockquote>
+<p>更多命令查看Docker 命令大全 | 菜鸟教程</p>
+</blockquote>
+<h3 id="场景二：下载镜像并直接运行">场景二：下载镜像并直接运行</h3>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run  --name ubuntu -it ubuntu bash </span><br><span class="line">docker cp dd ubuntu:tmp/ #复制文件dd 到容器的/tmp 目录</span><br><span class="line">Ctrl-p Ctrl-q  #退出</span><br></pre></td></tr></table></figure>
+<h3 id="场景三：修改镜像，并保存到私有仓库">场景三：修改镜像，并保存到私有仓库</h3>
+<blockquote>
+<p>期望结果:在ubuntu 镜像中添加 apache，将新的镜像保存到私有仓库中</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it ubuntu bash </span><br><span class="line">apt-<span class="keyword">get</span> update</span><br><span class="line">apt-<span class="keyword">get</span> install apache2</span><br><span class="line">Ctrl-p Ctrl-q  #退出</span><br><span class="line">docker commit -a "mir355" -m "ubuntu add apache2" &#123;ID&#125;  private/ubuntu_apache:v1   #保存镜像</span><br><span class="line">docker stop ubuntu </span><br><span class="line">docker rm ubuntu</span><br><span class="line">docker run -i -t --name apache2 -p <span class="number">8080</span>:<span class="number">80</span> private/ubuntu_apache:v1 /bin/bash</span><br><span class="line">/etc/init.d/apache2 start</span><br><span class="line">Ctrl-p Ctrl-q  #退出</span><br><span class="line">#通过 docker tag重命名镜像，使之与registry匹配</span><br><span class="line">docker tag private/ubuntu_apache:v1 <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">5000</span>/private/ubuntu_apache:v1</span><br><span class="line">#保存到私有仓库</span><br><span class="line">docker push <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">5000</span>/private/ubuntu_apache:v1</span><br><span class="line">curl http:<span class="comment">//127.0.0.1:5000/v2/_catalog</span></span><br><span class="line"></span><br><span class="line">#下载镜像</span><br><span class="line">docker pull <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">5000</span>/private/ubuntu_apache:v1</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/01/19/hdfs%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/#more" rel="contents">
+              <a class="btn" href="/2021/06/29/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -468,7 +691,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/01/13/HDFS%20ACL%E6%9D%83%E9%99%90%E8%AE%BE%E7%BD%AE/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/06/25/mapreduce%E3%80%81spark%E7%9A%84%E6%A0%B7%E4%BE%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -482,7 +705,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/01/13/HDFS%20ACL%E6%9D%83%E9%99%90%E8%AE%BE%E7%BD%AE/" class="post-title-link" itemprop="url">HDFS ACL权限设置</a>
+            <a href="/2021/06/25/mapreduce%E3%80%81spark%E7%9A%84%E6%A0%B7%E4%BE%8B/" class="post-title-link" itemprop="url">mapreduce、spark的样例</a>
         </h1>
 
         <div class="post-meta">
@@ -492,7 +715,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-01-13 15:58:22" itemprop="dateCreated datePublished" datetime="2021-01-13T15:58:22+08:00">2021-01-13</time>
+              <time title="创建时间：2021-06-25 16:04:01" itemprop="dateCreated datePublished" datetime="2021-06-25T16:04:01+08:00">2021-06-25</time>
             </span>
 
           
@@ -506,22 +729,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>HDFS ACL权限设置</h1>
-<p>今天主要给大家说一下HDFS文件权限的问题。当一个<code>普通用户</code>去访问<code>HDFS文件</code>时，可能会报<code>Permission denied</code>的错误。那么你会怎么做呢？</p>
-<p>像修改linux文件似的，可能的做法有：</p>
-<ul>
-<li>修改文件所有者</li>
-<li>直接将文件赋予全部的权限，即rwx权限。</li>
-</ul>
-<p>上面的做法虽然可以达到目的，但是相对来说对权限的把握不是很精准，不适用于生产环境。</p>
-<p><strong>本文主要讲解HDFS的ACL(Access Control List)权限，通过hdfs超级用户，来为普通用户分配权限。</strong></p>
-<h3 id="一、背景"><strong>一、背景</strong></h3>
-<p>如下图所示，</p>
-<p><img src="/images/image-20210113155315046.png" alt="image-20210113155315046"></p>
-<p>目录没有权限，所以创建失败了。</p>
+          <h1>mapreduce、spark的样例</h1>
+<h3 id="指定队列和优先级">指定队列和优先级</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-mapreduce-examples.jar pi \</span><br><span class="line">-D mapreduce.job.queuename=bf_yarn_pool.development \</span><br><span class="line">-D mapreduce.job.priority=VERY_HIGH 5 5</span><br></pre></td></tr></table></figure>
+<h3 id="TestDFSIO">TestDFSIO</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo -u hdfs hadoop jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hadoop-mapreduce&#x2F;hadoop-mapreduce-client-jobclient-3.0.0-cdh6.0.1-tests.jar  TestDFSIO \</span><br><span class="line">-D mapreduce.job.queuename&#x3D;bf_yarn_pool.production \</span><br><span class="line">-D test.build.data&#x3D;&#x2F;tmp&#x2F;benchmark \</span><br><span class="line">-D mapreduce.output.fileoutputformat.compress&#x3D;false \</span><br><span class="line">-write -nrFiles 10 -fileSize 1000</span><br></pre></td></tr></table></figure>
+
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/01/13/HDFS%20ACL%E6%9D%83%E9%99%90%E8%AE%BE%E7%BD%AE/#more" rel="contents">
+              <a class="btn" href="/2021/06/25/mapreduce%E3%80%81spark%E7%9A%84%E6%A0%B7%E4%BE%8B/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -545,7 +761,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/12/29/cdh6_hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/05/18/Windows%20Server%202019%E5%92%8CWin10%20%E5%AE%89%E8%A3%85%20Linux%20%E5%AD%90%E7%B3%BB%E7%BB%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -559,7 +775,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/29/cdh6_hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/" class="post-title-link" itemprop="url">cdh6_hbase新集群配置项整理</a>
+            <a href="/2021/05/18/Windows%20Server%202019%E5%92%8CWin10%20%E5%AE%89%E8%A3%85%20Linux%20%E5%AD%90%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">Windows Server 2019和Win10 安装 Linux 子系统</a>
         </h1>
 
         <div class="post-meta">
@@ -569,15 +785,8 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-29 13:42:22" itemprop="dateCreated datePublished" datetime="2020-12-29T13:42:22+08:00">2020-12-29</time>
+              <time title="创建时间：2021-05-18 15:52:31" itemprop="dateCreated datePublished" datetime="2021-05-18T15:52:31+08:00">2021-05-18</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2018-10-22 15:19:28" itemprop="dateModified" datetime="2018-10-22T15:19:28+08:00">2018-10-22</time>
-              </span>
 
           
 
@@ -590,65 +799,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>hbase-conf:</p>
-<ul>
-<li>RS堆栈大小: 32G</li>
-<li></li>
-<li>hbase.bucketcache.size=64 =64 * 1024M: 堆外缓存大小，单位为M</li>
-<li></li>
-<li>dfs.replication=3on=3: hdfs副本数</li>
-<li></li>
-<li>hbase.hregion.max.filesize=20G=20G: Region大小</li>
-<li></li>
-<li>hbase.hregion.memstore.flush.size=256=256M: Memstore刷新大小</li>
-<li></li>
-<li>hbase.regionserver.global.memstore.upperLimit=0.t=0.55: 整个RS中Memstore最大比例</li>
-<li></li>
-</ul>
-<h2 id="hbase-regionserver-global-memstore-lowerLimit-0-t-0-5-整个RS中Memstore最小比例-默认0-95">#- hbase.regionserver.global.memstore.lowerLimit=0.t=0.5: 整个RS中Memstore最小比例       默认0.95</h2>
-<ul>
-<li>hbase.bucketcache.ioengine=off=offheap: 使用堆外缓存</li>
-<li></li>
-</ul>
-<h2 id="hbase-bucketcache-percentage-in-combinebinedcache-0-9-堆外读缓存所占比例，剩余为堆内元数据缓存大小">#- hbase.bucketcache.percentage.in.combinebinedcache=0.9: 堆外读缓存所占比例，剩余为堆内元数据缓存大小</h2>
-<ul>
-<li>hfile.block.cache.size=0.2=0.2: 校验项,+upperLimit需要小于0.8</li>
-<li></li>
-<li>hbase.master.handler.count=256=256: Master处理客户端请求最大线程数</li>
-<li></li>
-<li>hbase.regionserver.handler.count=256=256: RS处理客户端请求最大线程数</li>
-<li></li>
-<li>hbase.hstore.blockingStoreFiles=100: storefile个数达到该值则block写入</li>
-<li></li>
-<li>hbase.hregion.memstore.block.multiplier=3:r=3: 强制刷新Memstore大小的倍数</li>
-<li></li>
-<li>hbase.client.retries.number: 3 : 3</li>
-<li></li>
-<li>hbase.rpc.timeout: 50: 5000</li>
-</ul>
-<p>hbase-jvm:</p>
-<p>HBASE_OFFHEAPSIZE=??G<br>
-HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256m -XX:+UseParNewGC -XX:MaxTenuringThreshold=15  -XX:+CMSParallelRemarkEnabled -XX:+UseCMSCompactAtFullCollection -XX:+CMSClassUnloadingEnabled -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSFullGCsBeforeCompaction=0 -XX:CMSInitiatingOccupancyFraction=70 -XX:+PrintTenuringDistribution -XX:SurvivorRatio=2 -XX:+UseConcMarkSweepGC -XX:-DisableExplicitGC $HBASE_OPTS&quot;</p>
-<p>-XX:+UseG1GC<br>
--XX:InitiatingHeapOccupancyPercent=65<br>
--XX:-ResizePLAB<br>
--XX:MaxGCPauseMillis=90<br>
--XX:+UnlockDiagnosticVMOptions<br>
--XX:+G1SummarizeConcMark<br>
--XX:+ParallelRefProcEnabled<br>
--XX:G1HeapRegionSize=32m<br>
--XX:G1HeapWastePercent=20<br>
--XX:ConcGCThreads=4<br>
--XX:ParallelGCThreads=16<br>
--XX:MaxTenuringThreshold=1<br>
--XX:G1MixedGCCountTarget=64<br>
--XX:+UnlockExperimentalVMOptions<br>
--XX:G1NewSizePercent=2<br>
--XX:G1OldCSetRegionThresholdPercent=5</p>
-<p>HDFS:</p>
+          <p><strong>Windows Server</strong>版本 安装参考  <a href="https://blog.51cto.com/professor/2411436" target="_blank" rel="noopener">https://blog.51cto.com/professor/2411436</a></p>
+<p>注意：如果先安装的ConEmu ，可能没有bash  ，刷新一系default tasks，如下图：</p>
+<p><img src="/images/image-20210518154415530.png" alt="image-20210518154415530"></p>
+<p>win10版本 参考之前写的文档：</p>
+<p><strong>Win10 Subsystem Linux : Ubuntu 的root密码</strong></p>
+<p>每次开机都有一个新的root密码。我们可以在终端输入命令 sudo passwd，</p>
+<p>然后输入当前用户的密码，enter，终端会提示我们输入新的密码并确认，</p>
+<p>此时的密码就是root新密码。修改成功后，输入命令 su root，再输入新的密码就ok了。</p>
+<p><strong>win10 linux子系统设置默认用户</strong></p>
+<p><a href="https://blog.csdn.net/ijiabao520/article/details/79285041" target="_blank" rel="noopener">https://blog.csdn.net/ijiabao520/article/details/79285041</a></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/29/cdh6_hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/#more" rel="contents">
+              <a class="btn" href="/2021/05/18/Windows%20Server%202019%E5%92%8CWin10%20%E5%AE%89%E8%A3%85%20Linux%20%E5%AD%90%E7%B3%BB%E7%BB%9F/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -672,7 +835,7 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/12/29/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/05/18/%E8%BF%90%E7%BB%B4%E5%92%8C%E5%8F%91%E5%B1%95%E7%BA%BF%E8%B7%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -686,7 +849,7 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/29/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/" class="post-title-link" itemprop="url">hbase新集群配置项整理</a>
+            <a href="/2021/05/18/%E8%BF%90%E7%BB%B4%E5%92%8C%E5%8F%91%E5%B1%95%E7%BA%BF%E8%B7%AF/" class="post-title-link" itemprop="url">运维和发展线路</a>
         </h1>
 
         <div class="post-meta">
@@ -696,15 +859,8 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-29 13:42:19" itemprop="dateCreated datePublished" datetime="2020-12-29T13:42:19+08:00">2020-12-29</time>
+              <time title="创建时间：2021-05-18 15:26:56" itemprop="dateCreated datePublished" datetime="2021-05-18T15:26:56+08:00">2021-05-18</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2018-09-28 15:51:33" itemprop="dateModified" datetime="2018-09-28T15:51:33+08:00">2018-09-28</time>
-              </span>
 
           
 
@@ -717,34 +873,45 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="机器概况">机器概况</h3>
+          <h2 id="运维和发展的一个线路">运维和发展的一个线路</h2>
 <ul>
-<li>总内存:256G</li>
-<li>可分配内存:256*0.75=192G</li>
-<li>总硬盘:1.8T*12=21.6T</li>
-<li>可用硬盘空间:21.6T*0.85=18.36T</li>
+<li>1.搭建服务（部署并运行起来）</li>
+<li>2.用好服务（监控、管理、优化）</li>
+<li>3.自动化（服务直接的关联和协同工作）</li>
+<li>4.产品设计（如何设计一个监控系统）</li>
 </ul>
-<h3 id="内存规划">内存规划</h3>
-<h4 id="Disk-Java-Heap-Ratio">Disk / Java Heap Ratio</h4>
-<p><strong>Disk / Java Heap Ratio=Disk Size / Java Heap = RegionSize / MemstoreSize * ReplicationFactor * HeapFractionForMemstore * 2</strong><br>
-一台RegionServer上1bytes的Java内存大小需要搭配多大的硬盘大小最合理。</p>
-<p>公式解释：</p>
+<p><strong>云计算的核心竞争力是运维！</strong></p>
+<p>系统架构师（偏管理）：网络  系统  数据库  开发  云计算  自动化  运维管理  服务管理 项目管理  测试  业务<br>
+专注于某一领域<br>
+解决方案架构师</p>
+<h2 id="运维工作内容分类">运维工作内容分类</h2>
 <ul>
-<li>硬盘容量维度下Region个数： Disk Size / (RegionSize ＊ReplicationFactor)</li>
-<li>Java Heap维度下Region个： Java Heap * HeapFractionForMemstore / (MemstoreSize / 2 )</li>
-<li>硬盘维度和Java Headp维度理论相等：Disk Size / (RegionSize ＊ReplicationFactor)  ＝ Java Heap * HeapFractionForMemstore / (MemstoreSize / 2 ) ＝&gt; Disk Size / Java Heap = RegionSize / MemstoreSize * ReplicationFactor * HeapFractionForMemstore * 2</li>
+<li>监控运维（7x24运维值班、故障处理）</li>
+<li>应用运维（业务熟悉、服务部署、业务部署、版本管理、灰度发布、应用监控）</li>
+<li>安全运维（整体的安全方案、规范、漏洞监测、安全防护等）</li>
+<li>系统运维（架构层面的分布式缓存、分布式文件系统、日志收集、环境规划（测试、开发、生产）、架构设计、性能优化）</li>
+<li>基础服务运维（包含运维开发）（内部DNS、负载均衡、系统监控、资产管理、运维平台）</li>
+<li>基础设施运维（系统初始化、网络维护）</li>
+<li>机房运维（负责设备上下架、巡检、报修、硬件监控）</li>
 </ul>
-<p>默认配置：</p>
-<ul>
-<li>RegionSize: hbase.hregion.max.filesize=10G</li>
-<li>MemstoreSize: hbase.hregion.memstore.flush.size=128M</li>
-<li>ReplicationFactor: dfs.replication=3</li>
-<li>HeapFractionForMemstore: hbase.regionserver.global.memstore.lowerLimit = 0.4</li>
-</ul>
-<p>计算为：10G / 128M * 3 * 0.4 * 2 = 192，即RegionServer上1bytes的Java内存大小需要搭配192bytes的硬盘大小最合理。</p>
+<p>阿里云:<br>
+SLB  LVS + Tengine（Nginx）<br>
+ECS  KVM</p>
+<h2 id="运维标准化">运维标准化</h2>
+<p><strong>物理设备层面：</strong><br>
+1.服务器标签化、设备负责人、设备采购详情、设备摆放标准<br>
+2.网络划分、远程控制卡、网卡端口<br>
+3.服务器机型、硬盘、内存统一，根据业务分类<br>
+4.资产命名规范、编号规范、类型规范<br>
+5.监控标准</p>
+<p><strong>操作系统层面</strong><br>
+1.操作系统版本<br>
+2.系统初始化（配置DNS、NTP、内核参数调优）<br>
+3.基础Agent配备（Zabbix agent、logstash agent、salt minion）<br>
+4.系统监控标准（CPU、内存、硬盘、网络、进程）</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/29/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/#more" rel="contents">
+              <a class="btn" href="/2021/05/18/%E8%BF%90%E7%BB%B4%E5%92%8C%E5%8F%91%E5%B1%95%E7%BA%BF%E8%B7%AF/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -768,7 +935,7 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/12/08/%E4%BF%AE%E6%94%B9Kudu%E8%A1%A8%E5%90%8D,%E5%92%8C%E6%98%A0%E5%B0%84%E5%9C%A8impala%E7%9A%84%E8%A1%A8%E5%90%8D/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/04/30/CDH%20Disk%20Balancer%20%E7%A3%81%E7%9B%98%E6%95%B0%E6%8D%AE%E5%9D%87%E8%A1%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -782,7 +949,7 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/08/%E4%BF%AE%E6%94%B9Kudu%E8%A1%A8%E5%90%8D,%E5%92%8C%E6%98%A0%E5%B0%84%E5%9C%A8impala%E7%9A%84%E8%A1%A8%E5%90%8D/" class="post-title-link" itemprop="url">修改Kudu表名,和映射在impala的表名</a>
+            <a href="/2021/04/30/CDH%20Disk%20Balancer%20%E7%A3%81%E7%9B%98%E6%95%B0%E6%8D%AE%E5%9D%87%E8%A1%A1/" class="post-title-link" itemprop="url">CDH Disk Balancer 磁盘数据均衡</a>
         </h1>
 
         <div class="post-meta">
@@ -792,7 +959,7 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-12-08 11:05:00" itemprop="dateCreated datePublished" datetime="2020-12-08T11:05:00+08:00">2020-12-08</time>
+              <time title="创建时间：2021-04-30 09:58:57" itemprop="dateCreated datePublished" datetime="2021-04-30T09:58:57+08:00">2021-04-30</time>
             </span>
 
           
@@ -806,19 +973,19 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>修改Kudu表名,和映射在impala的表名</h1>
-<p>kudu的表名和impala的表名是两码事</p>
-<h2 id="修改kudu表名">修改kudu表名</h2>
-<h4 id="方法一、在linux中kudu节点执行">方法一、在linux中kudu节点执行</h4>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kudu table rename_table 172.20.85.113:7051 impala::kd_baofoo_cm.cm_entry_tmp impala::kd_baofoo_cm.cm_entry</span><br></pre></td></tr></table></figure>
-<h4 id="方法二、在presto中执行">方法二、在presto中执行</h4>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE kudu.default.&quot;impala::kd_baofoo_cm.cm_entry&quot; RENAME TO kudu.default.&quot;impala::kd_baofoo_cm.cm_entry_tmp&quot;</span><br></pre></td></tr></table></figure>
-<p>修改了kudu的表名后 在impala查询kudu会报错，需要修改</p>
-<h2 id="修改映射的impala表名">修改映射的impala表名</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alter table kd_baofoo_cm.cm_entry set tblproperties(&#39;kudu.table_name&#39;&#x3D;&#39;impala::kd_baofoo_cm.cm_entry_tmp&#39;);</span><br><span class="line">alter table kd_baofoo_cm.cm_entry rename to kd_baofoo_cm.cm_entry_tmp;</span><br></pre></td></tr></table></figure>
+          <h3 id="CDH-Disk-Balancer-磁盘数据均衡">CDH Disk Balancer 磁盘数据均衡</h3>
+<p>1.设置dfs.disk.balancer.enabled  为true , 可以单个datanode设置，重启单个datanode生效。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.disk.balancer.enabled<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="/images/image-20210429175922996.png" alt="image-20210429175922996">
+<p>1.创建均衡任务并生成计划任务配置文件</p>
+<p>sudo -u hdfs hdfs diskbalancer -plan cdh85-73</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@cdh85-73 tmp]# sudo -u hdfs hdfs diskbalancer -plan cdh85-73</span><br><span class="line">21/04/29 17:02:45 INFO planner.GreedyPlanner: Starting plan for Node : cdh85-73:9867</span><br><span class="line">21/04/29 17:02:45 INFO planner.GreedyPlanner: Disk Volume set f4da1504-1dfc-42d0-ac61-020dd7b02620 Type : DISK plan completed.</span><br><span class="line">21/04/29 17:02:45 INFO planner.GreedyPlanner: Compute Plan for Node : cdh85-73:9867 took 7 ms </span><br><span class="line">21/04/29 17:02:46 INFO command.Command: Writing plan to:</span><br><span class="line">21/04/29 17:02:46 INFO command.Command: /system/diskbalancer/2021-Apr-29-17-02-45/cdh85-73.plan.json</span><br><span class="line">Writing plan to:</span><br><span class="line">/system/diskbalancer/2021-Apr-29-17-02-45/cdh85-73.plan.json</span><br></pre></td></tr></table></figure>
+<p>注意： 这个路径是HDFS的路径，不是本地路径</p>
+<p>2.查看配置文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@cdh85-73 tmp]# hdfs dfs -ls  /system/diskbalancer/2021-Apr-29-16-45-51</span><br><span class="line">Found 2 items</span><br><span class="line">-rw-r--r--   3 hdfs supergroup     192586 2021-04-29 16:45 /system/diskbalancer/2021-Apr-29-16-45-51/cdh85-73.before.json</span><br><span class="line">-rw-r--r--   3 hdfs supergroup       4546 2021-04-29 16:45 /system/diskbalancer/2021-Apr-29-16-45-51/cdh85-73.plan.json</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/08/%E4%BF%AE%E6%94%B9Kudu%E8%A1%A8%E5%90%8D,%E5%92%8C%E6%98%A0%E5%B0%84%E5%9C%A8impala%E7%9A%84%E8%A1%A8%E5%90%8D/#more" rel="contents">
+              <a class="btn" href="/2021/04/30/CDH%20Disk%20Balancer%20%E7%A3%81%E7%9B%98%E6%95%B0%E6%8D%AE%E5%9D%87%E8%A1%A1/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -842,7 +1009,7 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/11/23/%E8%A7%A3%E5%86%B3hdfs%E6%96%87%E4%BB%B6%E5%A4%A7%E5%B0%8F%E4%B8%BA0/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/04/27/chia%E6%8C%96%E7%9F%BF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -856,7 +1023,7 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/11/23/%E8%A7%A3%E5%86%B3hdfs%E6%96%87%E4%BB%B6%E5%A4%A7%E5%B0%8F%E4%B8%BA0/" class="post-title-link" itemprop="url">解决hdfs文件大小为0</a>
+            <a href="/2021/04/27/chia%E6%8C%96%E7%9F%BF/" class="post-title-link" itemprop="url">chia挖矿</a>
         </h1>
 
         <div class="post-meta">
@@ -866,7 +1033,7 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-23 16:21:39" itemprop="dateCreated datePublished" datetime="2020-11-23T16:21:39+08:00">2020-11-23</time>
+              <time title="创建时间：2021-04-27 10:52:45" itemprop="dateCreated datePublished" datetime="2021-04-27T10:52:45+08:00">2021-04-27</time>
             </span>
 
           
@@ -880,171 +1047,21 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><strong>问题： 存在文件大小为0，处于打开状态的文件，程序读取这些文件会报错</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@cdh85-29 ~]# hadoop fs -du -h  hdfs:&#x2F;&#x2F;ns1&#x2F;flume&#x2F;BankCardAuthReqDTO&#x2F;CREDIT-PRODUCT-RESULT-LOG-MEMBER-RESPONSE_bak</span><br><span class="line">0  1.1 G  hdfs:&#x2F;&#x2F;ns1&#x2F;flume&#x2F;BankCardAuthReqDTO&#x2F;CREDIT-PRODUCT-RESULT-LOG-MEMBER-RESPONSE_bak&#x2F;CREDIT-PRODUCT-RESULT-LOG-MEMBER-RESPONSE-1.1594769101120.log.gz</span><br><span class="line">0  1.1 G  hdfs:&#x2F;&#x2F;ns1&#x2F;flume&#x2F;BankCardAuthReqDTO&#x2F;CREDIT-PRODUCT-RESULT-LOG-MEMBER-RESPONSE_bak&#x2F;CREDIT-PRODUCT-RESULT-LOG-MEMBER-RESPONSE-1.1594856701472.log.gz</span><br><span class="line">0  1.1 G  hdfs:&#x2F;&#x2F;ns1&#x2F;flume&#x2F;BankCardAuthReqDTO&#x2F;CREDIT-PRODUCT-RESULT-LOG-MEMBER-RESPONSE_bak&#x2F;CREDIT-PRODUCT-RESULT-LOG-MEMBER-RESPONSE-1.1594941000485.log.gz</span><br></pre></td></tr></table></figure>
-<p>cloudera论坛也有类型的错误 ：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cannot obtain block length for LocatedBlock</span><br></pre></td></tr></table></figure>
-<p><a href="https://community.cloudera.com/t5/Support-Questions/Cannot-obtain-block-length-for-LocatedBlock/td-p/117517" target="_blank" rel="noopener">https://community.cloudera.com/t5/Support-Questions/Cannot-obtain-block-length-for-LocatedBlock/td-p/117517</a></p>
-<p>但是这个方法并没有解决我的问题。 hdfs debug recoverLease -path  这样也关闭不了文件  ，纠删码策略下 不知道什么bug   这些文件关闭不了。</p>
-<h3 id="我的解决方法：">我的解决方法：</h3>
-<p><strong>获取hdfs没有正常关闭的文件并删除</strong>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop fsck &#x2F;flume&#x2F; -files -openforwrite | grep &quot;OPENFORWRITE&quot;  &gt;tmp.txt</span><br></pre></td></tr></table></figure>
-<p>tmp.txt 内容如下：</p>
+          <h4 id="用家里的老电脑做一个测试-，p了一块k32的盘">用家里的老电脑做一个测试 ，p了一块k32的盘</h4>
+<p>矿池的具体接入教程描述得非常浅显易懂了，这里我就不做重复搬运了，直接参考 <a href="https://www.hpool.com/help/tutorial/Chia%E6%8C%96%E7%9F%BF%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">Chia挖矿教程</a></p>
+<p>linux P盘</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup &#x2F;opt&#x2F;chia-plotter&#x2F;chia-plotter-linux-amd64 -action plotting -plotting-fpk 0x85f80829a93d960313a99ca5482703fea2caae1d07db589344e76eba135db14c8f70d08dadc991805ae917d61626fd8d -plotting-ppk 0x970214947045bd1c6fbb0b3b3499dafab837eb26b58356504aea4d8ee19e9c5c064a5dfdad0cb5f7f047e0030f088a65 -plotting-n 1 -b 8000 -t &#x2F;data1&#x2F;chia -d &#x2F;opt&#x2F;chia  &gt;&gt; plots2.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+<p>晒一下收益效果：</p>
+<p><img src="/images/image-20210427101445602.png" alt="image-20210427101445602"></p>
+<h4 id="相关资料：">相关资料：</h4>
+<p><strong>谋杀SSD磁盘</strong></p>
+<p><a href="https://www.expreview.com/78802.html" target="_blank" rel="noopener">https://www.expreview.com/78802.html</a></p>
+<blockquote>
+<p>生成一个K=32文件大概需要6.5小时，生成三个K33两个K32文件总共占了829GB的硬盘空间，而HDD的写入量是840.1GB，但SSD的读写非常厉害，整个P盘过程，SSD读取11.8TB，写入12.06TB，因为SSD的写入次数是有限的，把这个6TB的红盘P满虽然不至于把SSD写死，但磨损也很厉害。</p>
+</blockquote>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/11/23/%E8%A7%A3%E5%86%B3hdfs%E6%96%87%E4%BB%B6%E5%A4%A7%E5%B0%8F%E4%B8%BA0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/11/23/xargs%E5%91%BD%E4%BB%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/23/xargs%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">xargs命令</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-11-23 15:43:13 / 修改时间：15:43:12" itemprop="dateCreated datePublished" datetime="2020-11-23T15:43:13+08:00">2020-11-23</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>xargs可以将输入内容（通常通过命令行管道传递），转成后续命令的参数，通常用途有：</p>
-<ol>
-<li>命令组合：尤其是一些命令不支持管道输入，比如<code>ls</code>。</li>
-<li>避免参数过长：xargs可以通过<code>-nx</code>来将参数分组，避免参数过长。</li>
-</ol>
-<p>使用语法如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Usage: xargs [OPTION]... COMMAND INITIAL-ARGS...</span><br><span class="line">Run COMMAND with arguments INITIAL-ARGS and more arguments read from input.</span><br></pre></td></tr></table></figure>
-<h2 id="入门例子">入门例子</h2>
-<p>首先，创建测试文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch a.js b.js c.js</span><br></pre></td></tr></table></figure>
-<p>接着，运行如下命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls *.js | xargs ls -al</span><br></pre></td></tr></table></figure>
-<p>输出如下：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/23/xargs%E5%91%BD%E4%BB%A4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/11/20/could%20only%20be%20written%20to%200%20of%20the%201%20minReplication%20nodes/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/20/could%20only%20be%20written%20to%200%20of%20the%201%20minReplication%20nodes/" class="post-title-link" itemprop="url">could only be written to 0 of the 1 minReplication nodes</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-11-20 15:33:15" itemprop="dateCreated datePublished" datetime="2020-11-20T15:33:15+08:00">2020-11-20</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>重启dn导致集群不能写入数据，几百个任务都失败了， 经过一个通宵的折腾，记录一下这次重大事故。</p>
-<h3 id="报错日志">报错日志</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DataStreamer Exception</span><br><span class="line">20-11-2020 09:48:59 CST mysql2sqoop-1-RD202006060009 INFO - org.apache.hadoop.ipc.RemoteException(java.io.IOException): File &#x2F;user&#x2F;yarn&#x2F;.staging&#x2F;job_1605809645188_1956&#x2F;job.jar could only be written to 0 of the 1 minReplication nodes. There are 66 datanode(s) running and no node(s) are excluded in this operation.</span><br></pre></td></tr></table></figure>
-<h3 id="报错的日志各种误导，走了很多弯路，只说一下，最终解决了这个问题的方法：">报错的日志各种误导，走了很多弯路，只说一下，最终解决了这个问题的方法：</h3>
-<p>网上有人出现这个问题是格式化解决，它们日志是There are 0 datanode(s) running and no node(s) are excluded in this operation.我的hdfs集群是正常的所有节点都在，只是不能写入数据。</p>
-<p>我用的分层策略是One_SSD，查看了DFS Storage Types，发现disk的空间不够。</p>
-<p><img src="/images/image-20201120151830207.png" alt="image-20201120151830207"></p>
-<h3 id="解决步骤">解决步骤</h3>
-<p>ssd磁盘的机器和普通磁盘的机器分2个角色组</p>
-<p>普通组不加[SSD]</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/20/could%20only%20be%20written%20to%200%20of%20the%201%20minReplication%20nodes/#more" rel="contents">
+              <a class="btn" href="/2021/04/27/chia%E6%8C%96%E7%9F%BF/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1068,7 +1085,7 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1136,7 +1153,7 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">133</span>
+          <span class="site-state-item-count">155</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1148,7 +1165,7 @@ HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/chinayangze" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chinayangze" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+        <a href="http://106.54.147.3:3002/" title="ChatGPT → http:&#x2F;&#x2F;106.54.147.3:3002" rel="noopener" target="_blank"><i class="fa fa-fw fa-ChatGPT"></i>ChatGPT</a>
       </span>
       <span class="links-of-author-item">
         <a href="mailto:info@ask3.cn" title="E-Mail → mailto:info@ask3.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>

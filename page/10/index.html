@@ -209,7 +209,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/02/25/Linux%E6%9F%A5%E6%89%BE%E5%90%AB%E6%9C%89%E6%9F%90%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/03/yarn%20webUI%20%E7%9C%8B%E4%B8%8D%E5%88%B0%E6%97%A5%E5%BF%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -223,7 +223,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/02/25/Linux%E6%9F%A5%E6%89%BE%E5%90%AB%E6%9C%89%E6%9F%90%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">Linux查找含有某字符串的所有文件</a>
+            <a href="/2021/03/03/yarn%20webUI%20%E7%9C%8B%E4%B8%8D%E5%88%B0%E6%97%A5%E5%BF%97/" class="post-title-link" itemprop="url">yarn webUI 看不到日志</a>
         </h1>
 
         <div class="post-meta">
@@ -233,7 +233,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-02-25 14:39:58" itemprop="dateCreated datePublished" datetime="2020-02-25T14:39:58+08:00">2020-02-25</time>
+              <time title="创建时间：2021-03-03 13:36:22" itemprop="dateCreated datePublished" datetime="2021-03-03T13:36:22+08:00">2021-03-03</time>
             </span>
 
           
@@ -247,29 +247,418 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>如果你想在当前目录下 查找&quot;hello,world!&quot;字符串,可以这样:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -rn &quot;hello,world!&quot; *</span><br></pre></td></tr></table></figure>
-<p><code>*</code> : 表示当前目录所有文件，也可以是某个文件名</p>
+          <p>yarn webUI 看不到日志</p>
+<p>解决办法：</p>
+<p>Resource Manager webUI No logs available for container</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">1. Please verify once if you could collect logs using "yarn logs" command as below?</span><br><span class="line">&#123;&#123;</span><br><span class="line">yarn logs -applicationId &lt;appID&gt; -appOwner &lt;user&gt;</span><br><span class="line">&#125;&#125;</span><br><span class="line"></span><br><span class="line">2.  please verify the below directories if they have right permissions</span><br><span class="line">&#123;&#123;</span><br><span class="line">hdfs dfs -ls /user/history/done</span><br><span class="line">hdfs dfs -ls  /user/history/done_intermediate</span><br><span class="line">&#125;&#125;</span><br><span class="line"></span><br><span class="line">3. Please verify if "Enable Log Aggregation" has been enabled or not</span><br><span class="line">&#123;&#123;</span><br><span class="line"><span class="meta">ClouderaManager--&gt;</span><span class="bash">Yarn--&gt;Configurations--&gt;<span class="string">"Enable Log Aggregation"</span></span></span><br><span class="line">&#125;&#125;</span><br><span class="line"></span><br><span class="line">4. Verify the permissions for /tmp/logs as below,</span><br><span class="line">&#123;&#123;</span><br><span class="line">hadoop fs -chown mapred:hadoop /tmp/logs</span><br><span class="line">hadoop fs -chown -R :hadoop /tmp/logs/*</span><br><span class="line">&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/03/yarn%20webUI%20%E7%9C%8B%E4%B8%8D%E5%88%B0%E6%97%A5%E5%BF%97/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/02/%E7%94%A8Hue%E4%B8%AD%E7%9A%84Oozie%E6%89%A7%E8%A1%8CImpala%20Sheel%E8%84%9A%E6%9C%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/02/%E7%94%A8Hue%E4%B8%AD%E7%9A%84Oozie%E6%89%A7%E8%A1%8CImpala%20Sheel%E8%84%9A%E6%9C%AC/" class="post-title-link" itemprop="url">用Hue中的Oozie执行Impala Sheel脚本</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-02 16:52:30" itemprop="dateCreated datePublished" datetime="2021-03-02T16:52:30+08:00">2021-03-02</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="用Hue中的Oozie执行Impala-Sheel脚本">用Hue中的Oozie执行Impala Sheel脚本</h3>
+<p>在Oozie中不能像执行hive SQL那样直接执行impala SQL脚本。目前没有Impala操作，因此你必须使用调用impala-shell的shell操作。调用impala-shell的shell脚本中还必须包含设置PYTHON EGGS位置的环境变量</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export PYTHON_EGG_CACHE=.python-eggs   </span><br><span class="line"></span><br><span class="line">impala-shell -i 172.20.15.10:21000 -u hpt -l --auth_creds_ok_in_clear --ldap_password_cmd='echo -n ***' -q 'SET request_pool=development;'</span><br></pre></td></tr></table></figure>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/02/%E7%94%A8Hue%E4%B8%AD%E7%9A%84Oozie%E6%89%A7%E8%A1%8CImpala%20Sheel%E8%84%9A%E6%9C%AC/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/02/hudi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/02/hudi/" class="post-title-link" itemprop="url">hudi</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-02 16:50:28" itemprop="dateCreated datePublished" datetime="2021-03-02T16:50:28+08:00">2021-03-02</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>注意：<strong>目前Hudi使用的是</strong>hadoop2.7.3</strong>版本，CDH6.3.0 环境使用的是<strong>hadoop3.0.0</strong>， 所以在打包的时候需要加上**-Dhadoop.version=3.0.0** 参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean install -DskipTests -DskipITs -Dcheckstyle.skip&#x3D;true -Drat.skip&#x3D;true -Dhadoop.version&#x3D;3.0.0</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo -u yarn spark-shell  \</span><br><span class="line">  --queue bf_yarn_pool.development \</span><br><span class="line">  --packages org.apache.spark:spark-avro_2.11:2.4.0 \</span><br><span class="line">  --conf 'spark.serializer=org.apache.spark.serializer.KryoSerializer' \</span><br><span class="line">  --jars `ls /opt/hudi/packaging/hudi-spark-bundle/target/hudi-spark-bundle_2.11-*.*.*-SNAPSHOT.jar`</span><br></pre></td></tr></table></figure>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/02/hudi/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/02/20/%E7%94%A8FsImage%E6%9F%A5%E6%89%BEhadoop%E9%9B%86%E7%BE%A4%E5%B0%8F%E6%96%87%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/02/20/%E7%94%A8FsImage%E6%9F%A5%E6%89%BEhadoop%E9%9B%86%E7%BE%A4%E5%B0%8F%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">用FsImage查找hadoop集群小文件</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-02-20 15:55:17" itemprop="dateCreated datePublished" datetime="2021-02-20T15:55:17+08:00">2021-02-20</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd /tmp</span><br><span class="line">hdfs dfsadmin -fetchImage ./tmp_meta</span><br><span class="line">hdfs oiv -i ./tmp_meta -o ./fsimage.csv -p Delimited</span><br><span class="line">hdfs dfs -mkdir -p /tmp/hdfs_metadata/fsimage</span><br><span class="line">hdfs dfs -copyFromLocal ./fsimage.csv /tmp/hdfs_metadata/fsimage</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">exists</span> hdfs_meta_temp;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">external</span> <span class="keyword">table</span> hdfs_meta_temp (<span class="keyword">path</span> <span class="keyword">string</span> ,</span><br><span class="line">repl <span class="built_in">int</span> ,</span><br><span class="line">modification_time <span class="keyword">string</span> ,accesstime <span class="keyword">string</span> ,</span><br><span class="line">preferredblocksize <span class="built_in">int</span> ,blockcount <span class="keyword">double</span>,</span><br><span class="line">filesize <span class="keyword">double</span> ,nsquota <span class="built_in">int</span> ,</span><br><span class="line">dsquota <span class="built_in">int</span> ,</span><br><span class="line">permission <span class="keyword">string</span> ,username <span class="keyword">string</span> ,groupname <span class="keyword">string</span>)<span class="keyword">row</span> <span class="keyword">format</span> <span class="keyword">delimited</span></span><br><span class="line"><span class="keyword">fields</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">'\t'</span> location <span class="string">'/tmp/hdfs_metadata/fsimage/'</span> ;</span><br><span class="line"></span><br><span class="line"><span class="comment">--将临时表转换为Impala的 Parquet表</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> hdfs_meta</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> hdfs_meta <span class="keyword">stored</span> <span class="keyword">as</span> parquet <span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">path</span>,</span><br><span class="line">repl,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">concat</span>(modification_time, <span class="string">' :00'</span>) <span class="keyword">as</span> <span class="built_in">timestamp</span>) modification_time,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">concat</span>(accesstime,<span class="string">':00'</span>) <span class="keyword">as</span> <span class="built_in">timestamp</span>) accesstime,</span><br><span class="line">preferredblocksize,</span><br><span class="line">blockcount,</span><br><span class="line">filesize,nsquota,dsquota,permission,username,groupname</span><br><span class="line"><span class="keyword">from</span> hdfs_meta_temp;</span><br></pre></td></tr></table></figure>
+<p>instr(path,’/’,1,2)这两个参数主要表示指定统计的HDFS目录以及目录钻取深度，instr()函数中的最后一个参数即为目录钻取深度</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line"><span class="comment">--concat('/',split_part(path,'/',2))  basepath,</span></span><br><span class="line"><span class="comment">--concat('/',split_part(path,'/',2),'/',split_part(path,'/',3))  basepath,</span></span><br><span class="line"><span class="comment">--concat('/',split_part(path,'/',2),'/',split_part(path,'/',3),'/',split_part(path,'/',4))  basepath,</span></span><br><span class="line"><span class="keyword">concat</span>(<span class="string">'/'</span>,split_part(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">2</span>),<span class="string">'/'</span>,split_part(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">3</span>),<span class="string">'/'</span>,split_part(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">4</span>),<span class="string">'/'</span>,split_part(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">5</span>))  basepath,</span><br><span class="line"><span class="keyword">sum</span>(blockcount) blockcounts,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">sum</span>(filesize)/<span class="number">1024</span>/<span class="number">1024</span>/<span class="number">1024</span> <span class="keyword">as</span> <span class="built_in">decimal</span>(<span class="number">18</span>,<span class="number">2</span>) ) filesizes,</span><br><span class="line"><span class="keyword">count</span>(*) file_nums,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">count</span>(*)/<span class="keyword">sum</span>(blockcount) <span class="keyword">as</span> <span class="built_in">decimal</span>(<span class="number">18</span>,<span class="number">2</span>) ) <span class="keyword">as</span> avg_block ,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">sum</span>(filesize)/<span class="keyword">count</span>(*)/<span class="number">1024</span> <span class="keyword">as</span> <span class="built_in">decimal</span>(<span class="number">18</span>,<span class="number">2</span>) ) <span class="keyword">AS</span> avg_filesize</span><br><span class="line"><span class="keyword">FROM</span> tmp.hdfs_meta </span><br><span class="line"><span class="keyword">where</span> <span class="keyword">instr</span>(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">1</span>,<span class="number">4</span>)&gt;<span class="number">0</span></span><br><span class="line"><span class="comment">--and strleft(path, instr(path,'/',1,4)-1)='/user/hive/warehouse'</span></span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> basepath  </span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> file_nums <span class="keyword">desc</span>, avg_filesize </span><br><span class="line"><span class="keyword">limit</span> <span class="number">200</span></span><br></pre></td></tr></table></figure>
+<p><strong>总结</strong></p>
+<p>如上SQL的统计分析可以看到有三个比较重要的统计指标file_nums、blockcounts和avg_filesize。通过这三个指标进行小文件分析，进行如下分析：</p>
+<p>如果file_nums/blockcounts的值越大且avg_filesize越小则说明该HDFS或Hive表的小文件越多。</p>
+<p><strong>方法二、</strong></p>
+<p>使用Sqoop脚本将Hive元数据中关于Hive库和表的信息抽取的Hive中</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">sqoop import \</span><br><span class="line">-D mapred.job.queue.name=bf_yarn_pool.development \</span><br><span class="line">--connect "jdbc:mysql://10.0.20.107:3306/baofoo_hive_2" \</span><br><span class="line">--username cs_yangz \</span><br><span class="line">--password *** \</span><br><span class="line">--query 'select c.NAME,c.DB_LOCATION_URI,a.TBL_NAME,a.OWNER,a.TBL_TYPE,b.LOCATION from TBLS a,SDS b,DBS c where a.SD_ID=b.SD_ID and a.DB_ID=c.DB_ID and $CONDITIONS' \</span><br><span class="line">--fields-terminated-by ',' \</span><br><span class="line">--delete-target-dir \</span><br><span class="line">--hive-database default \</span><br><span class="line">--target-dir /tmp/hive_tables_temp \</span><br><span class="line">--hive-import \</span><br><span class="line">--hive-overwrite \</span><br><span class="line">--hive-table hive_tables_temp \</span><br><span class="line">--m 1</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/02/20/%E7%94%A8FsImage%E6%9F%A5%E6%89%BEhadoop%E9%9B%86%E7%BE%A4%E5%B0%8F%E6%96%87%E4%BB%B6/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/01/19/hdfs%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/19/hdfs%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">hdfs性能测试</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-19 15:55:58" itemprop="dateCreated datePublished" datetime="2021-01-19T15:55:58+08:00">2021-01-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="hdfs性能测试">hdfs性能测试</h2>
+<p>hadoop自带TestDFSIO测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;tmp</span><br><span class="line">sudo -u hdfs hadoop jar \</span><br><span class="line">&#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hadoop-mapreduce&#x2F;hadoop-mapreduce-client-jobclient-3.0.0-cdh6.0.1-tests.jar TestDFSIO \</span><br><span class="line">-D mapreduce.job.queuename&#x3D;bf_yarn_pool.production \</span><br><span class="line">-D test.build.data&#x3D;&#x2F;tmp&#x2F;benchmark \</span><br><span class="line">-D mapreduce.output.fileoutputformat.compress&#x3D;false \</span><br><span class="line">-write -nrFiles 10 -fileSize 1000</span><br></pre></td></tr></table></figure>
+<p>–结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO: ----- TestDFSIO ----- : write</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:             Date &amp; time: Tue Jan 19 15:29:04 CST 2021</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:         Number of files: 10</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:  Total MBytes processed: 10000</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:       Throughput mb&#x2F;sec: 23.96</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:  Average IO rate mb&#x2F;sec: 32.37</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:   IO rate std deviation: 29.51</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:      Test exec time sec: 68</span><br><span class="line">21&#x2F;01&#x2F;19 15:29:04 INFO fs.TestDFSIO:</span><br></pre></td></tr></table></figure>
+<p>结果说明：</p>
+<blockquote>
+<p>Total MBytes processed ： 总共需要写入的数据量 ＝＝》 256*1000</p>
+<p>Throughput mb/sec ：总共需要写入的数据量/（每个map任务实际写入数据的执行时间之和（这个时间会远小于Test exec time sec））＝＝》256000/(map1写时间+map2写时间+…)</p>
+<p>Average IO rate mb/sec ：（每个map需要写入的数据量/每个map任务实际写入数据的执行时间）之和/任务数＝＝》(1000/map1写时间＋1000/map2写时间+…)/256，所以这个值跟上面一个值总是存在差异。</p>
+<p>IO rate std deviation ：上一个值的标准差</p>
+<p>Test exec time sec ：整个job的执行时间</p>
+</blockquote>
+<p>testDFSIO的参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>read</th>
+<th>读测试。执行该测试之前，需要先做write测试</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>write</td>
+<td>写测试</td>
+</tr>
+<tr>
+<td>nfFiles</td>
+<td>文件个数，默认为1</td>
+</tr>
+<tr>
+<td>fileSize</td>
+<td>文件大小，默认为1MB</td>
+</tr>
+<tr>
+<td>resFile</td>
+<td>结果文件名，默认为” TestDFSIO_results.log”</td>
+</tr>
+<tr>
+<td>bufferSize</td>
+<td>设置缓存大小，默认为1000000</td>
+</tr>
+<tr>
+<td>clean</td>
+<td>清理数据</td>
+</tr>
+<tr>
+<td>seq</td>
+<td>数据是否有序，默认无序</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong>：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/01/19/hdfs%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/01/13/HDFS%20ACL%E6%9D%83%E9%99%90%E8%AE%BE%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/13/HDFS%20ACL%E6%9D%83%E9%99%90%E8%AE%BE%E7%BD%AE/" class="post-title-link" itemprop="url">HDFS ACL权限设置</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-13 15:58:22" itemprop="dateCreated datePublished" datetime="2021-01-13T15:58:22+08:00">2021-01-13</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>HDFS ACL权限设置</h1>
+<p>今天主要给大家说一下HDFS文件权限的问题。当一个<code>普通用户</code>去访问<code>HDFS文件</code>时，可能会报<code>Permission denied</code>的错误。那么你会怎么做呢？</p>
+<p>像修改linux文件似的，可能的做法有：</p>
 <ul>
-<li>-r 是递归查找</li>
-<li>-n 是显示行号</li>
-<li>-R 查找所有文件包含子目录</li>
-<li>-i 忽略大小写</li>
+<li>修改文件所有者</li>
+<li>直接将文件赋予全部的权限，即rwx权限。</li>
 </ul>
-<h4 id="下面是一些有意思的命令行参数：">下面是一些有意思的命令行参数：</h4>
-<p>grep -i pattern files ：不区分大小写地搜索。默认情况区分大小写，<br>
-grep -l pattern files ：只列出匹配的文件名，<br>
-grep -L pattern files ：列出不匹配的文件名，<br>
-grep -w pattern files ：只匹配整个单词，而不是字符串的一部分（如匹配‘magic’，而不是‘magical’），</p>
-<p>grep -C number pattern files ：匹配的上下文分别显示[number]行，<br>
-grep pattern1 | pattern2 files ：显示匹配 pattern1 或 pattern2 的行，<br>
-grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 pattern2 的行。</p>
-<h4 id="这里还有些用于搜索的特殊符号：">这里还有些用于搜索的特殊符号：</h4>
-<p>&lt; 和 &gt; 分别标注单词的开始与结尾。</p>
-<h4 id="例如：">例如：</h4>
+<p>上面的做法虽然可以达到目的，但是相对来说对权限的把握不是很精准，不适用于生产环境。</p>
+<p><strong>本文主要讲解HDFS的ACL(Access Control List)权限，通过hdfs超级用户，来为普通用户分配权限。</strong></p>
+<h3 id="一、背景"><strong>一、背景</strong></h3>
+<p>如下图所示，</p>
+<p><img src="/images/image-20210113155315046.png" alt="image-20210113155315046"></p>
+<p>目录没有权限，所以创建失败了。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/02/25/Linux%E6%9F%A5%E6%89%BE%E5%90%AB%E6%9C%89%E6%9F%90%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6/#more" rel="contents">
+              <a class="btn" href="/2021/01/13/HDFS%20ACL%E6%9D%83%E9%99%90%E8%AE%BE%E7%BD%AE/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -293,7 +682,7 @@ grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 patter
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/16/CDH6%20%E6%96%B0%E5%8A%A0%E8%8A%82%E7%82%B9%EF%BC%8C%E4%B8%8D%E8%83%BD%E5%85%B3%E6%8E%89%20Auto-TLS%20%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/12/29/cdh6_hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -307,7 +696,7 @@ grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 patter
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/01/16/CDH6%20%E6%96%B0%E5%8A%A0%E8%8A%82%E7%82%B9%EF%BC%8C%E4%B8%8D%E8%83%BD%E5%85%B3%E6%8E%89%20Auto-TLS%20%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/" class="post-title-link" itemprop="url">CDH6 新加节点，不能关掉 Auto-TLS 的解决办法</a>
+            <a href="/2020/12/29/cdh6_hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/" class="post-title-link" itemprop="url">cdh6_hbase新集群配置项整理</a>
         </h1>
 
         <div class="post-meta">
@@ -317,480 +706,14 @@ grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 patter
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-01-16 14:33:48" itemprop="dateCreated datePublished" datetime="2020-01-16T14:33:48+08:00">2020-01-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>CDH6 新加节点，不能关掉 Auto-TLS 的解决办法</h1>
-<p>坑一：新加节点 必须关掉TLS ，但是关不到</p>
-<p>参考官网</p>
-<p><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html" target="_blank" rel="noopener">https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html</a></p>
-<p>使用“添加主机向导”添加主机</p>
-<p>您可以使用“添加主机”向导在主机上安装CDH，Impala和Cloudera Manager Agent。</p>
-<ol>
-<li><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html#cmug_topic_7_5_1__title_214" target="_blank" rel="noopener">禁用TLS加密或身份验证</a></li>
-<li><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html#cmug_topic_7_5_1__section_t4z_zyk_kcb" target="_blank" rel="noopener">在不禁用TLS的情况下安装Cloudera Manager Agent的替代方法</a></li>
-<li><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html#cmug_topic_7_5_1__title_215" target="_blank" rel="noopener">使用“添加主机向导”</a></li>
-<li><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html#cmug_topic_7_5_1__title_217" target="_blank" rel="noopener">启用TLS加密或身份验证</a></li>
-<li><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html#cmug_topic_7_5_1__section_ejz_fdw_yr" target="_blank" rel="noopener">为CDH组件启用TLS / SSL</a></li>
-<li><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html#cmug_topic_7_5_1__section_ny1_bxv_ls" target="_blank" rel="noopener">启用Kerberos</a></li>
-</ol>
-<p>分析：</p>
-<p><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/install_cm_server.html" target="_blank" rel="noopener">https://www.cloudera.com/documentation/enterprise/6/6.1/topics/install_cm_server.html</a></p>
-<p>由于安装的时候设置了</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/16/CDH6%20%E6%96%B0%E5%8A%A0%E8%8A%82%E7%82%B9%EF%BC%8C%E4%B8%8D%E8%83%BD%E5%85%B3%E6%8E%89%20Auto-TLS%20%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/Typora%E8%BD%BB%E4%BE%BF%E7%AE%80%E6%B4%81%E7%9A%84Markdown%E7%BC%96%E8%BE%91%E5%99%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/Typora%E8%BD%BB%E4%BE%BF%E7%AE%80%E6%B4%81%E7%9A%84Markdown%E7%BC%96%E8%BE%91%E5%99%A8/" class="post-title-link" itemprop="url">Typora轻便简洁的Markdown编辑器</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-01-07 17:41:10" itemprop="dateCreated datePublished" datetime="2020-01-07T17:41:10+08:00">2020-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Typora是一款轻便简洁的Markdown编辑器，支持即时渲染技术，这也是与其他Markdown编辑器最显著的区别。即时渲染使得你写Markdown就想是写Word文档一样流畅自如，不像其他编辑器的有编辑栏和显示栏。</p>
-<h1>对文字的特殊标注</h1>
-<p>标题</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 一阶标题  或者快捷键Ctrl+1</span></span><br><span class="line"><span class="comment">## 二阶标题 或者快捷键Ctrl+2</span></span><br><span class="line"><span class="comment">### 三阶标题    或者快捷键Ctrl+3</span></span><br><span class="line"><span class="comment">#### 四阶标题   或者快捷键Ctrl+4</span></span><br><span class="line"><span class="comment">##### 五阶标题  或者快捷键Ctrl+5</span></span><br><span class="line"><span class="comment">###### 六阶标题 或者快捷键Ctrl+6</span></span><br></pre></td></tr></table></figure>
-<p>下划线</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">u</span>&gt;</span>下划线的内容<span class="tag">&lt;/<span class="name">u</span>&gt;</span> 或按快捷键Ctrl+U</span><br></pre></td></tr></table></figure>
-<p>字体加粗</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">**加粗内容**    或按快捷键Ctrl+B</span><br></pre></td></tr></table></figure>
-<p>斜体</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*倾斜内容*  或按快捷键Ctrl+I</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/07/Typora%E8%BD%BB%E4%BE%BF%E7%AE%80%E6%B4%81%E7%9A%84Markdown%E7%BC%96%E8%BE%91%E5%99%A8/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/%E4%B8%BAhexo%E6%B7%BB%E5%8A%A0hexo-admin%E7%BB%84%E4%BB%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/%E4%B8%BAhexo%E6%B7%BB%E5%8A%A0hexo-admin%E7%BB%84%E4%BB%B6/" class="post-title-link" itemprop="url">为hexo添加hexo-admin组件</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-01-07 17:34:11" itemprop="dateCreated datePublished" datetime="2020-01-07T17:34:11+08:00">2020-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="准备工作">准备工作</h4>
-<blockquote>
-<p>已安装好<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">hexo</a>，选择好自己的<a href="https://hexo.io/themes/" target="_blank" rel="noopener">主题</a>(我选择的主题是<a href="https://github.com/Molunerfinn/hexo-theme-melody" target="_blank" rel="noopener">melody</a>)，并部署到<a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>等静态托管服务器上。</p>
-</blockquote>
-<h4 id="插件介绍">插件介绍</h4>
-<blockquote>
-<p><a href="https://github.com/jaredly/hexo-admin" target="_blank" rel="noopener"><strong>hexo-admin</strong></a> 是一个Hexo博客引擎的管理用户界面插件。这个插件最初是作为本地编辑器设计的，在本地运行<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">hexo</a>使用<strong>hexo-admin</strong>编写文章，然后通过<code>hexo g</code>或<code>hexo d</code>（<code>hexo g</code>是本地渲染，<code>hexo d</code>是将渲染的静态页面发布到<a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>）将生成的静态页面发布到<a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>等静态服务器。如果你使用的是非静态托管服务器，比如自己买的主机搭建的<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">hexo</a>，那么一定要设置<a href="https://github.com/jaredly/hexo-admin" target="_blank" rel="noopener"><strong>hexo-admin</strong></a>  的密码，否则谁都可以编辑你的文章。</p>
-</blockquote>
-<h4 id="插件安装">插件安装</h4>
-<ol>
-<li>
-<p>首先进入hexo创建的博客项目的根目录下，执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save hexo-admin</span><br></pre></td></tr></table></figure>
-<p>mac可能需要root权限，前面加个<code>sudo</code> 就可以了。如果报错缺少组件，则缺少什么安装什么，<code>npm install</code> 加缺少的组件。</p>
-</li>
-<li>
-<p>运行下列命令启动<a href="https://github.com/jaredly/hexo-admin" target="_blank" rel="noopener"><strong>hexo-admin</strong></a> ：</p>
-<p>hexo server -d<br>
-打开 <a href="http://localhost:4000/admin/" target="_blank" rel="noopener">http://localhost:4000/admin/</a>  就可以访问到hexo-admin管理页面了。</p>
-</li>
-</ol>
-<h4 id="密码保护">密码保护</h4>
-<p>打开<code>setting</code>，点击<code>Setup authentification here</code>输入用户名，密码，密钥，下面会自动生成配置文件，复制加在<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">hexo</a>根目录下的<code>_config.yml</code>中：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">admin:</span><br><span class="line">  username: myfavoritename</span><br><span class="line">  password_hash: be121740bf988b2225a313fa1f107ca1</span><br><span class="line">  secret: a secret something</span><br></pre></td></tr></table></figure>
-<p>重启<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">hexo</a>，就可以看到登录页面了</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/07/%E4%B8%BAhexo%E6%B7%BB%E5%8A%A0hexo-admin%E7%BB%84%E4%BB%B6/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/Shell%E6%95%B0%E7%BB%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/Shell%E6%95%B0%E7%BB%84/" class="post-title-link" itemprop="url">Shell数组</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-01-07 17:28:40" itemprop="dateCreated datePublished" datetime="2020-01-07T17:28:40+08:00">2020-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Shell在编程方面比Windows批处理强大很多，无论是在循环、运算。</p>
-<p>bash支持一维数组（不支持多维数组），并且没有限定数组的大小。类似与C语言，数组元素的下标由0开始编号。获取数组中的元素要利用下标，下标可以是整数或算术表达式，其值应大于或等于0。<br>
-定义数组</p>
-<p>在Shell中，用括号来表示数组，数组元素用“空格”符号分割开。定义数组的一般形式为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array_name&#x3D;(value1 ... valuen)</span><br></pre></td></tr></table></figure>
-<p>例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array_name&#x3D;(value0 value1 value2 value3)</span><br></pre></td></tr></table></figure>
-<p>或者</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">array_name&#x3D;(</span><br><span class="line">value0</span><br><span class="line">value1</span><br><span class="line">value2</span><br><span class="line">value3</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>还可以单独定义数组的各个分量：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array_name[0]&#x3D;value0</span><br><span class="line">array_name[1]&#x3D;value1</span><br><span class="line">array_name[2]&#x3D;value2</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/07/Shell%E6%95%B0%E7%BB%84/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/liunx%E6%9F%A5%E7%9C%8B%E5%86%85%E5%AD%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/liunx%E6%9F%A5%E7%9C%8B%E5%86%85%E5%AD%98/" class="post-title-link" itemprop="url">liunx查看内存</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-01-07 17:16:57" itemprop="dateCreated datePublished" datetime="2020-01-07T17:16:57+08:00">2020-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="监控内存">监控内存</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">top -d 1</span><br></pre></td></tr></table></figure>
-<p>然后使用<code>shift + m</code>以内存排列。<a href="https://www.orchome.com/100" target="_blank" rel="noopener">top命令详解</a></p>
-<h3 id="查看内存的使用">查看内存的使用</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">free -g</span><br><span class="line">free -m</span><br></pre></td></tr></table></figure>
-<p>可参考：<a href="https://www.orchome.com/296" target="_blank" rel="noopener">free命令详解</a></p>
-<h3 id="查看内存">查看内存</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">grep MemTotal &#x2F;proc&#x2F;meminfo</span><br><span class="line">grep MemTotal &#x2F;proc&#x2F;meminfo | cut -f2 -d:</span><br><span class="line">free -m |grep &quot;Mem&quot; | awk &#39;&#123;print $2&#125;’</span><br></pre></td></tr></table></figure>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/07/liunx%E6%9F%A5%E7%9C%8B%E5%86%85%E5%AD%98/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/kubernetes%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/kubernetes%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8/" class="post-title-link" itemprop="url">kubernetes命令大全</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-01-07 17:11:46" itemprop="dateCreated datePublished" datetime="2020-01-07T17:11:46+08:00">2020-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="状态查询">状态查询</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 查看集群信息</span><br><span class="line">kubectl cluster-info</span><br><span class="line"></span><br><span class="line">systemctl status kube-apiserver</span><br><span class="line">systemctl status kubelet</span><br><span class="line">systemctl status kube-proxy</span><br><span class="line">systemctl status kube-scheduler</span><br><span class="line">systemctl status kube-controller-manager</span><br><span class="line">systemctl status docker</span><br></pre></td></tr></table></figure>
-<h2 id="node相关">node相关</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># 查看namespaces</span><br><span class="line">kubectl get namespaces</span><br><span class="line"></span><br><span class="line"># 为节点增加lable</span><br><span class="line">kubectl label nodes 10.126.72.31 points&#x3D;test</span><br><span class="line"></span><br><span class="line"># 查看节点和lable</span><br><span class="line">kubectl get nodes --show-labels</span><br><span class="line"></span><br><span class="line"># 查看状态</span><br><span class="line">kubectl get componentstatuses</span><br><span class="line"></span><br><span class="line"># Node的隔离与恢复</span><br><span class="line">## 隔离</span><br><span class="line">kubectl cordon k8s-node1</span><br><span class="line"></span><br><span class="line">## 恢复</span><br><span class="line">kubectl uncordon k8s-node1</span><br></pre></td></tr></table></figure>
-<h2 id="查询">查询</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"># 查看nodes节点</span><br><span class="line">kubectl get nodes</span><br><span class="line"></span><br><span class="line"># 通过yaml文件查询</span><br><span class="line">kubectl get -f xxx-yaml&#x2F;</span><br><span class="line"></span><br><span class="line"># 查询资源</span><br><span class="line">kubectl get resourcequota</span><br><span class="line"></span><br><span class="line"># endpoints端</span><br><span class="line">kubectl get endpoints</span><br><span class="line"></span><br><span class="line"># 查看pods</span><br><span class="line"></span><br><span class="line"># 查看指定空间&#96;kube-system&#96;的pods</span><br><span class="line">kubectl get po -n kube-system</span><br><span class="line"></span><br><span class="line"># 查看所有空间的</span><br><span class="line">kubectl get pods -o wide --all-namespaces</span><br><span class="line"></span><br><span class="line"># 其他的写法</span><br><span class="line">kubectl get pod -o wide --namespace&#x3D;kube-system</span><br><span class="line"></span><br><span class="line"># 获取svc</span><br><span class="line">kubectl get svc --all-namespaces</span><br><span class="line"></span><br><span class="line"># 其他写法</span><br><span class="line">kubectl get services --all-namespaces</span><br><span class="line"></span><br><span class="line"># 通过lable查询</span><br><span class="line">kubectl get pods -l app&#x3D;nginx -o yaml|grep podIP</span><br><span class="line"></span><br><span class="line"># 当我们发现一个pod迟迟无法创建时，描述一个pods</span><br><span class="line">kubectl describe pod xxx</span><br></pre></td></tr></table></figure>
-<h2 id="删除所有pod">删除所有pod</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># 删除所有pods</span><br><span class="line">kubectl delete pods --all</span><br><span class="line"></span><br><span class="line"># 删除所有包含某个lable的pod和serivce</span><br><span class="line">kubectl delete pods,services -l name&#x3D;&lt;lable-name&gt;</span><br><span class="line"></span><br><span class="line"># 删除ui server,然后重建</span><br><span class="line">kubectl delete deployments kubernetes-dashboard --namespace&#x3D;kube-system</span><br><span class="line">kubectl delete services kubernetes-dashboard --namespace&#x3D;kube-system</span><br><span class="line"></span><br><span class="line"># 强制删除部署</span><br><span class="line">kubectl delete deployment kafka-1</span><br><span class="line"></span><br><span class="line"># 删除rc</span><br><span class="line">kubectl delete rs --all &amp;&amp; kubectl delete rc --all</span><br><span class="line"></span><br><span class="line">## 强制删除Terminating状态的pod</span><br><span class="line">kubectl delete deployment kafka-1 --grace-period&#x3D;0 --force</span><br></pre></td></tr></table></figure>
-<h2 id="滚动">滚动</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 升级</span><br><span class="line">kubectl apply -f xxx.yaml --record</span><br><span class="line"></span><br><span class="line"># 回滚</span><br><span class="line">kubectl rollout undo deployment javademo</span><br><span class="line"></span><br><span class="line"># 查看滚动升级记录</span><br><span class="line">kubectl rollout history deployment &#123;名称&#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/07/kubernetes%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E8%A7%84%E5%88%92%E6%96%B9%E6%A1%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E8%A7%84%E5%88%92%E6%96%B9%E6%A1%88/" class="post-title-link" itemprop="url">数据平台规划方案</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-01-07 17:09:41" itemprop="dateCreated datePublished" datetime="2020-01-07T17:09:41+08:00">2020-01-07</time>
+              <time title="创建时间：2020-12-29 13:42:22" itemprop="dateCreated datePublished" datetime="2020-12-29T13:42:22+08:00">2020-12-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2018-09-21 17:20:09" itemprop="dateModified" datetime="2018-09-21T17:20:09+08:00">2018-09-21</time>
+                <time title="修改时间：2018-10-22 15:19:28" itemprop="dateModified" datetime="2018-10-22T15:19:28+08:00">2018-10-22</time>
               </span>
 
           
@@ -804,36 +727,65 @@ grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 patter
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="大数据平台现状">大数据平台现状</h2>
+          <p>hbase-conf:</p>
 <ul>
-<li>总可用节点：36个（各节点内存512G，CPU 56核）</li>
-<li>总可用内存：9.38T（平均每个节点开放260G）</li>
-<li>总可用CPU：1120个（平均每个节点开放31个）</li>
+<li>RS堆栈大小: 32G</li>
+<li></li>
+<li>hbase.bucketcache.size=64 =64 * 1024M: 堆外缓存大小，单位为M</li>
+<li></li>
+<li>dfs.replication=3on=3: hdfs副本数</li>
+<li></li>
+<li>hbase.hregion.max.filesize=20G=20G: Region大小</li>
+<li></li>
+<li>hbase.hregion.memstore.flush.size=256=256M: Memstore刷新大小</li>
+<li></li>
+<li>hbase.regionserver.global.memstore.upperLimit=0.t=0.55: 整个RS中Memstore最大比例</li>
+<li></li>
 </ul>
-<p>包含了文件存储、计算、数据库等集群服务。</p>
-<p><strong>现有集群职能包括：</strong></p>
+<h2 id="hbase-regionserver-global-memstore-lowerLimit-0-t-0-5-整个RS中Memstore最小比例-默认0-95">#- hbase.regionserver.global.memstore.lowerLimit=0.t=0.5: 整个RS中Memstore最小比例       默认0.95</h2>
 <ul>
-<li>离线OLAP数据调度同步（原始数据）</li>
-<li>各产品线离线生产任务（雷达、探针、定制产品、回溯测试等业务）</li>
-<li>离线OLTP数据更新（HBase数据更新）</li>
-<li>线下模型、数据测试（商户定制与联合建模）</li>
-<li>模型训练、迭代与更新（评分卡、推荐、联合模型等）</li>
-<li>基础数据实时流（底层实时数据处理）</li>
-<li>各产品线实时流计算（雷达、探针等上层业务）</li>
-<li>日常数据分析任务（大量数据分析、行业分析等需求）</li>
-<li>OLTP数据库服务（HBase）</li>
-<li>监控报表任务（BI、数据监控等）</li>
-<li>数据仓库（数据整合、清洗、调度等）</li>
-<li>宝付大数据平台相关任务（Spark、Hive、Impala等）</li>
+<li>hbase.bucketcache.ioengine=off=offheap: 使用堆外缓存</li>
+<li></li>
 </ul>
-<p>由于当前集群职能繁多，网络带宽、磁盘IO等为集群共享，<strong>会因大型离线任务占用大量网络或磁盘IO峰值，对线上业务会造成短暂延迟。且集群环境较为复杂，有较多对线上业务造成影响的风险。</strong></p>
-<h2 id="规划方案">规划方案</h2>
-<p>鉴于后续业务发展，大数据平台的使用人数和执行任务将会快速上升，为了避免对线上业务的直接影响，提议部署一个次规模（20个节点内）的生产集群（以下简称在线集群）承接部分职能，减轻现有集群（以下简称离线离线计算集群）的压力，同时规划与隔离不同等级的任务。</p>
-<p>在线集群<strong>主要职能为OLTP数据库服务（HBase）</strong>，将业务主库迁移至在线集群可保证业务不受任何大规模计算任务（或者计算量比较集中的情况）所带来的延迟影响。</p>
-<p>除此之外，<strong>在线集群将不会进行其他任何程序与任务以保证线上服务的稳定性。</strong></p>
+<h2 id="hbase-bucketcache-percentage-in-combinebinedcache-0-9-堆外读缓存所占比例，剩余为堆内元数据缓存大小">#- hbase.bucketcache.percentage.in.combinebinedcache=0.9: 堆外读缓存所占比例，剩余为堆内元数据缓存大小</h2>
+<ul>
+<li>hfile.block.cache.size=0.2=0.2: 校验项,+upperLimit需要小于0.8</li>
+<li></li>
+<li>hbase.master.handler.count=256=256: Master处理客户端请求最大线程数</li>
+<li></li>
+<li>hbase.regionserver.handler.count=256=256: RS处理客户端请求最大线程数</li>
+<li></li>
+<li>hbase.hstore.blockingStoreFiles=100: storefile个数达到该值则block写入</li>
+<li></li>
+<li>hbase.hregion.memstore.block.multiplier=3:r=3: 强制刷新Memstore大小的倍数</li>
+<li></li>
+<li>hbase.client.retries.number: 3 : 3</li>
+<li></li>
+<li>hbase.rpc.timeout: 50: 5000</li>
+</ul>
+<p>hbase-jvm:</p>
+<p>HBASE_OFFHEAPSIZE=??G<br>
+HBASE_OPTS=&quot;-XX:MaxDirectMemorySize=??G -Xmx??G -Xms??G -Xmn1g -Xss256k -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256m -XX:+UseParNewGC -XX:MaxTenuringThreshold=15  -XX:+CMSParallelRemarkEnabled -XX:+UseCMSCompactAtFullCollection -XX:+CMSClassUnloadingEnabled -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSFullGCsBeforeCompaction=0 -XX:CMSInitiatingOccupancyFraction=70 -XX:+PrintTenuringDistribution -XX:SurvivorRatio=2 -XX:+UseConcMarkSweepGC -XX:-DisableExplicitGC $HBASE_OPTS&quot;</p>
+<p>-XX:+UseG1GC<br>
+-XX:InitiatingHeapOccupancyPercent=65<br>
+-XX:-ResizePLAB<br>
+-XX:MaxGCPauseMillis=90<br>
+-XX:+UnlockDiagnosticVMOptions<br>
+-XX:+G1SummarizeConcMark<br>
+-XX:+ParallelRefProcEnabled<br>
+-XX:G1HeapRegionSize=32m<br>
+-XX:G1HeapWastePercent=20<br>
+-XX:ConcGCThreads=4<br>
+-XX:ParallelGCThreads=16<br>
+-XX:MaxTenuringThreshold=1<br>
+-XX:G1MixedGCCountTarget=64<br>
+-XX:+UnlockExperimentalVMOptions<br>
+-XX:G1NewSizePercent=2<br>
+-XX:G1OldCSetRegionThresholdPercent=5</p>
+<p>HDFS:</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/01/07/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E8%A7%84%E5%88%92%E6%96%B9%E6%A1%88/#more" rel="contents">
+              <a class="btn" href="/2020/12/29/cdh6_hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -857,7 +809,7 @@ grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 patter
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/12.%E6%B8%85%E7%90%86%E9%9B%86%E7%BE%A4/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/12/29/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -871,7 +823,7 @@ grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 patter
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/01/07/12.%E6%B8%85%E7%90%86%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">12.清理集群</a>
+            <a href="/2020/12/29/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/" class="post-title-link" itemprop="url">hbase新集群配置项整理</a>
         </h1>
 
         <div class="post-meta">
@@ -880,10 +832,16 @@ grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 patter
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-01-07 11:12:00 / 修改时间：16:59:17" itemprop="dateCreated datePublished" datetime="2020-01-07T11:12:00+08:00">2020-01-07</time>
+              <time title="创建时间：2020-12-29 13:42:19" itemprop="dateCreated datePublished" datetime="2020-12-29T13:42:19+08:00">2020-12-29</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-09-28 15:51:33" itemprop="dateModified" datetime="2018-09-28T15:51:33+08:00">2018-09-28</time>
+              </span>
 
           
 
@@ -896,40 +854,34 @@ grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 patter
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>tags: clean</p>
-<h1>12.清理集群</h1>
-<h2 id="清理-Node-节点">清理 Node 节点</h2>
-<p>停相关进程：</p>
-<pre><code>$ sudo systemctl stop kubelet kube-proxy flanneld docker
-$
-</code></pre>
-<p>清理文件：</p>
-<pre><code>$ # umount kubelet 挂载的目录
-$ mount | grep '/var/lib/kubelet'| awk '{print $3}'|xargs sudo umount
-$ # 删除 kubelet 工作目录
-$ sudo rm -rf /var/lib/kubelet
-$ # 删除 docker 工作目录
-$ sudo rm -rf /var/lib/docker
-$ # 删除 flanneld 写入的网络配置文件
-$ sudo rm -rf /var/run/flannel/
-$ # 删除 docker 的一些运行文件
-$ sudo rm -rf /var/run/docker/
-$ # 删除 systemd unit 文件
-$ sudo rm -rf /etc/systemd/system/{kubelet,docker,flanneld}.service
-$ # 删除程序文件
-$ sudo rm -rf /opt/k8s/bin/*
-$ # 删除证书文件
-$ sudo rm -rf /etc/flanneld/cert /etc/kubernetes/cert
-$
-</code></pre>
-<p>清理 kube-proxy 和 docker 创建的 iptables：</p>
-<pre><code>$ sudo iptables -F &amp;&amp; sudo iptables -X &amp;&amp; sudo iptables -F -t nat &amp;&amp; sudo iptables -X -t nat
-$
-</code></pre>
-<p>删除 flanneld 和 docker 创建的网桥：</p>
+          <h3 id="机器概况">机器概况</h3>
+<ul>
+<li>总内存:256G</li>
+<li>可分配内存:256*0.75=192G</li>
+<li>总硬盘:1.8T*12=21.6T</li>
+<li>可用硬盘空间:21.6T*0.85=18.36T</li>
+</ul>
+<h3 id="内存规划">内存规划</h3>
+<h4 id="Disk-Java-Heap-Ratio">Disk / Java Heap Ratio</h4>
+<p><strong>Disk / Java Heap Ratio=Disk Size / Java Heap = RegionSize / MemstoreSize * ReplicationFactor * HeapFractionForMemstore * 2</strong><br>
+一台RegionServer上1bytes的Java内存大小需要搭配多大的硬盘大小最合理。</p>
+<p>公式解释：</p>
+<ul>
+<li>硬盘容量维度下Region个数： Disk Size / (RegionSize ＊ReplicationFactor)</li>
+<li>Java Heap维度下Region个： Java Heap * HeapFractionForMemstore / (MemstoreSize / 2 )</li>
+<li>硬盘维度和Java Headp维度理论相等：Disk Size / (RegionSize ＊ReplicationFactor)  ＝ Java Heap * HeapFractionForMemstore / (MemstoreSize / 2 ) ＝&gt; Disk Size / Java Heap = RegionSize / MemstoreSize * ReplicationFactor * HeapFractionForMemstore * 2</li>
+</ul>
+<p>默认配置：</p>
+<ul>
+<li>RegionSize: hbase.hregion.max.filesize=10G</li>
+<li>MemstoreSize: hbase.hregion.memstore.flush.size=128M</li>
+<li>ReplicationFactor: dfs.replication=3</li>
+<li>HeapFractionForMemstore: hbase.regionserver.global.memstore.lowerLimit = 0.4</li>
+</ul>
+<p>计算为：10G / 128M * 3 * 0.4 * 2 = 192，即RegionServer上1bytes的Java内存大小需要搭配192bytes的硬盘大小最合理。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/01/07/12.%E6%B8%85%E7%90%86%E9%9B%86%E7%BE%A4/#more" rel="contents">
+              <a class="btn" href="/2020/12/29/hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -953,7 +905,7 @@ $
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/11.%E9%83%A8%E7%BD%B2%20harbor%20%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/12/08/%E4%BF%AE%E6%94%B9Kudu%E8%A1%A8%E5%90%8D,%E5%92%8C%E6%98%A0%E5%B0%84%E5%9C%A8impala%E7%9A%84%E8%A1%A8%E5%90%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -967,7 +919,7 @@ $
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/01/07/11.%E9%83%A8%E7%BD%B2%20harbor%20%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93/" class="post-title-link" itemprop="url">11.部署 harbor 私有仓库</a>
+            <a href="/2020/12/08/%E4%BF%AE%E6%94%B9Kudu%E8%A1%A8%E5%90%8D,%E5%92%8C%E6%98%A0%E5%B0%84%E5%9C%A8impala%E7%9A%84%E8%A1%A8%E5%90%8D/" class="post-title-link" itemprop="url">修改Kudu表名,和映射在impala的表名</a>
         </h1>
 
         <div class="post-meta">
@@ -976,9 +928,8 @@ $
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-01-07 11:11:00 / 修改时间：16:59:00" itemprop="dateCreated datePublished" datetime="2020-01-07T11:11:00+08:00">2020-01-07</time>
+              <time title="创建时间：2020-12-08 11:05:00" itemprop="dateCreated datePublished" datetime="2020-12-08T11:05:00+08:00">2020-12-08</time>
             </span>
 
           
@@ -992,26 +943,93 @@ $
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>tags: registry, harbor</p>
-<h1>11.部署 harbor 私有仓库</h1>
-<p>本文档介绍使用 docker-compose 部署 harbor 私有仓库的步骤，你也可以使用 docker 官方的 registry 镜像部署私有仓库(<a href="https://www.orchome.com/663" target="_blank" rel="noopener">部署 Docker Registry</a>)。</p>
-<h2 id="使用的变量">使用的变量</h2>
-<p>本文档用到的变量定义如下：</p>
-<pre><code>$ export NODE_IP=10.64.3.7 # 当前部署 harbor 的节点 IP
-$
-</code></pre>
-<h2 id="下载文件">下载文件</h2>
-<p>从 docker compose <a href="https://github.com/docker/compose/releases" target="_blank" rel="noopener">发布页面</a>下载最新的 <code>docker-compose</code> 二进制文件</p>
-<pre><code>$ wget https://github.com/docker/compose/releases/download/1.21.2/docker-compose-Linux-x86_64
-$ mv ~/docker-compose-Linux-x86_64 /opt/k8s/bin/docker-compose
-$ chmod a+x  /opt/k8s/bin/docker-compose
-$ export PATH=/opt/k8s/bin:$PATH
-$
-</code></pre>
-<p>从 harbor <a href="https://github.com/vmware/harbor/releases" target="_blank" rel="noopener">发布页面</a>下载最新的 harbor 离线安装包</p>
+          <h1>修改Kudu表名,和映射在impala的表名</h1>
+<p>kudu的表名和impala的表名是两码事</p>
+<h2 id="修改kudu表名">修改kudu表名</h2>
+<h4 id="方法一、在linux中kudu节点执行">方法一、在linux中kudu节点执行</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kudu table rename_table 172.20.85.113:7051 impala::kd_baofoo_cm.cm_entry_tmp impala::kd_baofoo_cm.cm_entry</span><br></pre></td></tr></table></figure>
+<h4 id="方法二、在presto中执行">方法二、在presto中执行</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE kudu.default.&quot;impala::kd_baofoo_cm.cm_entry&quot; RENAME TO kudu.default.&quot;impala::kd_baofoo_cm.cm_entry_tmp&quot;</span><br></pre></td></tr></table></figure>
+<p>修改了kudu的表名后 在impala查询kudu会报错，需要修改</p>
+<h2 id="修改映射的impala表名">修改映射的impala表名</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alter table kd_baofoo_cm.cm_entry set tblproperties(&#39;kudu.table_name&#39;&#x3D;&#39;impala::kd_baofoo_cm.cm_entry_tmp&#39;);</span><br><span class="line">alter table kd_baofoo_cm.cm_entry rename to kd_baofoo_cm.cm_entry_tmp;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/01/07/11.%E9%83%A8%E7%BD%B2%20harbor%20%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93/#more" rel="contents">
+              <a class="btn" href="/2020/12/08/%E4%BF%AE%E6%94%B9Kudu%E8%A1%A8%E5%90%8D,%E5%92%8C%E6%98%A0%E5%B0%84%E5%9C%A8impala%E7%9A%84%E8%A1%A8%E5%90%8D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/11/23/%E8%A7%A3%E5%86%B3hdfs%E6%96%87%E4%BB%B6%E5%A4%A7%E5%B0%8F%E4%B8%BA0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/23/%E8%A7%A3%E5%86%B3hdfs%E6%96%87%E4%BB%B6%E5%A4%A7%E5%B0%8F%E4%B8%BA0/" class="post-title-link" itemprop="url">解决hdfs文件大小为0</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-23 16:21:39" itemprop="dateCreated datePublished" datetime="2020-11-23T16:21:39+08:00">2020-11-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>问题： 存在文件大小为0，处于打开状态的文件，程序读取这些文件会报错</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@cdh85-29 ~]# hadoop fs -du -h  hdfs:&#x2F;&#x2F;ns1&#x2F;flume&#x2F;BankCardAuthReqDTO&#x2F;CREDIT-PRODUCT-RESULT-LOG-MEMBER-RESPONSE_bak</span><br><span class="line">0  1.1 G  hdfs:&#x2F;&#x2F;ns1&#x2F;flume&#x2F;BankCardAuthReqDTO&#x2F;CREDIT-PRODUCT-RESULT-LOG-MEMBER-RESPONSE_bak&#x2F;CREDIT-PRODUCT-RESULT-LOG-MEMBER-RESPONSE-1.1594769101120.log.gz</span><br><span class="line">0  1.1 G  hdfs:&#x2F;&#x2F;ns1&#x2F;flume&#x2F;BankCardAuthReqDTO&#x2F;CREDIT-PRODUCT-RESULT-LOG-MEMBER-RESPONSE_bak&#x2F;CREDIT-PRODUCT-RESULT-LOG-MEMBER-RESPONSE-1.1594856701472.log.gz</span><br><span class="line">0  1.1 G  hdfs:&#x2F;&#x2F;ns1&#x2F;flume&#x2F;BankCardAuthReqDTO&#x2F;CREDIT-PRODUCT-RESULT-LOG-MEMBER-RESPONSE_bak&#x2F;CREDIT-PRODUCT-RESULT-LOG-MEMBER-RESPONSE-1.1594941000485.log.gz</span><br></pre></td></tr></table></figure>
+<p>cloudera论坛也有类型的错误 ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cannot obtain block length for LocatedBlock</span><br></pre></td></tr></table></figure>
+<p><a href="https://community.cloudera.com/t5/Support-Questions/Cannot-obtain-block-length-for-LocatedBlock/td-p/117517" target="_blank" rel="noopener">https://community.cloudera.com/t5/Support-Questions/Cannot-obtain-block-length-for-LocatedBlock/td-p/117517</a></p>
+<p>但是这个方法并没有解决我的问题。 hdfs debug recoverLease -path  这样也关闭不了文件  ，纠删码策略下 不知道什么bug   这些文件关闭不了。</p>
+<h3 id="我的解决方法：">我的解决方法：</h3>
+<p><strong>获取hdfs没有正常关闭的文件并删除</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop fsck &#x2F;flume&#x2F; -files -openforwrite | grep &quot;OPENFORWRITE&quot;  &gt;tmp.txt</span><br></pre></td></tr></table></figure>
+<p>tmp.txt 内容如下：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/23/%E8%A7%A3%E5%86%B3hdfs%E6%96%87%E4%BB%B6%E5%A4%A7%E5%B0%8F%E4%B8%BA0/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1035,7 +1053,7 @@ $
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1103,7 +1121,7 @@ $
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">133</span>
+          <span class="site-state-item-count">155</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1115,7 +1133,7 @@ $
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/chinayangze" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chinayangze" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+        <a href="http://106.54.147.3:3002/" title="ChatGPT → http:&#x2F;&#x2F;106.54.147.3:3002" rel="noopener" target="_blank"><i class="fa fa-fw fa-ChatGPT"></i>ChatGPT</a>
       </span>
       <span class="links-of-author-item">
         <a href="mailto:info@ask3.cn" title="E-Mail → mailto:info@ask3.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>

@@ -209,7 +209,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/06/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/08/18/%E5%8F%96%E6%B6%88%E6%8E%89%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2mstsc%E9%A1%B6%E9%83%A8%EF%BC%88%E4%BE%A7%E9%9D%A2%EF%BC%89%E8%BF%9E%E6%8E%A5%E6%A0%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -223,7 +223,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/01/06/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">hexo部署到GitHub出现的问题</a>
+            <a href="/2022/08/18/%E5%8F%96%E6%B6%88%E6%8E%89%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2mstsc%E9%A1%B6%E9%83%A8%EF%BC%88%E4%BE%A7%E9%9D%A2%EF%BC%89%E8%BF%9E%E6%8E%A5%E6%A0%8F/" class="post-title-link" itemprop="url">取消掉远程桌面mstsc顶部（侧面）连接栏</a>
         </h1>
 
         <div class="post-meta">
@@ -233,7 +233,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-01-06 13:39:03" itemprop="dateCreated datePublished" datetime="2022-01-06T13:39:03+08:00">2022-01-06</time>
+              <time title="创建时间：2022-08-18 08:54:52" itemprop="dateCreated datePublished" datetime="2022-08-18T08:54:52+08:00">2022-08-18</time>
             </span>
 
           
@@ -247,19 +247,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>Hexo出现错误err: Error: Spawn failed</h1>
-<p>在 hexo d之后，出现如下代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fatal: Could not read from remote repository.</span><br><span class="line">Please make sure you have the correct access rights</span><br><span class="line">and the repository exists.</span><br><span class="line">FATAL &#123;</span><br><span class="line">  err: Error: Spawn failed</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
-<p>使用上面的命令查看详细错误信息，得到以下结果</p>
-<p>ssh: connect to host <a href="http://github.com" target="_blank" rel="noopener">github.com</a> port 22: Resource temporarily unavailable</p>
-<h1>2、解决方法</h1>
-<p>然后我们进入.ssh的配置目录查看，发现ssh目录里少了配置文件config。</p>
-<p>找到原因后我们进入.ssh的目录，使用命令“touch config”创建一个配置文件，并写入你github的配置信息。（xxxxx@xx.com是你github的注册邮箱）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Host github.com  </span><br><span class="line">User u8888888888@hotmail.com  </span><br><span class="line">Hostname ssh.github.com  </span><br><span class="line">PreferredAuthentications publickey  </span><br><span class="line">IdentityFile ~&#x2F;.ssh&#x2F;id_rsa  </span><br><span class="line">Port 443</span><br></pre></td></tr></table></figure>
+          <p>取消掉远程桌面mstsc顶部（侧面）连接栏</p>
+<p>在进行mstsc远程桌面连接电脑或者虚拟机的时候，总是会出现一个连接栏。虽然点左边的图钉可以自动隐藏，但是每次鼠标滑到上面的时候，还是会冒出来，这个就有点闹心了。</p>
+<p>查了下相关资料，解决了，特写下相关教程；</p>
+<p>关闭步骤：在进行远程连接的时候，取消选择 显示-&gt;全屏显示时显示连接栏(B)。</p>
+<p>如果要退出远程连接的话，Ctrl+ Alt+ Home,在全屏模式下，激活连接栏，然后叉掉就好了。</p>
+<p>笔记本可能没有HOME键</p>
+<p>HOME键和左方向键共用，打开HOME的方法是FN + HOME<br>
+所有笔记本唤醒连接栏的方法就是<br>
+Ctrl+ Alt+ FN + Home</p>
+
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/01/06/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98/#more" rel="contents">
+              <a class="btn" href="/2022/08/18/%E5%8F%96%E6%B6%88%E6%8E%89%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2mstsc%E9%A1%B6%E9%83%A8%EF%BC%88%E4%BE%A7%E9%9D%A2%EF%BC%89%E8%BF%9E%E6%8E%A5%E6%A0%8F/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -283,7 +283,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/31/mysql%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%90%8E%E4%BB%A5%E5%89%8D%E7%9A%84%E6%95%B0%E6%8D%AE_%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%90%8E%20%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E4%B9%8B%E5%89%8Dmysql%E6%95%B0%E6%8D%AE/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/07/12/%E8%A7%A3%E5%86%B3root%E7%94%A8%E6%88%B7%E5%AF%B9HDFS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%93%8D%E4%BD%9C%E6%9D%83%E9%99%90%E4%B8%8D%E5%A4%9F%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -297,7 +297,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/12/31/mysql%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%90%8E%E4%BB%A5%E5%89%8D%E7%9A%84%E6%95%B0%E6%8D%AE_%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%90%8E%20%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E4%B9%8B%E5%89%8Dmysql%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">mysql重装系统后以前的数据_重装系统后 如何使用之前mysql数据</a>
+            <a href="/2022/07/12/%E8%A7%A3%E5%86%B3root%E7%94%A8%E6%88%B7%E5%AF%B9HDFS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%93%8D%E4%BD%9C%E6%9D%83%E9%99%90%E4%B8%8D%E5%A4%9F%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">解决root用户对HDFS文件系统操作权限不够问题</a>
         </h1>
 
         <div class="post-meta">
@@ -307,7 +307,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-12-31 09:20:35" itemprop="dateCreated datePublished" datetime="2021-12-31T09:20:35+08:00">2021-12-31</time>
+              <time title="创建时间：2022-07-12 10:46:40" itemprop="dateCreated datePublished" datetime="2022-07-12T10:46:40+08:00">2022-07-12</time>
             </span>
 
           
@@ -321,12 +321,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>mysql重装系统后以前的数据_重装系统后 如何使用之前mysql数据</h1>
-<p><a href="https://blog.csdn.net/weixin_28854171/article/details/113467193" target="_blank" rel="noopener">https://blog.csdn.net/weixin_28854171/article/details/113467193</a></p>
-
+          <h1>解决root用户对HDFS文件系统操作权限不够问题</h1>
+<p>HDFS文件系统的目录基本都属于supergroup用户组，所以就把用户添加到该用户组，即可解决很多权限问题。</p>
+<p>1、<strong>在namenode节点</strong>的Linux执行如下命令增加supergroup</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">groupadd supergroup</span><br></pre></td></tr></table></figure>
+<p>2、如将用户root增加到supergroup中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">usermod -a -G supergroup root</span><br></pre></td></tr></table></figure>
+<p>3、同步系统的权限信息到HDFS文件系统</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u hdfs hdfs dfsadmin -refreshUserToGroupsMappings</span><br></pre></td></tr></table></figure>
+<p>4、查看属于supergroup用户组的用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep &#39;supergroup:&#39; &#x2F;etc&#x2F;group</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/12/31/mysql%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%90%8E%E4%BB%A5%E5%89%8D%E7%9A%84%E6%95%B0%E6%8D%AE_%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%90%8E%20%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E4%B9%8B%E5%89%8Dmysql%E6%95%B0%E6%8D%AE/#more" rel="contents">
+              <a class="btn" href="/2022/07/12/%E8%A7%A3%E5%86%B3root%E7%94%A8%E6%88%B7%E5%AF%B9HDFS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%93%8D%E4%BD%9C%E6%9D%83%E9%99%90%E4%B8%8D%E5%A4%9F%E9%97%AE%E9%A2%98/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -350,7 +357,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/30/%E5%AE%89%E8%A3%85%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC%E7%9A%84php/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/05/30/Docker%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -364,7 +371,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/12/30/%E5%AE%89%E8%A3%85%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC%E7%9A%84php/" class="post-title-link" itemprop="url">安装不同版本的php</a>
+            <a href="/2022/05/30/Docker%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="post-title-link" itemprop="url">Docker配置代理服务器</a>
         </h1>
 
         <div class="post-meta">
@@ -374,7 +381,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-12-30 09:20:43" itemprop="dateCreated datePublished" datetime="2021-12-30T09:20:43+08:00">2021-12-30</time>
+              <time title="创建时间：2022-05-30 17:24:57" itemprop="dateCreated datePublished" datetime="2022-05-30T17:24:57+08:00">2022-05-30</time>
             </span>
 
           
@@ -388,19 +395,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="移除php">移除php</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum remove php-common -y</span><br></pre></td></tr></table></figure>
-<p><a href="https://www.cnblogs.com/hongdada/p/9687330.html" target="_blank" rel="noopener">yum仓库中源的配置与使用</a></p>
-<p>yum 仓库管理工具 <code>yum-config-manager</code>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum-config-manager --add-repo repository_url</span><br></pre></td></tr></table></figure>
-<p>查询仓库</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum repolist enabled # 显示所有启动的仓库</span><br><span class="line">yum repolist disabled # 显示所有禁用的仓库</span><br><span class="line">yum repolist all # 显示所有仓库</span><br></pre></td></tr></table></figure>
-<p>修改仓库</p>
-<p>最常用的修改操作就是启动和停用, 可以使用以下命令实现:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum-config-manager --enable repository…</span><br><span class="line">yum-config-manager --disable repository…</span><br></pre></td></tr></table></figure>
+          <h1>Docker配置代理服务器</h1>
+<h2 id="背景环境说明">背景环境说明</h2>
+<p>Docker环境安装在内网，只有一台公共的代理服务器能够上网，<br>
+一般的docker pull会无法下载镜像。</p>
+<p>新配置了代理服务器squid。（搭建squid代理服务器这里不讲，参考另一篇文章。不建议使用nginx坐正向代理，处理不了https。）<br>
+操作系统： Redhat 7.5 X86<br>
+内核: 3.10.0-862.el7.x86_64/docker 18.09<br>
+代理服务器： 10.1.1.1:10000</p>
+<h2 id="修改DockerService文件">修改DockerService文件</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;docker.service</span><br></pre></td></tr></table></figure>
+<p>在[Service]下面添加：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Service</span>]</span><br><span class="line">Environment=<span class="string">"HTTP_PROXY=http://10.1.1.1:10000"</span></span><br><span class="line">Environment=<span class="string">"HTTPS_PROXY=https://proxy.example.com:443"</span></span><br></pre></td></tr></table></figure>
+<h2 id="重启Docker服务">重启Docker服务</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl rstart docker </span><br><span class="line">systemctl <span class="built_in">enable</span> docker</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/12/30/%E5%AE%89%E8%A3%85%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC%E7%9A%84php/#more" rel="contents">
+              <a class="btn" href="/2022/05/30/Docker%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -424,7 +435,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/24/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/05/17/Linux%20%E9%98%B2%E6%AD%A2rm%E8%AF%AF%E5%88%A0%E6%96%87%E4%BB%B6%EF%BC%8C%E5%B0%86rm%E9%85%8D%E7%BD%AE%E6%88%90mv%E5%88%B0.trash/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -438,7 +449,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/12/24/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub/" class="post-title-link" itemprop="url">hexo部署到GitHub</a>
+            <a href="/2022/05/17/Linux%20%E9%98%B2%E6%AD%A2rm%E8%AF%AF%E5%88%A0%E6%96%87%E4%BB%B6%EF%BC%8C%E5%B0%86rm%E9%85%8D%E7%BD%AE%E6%88%90mv%E5%88%B0.trash/" class="post-title-link" itemprop="url">Linux 防止rm误删文件，将rm配置成mv到.trash</a>
         </h1>
 
         <div class="post-meta">
@@ -448,7 +459,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-12-24 09:23:23" itemprop="dateCreated datePublished" datetime="2021-12-24T09:23:23+08:00">2021-12-24</time>
+              <time title="创建时间：2022-05-17 15:05:52" itemprop="dateCreated datePublished" datetime="2022-05-17T15:05:52+08:00">2022-05-17</time>
             </span>
 
           
@@ -462,19 +473,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>参考这篇文章就可以了</p>
-<p>GitHub+Hexo 搭建个人网站详细教程  <a href="https://zhuanlan.zhihu.com/p/26625249" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/26625249</a></p>
-<p>其他相关笔记</p>
-<p><strong>安装插件</strong></p>
-<p>npm i -S hexo-prism-plugin</p>
-<p><strong>卸载插件</strong></p>
-<p>npm uninstall hexo-prism-plugin --save</p>
-<p><strong>next7.X版本关于设置阅读全文</strong></p>
-<p>网上查了好多资料始终都没得到解决如何去设置“阅读全文”。最后查了最细的next7.6文档才发现还要下载插件 然后在主题配置文件_config.yml配置下就好了。</p>
-<p>一，在博客目录下执行</p>
+          <h1>Linux 防止rm误删文件，将rm配置成mv到.trash</h1>
+<p>今天在服务器上操作想删除文件来着，结果一直提示我mv: 正在访问&quot;/data0/.trash/&quot;: 没有那个文件或目录，原来是为了防止误删把rm命令改写了，这样删错了后果就不会很严重</p>
+<p>操作方法就是在~下的.bashrc或者.bash_profile文件加入如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~&#x2F;.trash</span><br><span class="line">alias rm&#x3D;trash  </span><br><span class="line">alias r&#x3D;trash  </span><br><span class="line">alias rl&#x3D;&#39;ls ~&#x2F;.trash&#39;</span><br><span class="line">alias ur&#x3D;undelfile</span><br><span class="line">undelfile()</span><br><span class="line">&#123;</span><br><span class="line">  mv -i ~&#x2F;.trash&#x2F;$@ .&#x2F;</span><br><span class="line">&#125;</span><br><span class="line">trash()</span><br><span class="line">&#123;</span><br><span class="line">  mv $@ ~&#x2F;.trash&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样删除的文件会出现在家目录下的.trash文件中。</p>
+<p>那么问题来了，如何删除.trash文件中的文件呢</p>
+<p>继续在之前的.bashrc中添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cleartrash()</span><br><span class="line">&#123;</span><br><span class="line">    read -p &quot;clear sure?[n]&quot; confirm</span><br><span class="line">    [ $confirm &#x3D;&#x3D; &#39;y&#39; ] || [ $confirm &#x3D;&#x3D; &#39;Y&#39; ]  &amp;&amp; &#x2F;usr&#x2F;bin&#x2F;rm -rf ~&#x2F;.trash&#x2F;*</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>清理回收站直接使用$cleartrash即可</p>
+
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/12/24/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub/#more" rel="contents">
+              <a class="btn" href="/2022/05/17/Linux%20%E9%98%B2%E6%AD%A2rm%E8%AF%AF%E5%88%A0%E6%96%87%E4%BB%B6%EF%BC%8C%E5%B0%86rm%E9%85%8D%E7%BD%AE%E6%88%90mv%E5%88%B0.trash/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -498,7 +509,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/23/presto%20%E8%BF%9E%E6%8E%A5clickhouse/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/05/10/centos7%20%E7%AE%80%E5%8D%95%E5%BC%80%E5%90%AF%E4%BB%A3%E7%90%86%E4%B8%8A%E7%BD%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -512,7 +523,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/12/23/presto%20%E8%BF%9E%E6%8E%A5clickhouse/" class="post-title-link" itemprop="url">presto 连接clickhouse</a>
+            <a href="/2022/05/10/centos7%20%E7%AE%80%E5%8D%95%E5%BC%80%E5%90%AF%E4%BB%A3%E7%90%86%E4%B8%8A%E7%BD%91/" class="post-title-link" itemprop="url">centos7 简单开启代理上网</a>
         </h1>
 
         <div class="post-meta">
@@ -522,7 +533,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-12-23 15:39:26" itemprop="dateCreated datePublished" datetime="2021-12-23T15:39:26+08:00">2021-12-23</time>
+              <time title="创建时间：2022-05-10 16:02:17" itemprop="dateCreated datePublished" datetime="2022-05-10T16:02:17+08:00">2022-05-10</time>
             </span>
 
           
@@ -536,14 +547,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>presto 连接clickhouse</h1>
-<p>presto350版本，不支持clickhouse ，需要升级，</p>
-<p>presto350版本之后 presto改名为trino，导致不兼容，升级后 对应的jdbc驱动 ，客户端都需要换成新的。</p>
-<p>客户端工具用DBeaver比较好，DbVisualizer 不支持trino</p>
-
+          <p>centos7 简单开启代理上网</p>
+<p><strong>服务端安装</strong>： 在可以上网的机器安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install squid -y</span><br><span class="line">systemctl restart squid</span><br></pre></td></tr></table></figure>
+<p><strong>客户端安装</strong>：</p>
+<p>yum  配置代理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;proxy&#x3D;http:&#x2F;&#x2F;IP:3128&#x2F;&quot; &gt;&gt; &#x2F;etc&#x2F;yum.conf</span><br></pre></td></tr></table></figure>
+<p>系统全局代理（我测试下来，yum  不能用 ）</p>
+<p>vi /etc/profile</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># export all_proxy&#x3D;http:&#x2F;&#x2F;IP:3128  只导入这个 ，测试下来wget不能用</span><br><span class="line">export http_proxy&#x3D;http:&#x2F;&#x2F;IP:3128</span><br><span class="line">export https_proxy&#x3D;http:&#x2F;&#x2F;IP:3128</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">测试代理是否生效</span><br><span class="line">curl http:&#x2F;&#x2F;myip.ipip.net</span><br><span class="line">curl https:&#x2F;&#x2F;myip.ipip.net&#x2F;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/12/23/presto%20%E8%BF%9E%E6%8E%A5clickhouse/#more" rel="contents">
+              <a class="btn" href="/2022/05/10/centos7%20%E7%AE%80%E5%8D%95%E5%BC%80%E5%90%AF%E4%BB%A3%E7%90%86%E4%B8%8A%E7%BD%91/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -567,7 +583,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/08/ckman%E9%83%A8%E7%BD%B2/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/04/19/Python%E4%B8%80%E7%A7%92%E9%92%9F%E6%90%AD%E5%BB%BA%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E7%BD%91%E9%A1%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -581,7 +597,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/12/08/ckman%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">ckman部署</a>
+            <a href="/2022/04/19/Python%E4%B8%80%E7%A7%92%E9%92%9F%E6%90%AD%E5%BB%BA%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E7%BD%91%E9%A1%B5/" class="post-title-link" itemprop="url">Python一秒钟搭建文件分享网页</a>
         </h1>
 
         <div class="post-meta">
@@ -591,7 +607,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-12-08 13:31:48" itemprop="dateCreated datePublished" datetime="2021-12-08T13:31:48+08:00">2021-12-08</time>
+              <time title="创建时间：2022-04-19 17:45:35" itemprop="dateCreated datePublished" datetime="2022-04-19T17:45:35+08:00">2022-04-19</time>
             </span>
 
           
@@ -605,19 +621,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>ckman部署</p>
-<h3 id="安装">安装</h3>
-<p><code>rpm</code>安装直接使用命令安装即可：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh ckman-1.3.1.x86_64.rpm</span><br></pre></td></tr></table></figure>
-<p>安装完成后，在<code>/etc/ckman</code>目录下，会生成工作目录（日志和配置文件等都在该目录下）。</p>
-<h3 id="启动">启动</h3>
-<p><code>rpm</code>方式安装的<code>ckman</code>有两种启动方式：</p>
-<h4 id="方式一：">方式一：</h4>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;local&#x2F;bin&#x2F;ckman -c&#x3D;&#x2F;etc&#x2F;ckman&#x2F;conf&#x2F;ckman.yaml -p&#x3D;&#x2F;run&#x2F;ckman&#x2F;ckman.pid -l&#x3D;&#x2F;var&#x2F;log&#x2F;ckman&#x2F;ckman.log -d</span><br></pre></td></tr></table></figure>
-<h4 id="方式二：">方式二：</h4>
+          <h1>Python一秒钟搭建文件分享网页</h1>
+<p>Python的库是十分丰富的。在局域网内分享文件时，Python的http.server可以创建一个非常基本的Web服务器，相对于当前目录提供文件。http.server模块定义用于实现 HTTP 服务器（Web 服务器）的类。</p>
+<h4 id="一、运行简单网页">一、运行简单网页</h4>
+<p>先来试验一下，在cmd运行：python -m http.server，如果时linux平台的化，注意python版本3 。在浏览器输入IP地址:8000，即可获得的当前目录下的所有文件列表，以提供下载。需要注意的是防火墙要关闭或添加规则。</p>
+<p>在局域网内暂时分享文件的话是十分方便的，比U盘拷贝省心很多。</p>
+<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/image-20220419170008535.png" alt="image-20220419170008535"></p>
+<p>查看官方文档：http请求映射到目录，检查目录中是否有index.html或index.htm文件（按顺序）。如果有，文件的内容将返回：否则，目录列表将通过调用list_directory()方法生成，此方法使用os.listdir()扫描目录。</p>
+<h4 id="二、http-server具体使用方法">二、http.server具体使用方法</h4>
+<p>使用 python -m http.server --help 再来看一下具体的使用方法。</p>
+<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2022/04/image-20220419173412287.png" alt="image-20220419173412287"></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/12/08/ckman%E9%83%A8%E7%BD%B2/#more" rel="contents">
+              <a class="btn" href="/2022/04/19/Python%E4%B8%80%E7%A7%92%E9%92%9F%E6%90%AD%E5%BB%BA%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E7%BD%91%E9%A1%B5/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -641,7 +657,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/06/%E5%8D%87%E7%BA%A7OpenSSH%E4%B9%8B%E5%90%8E%E7%99%BB%E5%BD%95%E4%B8%8D%E4%B8%8A%E5%8E%BB/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/04/19/typora%20+%20hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -655,7 +671,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/12/06/%E5%8D%87%E7%BA%A7OpenSSH%E4%B9%8B%E5%90%8E%E7%99%BB%E5%BD%95%E4%B8%8D%E4%B8%8A%E5%8E%BB/" class="post-title-link" itemprop="url">升级OpenSSH之后登录不上去</a>
+            <a href="/2022/04/19/typora%20+%20hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/" class="post-title-link" itemprop="url">typora + hexo博客中插入图片</a>
         </h1>
 
         <div class="post-meta">
@@ -665,7 +681,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-12-06 14:01:54" itemprop="dateCreated datePublished" datetime="2021-12-06T14:01:54+08:00">2021-12-06</time>
+              <time title="创建时间：2022-04-19 17:32:19" itemprop="dateCreated datePublished" datetime="2022-04-19T17:32:19+08:00">2022-04-19</time>
             </span>
 
           
@@ -679,13 +695,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/ssh/sshd_config</span><br></pre></td></tr></table></figure>
-<p>需要在配置文件中添加：</p>
-<p>PermitRootLogin yes</p>
-
+          <p>在使用了hexo搭建了博客后，最大的问题便是如何使用一款markdown工具来编辑博客了，我采取的就是Typora，这工具免费简单易用没广告，而且把图片保存到本地还是很方便的，因此大家只要稍微了解点markdown语法就可以上手使用了。</p>
+<p>关于图片和图片路径的设置，有以下教程。</p>
+<h2 id="typora-自动上传图片的教程">typora 自动上传图片的教程</h2>
+<p><a href="https://connor-sun.github.io/posts/38835.html" target="_blank" rel="noopener">https://connor-sun.github.io/posts/38835.html</a></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"picBed"</span>: &#123;</span><br><span class="line">    <span class="attr">"uploader"</span>: <span class="string">"aliyun"</span>,</span><br><span class="line">    <span class="attr">"aliyun"</span>: &#123;</span><br><span class="line">      <span class="attr">"accessKeyId"</span>: <span class="string">"LvX8msYp6t1UQv3h"</span>,</span><br><span class="line">      <span class="attr">"accessKeySecret"</span>: <span class="string">"BOmXyUnZ2ky4DJAIfRJOfrySHGwohV"</span>,</span><br><span class="line">      <span class="attr">"bucket"</span>: <span class="string">"ask3"</span>,</span><br><span class="line">      <span class="attr">"area"</span>: <span class="string">"oss-cn-hangzhou"</span>,</span><br><span class="line">      <span class="attr">"path"</span>: <span class="string">"img/md/"</span>,</span><br><span class="line">      <span class="attr">"customUrl"</span>: <span class="string">""</span>,</span><br><span class="line">      <span class="attr">"options"</span>: <span class="string">""</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 插件设置</span></span><br><span class="line">  <span class="attr">"picgoPlugins"</span>: &#123;</span><br><span class="line">    <span class="attr">"picgo-plugin-super-prefix"</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"picgo-plugin-super-prefix"</span>: &#123;</span><br><span class="line">    <span class="attr">"prefixFormat"</span>: <span class="string">"YYYY/MM/"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意 ：   存储路径比如<code>img/</code>的话，上传的图片会默认放在OSS的<code>img</code>文件夹下。注意存储路径一定要以<code>/</code>结尾！存储路径是可选的，如果不需要请留空。</p>
+<h3 id></h3>
+<h1>让Typora的图片居左的两种方法</h1>
+<ul>
+<li>方法1：空格键</li>
+<li>方法2：tab键</li>
+</ul>
+<p><a href="https://blog.csdn.net/sky0816/article/details/111321812" target="_blank" rel="noopener">https://blog.csdn.net/sky0816/article/details/111321812</a></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/12/06/%E5%8D%87%E7%BA%A7OpenSSH%E4%B9%8B%E5%90%8E%E7%99%BB%E5%BD%95%E4%B8%8D%E4%B8%8A%E5%8E%BB/#more" rel="contents">
+              <a class="btn" href="/2022/04/19/typora%20+%20hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -709,7 +734,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/11/19/clickhouse%E4%B9%8BHDFS%E4%BA%91%E5%AD%98%E5%82%A8/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/04/19/scala%EF%BC%9A%E5%87%BD%E6%95%B0%E8%87%B3%E7%AE%80%E5%8E%9F%E5%88%99%E3%80%81%E5%87%BD%E6%95%B0%E7%AE%80%E5%8C%96%E8%BF%87%E7%A8%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -723,7 +748,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/11/19/clickhouse%E4%B9%8BHDFS%E4%BA%91%E5%AD%98%E5%82%A8/" class="post-title-link" itemprop="url">clickhouse之HDFS云存储</a>
+            <a href="/2022/04/19/scala%EF%BC%9A%E5%87%BD%E6%95%B0%E8%87%B3%E7%AE%80%E5%8E%9F%E5%88%99%E3%80%81%E5%87%BD%E6%95%B0%E7%AE%80%E5%8C%96%E8%BF%87%E7%A8%8B/" class="post-title-link" itemprop="url">scala：函数至简原则、函数简化过程</a>
         </h1>
 
         <div class="post-meta">
@@ -733,7 +758,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-11-19 09:23:57" itemprop="dateCreated datePublished" datetime="2021-11-19T09:23:57+08:00">2021-11-19</time>
+              <time title="创建时间：2022-04-19 16:42:03" itemprop="dateCreated datePublished" datetime="2022-04-19T16:42:03+08:00">2022-04-19</time>
             </span>
 
           
@@ -747,19 +772,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>clickhouse之HDFS云存储</h1>
-<p>参考： <a href="https://blog.csdn.net/weixin_40104766/article/details/120029525" target="_blank" rel="noopener">https://blog.csdn.net/weixin_40104766/article/details/120029525</a></p>
-<p>按照官方文档说明，在config.xml文件中添加如下配置：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">storage_configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">disks</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">diskname</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">type</span>&gt;</span>hdfs<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">endpoint</span>&gt;</span>hdfs://10.0.19.241:8020/ckdata/<span class="tag">&lt;/<span class="name">endpoint</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">diskname</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">disks</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">policies</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">hdfs</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">volumes</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">volumename</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">disk</span>&gt;</span>diskname<span class="tag">&lt;/<span class="name">disk</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">volumename</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">volumes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">hdfs</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">policies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">storage_configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>配置完成后，重启clickhouse-server服务，验证是否生效：</p>
-<p>1.通过system.storage_policies表查看存储策略是否OK</p>
-<p>select * from system.storage_policies;</p>
-<p>2.通过settings参数指定storage_policy为我们配置好的hdfs，建表语句如下：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> test_data <span class="keyword">engine</span>=MergeTree <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">id</span> <span class="keyword">settings</span> storage_policy=<span class="string">'hdfs'</span> <span class="keyword">as</span> <span class="keyword">with</span> (<span class="keyword">select</span> [<span class="string">'A'</span>,<span class="string">'a'</span>,<span class="string">'A'</span>,<span class="string">'A'</span>,<span class="string">'B'</span>,<span class="string">'B'</span>,<span class="string">'B'</span>,<span class="string">'B'</span>,<span class="string">'B'</span>,<span class="string">'A'</span>,<span class="string">'59'</span>,<span class="string">'90'</span>,<span class="string">'80'</span>,<span class="string">'85'</span>,<span class="string">'90'</span>,<span class="string">'929'</span>,<span class="string">'80'</span>,<span class="string">'72'</span>,<span class="string">'90'</span>,<span class="string">'123'</span>]) <span class="keyword">AS</span> dict <span class="keyword">select</span> dict[<span class="built_in">number</span>%<span class="number">10</span> + <span class="number">1</span>] <span class="keyword">as</span> <span class="keyword">id</span>,dict[<span class="built_in">number</span> + <span class="number">11</span>] <span class="keyword">as</span> val <span class="keyword">from</span> system.numbers <span class="keyword">limit</span> <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+          <p>scala：函数至简原则、函数简化过程</p>
+<p>1.return可以省略，Scala会使用函数体的最后一行代码作为返回值<br>
+2.如果函数体只有一行代码，可以省略花括号<br>
+3.返回值类型如果能够推断出来，那么可以省略（:和返回值类型一起省略）<br>
+4.如果有return，则不能省略返回值类型，必须指定<br>
+5.如果函数明确声明unit，那么即使函数体中使用return关键字也不起作用<br>
+6.Scala如果期望是无返回值类型，可以省略等号 这种形式称为过程<br>
+7.如果函数无参，但是声明了参数列表，那么调用时，小括号，可加可不加<br>
+8.如果函数没有参数列表，那么小括号可以省略，调用时小括号必须省略<br>
+9.如果不关心名称，只关心逻辑处理，那么函数名（def）可以省略</p>
+<p>代码示例</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Scala05_TestFun_review</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    //正常定义函数</span></span><br><span class="line"><span class="comment">    def f0(name:String): String =&#123;</span></span><br><span class="line"><span class="comment">      return name</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    println(f0("atguigu"))</span></span><br><span class="line"><span class="comment">    //（1）return可以省略，Scala会使用函数体的最后一行代码作为返回值</span></span><br><span class="line"><span class="comment">    def f1(name:String): String =&#123;</span></span><br><span class="line"><span class="comment">      name</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    println(f1("atguigu"))</span></span><br><span class="line"><span class="comment">    //（2）如果函数体只有一行代码，可以省略花括号</span></span><br><span class="line"><span class="comment">def f2(name:String): String = name</span></span><br><span class="line"><span class="comment">println(f2("atguigu"))</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（3）返回值类型如果能够推断出来，那么可以省略（:和返回值类型一起省略）</span></span><br><span class="line"><span class="comment">def f3(name:String)= name</span></span><br><span class="line"><span class="comment">println(f3("atguigu"))</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（4）如果有return，则不能省略返回值类型，必须指定</span></span><br><span class="line"><span class="comment">def f4(name:String) =&#123;</span></span><br><span class="line"><span class="comment">  return name</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（5）如果函数明确声明unit，那么即使函数体中使用return关键字也不起作用</span></span><br><span class="line"><span class="comment">def f5(name:String): Unit =&#123;</span></span><br><span class="line"><span class="comment">  return name</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">println(f5("atguigu"))</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（6）Scala如果期望是无返回值类型，可以省略等号   这种形式称为过程</span></span><br><span class="line"><span class="comment">def f6(name:String)&#123;</span></span><br><span class="line"><span class="comment">  println(name)</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">f6("banzhang")</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（7）如果函数无参，但是声明了参数列表，那么调用时，小括号，可加可不加</span></span><br><span class="line"><span class="comment">def f7(): Unit =&#123;</span></span><br><span class="line"><span class="comment">  println("jingjing")</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">f7</span></span><br><span class="line"><span class="comment">f7()</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">//（8）如果函数没有参数列表，那么小括号可以省略，调用时小括号必须省略</span></span><br><span class="line"><span class="comment">def f8: Unit =&#123;</span></span><br><span class="line"><span class="comment">  println("jingjing")</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">//f8()</span></span><br><span class="line"><span class="comment">f8</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（9）如果不关心名称，只关心逻辑处理，那么函数名（def）可以省略</span></span><br><span class="line"><span class="comment">// 1.扩展f9的功能   2.具体扩展的功能是通过fun函数传递，很灵活</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f9</span></span>(fun:(<span class="type">String</span>)=&gt;<span class="type">Unit</span>): <span class="type">Unit</span> =&#123;</span><br><span class="line">  fun(<span class="string">"jingjing"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//def f10(s:String): Unit =&#123;</span></span><br><span class="line"><span class="comment">//  println(s)</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"><span class="comment">//f9(f10)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//匿名函数 ：没有名字的函数，通过lambda表达式实现     (参数)=&gt;&#123;函数体&#125;</span></span><br><span class="line"><span class="comment">//f9((s:String)=&gt;&#123;println(s)&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（1）参数的类型可以省略，会根据形参进行自动的推导</span></span><br><span class="line"><span class="comment">//f9((s)=&gt;&#123;println(s)&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（2）类型省略之后，发现只有一个参数，则圆括号可以省略；其他情况：没有参数和参数超过1的永远不能省略圆括号。</span></span><br><span class="line"><span class="comment">//f9(s =&gt;&#123;println(s)&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（3）匿名函数如果只有一行，则大括号也可以省略</span></span><br><span class="line"><span class="comment">//f9(s =&gt;println(s))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//（4）如果参数只出现一次，则参数省略且后面参数可以用_代替</span></span><br><span class="line"><span class="comment">//f9(println(_))</span></span><br><span class="line">  <span class="comment">//  （5） 如果可以推断出，println是一个函数体，而不是调用语句，那么(_)可以省</span></span><br><span class="line">  <span class="comment">//  f9(println)</span></span><br><span class="line">  <span class="comment">//反推导     f9((s:String)=&gt;println(s))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//加深大家理解</span></span><br><span class="line"><span class="comment">//定义一个函数，接受一个函数类型的参数，该函数类型有两个参数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f11</span></span>(fun:(<span class="type">Int</span>,<span class="type">Int</span>)=&gt;<span class="type">Int</span>):<span class="type">Int</span>=&#123;</span><br><span class="line">  fun(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//println(f11((x:Int,y:Int)=&gt;&#123;x + y&#125;))</span></span><br><span class="line"><span class="comment">//println(f11((x,y)=&gt;x + y))</span></span><br><span class="line">println(f11(_ + _))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/11/19/clickhouse%E4%B9%8BHDFS%E4%BA%91%E5%AD%98%E5%82%A8/#more" rel="contents">
+              <a class="btn" href="/2022/04/19/scala%EF%BC%9A%E5%87%BD%E6%95%B0%E8%87%B3%E7%AE%80%E5%8E%9F%E5%88%99%E3%80%81%E5%87%BD%E6%95%B0%E7%AE%80%E5%8C%96%E8%BF%87%E7%A8%8B/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -783,7 +811,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/10/28/%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99%E6%B5%8B%E8%AF%95/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/04/19/hexo%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -797,7 +825,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/10/28/%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">磁盘读写测试</a>
+            <a href="/2022/04/19/hexo%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">hexo 常用命令</a>
         </h1>
 
         <div class="post-meta">
@@ -807,7 +835,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-10-28 16:44:32" itemprop="dateCreated datePublished" datetime="2021-10-28T16:44:32+08:00">2021-10-28</time>
+              <time title="创建时间：2022-04-19 15:50:21" itemprop="dateCreated datePublished" datetime="2022-04-19T15:50:21+08:00">2022-04-19</time>
             </span>
 
           
@@ -821,19 +849,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="磁盘读写测试">磁盘读写测试</h2>
-<p>FIO安装<br>
-wget <a href="http://brick.kernel.dk/snaps/fio-2.2.5.tar.gz" target="_blank" rel="noopener">http://brick.kernel.dk/snaps/fio-2.2.5.tar.gz</a></p>
-<p>yum install libaio-devel<br>
-tar -zxvf fio-2.2.5.tar.gz<br>
-cd fio-2.2.5<br>
-make<br>
-make install</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">测试：</span><br><span class="line">顺序读：</span><br><span class="line">fio -filename=/dev/sda -direct=1 -iodepth 1 -thread -rw=read -ioengine=psync -bs=16k -size=2G -numjobs=10 -runtime=60 -group_reporting -name=mytest</span><br><span class="line"></span><br><span class="line">随机写：</span><br><span class="line">fio -filename=/dev/sda -direct=1 -iodepth 1 -thread -rw=randwrite -ioengine=psync -bs=16k -size=2G -numjobs=10 -runtime=60 -group_reporting -name=mytest</span><br><span class="line"></span><br><span class="line">顺序写：</span><br><span class="line">fio -filename=/dev/sda -direct=1 -iodepth 1 -thread -rw=write -ioengine=psync -bs=16k -size=2G -numjobs=10 -runtime=60 -group_reporting -name=mytest</span><br><span class="line"></span><br><span class="line">混合随机读写：</span><br><span class="line">fio -filename=/dev/sda -direct=1 -iodepth 1 -thread -rw=randrw -rwmixread=70 -ioengine=psync -bs=16k -size=2G -numjobs=10 -runtime=60 -group_reporting -name=mytest -ioscheduler=noop</span><br></pre></td></tr></table></figure>
-
+          <p>hexo 常用命令 ：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate (hexo g) 生成静态文件</span><br><span class="line">$ hexo server (hexo s) 启动本地服务</span><br><span class="line">$ hexo deploy (hexo d) 提交到远程仓库</span><br><span class="line">$ hexo new page <span class="string">"xx"</span>(hexo n page) 创建页面 </span><br><span class="line">$ hexo new <span class="string">"xx"</span> (hexo n <span class="string">""</span>) 创建文章</span><br><span class="line">$ hexo d -g 生成静态并提交到远程仓库</span><br><span class="line">$ hexo s -g 生成静态文件并启动本地预览</span><br><span class="line">$ hexo clean (hexo cl)清除本地 public 文件</span><br></pre></td></tr></table></figure>
+<p>其他参考：</p>
+<p>5分钟搞定个人博客-hexo     <a href="https://www.jianshu.com/p/390f202c5b0e" target="_blank" rel="noopener">https://www.jianshu.com/p/390f202c5b0e</a></p>
+<p>换终端更新hexo博客  <a href="https://www.jianshu.com/p/6a29f5243ab4" target="_blank" rel="noopener">https://www.jianshu.com/p/6a29f5243ab4</a></p>
+<p>win10子系统安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br><span class="line">sudo apt-get install npm</span><br><span class="line">npm install -g hexo-cli@3.1.0</span><br></pre></td></tr></table></figure>
+<h1>ubuntu18.04安装nodejs最新版、指定版 12.x 14.x</h1>
+<p>今天准备在 ubuntu 服务器里面安装 nodejs 版本，ubuntu 18.04 仓库 nodejs 默认是 8.x 版本。</p>
+<h2 id="1-通过-apt-安装-nodejs">1. 通过 apt 安装 nodejs</h2>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/10/28/%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99%E6%B5%8B%E8%AF%95/#more" rel="contents">
+              <a class="btn" href="/2022/04/19/hexo%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -857,7 +885,7 @@ make install</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/07/20/%E6%99%BA%E8%83%BD%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0USDP%E6%93%8D%E4%BD%9C%E9%83%A8%E7%BD%B2/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/04/13/%E9%87%87%E7%94%A8hive%E8%87%AA%E5%B8%A6%E7%9A%84%E6%96%B9%E6%B3%95%E7%94%9F%E6%88%90Hfile%EF%BC%8C%E5%B9%B6%E5%B0%86%E4%B8%8A%E4%BA%BF%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%87%8F%E5%AF%BC%E5%85%A5HBASE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -871,7 +899,7 @@ make install</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/07/20/%E6%99%BA%E8%83%BD%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0USDP%E6%93%8D%E4%BD%9C%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">智能大数据平台USDP操作部署</a>
+            <a href="/2022/04/13/%E9%87%87%E7%94%A8hive%E8%87%AA%E5%B8%A6%E7%9A%84%E6%96%B9%E6%B3%95%E7%94%9F%E6%88%90Hfile%EF%BC%8C%E5%B9%B6%E5%B0%86%E4%B8%8A%E4%BA%BF%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%87%8F%E5%AF%BC%E5%85%A5HBASE/" class="post-title-link" itemprop="url">采用hive自带的方法生成Hfile，并将上亿大数据量导入HBASE</a>
         </h1>
 
         <div class="post-meta">
@@ -881,7 +909,7 @@ make install</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-07-20 13:48:23" itemprop="dateCreated datePublished" datetime="2021-07-20T13:48:23+08:00">2021-07-20</time>
+              <time title="创建时间：2022-04-13 13:57:32" itemprop="dateCreated datePublished" datetime="2022-04-13T13:57:32+08:00">2022-04-13</time>
             </span>
 
           
@@ -895,19 +923,19 @@ make install</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="智能大数据平台USDP操作部署">智能大数据平台USDP操作部署</h2>
-<p>USDP部署操作指南：<a href="https://mp.weixin.qq.com/s/COnkLXPTWL5OK1PFYooThw?scene=25#wechat_redirect" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/COnkLXPTWL5OK1PFYooThw?scene=25#wechat_redirect</a></p>
-<p>bash <a href="http://repair.sh" target="_blank" rel="noopener">repair.sh</a> initAll   这个步骤大约要30多分钟，重复执行也慢。</p>
-<p>注意：</p>
-<p>1.在repair-host-info-add.properties文件中，仅需配置每次新增的节点信息即可，若存在已修复过的节点信息时，在下次运行“<a href="http://repair.sh" target="_blank" rel="noopener">repair.sh</a> initSingle”指令前，请清除。</p>
-<p>2.jdk 安装在 /opt/module 下面，不允许随意删除，否则 java 环境失效。</p>
-<p>3.数据库密码中不得包含 “@” 。</p>
-<p>4.主机名设置不得包含 “_”，&quot;-&quot; 。</p>
-<p>启动服务  bin/stop-udp-server.sh</p>
-<p>查看日志目录  /var/log/udp</p>
+          <h1>采用hive自带的方法生成Hfile，并将上亿大数据量导入HBASE</h1>
+<h2 id="1-引入HBASE自带的jar">1.引入HBASE自带的jar</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">[root@cdh85-100 ~]# sudo -u hdfs hive</span><br><span class="line">hive&gt; </span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-annotations-2.0.0-cdh6.0.1.jar                      ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-client-2.0.0-cdh6.0.1.jar                           ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-common-2.0.0-cdh6.0.1.jar                           ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-endpoint-2.0.0-cdh6.0.1.jar                         ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-examples-2.0.0-cdh6.0.1.jar                         ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-external-blockcache-2.0.0-cdh6.0.1.jar              ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-hadoop2-compat-2.0.0-cdh6.0.1.jar                   ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-hadoop-compat-2.0.0-cdh6.0.1.jar                    ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-http-2.0.0-cdh6.0.1.jar                             ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-it-2.0.0-cdh6.0.1.jar                               ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-mapreduce-2.0.0-cdh6.0.1.jar                        ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-metrics-2.0.0-cdh6.0.1.jar                          ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-metrics-api-2.0.0-cdh6.0.1.jar                      ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-procedure-2.0.0-cdh6.0.1.jar                        ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-protocol-2.0.0-cdh6.0.1.jar                         ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-protocol-shaded-2.0.0-cdh6.0.1.jar                  ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-replication-2.0.0-cdh6.0.1.jar                      ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-resource-bundle-2.0.0-cdh6.0.1.jar                  ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-rest-2.0.0-cdh6.0.1.jar                             ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-rsgroup-2.0.0-cdh6.0.1.jar                          ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-server-2.0.0-cdh6.0.1.jar                           ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-shaded-miscellaneous-2.1.0.jar                      ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-shaded-netty-2.1.0.jar                              ;</span><br><span class="line">add jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hbase&#x2F;lib&#x2F;hbase-shaded-protobuf-2.1.0.jar                           ;</span><br></pre></td></tr></table></figure>
+<h2 id="2-0建Hfile表">2.0建Hfile表</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">create table tmp.fi_pt_card_library(</span><br><span class="line"> KEY STRING COMMENT &#39;HBASE_ROWKEY&#39; ,</span><br><span class="line">  sign_id STRING COMMENT &#39;id自增长&#39;,</span><br><span class="line">  ....</span><br><span class="line">)</span><br><span class="line">STORED AS</span><br><span class="line">INPUTFORMAT &#39;org.apache.hadoop.mapred.TextInputFormat&#39;</span><br><span class="line">OUTPUTFORMAT &#39;org.apache.hadoop.hive.hbase.HiveHFileOutputFormat&#39;</span><br><span class="line">TBLPROPERTIES (&#39;hfile.family.path&#39; &#x3D; &#39;&#x2F;tmp&#x2F;fi_pt_card_library&#x2F;info&#39;);</span><br></pre></td></tr></table></figure>
+<p><strong>注意：此处的info应该与HBase中的family相同。</strong></p>
+<h2 id="生成Hfile文件">生成Hfile文件</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; set mapreduce.job.queuename&#x3D;bf_yarn_pool.production;</span><br><span class="line"></span><br><span class="line">insert overwrite  table tmp.fi_pt_card_library</span><br><span class="line">SELECT * from tmp.fi_pt_card_library_0330 order by key</span><br></pre></td></tr></table></figure>
+<p><strong>注意： fi_pt_card_library_0330表 不能有重复值， 而且要排序。</strong></p>
+<p>这里的第一个字段会默认为Hbase的KEY，但是这里的key的名称可以不为key，其他的也可以。还有数据中不允许存在同样的KEY，如果出现同样的KEY会报错。同时KEY的值应当具有顺序，如果顺序不同也会出错。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/07/20/%E6%99%BA%E8%83%BD%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0USDP%E6%93%8D%E4%BD%9C%E9%83%A8%E7%BD%B2/#more" rel="contents">
+              <a class="btn" href="/2022/04/13/%E9%87%87%E7%94%A8hive%E8%87%AA%E5%B8%A6%E7%9A%84%E6%96%B9%E6%B3%95%E7%94%9F%E6%88%90Hfile%EF%BC%8C%E5%B9%B6%E5%B0%86%E4%B8%8A%E4%BA%BF%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%87%8F%E5%AF%BC%E5%85%A5HBASE/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -931,7 +959,7 @@ make install</p>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -999,7 +1027,7 @@ make install</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">133</span>
+          <span class="site-state-item-count">155</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1011,7 +1039,7 @@ make install</p>
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/chinayangze" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chinayangze" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+        <a href="http://106.54.147.3:3002/" title="ChatGPT → http:&#x2F;&#x2F;106.54.147.3:3002" rel="noopener" target="_blank"><i class="fa fa-fw fa-ChatGPT"></i>ChatGPT</a>
       </span>
       <span class="links-of-author-item">
         <a href="mailto:info@ask3.cn" title="E-Mail → mailto:info@ask3.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
