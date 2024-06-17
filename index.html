@@ -209,7 +209,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/11/02/tidb%E9%83%A8%E7%BD%B2/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/06/17/%E7%94%A8%E6%88%B7%E6%97%A0%E6%B3%95%E5%9C%A8yarn%E9%9B%86%E7%BE%A4%E4%B8%8A%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -223,7 +223,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2023/11/02/tidb%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">tidb部署</a>
+            <a href="/2024/06/17/%E7%94%A8%E6%88%B7%E6%97%A0%E6%B3%95%E5%9C%A8yarn%E9%9B%86%E7%BE%A4%E4%B8%8A%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1/" class="post-title-link" itemprop="url">用户无法在yarn集群上提交任务</a>
         </h1>
 
         <div class="post-meta">
@@ -233,7 +233,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-11-02 10:51:26" itemprop="dateCreated datePublished" datetime="2023-11-02T10:51:26+08:00">2023-11-02</time>
+              <time title="创建时间：2024-06-17 11:28:55" itemprop="dateCreated datePublished" datetime="2024-06-17T11:28:55+08:00">2024-06-17</time>
             </span>
 
           
@@ -247,50 +247,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>新建用户</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">useradd tidb</span><br><span class="line">su - tidb</span><br></pre></td></tr></table></figure>
-<h2 id="在中控机上部署-TiUP-组件">在中控机上部署 TiUP 组件</h2>
-<p>在中控机上部署 TiUP 组件有两种方式：在线部署和离线部署。</p>
-<h3 id="在线部署">在线部署</h3>
-<p>以普通用户身份登录中控机。以 <code>tidb</code> 用户为例，后续安装 TiUP 及集群管理操作均通过该用户完成：</p>
-<ol>
-<li>
-<p>执行如下命令安装 TiUP 工具：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --proto <span class="string">'=https'</span> --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>按如下步骤设置 TiUP 环境变量：</p>
-<ol>
-<li>
-<p>重新声明全局环境变量：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> .bash_profile</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>确认 TiUP 工具是否安装：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span> tiup</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-</li>
-<li>
-<p>安装 TiUP cluster 组件：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tiup cluster</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>如果已经安装，则更新 TiUP cluster 组件至最新版本：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tiup update --self &amp;&amp; tiup update cluster</span><br></pre></td></tr></table></figure>
-<p>预期输出 <code>“Update successfully!”</code> 字样。</p>
-</li>
-<li>
-<p>验证当前 TiUP cluster 版本信息。执行如下命令查看 TiUP cluster 组件版本：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tiup --binary cluster</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="优化系统配置">优化系统配置</h2>
-<p>vim /etc/sysctl.conf</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">net.ipv4.tcp_tw_recycle &#x3D; 0</span><br><span class="line">net.ipv4.tcp_syncookies &#x3D; 0</span><br><span class="line">net.core.somaxconn &#x3D; 32768</span><br><span class="line">vm.swappiness &#x3D; 0</span><br><span class="line">vm.overcommit_memory &#x3D; 0</span><br><span class="line">fs.file-max &#x3D; 1000000</span><br></pre></td></tr></table></figure>
+          <p>用户无法在yarn集群上提交任务</p>
+<p><strong>解决方案:</strong></p>
+<p>关闭所有的ResourceManager进程</p>
+<p>通过zk客户端查看</p>
+<p>sh /opt/cloudera/parcels/CDH/lib/zookeeper/bin/zkCli.sh</p>
+<p>ls /rmstore/ZKRMStateRoot/RMAppRoot 目录下</p>
+<p>不为空则使用该命令 rmr  /rmstore/ZKRMStateRoot/RMAppRoot 删除目录文件</p>
+<p>删除完再启动ResourceManager恢复正常<br>
+此种方式是将ZK中需要RM恢复的任务清空实现的，即RM不恢复正在运行的任务，会导致集群正在运行的任务停止</p>
+<p>原文链接：<a href="https://blog.csdn.net/anguoan/article/details/128613672" target="_blank" rel="noopener">https://blog.csdn.net/anguoan/article/details/128613672</a></p>
+
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/11/02/tidb%E9%83%A8%E7%BD%B2/#more" rel="contents">
+              <a class="btn" href="/2024/06/17/%E7%94%A8%E6%88%B7%E6%97%A0%E6%B3%95%E5%9C%A8yarn%E9%9B%86%E7%BE%A4%E4%B8%8A%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -314,7 +284,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/10/31/%E4%BB%8E%20TiDB%20%E9%9B%86%E7%BE%A4%E8%BF%81%E7%A7%BB%E6%95%B0%E6%8D%AE%E8%87%B3%E5%8F%A6%E4%B8%80%20TiDB%20%E9%9B%86%E7%BE%A4/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/05/29/cloudcanl%202.2.4%20%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -328,7 +298,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2023/10/31/%E4%BB%8E%20TiDB%20%E9%9B%86%E7%BE%A4%E8%BF%81%E7%A7%BB%E6%95%B0%E6%8D%AE%E8%87%B3%E5%8F%A6%E4%B8%80%20TiDB%20%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">从 TiDB 集群迁移数据至另一 TiDB 集群</a>
+            <a href="/2024/05/29/cloudcanl%202.2.4%20%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">cloudcanl 2.2.4 安装部署</a>
         </h1>
 
         <div class="post-meta">
@@ -338,225 +308,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-10-31 10:46:18" itemprop="dateCreated datePublished" datetime="2023-10-31T10:46:18+08:00">2023-10-31</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="迁移全量数据">迁移全量数据</h2>
-<p>关闭 GC。</p>
-<p>为了保证增量迁移过程中新写入的数据不丢失，在开始备份之前，需要关闭上游集群的垃圾回收 (GC) 机制，以确保系统不再清理历史数据。</p>
-<p>执行如下命令关闭 GC：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; SET GLOBAL tidb_gc_enable=FALSE;</span><br></pre></td></tr></table></figure>
-<p>备份数据。</p>
-<p>在上游集群中执行 BACKUP 语句备份数据：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MySQL [(none)]&gt; BACKUP DATABASE * TO 's3://backup?access-key=minio&amp;secret-access-key=miniostorage&amp;endpoint=http://$&#123;HOST_IP&#125;:6060&amp;force-path-style=true' RATE_LIMIT = 120 MB/SECOND;</span><br></pre></td></tr></table></figure>
-<p>恢复数据。</p>
-<p>在下游集群中执行 RESTORE 语句恢复数据：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/10/31/%E4%BB%8E%20TiDB%20%E9%9B%86%E7%BE%A4%E8%BF%81%E7%A7%BB%E6%95%B0%E6%8D%AE%E8%87%B3%E5%8F%A6%E4%B8%80%20TiDB%20%E9%9B%86%E7%BE%A4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/09/13/SR%E8%BF%90%E7%BB%B4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/09/13/SR%E8%BF%90%E7%BB%B4/" class="post-title-link" itemprop="url">SR运维</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-09-13 10:56:11" itemprop="dateCreated datePublished" datetime="2023-09-13T10:56:11+08:00">2023-09-13</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="修复tablet">修复tablet</h2>
-<p><strong>注意： 要连接fe的leader节点</strong></p>
-<p>找到错误的tablet</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW PROC &#39;&#x2F;statistic&#x2F;12026&#39;;</span><br></pre></td></tr></table></figure>
-<p>找到tablet对应错误的 IsErrorState 的节点</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">show tablet 341603</span><br><span class="line">SHOW PROC &#39;&#x2F;dbs&#x2F;12026&#x2F;335109&#x2F;partitions&#x2F;335078&#x2F;335110&#x2F;341603&#39;;</span><br></pre></td></tr></table></figure>
-<p>setBad</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ADMIN SET REPLICA STATUS PROPERTIES(&quot;tablet_id&quot; &#x3D; &quot;341603&quot;, &quot;backend_id&quot; &#x3D; &quot;10006&quot; , &quot;status&quot; &#x3D; &quot;bad&quot;);</span><br></pre></td></tr></table></figure>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/09/13/SR%E8%BF%90%E7%BB%B4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/09/05/Minio%20%E6%A8%A1%E6%8B%9F%E5%85%BC%E5%AE%B9%20S3%20%E7%9A%84%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/09/05/Minio%20%E6%A8%A1%E6%8B%9F%E5%85%BC%E5%AE%B9%20S3%20%E7%9A%84%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1/" class="post-title-link" itemprop="url">Minio 模拟兼容 S3 的存储服务</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-09-05 09:35:51" itemprop="dateCreated datePublished" datetime="2023-09-05T09:35:51+08:00">2023-09-05</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="搭建-MinIO-作为备份存储系统-，兼容S3">搭建 MinIO 作为备份存储系统 ，兼容S3</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;dl.min.io&#x2F;server&#x2F;minio&#x2F;release&#x2F;linux-amd64&#x2F;minio</span><br><span class="line">chmod +x minio</span><br><span class="line"></span><br><span class="line"># 配置访问 minio 的 access-key access-screct-id</span><br><span class="line"></span><br><span class="line">export HOST_IP&#x3D;&#39;172.20.192.151&#39; </span><br><span class="line">export MINIO_ROOT_USER&#x3D;&#39;minio&#39;</span><br><span class="line">export MINIO_ROOT_PASSWORD&#x3D;&#39;miniostorage&#39;</span><br><span class="line"></span><br><span class="line"># 创建数据目录,  其中 backup 为 bucket 的名称</span><br><span class="line"></span><br><span class="line">mkdir -p data&#x2F;backup</span><br><span class="line"></span><br><span class="line"># 启动 minio, 暴露端口在 6060</span><br><span class="line"></span><br><span class="line">&#x2F;opt&#x2F;module&#x2F;minio server &#x2F;opt&#x2F;module&#x2F;data --address :6060 &amp;</span><br></pre></td></tr></table></figure>
-<h2 id="单节点部署多磁盘">单节点部署多磁盘</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;opt&#x2F;module&#x2F;minio server --address :6060  &#x2F;dfs&#x2F;data1&#x2F;s3data &#x2F;dfs&#x2F;data2&#x2F;s3data &#x2F;dfs&#x2F;data3&#x2F;s3d &amp;</span><br></pre></td></tr></table></figure>
-<h2 id="备份-还原-TIDB数据">备份 还原 TIDB数据</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mycli -h172.20.192.70 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">BACKUP DATABASE test TO &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39; RATE_LIMIT &#x3D; 120 MB&#x2F;SECOND;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mycli -h172.20.192.115 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">mysql&gt; RESTORE DATABASE test FROM &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39;;</span><br></pre></td></tr></table></figure>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/09/05/Minio%20%E6%A8%A1%E6%8B%9F%E5%85%BC%E5%AE%B9%20S3%20%E7%9A%84%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/08/22/cloudcanl%202.2.4%20%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/08/22/cloudcanl%202.2.4%20%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">cloudcanl 2.2.4 安装部署</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-08-22 10:31:59" itemprop="dateCreated datePublished" datetime="2023-08-22T10:31:59+08:00">2023-08-22</time>
+              <time title="创建时间：2024-05-29 16:16:19" itemprop="dateCreated datePublished" datetime="2024-05-29T16:16:19+08:00">2024-05-29</time>
             </span>
 
           
@@ -571,7 +323,7 @@
 
       
           <p>cloudcanl 2.2.4 安装部署</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">sudo yum update</span><br><span class="line"></span><br><span class="line"># base util</span><br><span class="line"></span><br><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum install -y lsof</span><br><span class="line">sudo yum install -y bc</span><br><span class="line">sudo yum install -y p7zip p7zip-plugins</span><br><span class="line"></span><br><span class="line"># install docker</span><br><span class="line"></span><br><span class="line">sudo yum-config-manager --add-repo https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br><span class="line">sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</span><br><span class="line">sudo systemctl start docker</span><br><span class="line">systemctl enable docker</span><br><span class="line">sudo wget &quot;https:&#x2F;&#x2F;pc.clougence.com&#x2F;docker-compose-1.28.3&quot; -O &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br><span class="line">sudo chmod +x &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br><span class="line"></span><br><span class="line"># check</span><br><span class="line"></span><br><span class="line">docker -v</span><br><span class="line">docker compose version</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">sudo yum update</span><br><span class="line">sudo yum -y install epel-release</span><br><span class="line"># base util</span><br><span class="line"></span><br><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum install -y lsof</span><br><span class="line">sudo yum install -y bc</span><br><span class="line">sudo yum install -y p7zip p7zip-plugins</span><br><span class="line"></span><br><span class="line"># install docker</span><br><span class="line"></span><br><span class="line">sudo yum-config-manager --add-repo https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br><span class="line">sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</span><br><span class="line">sudo systemctl start docker</span><br><span class="line">systemctl enable docker</span><br><span class="line">sudo wget &quot;https:&#x2F;&#x2F;pc.clougence.com&#x2F;docker-compose-1.28.3&quot; -O &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br><span class="line">sudo chmod +x &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br><span class="line"></span><br><span class="line"># check</span><br><span class="line"></span><br><span class="line">docker -v</span><br><span class="line">docker-compose version</span><br></pre></td></tr></table></figure>
 <h2 id="系统准备">系统准备</h2>
 <p>clougence用户ulimit上限调整为102400</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vi  &#x2F;etc&#x2F;security&#x2F;limits.d&#x2F;20-nproc.conf</span><br><span class="line">## 调节clougence用户的资源限制</span><br></pre></td></tr></table></figure>
@@ -588,7 +340,7 @@
 </ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/08/22/cloudcanl%202.2.4%20%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/#more" rel="contents">
+              <a class="btn" href="/2024/05/29/cloudcanl%202.2.4%20%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -612,7 +364,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/08/16/tidb%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/05/21/tidb%E5%A4%87%E4%BB%BD%E3%80%81%E8%BF%98%E5%8E%9F%E3%80%81cdc%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -626,7 +378,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2023/08/16/tidb%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">tidb常用操作</a>
+            <a href="/2024/05/21/tidb%E5%A4%87%E4%BB%BD%E3%80%81%E8%BF%98%E5%8E%9F%E3%80%81cdc%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5/" class="post-title-link" itemprop="url">tidb备份、还原、cdc实时同步</a>
         </h1>
 
         <div class="post-meta">
@@ -636,7 +388,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-08-16 15:58:05" itemprop="dateCreated datePublished" datetime="2023-08-16T15:58:05+08:00">2023-08-16</time>
+              <time title="创建时间：2024-05-21 14:36:38" itemprop="dateCreated datePublished" datetime="2024-05-21T14:36:38+08:00">2024-05-21</time>
             </span>
 
           
@@ -650,20 +402,25 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>tidb常用操作</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">tiup cluster deploy tidb-test-v1 v6.5.2 ./topology.yaml --user root -p</span><br><span class="line">tiup cluster list</span><br><span class="line">tiup cluster clean tidb-test-v1 --all</span><br><span class="line"><span class="meta">#</span><span class="bash"> tiup cluster destroy tidb-test-v1</span></span><br><span class="line">tiup cluster start tidb-test-v1 --init</span><br><span class="line">tiup cluster display tidb-test-v1</span><br><span class="line">tiup cluster stop tidb-test-v1</span><br><span class="line">tiup cluster restart tidb-test-v1 </span><br><span class="line">tiup cluster edit-config tidb-test-v1 </span><br><span class="line">tiup cluster check tidb-test-v1 scale-out.yml --cluster --user root -p</span><br><span class="line">tiup cluster check tidb-test-v1 scale-out.yml --cluster --apply --user root -p</span><br><span class="line">tiup cluster scale-out tidb-test-v1 scale-out.yml --user root -p</span><br><span class="line">tiup ctl:v6.5.2 pd -u http://172.20.192.70:2379 store limit all engine tiflash 200 add-peer</span><br><span class="line">-- 如果你使用 TiUP 部署，可以用 tiup ctl:v&lt;CLUSTER_VERSION&gt; pd 代替 pd-ctl -u &lt;pd_ip:pd_port&gt; 命令。</span><br><span class="line">tiup ctl:v6.5.2 pd store</span><br><span class="line">tiup ctl:v6.5.2 pd -u http://172.20.192.70:2379 store limit store id 8487838  220 add-peer</span><br><span class="line">tiup ctl:v6.5.2 pd -i -u http://172.20.192.70:2379</span><br><span class="line">tiup cluster restart tidb-test-v1 -N 172.20.192.74:9090</span><br><span class="line">tiup cluster reload tidb-test-v1</span><br><span class="line">tiup install bench</span><br><span class="line">tiup diag config clinic.token eyJrIjoicFpJaDJ1a042ZjQ0a2E2NyIsInUiOjYwMywiaWQiOjU3Nn0=</span><br><span class="line">tiup diag collect tidb-test-v1</span><br></pre></td></tr></table></figure>
-<h3 id="备份与恢复">备份与恢复</h3>
-<p>如果是 BR 备份，还原之后是同名的；<br>
-dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复到的数据库。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mycli -h172.20.192.70 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">BACKUP DATABASE test TO &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39; RATE_LIMIT &#x3D; 120 MB&#x2F;SECOND;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mycli -h172.20.192.115 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">mysql&gt; RESTORE DATABASE test FROM &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39;;</span><br></pre></td></tr></table></figure>
-<h4 id="不停机升级">不停机升级</h4>
-<p>tiup cluster upgrade tidb-prod v6.5.3</p>
-<p>重启grafana</p>
-<p>tiup cluster restart tidb-prod -R grafana</p>
-<h2 id="备份">备份</h2>
+          <p>tidb备份，还原，cdc实时同步</p>
+<h2 id="全量备份">全量备份</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#指定时间备份</span><br><span class="line">tiup br backup full --pd &quot;172.20.192.115:2379&quot; \</span><br><span class="line">--storage &quot;s3:&#x2F;&#x2F;tidb&#x2F;all20240520?access-key&#x3D;minioadmin&amp;secret-access-key&#x3D;***&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&quot; \</span><br><span class="line">--backupts&#x3D;&#39;2024&#x2F;05&#x2F;18 00:00:00&#39;</span><br></pre></td></tr></table></figure>
+<h2 id="增量备份">增量备份</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 获取上一次的备份时间戳</span><br><span class="line">tiup br validate decode --field&#x3D;&quot;end-version&quot; --storage &#39;s3:&#x2F;&#x2F;tidb&#x2F;all20240520?access-key&#x3D;minioadmin&amp;secret-access-key&#x3D;minioadmin&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&#39;| tail -n1</span><br><span class="line"></span><br><span class="line">tiup br backup full --pd &quot;172.20.192.115:2379&quot; \</span><br><span class="line">--storage &quot;s3:&#x2F;&#x2F;tidb&#x2F;add20240520?access-key&#x3D;minioadmin&amp;secret-access-key&#x3D;***&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&quot; \</span><br><span class="line">--lastbackupts&#x3D;&#39;449829037670400000&#39;</span><br></pre></td></tr></table></figure>
+<h2 id="cdc实时同步">cdc实时同步</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 获取上一次的备份时间戳</span><br><span class="line">tiup br validate decode --field&#x3D;&quot;end-version&quot; --storage &#39;s3:&#x2F;&#x2F;tidb&#x2F;all20240520?access-key&#x3D;minioadmin&amp;secret-access-key&#x3D;***&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&#39;| tail -n1</span><br><span class="line"></span><br><span class="line">tiup cdc cli changefeed create --server&#x3D;http:&#x2F;&#x2F;172.20.192.108:8300 --sink-uri&#x3D;&quot;mysql:&#x2F;&#x2F;root:***@172.20.192.233:32570&quot; --changefeed-id&#x3D;&quot;prod-to-k8s&quot; --start-ts&#x3D;&quot;449887328375668790&quot;</span><br></pre></td></tr></table></figure>
+<p>–  对于错误代码为 8138、8139 和 8140 的错误，可以通过设置 set @@tidb_enable_mutation_checker=0 跳过检查。<br>
+–  对于错误代码为 8141 的错误，可以通过设置 set @@tidb_txn_assertion_level=OFF 跳过检查。</p>
+<p>“error”: {<br>
+“time”: “2024-05-20T18:08:00.547340271+08:00”,<br>
+“addr”: “172.20.192.107:8300”,<br>
+“code”: “CDC:ErrChangefeedUnretryable”,<br>
+“message”: “[CDC:ErrMySQLTxnError]MySQL txn error: context deadline exceeded”<br>
+}</p>
+<p>tiup cdc cli changefeed create --server=http://172.20.192.107:8300 --sink-uri=“mysql://root:***@172.20.192.233:32570?max-txn-row=20” --changefeed-id=“prod-to-k8s” --start-ts=“449889998692417548”  --config /home/tidb/cdc-prod-to-k8s.toml</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/08/16/tidb%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/#more" rel="contents">
+              <a class="btn" href="/2024/05/21/tidb%E5%A4%87%E4%BB%BD%E3%80%81%E8%BF%98%E5%8E%9F%E3%80%81cdc%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -687,7 +444,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/08/10/Nginx%20%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%20Nginx%20+%20Keepalived/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/05/16/TIDB%E6%90%AD%E5%BB%BA%E5%8F%8C%E9%9B%86%E7%BE%A4%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -701,7 +458,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2023/08/10/Nginx%20%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%20Nginx%20+%20Keepalived/" class="post-title-link" itemprop="url">Nginx 高可用集群解决方案 Nginx + Keepalived</a>
+            <a href="/2024/05/16/TIDB%E6%90%AD%E5%BB%BA%E5%8F%8C%E9%9B%86%E7%BE%A4%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" class="post-title-link" itemprop="url">TIDB搭建双集群主从复制</a>
         </h1>
 
         <div class="post-meta">
@@ -711,7 +468,328 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-08-10 14:00:39" itemprop="dateCreated datePublished" datetime="2023-08-10T14:00:39+08:00">2023-08-10</time>
+              <time title="创建时间：2024-05-16 14:03:25" itemprop="dateCreated datePublished" datetime="2024-05-16T14:03:25+08:00">2024-05-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>TIDB搭建双集群主从复制</h1>
+<p>官网参考文档</p>
+<p><a href="https://docs.pingcap.com/zh/tidb/v6.5/replicate-between-primary-and-secondary-clusters#%E6%90%AD%E5%BB%BA%E5%8F%8C%E9%9B%86%E7%BE%A4%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6" target="_blank" rel="noopener">https://docs.pingcap.com/zh/tidb/v6.5/replicate-between-primary-and-secondary-clusters#搭建双集群主从复制</a></p>
+<h1>TiCDC 安装部署与集群运维</h1>
+<p><a href="https://docs.pingcap.com/zh/tidb/v6.5/deploy-ticdc" target="_blank" rel="noopener">https://docs.pingcap.com/zh/tidb/v6.5/deploy-ticdc</a></p>
+<ol>
+<li>
+<p>备份数据。</p>
+<p>在上游集群中执行 BACKUP 语句备份数据：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MySQL [(none)]&gt; BACKUP DATABASE * TO '`s3://backup?access-key=minio&amp;secret-access-key=miniostorage&amp;endpoint=http://$&#123;HOST_IP&#125;:6060&amp;force-path-style=true`' RATE_LIMIT = 120 MB/SECOND;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+----------------------+----------+--------------------+---------------------+---------------------+</span><br><span class="line">| Destination          | Size     | BackupTS           | Queue Time          | Execution Time      |</span><br><span class="line">+----------------------+----------+--------------------+---------------------+---------------------+</span><br><span class="line">| local:&#x2F;&#x2F;&#x2F;tmp&#x2F;backup&#x2F; | 10315858 | 431434047157698561 | 2022-02-25 19:57:59 | 2022-02-25 19:57:59 |</span><br><span class="line">+----------------------+----------+--------------------+---------------------+---------------------+</span><br><span class="line">1 row in set (2.11 sec)</span><br></pre></td></tr></table></figure>
+<p>备份语句提交成功后，TiDB 会返回关于备份数据的元信息，这里需要重点关注 BackupTS，它意味着该时间点之前数据会被备份，后边的教程中，将使用 BackupTS 作为<strong>数据校验截止时间</strong>和 <strong>TiCDC 增量扫描的开始时间</strong>。</p>
+</li>
+<li>
+<p>恢复数据。</p>
+<p>在下游集群中执行 RESTORE 语句恢复数据：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; RESTORE DATABASE * FROM '`s3://backup?access-key=minio&amp;secret-access-key=miniostorage&amp;endpoint=http://$&#123;HOST_IP&#125;:6060&amp;force-path-style=true`';</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+----------------------+----------+--------------------+---------------------+---------------------+</span><br><span class="line">| Destination          | Size     | BackupTS           | Queue Time          | Execution Time      |</span><br><span class="line">+----------------------+----------+--------------------+---------------------+---------------------+</span><br><span class="line">| local:&#x2F;&#x2F;&#x2F;tmp&#x2F;backup&#x2F; | 10315858 | 431434141450371074 | 2022-02-25 20:03:59 | 2022-02-25 20:03:59 |</span><br><span class="line">+----------------------+----------+--------------------+---------------------+---------------------+</span><br><span class="line">1 row in set (41.85 sec)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>创建一个 TiCDC 同步任务，实时同步主集群数据到从集群</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tiup cdc cli changefeed create --server&#x3D;http:&#x2F;&#x2F;172.20.192.108:8300 --sink-uri&#x3D;&quot;mysql:&#x2F;&#x2F;root:Admi*@172.20.192.101:4000&quot; --changefeed-id&#x3D;&quot;upstream-to-downstream&quot; --start-ts&#x3D;&quot;445309452101091541&quot;</span><br></pre></td></tr></table></figure>
+<p>以上命令中：</p>
+<ul>
+<li><code>--server</code>：TiCDC 集群任意一节点的地址</li>
+<li><code>--sink-uri</code>：同步任务下游的地址</li>
+<li><code>--start-ts</code>：TiCDC 同步的起点，需要设置为实际的备份时间点（也就是<a href="https://docs.pingcap.com/zh/tidb/v6.5/replicate-between-primary-and-secondary-clusters#%E7%AC%AC-2-%E6%AD%A5%E8%BF%81%E7%A7%BB%E5%85%A8%E9%87%8F%E6%95%B0%E6%8D%AE" target="_blank" rel="noopener">第 2 步：迁移全量数据</a>提到的 BackupTS）</li>
+</ul>
+<p>使用 TiCDC 命令行工具来查看集群状态</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/05/16/TIDB%E6%90%AD%E5%BB%BA%E5%8F%8C%E9%9B%86%E7%BE%A4%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/05/16/%E6%BC%AB%E9%81%93%E4%BA%91%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Tidb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/16/%E6%BC%AB%E9%81%93%E4%BA%91%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Tidb/" class="post-title-link" itemprop="url">漫道云环境安装Tidb</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-05-16 09:23:51" itemprop="dateCreated datePublished" datetime="2024-05-16T09:23:51+08:00">2024-05-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>漫道云环境安装Tidb</p>
+<h3 id="安装-TiDB-Operator-CRDs">安装 TiDB Operator CRDs</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;pingcap&#x2F;tidb-operator&#x2F;v1.6.0-beta.1&#x2F;manifests&#x2F;crd.yaml</span><br></pre></td></tr></table></figure>
+<p>helm delete tidb-operator -n tidb-admin</p>
+<p>kubectl create namespace tidb-cluster &amp;&amp; \</p>
+<p>wget <a href="https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.0-beta.1/examples/advanced/tidb-cluster.yaml" target="_blank" rel="noopener">https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.0-beta.1/examples/advanced/tidb-cluster.yaml</a></p>
+<p>kubectl -n tidb-cluster apply -f  tidb-cluster.yaml</p>
+<p>kubectl -n tidb-cluster delete -f tidb-cluster.yaml</p>
+<p>wget <a href="https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.0-beta.1/examples/basic/tidb-dashboard.yaml" target="_blank" rel="noopener">https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.0-beta.1/examples/basic/tidb-dashboard.yaml</a></p>
+<p>kubectl -n tidb-cluster apply -f  tidb-dashboard.yaml</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/05/16/%E6%BC%AB%E9%81%93%E4%BA%91%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Tidb/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/04/28/tidb%20%E5%8D%87%E7%BA%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/28/tidb%20%E5%8D%87%E7%BA%A7/" class="post-title-link" itemprop="url">tidb 升级</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-28 17:30:32" itemprop="dateCreated datePublished" datetime="2024-04-28T17:30:32+08:00">2024-04-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>tidb 升级</p>
+<ol>
+<li>
+<p>先升级 TiUP 版本（建议 <code>tiup</code> 版本不低于 <code>1.11.3</code>）：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tiup update --self</span><br><span class="line">tiup --version</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>再升级 TiUP Cluster 版本（建议 <code>tiup cluster</code> 版本不低于 <code>1.11.3</code>）：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tiup update cluster</span><br><span class="line">tiup cluster --version</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tiup cluster check tidb-prod-101 --cluster</span><br></pre></td></tr></table></figure>
+<p>停止组件cdc</p>
+<p>tiup cluster stop tidb-prod -R cdc</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tiup cluster upgrade tidb-prod-101 v7.5.1</span><br></pre></td></tr></table></figure>
+<p>tiup cluster display tidb-prod-101</p>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/28/tidb%20%E5%8D%87%E7%BA%A7/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/04/17/Minio%20%E6%A8%A1%E6%8B%9F%E5%85%BC%E5%AE%B9%20S3%20%E7%9A%84%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/17/Minio%20%E6%A8%A1%E6%8B%9F%E5%85%BC%E5%AE%B9%20S3%20%E7%9A%84%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1/" class="post-title-link" itemprop="url">Minio 模拟兼容 S3 的存储服务</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-17 15:29:22" itemprop="dateCreated datePublished" datetime="2024-04-17T15:29:22+08:00">2024-04-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="搭建-MinIO-作为备份存储系统-，兼容S3">搭建 MinIO 作为备份存储系统 ，兼容S3</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;dl.min.io&#x2F;server&#x2F;minio&#x2F;release&#x2F;linux-amd64&#x2F;minio</span><br><span class="line">chmod +x minio</span><br><span class="line"></span><br><span class="line"># 配置访问 minio 的 access-key access-screct-id</span><br><span class="line"></span><br><span class="line">export HOST_IP&#x3D;&#39;172.20.192.151&#39; </span><br><span class="line">export MINIO_ROOT_USER&#x3D;&#39;minio&#39;</span><br><span class="line">export MINIO_ROOT_PASSWORD&#x3D;&#39;miniostorage&#39;</span><br><span class="line"></span><br><span class="line"># 创建数据目录,  其中 backup 为 bucket 的名称</span><br><span class="line"></span><br><span class="line">mkdir -p data&#x2F;backup</span><br><span class="line"></span><br><span class="line"># 启动 minio, 暴露端口在 6060</span><br><span class="line"></span><br><span class="line">&#x2F;opt&#x2F;module&#x2F;minio server &#x2F;opt&#x2F;module&#x2F;data --address :6060 &amp;</span><br></pre></td></tr></table></figure>
+<h2 id="单节点部署多磁盘">单节点部署多磁盘</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;opt&#x2F;module&#x2F;minio server --address :6060  &#x2F;dfs&#x2F;data1&#x2F;s3data &#x2F;dfs&#x2F;data2&#x2F;s3data &#x2F;dfs&#x2F;data3&#x2F;s3data &amp;</span><br></pre></td></tr></table></figure>
+<h2 id="备份-还原-TIDB数据">备份 还原 TIDB数据</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mycli -h172.20.192.70 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">BACKUP DATABASE test TO &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39; RATE_LIMIT &#x3D; 120 MB&#x2F;SECOND;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mycli -h172.20.192.115 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">mysql&gt; RESTORE DATABASE test FROM &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39;;</span><br></pre></td></tr></table></figure>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/17/Minio%20%E6%A8%A1%E6%8B%9F%E5%85%BC%E5%AE%B9%20S3%20%E7%9A%84%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/04/17/Nginx%20%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%20Nginx%20+%20Keepalived/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/17/Nginx%20%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%20Nginx%20+%20Keepalived/" class="post-title-link" itemprop="url">Nginx 高可用集群解决方案 Nginx + Keepalived</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-17 10:44:24" itemprop="dateCreated datePublished" datetime="2024-04-17T10:44:24+08:00">2024-04-17</time>
             </span>
 
           
@@ -740,7 +818,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
 
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/08/10/Nginx%20%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%20Nginx%20+%20Keepalived/#more" rel="contents">
+              <a class="btn" href="/2024/04/17/Nginx%20%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%20Nginx%20+%20Keepalived/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -764,7 +842,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/08/03/%E7%94%A8%20arthas%20%E6%9D%A5%E5%88%86%E6%9E%90%E5%BC%82%E5%B8%B8%E8%BF%9B%E7%A8%8B/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/04/17/SR%E6%97%A5%E5%B8%B8%E8%BF%90%E7%BB%B4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -778,7 +856,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2023/08/03/%E7%94%A8%20arthas%20%E6%9D%A5%E5%88%86%E6%9E%90%E5%BC%82%E5%B8%B8%E8%BF%9B%E7%A8%8B/" class="post-title-link" itemprop="url">用 arthas 来分析异常进程</a>
+            <a href="/2024/04/17/SR%E6%97%A5%E5%B8%B8%E8%BF%90%E7%BB%B4/" class="post-title-link" itemprop="url">SR日常运维</a>
         </h1>
 
         <div class="post-meta">
@@ -788,7 +866,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-08-03 17:18:55" itemprop="dateCreated datePublished" datetime="2023-08-03T17:18:55+08:00">2023-08-03</time>
+              <time title="创建时间：2024-04-17 10:02:00" itemprop="dateCreated datePublished" datetime="2024-04-17T10:02:00+08:00">2024-04-17</time>
             </span>
 
           
@@ -802,19 +880,31 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="用-arthas-来分析异常进程">用 arthas 来分析异常进程</h2>
-<p>arthas使用参考：  <a href="https://arthas.aliyun.com/doc/quick-start.html" target="_blank" rel="noopener">https://arthas.aliyun.com/doc/quick-start.html</a></p>
-<p>使用和目标进程一致的用户启动，否则可能 attach 失败</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u hbase env PATH&#x3D;$PATH java -jar arthas-boot.jar</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dashboard</span><br></pre></td></tr></table></figure>
-<p>运行 dashboard 命令回车，就可以查看该进程占用资源的总体情况</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">thread -n 3</span><br></pre></td></tr></table></figure>
-<p>输出资源占用前三名的线程</p>
-<h2 id="通过-thread-命令来获取到进程的-Main-Class">通过 thread 命令来获取到进程的 Main Class</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ thread 1 | grep &#39;main(&#39;</span><br><span class="line">    at demo.MathGame.main(MathGame.java:17)</span><br></pre></td></tr></table></figure>
+          <h2 id="1-发生-“close-index-channel-failed”-和-“too-many-tablet-versions”-错误应该如何处理？">1. 发生 “close index channel failed” 和 “too many tablet versions” 错误应该如何处理？</h2>
+<p>上述报错是因为导入频率太快，数据没能及时合并 (Compaction) ，从而导致版本数超过支持的最大未合并版本数。默认支持的最大未合并版本数为 1000。可以通过如下方法解决上述报错：</p>
+<ul>
+<li>
+<p>增大单次导入的数据量，降低导入频率。</p>
+</li>
+<li>
+<p>修改 BE 配置文件 <strong>be.conf</strong> 中相关参数的配置，以加快 Compaction：</p>
+<ul>
+<li>
+<p>对于明细表、聚合表和更新表，可以适当调大 <code>cumulative_compaction_num_threads_per_disk</code>、<code>base_compaction_num_threads_per_disk</code> 和 <code>cumulative_compaction_check_interval_seconds</code> 的值。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cumulative_compaction_num_threads_per_disk &#x3D; 4</span><br><span class="line">base_compaction_num_threads_per_disk &#x3D; 2</span><br><span class="line">cumulative_compaction_check_interval_seconds &#x3D; 2</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>对于主键表，可以适当调大 <code>update_compaction_num_threads_per_disk</code> 的值。适当调小 <code>update_compaction_per_tablet_min_interval_seconds</code> 的值。</p>
+</li>
+</ul>
+<p>修改完成后，需要观察内存和 I/O，确保内存和 I/O 正常。</p>
+</li>
+</ul>
+<p>curl -XPOST <a href="http://172.20.85.188:8040/api/update_config?tablet_max_versions=10000" target="_blank" rel="noopener">http://172.20.85.188:8040/api/update_config?tablet_max_versions=10000</a></p>
+
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/08/03/%E7%94%A8%20arthas%20%E6%9D%A5%E5%88%86%E6%9E%90%E5%BC%82%E5%B8%B8%E8%BF%9B%E7%A8%8B/#more" rel="contents">
+              <a class="btn" href="/2024/04/17/SR%E6%97%A5%E5%B8%B8%E8%BF%90%E7%BB%B4/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -838,7 +928,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/07/26/EFAK%20-%20Kafka%E5%8F%AF%E8%A7%86%E5%8C%96%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/04/09/%E4%BD%BF%E7%94%A8Yarn%E6%A0%87%E7%AD%BE%E6%9C%BA%E5%88%B6%E5%AE%9E%E7%8E%B0%E4%BB%BB%E5%8A%A1%E8%B5%84%E6%BA%90%E9%9A%94%E7%A6%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -852,7 +942,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2023/07/26/EFAK%20-%20Kafka%E5%8F%AF%E8%A7%86%E5%8C%96%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/" class="post-title-link" itemprop="url">EFAK - Kafka可视化管理工具</a>
+            <a href="/2024/04/09/%E4%BD%BF%E7%94%A8Yarn%E6%A0%87%E7%AD%BE%E6%9C%BA%E5%88%B6%E5%AE%9E%E7%8E%B0%E4%BB%BB%E5%8A%A1%E8%B5%84%E6%BA%90%E9%9A%94%E7%A6%BB/" class="post-title-link" itemprop="url">使用Yarn标签机制实现任务资源隔离</a>
         </h1>
 
         <div class="post-meta">
@@ -862,7 +952,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-07-26 13:36:10" itemprop="dateCreated datePublished" datetime="2023-07-26T13:36:10+08:00">2023-07-26</time>
+              <time title="创建时间：2024-04-09 10:39:01" itemprop="dateCreated datePublished" datetime="2024-04-09T10:39:01+08:00">2024-04-09</time>
             </span>
 
           
@@ -876,93 +966,30 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>EFAK - Kafka可视化管理工具</h1>
-<p><strong>提取 EFAK</strong></p>
-<p>这里我们解压到<code>/data/soft/new</code>目录并解压：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">tar -zxvf efak-xxx-bin.tar.gz</span><br></pre></td></tr></table></figure>
-<p>如果之前安装过版本，删除修改后的版本，重命名当前版本，如下图：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf efakmv efak-xxx efak</span><br></pre></td></tr></table></figure>
-<p>然后，配置 EFAK 配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profileexport KE_HOME=/data/soft/new/efakexport PATH=<span class="variable">$PATH</span>:<span class="variable">$KE_HOME</span>/bin</span><br></pre></td></tr></table></figure>
-<p>最后，我们使用<code>. /etc/profile</code>使配置立即生效。</p>
-<p>配置EFAK系统文件 根据自身Kafka集群的实际情况配置EFAK，例如zookeeper地址、Kafka集群的版本类型（zk为低版本，kafka为高版本）、开启安全认证的Kafka集群等。</p>
+          <h1>使用Yarn标签机制实现任务资源隔离</h1>
+<p>官网参考地址：  <a href="https://docs.cloudera.com/runtime/7.2.0/yarn-allocate-resources/topics/yarn-configuring-node-labels.html" target="_blank" rel="noopener">https://docs.cloudera.com/runtime/7.2.0/yarn-allocate-resources/topics/yarn-configuring-node-labels.html</a></p>
+<p>参考地址： <a href="https://zhuanlan.zhihu.com/p/674882366" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/674882366</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@bigdata-1 ~]# sudo -u hdfs hadoop fs -mkdir -p &#x2F;yarn&#x2F;node-labels</span><br><span class="line">[root@bigdata-1 ~]# sudo -u hdfs hadoop fs -chown -R yarn:yarn &#x2F;yarn</span><br><span class="line">[root@bigdata-1 ~]# sudo -u hdfs hadoop fs -chmod -R 700 &#x2F;yarn</span><br><span class="line">[root@bigdata-1 ~]# hadoop fs -ls &#x2F;yarn</span><br></pre></td></tr></table></figure>
+<p>YARN Service Advanced Configuration Snippet (Safety Valve) for yarn-site.xml</p>
+<p>add the following:</p>
+<ul>
+<li>
+<p>Set the following property to enable Node Labels:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Name: yarn.node-labels.enabled</span><br><span class="line">Value: true</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Set the following property to reference the HDFS node label directory</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Name: yarn.node-labels.fs-store.root-dir</span><br><span class="line">Value: hdfs:&#x2F;&#x2F;:&#x2F;</span><br></pre></td></tr></table></figure>
+<p>For example,</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Name: yarn.node-labels.fs-store.root-dir</span><br><span class="line">Value: hdfs:&#x2F;&#x2F;node-1.example.com:8020&#x2F;yarn&#x2F;node-labels&#x2F;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="使用命令方式给yarn集群添加标签"><strong>使用命令方式给yarn集群添加标签</strong></h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u yarn yarn rmadmin -addToClusterNodeLabels &quot;x(exclusive&#x3D;true),y(exclusive&#x3D;false)&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>使用命令方式节点关联标签：</strong></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/07/26/EFAK%20-%20Kafka%E5%8F%AF%E8%A7%86%E5%8C%96%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/07/21/%E7%94%A8%20Sysbench%20%E6%B5%8B%E8%AF%95%20TiDB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/21/%E7%94%A8%20Sysbench%20%E6%B5%8B%E8%AF%95%20TiDB/" class="post-title-link" itemprop="url">用 Sysbench 测试 TiDB</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-07-21 16:55:40" itemprop="dateCreated datePublished" datetime="2023-07-21T16:55:40+08:00">2023-07-21</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>用 Sysbench 测试 TiDB</h1>
-<h3 id="Sysbench-配置">Sysbench 配置</h3>
-<p>以下为 Sysbench 配置文件样例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mysql-host&#x3D;&#123;TIDB_HOST&#125;</span><br><span class="line">mysql-port&#x3D;4000</span><br><span class="line">mysql-user&#x3D;root</span><br><span class="line">mysql-password&#x3D;password</span><br><span class="line">mysql-db&#x3D;sbtest</span><br><span class="line">time&#x3D;600</span><br><span class="line">threads&#x3D;&#123;8, 16, 32, 64, 128, 256&#125;</span><br><span class="line">report-interval&#x3D;10</span><br><span class="line">db-driver&#x3D;mysql</span><br></pre></td></tr></table></figure>
-<p>可根据实际需求调整其参数，其中 <code>TIDB_HOST</code> 为 TiDB server 的 IP 地址（配置文件中不能写多个地址），<code>threads</code> 为测试中的并发连接数，可在 “8, 16, 32, 64, 128, 256” 中调整，导入数据时，建议设置 threads = 8 或者 16。调整后，将该文件保存为名为 <strong>config</strong> 的文件。</p>
-<p><strong>配置文件</strong>参考示例如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mysql-host&#x3D;172.16.30.33</span><br><span class="line">mysql-port&#x3D;4000</span><br><span class="line">mysql-user&#x3D;root</span><br><span class="line">mysql-password&#x3D;password</span><br><span class="line">mysql-db&#x3D;sbtest</span><br><span class="line">time&#x3D;600</span><br><span class="line">threads&#x3D;16</span><br><span class="line">report-interval&#x3D;10</span><br><span class="line">db-driver&#x3D;mysql</span><br></pre></td></tr></table></figure>
-<h3 id="数据导入">数据导入</h3>
-<p>注意</p>
-<p>如果 TiDB 启用了乐观事务模型（默认为悲观锁模式），当发现并发冲突时，会回滚事务。将 <code>tidb_disable_txn_auto_retry</code> 设置为 <code>off</code> 会开启事务冲突后的自动重试机制，可以尽可能避免事务冲突报错导致 Sysbench 程序退出的问题。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/21/%E7%94%A8%20Sysbench%20%E6%B5%8B%E8%AF%95%20TiDB/#more" rel="contents">
+              <a class="btn" href="/2024/04/09/%E4%BD%BF%E7%94%A8Yarn%E6%A0%87%E7%AD%BE%E6%9C%BA%E5%88%B6%E5%AE%9E%E7%8E%B0%E4%BB%BB%E5%8A%A1%E8%B5%84%E6%BA%90%E9%9A%94%E7%A6%BB/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -986,7 +1013,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1054,7 +1081,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">155</span>
+          <span class="site-state-item-count">171</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1095,7 +1122,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

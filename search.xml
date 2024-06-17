@@ -1,6 +1,679 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>用户无法在yarn集群上提交任务</title>
+    <url>/2024/06/17/%E7%94%A8%E6%88%B7%E6%97%A0%E6%B3%95%E5%9C%A8yarn%E9%9B%86%E7%BE%A4%E4%B8%8A%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1/</url>
+    <content><![CDATA[<p>用户无法在yarn集群上提交任务</p>
+<p><strong>解决方案:</strong></p>
+<p>关闭所有的ResourceManager进程</p>
+<p>通过zk客户端查看</p>
+<p>sh /opt/cloudera/parcels/CDH/lib/zookeeper/bin/zkCli.sh</p>
+<p>ls /rmstore/ZKRMStateRoot/RMAppRoot 目录下</p>
+<p>不为空则使用该命令 rmr  /rmstore/ZKRMStateRoot/RMAppRoot 删除目录文件</p>
+<p>删除完再启动ResourceManager恢复正常<br>
+此种方式是将ZK中需要RM恢复的任务清空实现的，即RM不恢复正在运行的任务，会导致集群正在运行的任务停止</p>
+<p>原文链接：<a href="https://blog.csdn.net/anguoan/article/details/128613672" target="_blank" rel="noopener">https://blog.csdn.net/anguoan/article/details/128613672</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>cloudcanl 2.2.4 安装部署</title>
+    <url>/2024/05/29/cloudcanl%202.2.4%20%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<p>cloudcanl 2.2.4 安装部署</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo yum update</span><br><span class="line">sudo yum -y install epel-release</span><br><span class="line"># base util</span><br><span class="line"></span><br><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum install -y lsof</span><br><span class="line">sudo yum install -y bc</span><br><span class="line">sudo yum install -y p7zip p7zip-plugins</span><br><span class="line"></span><br><span class="line"># install docker</span><br><span class="line"></span><br><span class="line">sudo yum-config-manager --add-repo https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br><span class="line">sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</span><br><span class="line">sudo systemctl start docker</span><br><span class="line">systemctl enable docker</span><br><span class="line">sudo wget &quot;https:&#x2F;&#x2F;pc.clougence.com&#x2F;docker-compose-1.28.3&quot; -O &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br><span class="line">sudo chmod +x &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br><span class="line"></span><br><span class="line"># check</span><br><span class="line"></span><br><span class="line">docker -v</span><br><span class="line">docker-compose version</span><br></pre></td></tr></table></figure>
+<h2 id="系统准备">系统准备</h2>
+<p>clougence用户ulimit上限调整为102400</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi  &#x2F;etc&#x2F;security&#x2F;limits.d&#x2F;20-nproc.conf</span><br><span class="line">## 调节clougence用户的资源限制</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 解压*</span><br><span class="line">7z x cloudcanal-2.2.4.7z -o.&#x2F;cloudcanal_home</span><br><span class="line">cd cloudcanal_home</span><br></pre></td></tr></table></figure>
+<h2 id="5-启动CloudCanal">5. 启动CloudCanal</h2>
+<ul>
+<li>执行启动命令: <code>sh startup.sh</code></li>
+<li>当终端出现 cloudcanal start 时，即启动成功<br>
+<a href="https://www.askcug.com/assets/uploads/files/1620979032983-7b00e562-cd45-4905-a626-1356503d8213-image.png" target="_blank" rel="noopener"><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2023/04/1620979032983-7b00e562-cd45-4905-a626-1356503d8213-image-resized.png" alt="7b00e562-cd45-4905-a626-1356503d8213-image.png"></a></li>
+</ul>
+<h2 id="6-确认启动成功">6. 确认启动成功</h2>
+<ul>
+<li>启动过程将耗时 1 分钟左右，访问控制台 <code>http://{您部署机器的ip}:8111</code> 正确登录并开始操作</li>
+</ul>
+<h1>使用教程(必读)</h1>
+<ul>
+<li>为了方便您一开始快速体验 CloudCanal ，我们已自动帮您做好了一些初始化的工作</li>
+<li><strong>请务必使用提供的默认账号登入，方便您快速体验</strong></li>
+<li>用户名：test@clougence.com</li>
+<li>密码：clougence2021</li>
+<li>默认添加的测试 MySQL 数据库
+<ul>
+<li>cloudcanal_test_a(源端)和cloudcanal_test_b(目标端)这两个库中已准备用于测试的表和数据</li>
+</ul>
+</li>
+<li>默认已添加了一台运行机器，用于执行具体的数据同步任务</li>
+<li>如遇到需要发送短信的场景，<strong>先点击获取验证码，然后输入短信验证码 777777 即可</strong></li>
+</ul>
+<p>)</p>
+<h1>CloudCanal社区版高可用部署教程</h1>
+<p><a href="https://www.askcug.com/topic/111/cloudcanal%E7%A4%BE%E5%8C%BA%E7%89%88%E9%AB%98%E5%8F%AF%E7%94%A8%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">https://www.askcug.com/topic/111/cloudcanal社区版高可用部署教程</a></p>
+<p><strong>Sidecar服务器重启</strong></p>
+<p>#找到 CONTAINER ID</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker ps -a </span><br><span class="line">dokcer start 19a6d7579c94</span><br><span class="line">sudo docker exec -it -u clougence 19a6d7579c94 sh</span><br><span class="line">## 启动sidecar</span><br><span class="line">sh &#x2F;home&#x2F;clougence&#x2F;cloudcanal&#x2F;sidecar&#x2F;bin&#x2F;startSidecar.sh</span><br><span class="line">## 查看日志，确认是否有异常。如果都为INFO或者WARN日志就是正常的</span><br><span class="line">tail -f &#x2F;home&#x2F;clougence&#x2F;logs&#x2F;cloudcanal&#x2F;sidecar&#x2F;sidecar.log</span><br></pre></td></tr></table></figure>
+<h3 id="修改-console-容器中-springboot-配置文件中配置">修改 console 容器中 springboot 配置文件中配置</h3>
+<ul>
+<li>文件路径:/opt/cloudcanal_home/console_data/cloudcanal/console/conf/business-output.properties</li>
+<li>修改配置项
+<ul>
+<li>spring.datasource.url</li>
+<li>spring.datasource.username</li>
+<li>spring.datasource.password</li>
+</ul>
+</li>
+</ul>
+<p>java.lang.OutOfMemoryError: Java heap space  错误处理</p>
+<p>进入容器，临时修改任务的内存大小</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker exec -it cloudcanal-sidecar sh</span><br><span class="line">vi &#x2F;home&#x2F;clougence&#x2F;cloudcanal&#x2F;cloudcanal&#x2F;bin&#x2F;startTask.sh</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>tidb备份、还原、cdc实时同步</title>
+    <url>/2024/05/21/tidb%E5%A4%87%E4%BB%BD%E3%80%81%E8%BF%98%E5%8E%9F%E3%80%81cdc%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5/</url>
+    <content><![CDATA[<p>tidb备份，还原，cdc实时同步</p>
+<h2 id="全量备份">全量备份</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#指定时间备份</span><br><span class="line">tiup br backup full --pd &quot;172.20.192.115:2379&quot; \</span><br><span class="line">--storage &quot;s3:&#x2F;&#x2F;tidb&#x2F;all20240520?access-key&#x3D;minioadmin&amp;secret-access-key&#x3D;***&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&quot; \</span><br><span class="line">--backupts&#x3D;&#39;2024&#x2F;05&#x2F;18 00:00:00&#39;</span><br></pre></td></tr></table></figure>
+<h2 id="增量备份">增量备份</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 获取上一次的备份时间戳</span><br><span class="line">tiup br validate decode --field&#x3D;&quot;end-version&quot; --storage &#39;s3:&#x2F;&#x2F;tidb&#x2F;all20240520?access-key&#x3D;minioadmin&amp;secret-access-key&#x3D;minioadmin&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&#39;| tail -n1</span><br><span class="line"></span><br><span class="line">tiup br backup full --pd &quot;172.20.192.115:2379&quot; \</span><br><span class="line">--storage &quot;s3:&#x2F;&#x2F;tidb&#x2F;add20240520?access-key&#x3D;minioadmin&amp;secret-access-key&#x3D;***&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&quot; \</span><br><span class="line">--lastbackupts&#x3D;&#39;449829037670400000&#39;</span><br></pre></td></tr></table></figure>
+<h2 id="cdc实时同步">cdc实时同步</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 获取上一次的备份时间戳</span><br><span class="line">tiup br validate decode --field&#x3D;&quot;end-version&quot; --storage &#39;s3:&#x2F;&#x2F;tidb&#x2F;all20240520?access-key&#x3D;minioadmin&amp;secret-access-key&#x3D;***&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&#39;| tail -n1</span><br><span class="line"></span><br><span class="line">tiup cdc cli changefeed create --server&#x3D;http:&#x2F;&#x2F;172.20.192.108:8300 --sink-uri&#x3D;&quot;mysql:&#x2F;&#x2F;root:***@172.20.192.233:32570&quot; --changefeed-id&#x3D;&quot;prod-to-k8s&quot; --start-ts&#x3D;&quot;449887328375668790&quot;</span><br></pre></td></tr></table></figure>
+<p>–  对于错误代码为 8138、8139 和 8140 的错误，可以通过设置 set @@tidb_enable_mutation_checker=0 跳过检查。<br>
+–  对于错误代码为 8141 的错误，可以通过设置 set @@tidb_txn_assertion_level=OFF 跳过检查。</p>
+<p>“error”: {<br>
+“time”: “2024-05-20T18:08:00.547340271+08:00”,<br>
+“addr”: “172.20.192.107:8300”,<br>
+“code”: “CDC:ErrChangefeedUnretryable”,<br>
+“message”: “[CDC:ErrMySQLTxnError]MySQL txn error: context deadline exceeded”<br>
+}</p>
+<p>tiup cdc cli changefeed create --server=http://172.20.192.107:8300 --sink-uri=“mysql://root:***@172.20.192.233:32570?max-txn-row=20” --changefeed-id=“prod-to-k8s” --start-ts=“449889998692417548”  --config /home/tidb/cdc-prod-to-k8s.toml</p>
+<h3 id="开启日志备份">开启日志备份</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tiup br log start --task-name&#x3D;pitr --pd&#x3D;&quot;172.20.192.115:2379&quot; \</span><br><span class="line">--storage&#x3D;&#39;s3:&#x2F;&#x2F;tidb&#x2F;log-backup?access-key&#x3D;minioadmin&amp;secret-access-key&#x3D;***&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&quot;&#39;</span><br></pre></td></tr></table></figure>
+<p>tiup br log status --task-name=pitr --pd=“172.20.192.115:2379”</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>TIDB搭建双集群主从复制</title>
+    <url>/2024/05/16/TIDB%E6%90%AD%E5%BB%BA%E5%8F%8C%E9%9B%86%E7%BE%A4%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/</url>
+    <content><![CDATA[<h1>TIDB搭建双集群主从复制</h1>
+<p>官网参考文档</p>
+<p><a href="https://docs.pingcap.com/zh/tidb/v6.5/replicate-between-primary-and-secondary-clusters#%E6%90%AD%E5%BB%BA%E5%8F%8C%E9%9B%86%E7%BE%A4%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6" target="_blank" rel="noopener">https://docs.pingcap.com/zh/tidb/v6.5/replicate-between-primary-and-secondary-clusters#搭建双集群主从复制</a></p>
+<h1>TiCDC 安装部署与集群运维</h1>
+<p><a href="https://docs.pingcap.com/zh/tidb/v6.5/deploy-ticdc" target="_blank" rel="noopener">https://docs.pingcap.com/zh/tidb/v6.5/deploy-ticdc</a></p>
+<ol>
+<li>
+<p>备份数据。</p>
+<p>在上游集群中执行 BACKUP 语句备份数据：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">MySQL [(none)]&gt; BACKUP DATABASE * TO '`s3://backup?access-key=minio&amp;secret-access-key=miniostorage&amp;endpoint=http://$&#123;HOST_IP&#125;:6060&amp;force-path-style=true`' RATE_LIMIT = 120 MB/SECOND;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">+----------------------+----------+--------------------+---------------------+---------------------+</span><br><span class="line">| Destination          | Size     | BackupTS           | Queue Time          | Execution Time      |</span><br><span class="line">+----------------------+----------+--------------------+---------------------+---------------------+</span><br><span class="line">| local:&#x2F;&#x2F;&#x2F;tmp&#x2F;backup&#x2F; | 10315858 | 431434047157698561 | 2022-02-25 19:57:59 | 2022-02-25 19:57:59 |</span><br><span class="line">+----------------------+----------+--------------------+---------------------+---------------------+</span><br><span class="line">1 row in set (2.11 sec)</span><br></pre></td></tr></table></figure>
+<p>备份语句提交成功后，TiDB 会返回关于备份数据的元信息，这里需要重点关注 BackupTS，它意味着该时间点之前数据会被备份，后边的教程中，将使用 BackupTS 作为<strong>数据校验截止时间</strong>和 <strong>TiCDC 增量扫描的开始时间</strong>。</p>
+</li>
+<li>
+<p>恢复数据。</p>
+<p>在下游集群中执行 RESTORE 语句恢复数据：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">mysql&gt; RESTORE DATABASE * FROM '`s3://backup?access-key=minio&amp;secret-access-key=miniostorage&amp;endpoint=http://$&#123;HOST_IP&#125;:6060&amp;force-path-style=true`';</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">+----------------------+----------+--------------------+---------------------+---------------------+</span><br><span class="line">| Destination          | Size     | BackupTS           | Queue Time          | Execution Time      |</span><br><span class="line">+----------------------+----------+--------------------+---------------------+---------------------+</span><br><span class="line">| local:&#x2F;&#x2F;&#x2F;tmp&#x2F;backup&#x2F; | 10315858 | 431434141450371074 | 2022-02-25 20:03:59 | 2022-02-25 20:03:59 |</span><br><span class="line">+----------------------+----------+--------------------+---------------------+---------------------+</span><br><span class="line">1 row in set (41.85 sec)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>创建一个 TiCDC 同步任务，实时同步主集群数据到从集群</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tiup cdc cli changefeed create --server&#x3D;http:&#x2F;&#x2F;172.20.192.108:8300 --sink-uri&#x3D;&quot;mysql:&#x2F;&#x2F;root:Admi*@172.20.192.101:4000&quot; --changefeed-id&#x3D;&quot;upstream-to-downstream&quot; --start-ts&#x3D;&quot;445309452101091541&quot;</span><br></pre></td></tr></table></figure>
+<p>以上命令中：</p>
+<ul>
+<li><code>--server</code>：TiCDC 集群任意一节点的地址</li>
+<li><code>--sink-uri</code>：同步任务下游的地址</li>
+<li><code>--start-ts</code>：TiCDC 同步的起点，需要设置为实际的备份时间点（也就是<a href="https://docs.pingcap.com/zh/tidb/v6.5/replicate-between-primary-and-secondary-clusters#%E7%AC%AC-2-%E6%AD%A5%E8%BF%81%E7%A7%BB%E5%85%A8%E9%87%8F%E6%95%B0%E6%8D%AE" target="_blank" rel="noopener">第 2 步：迁移全量数据</a>提到的 BackupTS）</li>
+</ul>
+<p>使用 TiCDC 命令行工具来查看集群状态</p>
+<p>tiup ctl:v6.5.0 cdc capture list --server=http://172.20.192.107:8300</p>
+<h2 id="查询同步任务列表-（管理-Changefeed）">查询同步任务列表  （管理 Changefeed）</h2>
+<p>使用以下命令来查询同步任务列表：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">curl -X GET http://172.20.192.107:8300/api/v1/changefeeds</span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">"upstream_id"</span>: 7247017946125403024,</span><br><span class="line">        <span class="string">"namespace"</span>: <span class="string">"default"</span>,</span><br><span class="line">        <span class="string">"id"</span>: <span class="string">"upstream-to-downstream"</span>,</span><br><span class="line">        <span class="string">"state"</span>: <span class="string">"normal"</span>,</span><br><span class="line">        <span class="string">"checkpoint_tso"</span>: 448645177183305734,</span><br><span class="line">        <span class="string">"checkpoint_time"</span>: <span class="string">"2024-03-26 17:32:10.637"</span>,</span><br><span class="line">        <span class="string">"error"</span>: null</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>checkpoint</code> 即为 TiCDC 已经将该时间点前的数据同步到了下游。</li>
+<li><code>state</code> 为该同步任务的状态：
+<ul>
+<li><code>normal</code>：正常同步</li>
+<li><code>stopped</code>：停止同步（手动暂停）</li>
+<li><code>error</code>：停止同步（出错）</li>
+<li><code>removed</code>：已删除任务（只在指定 <code>--all</code> 选项时才会显示该状态的任务。未指定时，可通过 <code>query</code> 查询该状态的任务）</li>
+<li><code>finished</code>：任务已经同步到指定 <code>target-ts</code>，处于已完成状态（只在指定 <code>--all</code> 选项时才会显示该状态的任务。未指定时，可通过 <code>query</code> 查询该状态的任务）。</li>
+</ul>
+</li>
+</ul>
+<h2 id="暂停同步任务等参考官网">暂停同步任务等参考官网</h2>
+<p><a href="https://docs.pingcap.com/zh/tidb/stable/ticdc-open-api-v2" target="_blank" rel="noopener">https://docs.pingcap.com/zh/tidb/stable/ticdc-open-api-v2</a></p>
+<p>暂停</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl -X POST http:&#x2F;&#x2F;172.20.192.107:8300&#x2F;api&#x2F;v2&#x2F;changefeeds&#x2F;upstream-to-downstream&#x2F;pause</span><br></pre></td></tr></table></figure>
+<p>恢复</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl -X POST http:&#x2F;&#x2F;172.20.192.107:8300&#x2F;api&#x2F;v2&#x2F;changefeeds&#x2F;upstream-to-downstream&#x2F;resume -d &#39;&#123;&#125;&#39;</span><br></pre></td></tr></table></figure>
+<p>删除</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl -X DELETE http:&#x2F;&#x2F;172.20.192.107:8300&#x2F;api&#x2F;v2&#x2F;changefeeds&#x2F;prod-to-k8s</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tiup cdc cli changefeed create --server&#x3D;http:&#x2F;&#x2F;172.20.192.108:8300 --sink-uri&#x3D;&quot;mysql:&#x2F;&#x2F;root:Ad*@172.20.192.233:32570&quot; --changefeed-id&#x3D;&quot;prod-to-k8s&quot; --start-ts&#x3D;&quot;449753049437044846&quot;  --disable-gc-check</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>漫道云环境安装Tidb</title>
+    <url>/2024/05/16/%E6%BC%AB%E9%81%93%E4%BA%91%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Tidb/</url>
+    <content><![CDATA[<p>漫道云环境安装Tidb</p>
+<h3 id="安装-TiDB-Operator-CRDs">安装 TiDB Operator CRDs</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">kubectl create -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;pingcap&#x2F;tidb-operator&#x2F;v1.6.0-beta.1&#x2F;manifests&#x2F;crd.yaml</span><br></pre></td></tr></table></figure>
+<p>helm delete tidb-operator -n tidb-admin</p>
+<p>kubectl create namespace tidb-cluster &amp;&amp; \</p>
+<p>wget <a href="https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.0-beta.1/examples/advanced/tidb-cluster.yaml" target="_blank" rel="noopener">https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.0-beta.1/examples/advanced/tidb-cluster.yaml</a></p>
+<p>kubectl -n tidb-cluster apply -f  tidb-cluster.yaml</p>
+<p>kubectl -n tidb-cluster delete -f tidb-cluster.yaml</p>
+<p>wget <a href="https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.0-beta.1/examples/basic/tidb-dashboard.yaml" target="_blank" rel="noopener">https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.0-beta.1/examples/basic/tidb-dashboard.yaml</a></p>
+<p>kubectl -n tidb-cluster apply -f  tidb-dashboard.yaml</p>
+<p>kubectl -n tidb-cluster delete -f  tidb-dashboard.yaml</p>
+<p>wget  <a href="https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.0-beta.1/examples/advanced/tidb-monitor.yaml" target="_blank" rel="noopener">https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.0-beta.1/examples/advanced/tidb-monitor.yaml</a></p>
+<p>kubectl -n tidb-cluster apply -f  tidb-monitor.yaml</p>
+<p>kubectl -n tidb-cluster delete -f  tidb-monitor.yaml</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>tidb 升级</title>
+    <url>/2024/04/28/tidb%20%E5%8D%87%E7%BA%A7/</url>
+    <content><![CDATA[<p>tidb 升级</p>
+<ol>
+<li>
+<p>先升级 TiUP 版本（建议 <code>tiup</code> 版本不低于 <code>1.11.3</code>）：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">tiup update --self</span><br><span class="line">tiup --version</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>再升级 TiUP Cluster 版本（建议 <code>tiup cluster</code> 版本不低于 <code>1.11.3</code>）：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">tiup update cluster</span><br><span class="line">tiup cluster --version</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tiup cluster check tidb-prod-101 --cluster</span><br></pre></td></tr></table></figure>
+<p>停止组件cdc</p>
+<p>tiup cluster stop tidb-prod -R cdc</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tiup cluster upgrade tidb-prod-101 v7.5.1</span><br></pre></td></tr></table></figure>
+<p>tiup cluster display tidb-prod-101</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Minio 模拟兼容 S3 的存储服务</title>
+    <url>/2024/04/17/Minio%20%E6%A8%A1%E6%8B%9F%E5%85%BC%E5%AE%B9%20S3%20%E7%9A%84%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1/</url>
+    <content><![CDATA[<h3 id="搭建-MinIO-作为备份存储系统-，兼容S3">搭建 MinIO 作为备份存储系统 ，兼容S3</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;dl.min.io&#x2F;server&#x2F;minio&#x2F;release&#x2F;linux-amd64&#x2F;minio</span><br><span class="line">chmod +x minio</span><br><span class="line"></span><br><span class="line"># 配置访问 minio 的 access-key access-screct-id</span><br><span class="line"></span><br><span class="line">export HOST_IP&#x3D;&#39;172.20.192.151&#39; </span><br><span class="line">export MINIO_ROOT_USER&#x3D;&#39;minio&#39;</span><br><span class="line">export MINIO_ROOT_PASSWORD&#x3D;&#39;miniostorage&#39;</span><br><span class="line"></span><br><span class="line"># 创建数据目录,  其中 backup 为 bucket 的名称</span><br><span class="line"></span><br><span class="line">mkdir -p data&#x2F;backup</span><br><span class="line"></span><br><span class="line"># 启动 minio, 暴露端口在 6060</span><br><span class="line"></span><br><span class="line">&#x2F;opt&#x2F;module&#x2F;minio server &#x2F;opt&#x2F;module&#x2F;data --address :6060 &amp;</span><br></pre></td></tr></table></figure>
+<h2 id="单节点部署多磁盘">单节点部署多磁盘</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;opt&#x2F;module&#x2F;minio server --address :6060  &#x2F;dfs&#x2F;data1&#x2F;s3data &#x2F;dfs&#x2F;data2&#x2F;s3data &#x2F;dfs&#x2F;data3&#x2F;s3data &amp;</span><br></pre></td></tr></table></figure>
+<h2 id="备份-还原-TIDB数据">备份 还原 TIDB数据</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mycli -h172.20.192.70 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">BACKUP DATABASE test TO &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39; RATE_LIMIT &#x3D; 120 MB&#x2F;SECOND;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mycli -h172.20.192.115 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">mysql&gt; RESTORE DATABASE test FROM &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39;;</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>Nginx 高可用集群解决方案 Nginx + Keepalived</title>
+    <url>/2024/04/17/Nginx%20%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%20Nginx%20+%20Keepalived/</url>
+    <content><![CDATA[<h2 id="Nginx-高可用集群解决方案-Nginx-Keepalived">Nginx 高可用集群解决方案 Nginx + Keepalived</h2>
+<ol>
+<li>
+<p>修改 vim /opt/nginx/nginx.conf</p>
+</li>
+<li>
+<p>重启容器</p>
+</li>
+</ol>
+<p>docker restart 1f163b3a620a</p>
+<p>172.20.192.151</p>
+<p>172.20.192.152</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>SR日常运维</title>
+    <url>/2024/04/17/SR%E6%97%A5%E5%B8%B8%E8%BF%90%E7%BB%B4/</url>
+    <content><![CDATA[<h2 id="1-发生-“close-index-channel-failed”-和-“too-many-tablet-versions”-错误应该如何处理？">1. 发生 “close index channel failed” 和 “too many tablet versions” 错误应该如何处理？</h2>
+<p>上述报错是因为导入频率太快，数据没能及时合并 (Compaction) ，从而导致版本数超过支持的最大未合并版本数。默认支持的最大未合并版本数为 1000。可以通过如下方法解决上述报错：</p>
+<ul>
+<li>
+<p>增大单次导入的数据量，降低导入频率。</p>
+</li>
+<li>
+<p>修改 BE 配置文件 <strong>be.conf</strong> 中相关参数的配置，以加快 Compaction：</p>
+<ul>
+<li>
+<p>对于明细表、聚合表和更新表，可以适当调大 <code>cumulative_compaction_num_threads_per_disk</code>、<code>base_compaction_num_threads_per_disk</code> 和 <code>cumulative_compaction_check_interval_seconds</code> 的值。例如：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cumulative_compaction_num_threads_per_disk &#x3D; 4</span><br><span class="line">base_compaction_num_threads_per_disk &#x3D; 2</span><br><span class="line">cumulative_compaction_check_interval_seconds &#x3D; 2</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>对于主键表，可以适当调大 <code>update_compaction_num_threads_per_disk</code> 的值。适当调小 <code>update_compaction_per_tablet_min_interval_seconds</code> 的值。</p>
+</li>
+</ul>
+<p>修改完成后，需要观察内存和 I/O，确保内存和 I/O 正常。</p>
+</li>
+</ul>
+<p>curl -XPOST <a href="http://172.20.85.188:8040/api/update_config?tablet_max_versions=10000" target="_blank" rel="noopener">http://172.20.85.188:8040/api/update_config?tablet_max_versions=10000</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>使用Yarn标签机制实现任务资源隔离</title>
+    <url>/2024/04/09/%E4%BD%BF%E7%94%A8Yarn%E6%A0%87%E7%AD%BE%E6%9C%BA%E5%88%B6%E5%AE%9E%E7%8E%B0%E4%BB%BB%E5%8A%A1%E8%B5%84%E6%BA%90%E9%9A%94%E7%A6%BB/</url>
+    <content><![CDATA[<h1>使用Yarn标签机制实现任务资源隔离</h1>
+<p>官网参考地址：  <a href="https://docs.cloudera.com/runtime/7.2.0/yarn-allocate-resources/topics/yarn-configuring-node-labels.html" target="_blank" rel="noopener">https://docs.cloudera.com/runtime/7.2.0/yarn-allocate-resources/topics/yarn-configuring-node-labels.html</a></p>
+<p>参考地址： <a href="https://zhuanlan.zhihu.com/p/674882366" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/674882366</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@bigdata-1 ~]# sudo -u hdfs hadoop fs -mkdir -p &#x2F;yarn&#x2F;node-labels</span><br><span class="line">[root@bigdata-1 ~]# sudo -u hdfs hadoop fs -chown -R yarn:yarn &#x2F;yarn</span><br><span class="line">[root@bigdata-1 ~]# sudo -u hdfs hadoop fs -chmod -R 700 &#x2F;yarn</span><br><span class="line">[root@bigdata-1 ~]# hadoop fs -ls &#x2F;yarn</span><br></pre></td></tr></table></figure>
+<p>YARN Service Advanced Configuration Snippet (Safety Valve) for yarn-site.xml</p>
+<p>add the following:</p>
+<ul>
+<li>
+<p>Set the following property to enable Node Labels:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Name: yarn.node-labels.enabled</span><br><span class="line">Value: true</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Set the following property to reference the HDFS node label directory</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Name: yarn.node-labels.fs-store.root-dir</span><br><span class="line">Value: hdfs:&#x2F;&#x2F;:&#x2F;</span><br></pre></td></tr></table></figure>
+<p>For example,</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Name: yarn.node-labels.fs-store.root-dir</span><br><span class="line">Value: hdfs:&#x2F;&#x2F;node-1.example.com:8020&#x2F;yarn&#x2F;node-labels&#x2F;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="使用命令方式给yarn集群添加标签"><strong>使用命令方式给yarn集群添加标签</strong></h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo -u yarn yarn rmadmin -addToClusterNodeLabels &quot;x(exclusive&#x3D;true),y(exclusive&#x3D;false)&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>使用命令方式节点关联标签：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo -u yarn  yarn rmadmin -replaceLabelsOnNode &quot;bigdata-2.baofoo.cn&#x3D;x bigdata-3.baofoo.cn&#x3D;y&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="提交MR任务指定标签：-测试下来不能用">提交MR任务指定标签：  测试下来不能用</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hadoop jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hadoop-mapreduce&#x2F;hadoop-mapreduce-client-jobclient-3.0.0-cdh6.0.1-tests.jar TestDFSIO -D test.build.data&#x3D;&#x2F;tmp&#x2F;benchmark -Dmapreduce.job.node-label-expression&#x3D;x -write -nrFiles 10 -fileSize 1000</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>Apache Kyuubi on CDH 部署</title>
+    <url>/2024/04/03/Apache%20Kyuubi%20on%20CDH%20%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<h1>Apache Kyuubi on CDH 部署</h1>
+<p><a href="https://shmily-qjj.top/ee1c2df4/" target="_blank" rel="noopener">https://shmily-qjj.top/ee1c2df4/</a></p>
+<h1>Apache Kyuubi on Spark 在 CDH 上的深度实践</h1>
+<p><a href="https://www.slidestalk.com/openLooKeng/22" target="_blank" rel="noopener">https://www.slidestalk.com/openLooKeng/22</a></p>
+<p>vi  <a href="http://kyuubi-env.sh" target="_blank" rel="noopener">kyuubi-env.sh</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk1.8.0_181-cloudera</span><br><span class="line">export SPARK_HOME&#x3D;&#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3</span><br><span class="line">export FLINK_HOME&#x3D;&#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;FLINK</span><br><span class="line">export HIVE_HOME&#x3D;&#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hive</span><br><span class="line">export HADOOP_CONF_DIR&#x3D;&#x2F;etc&#x2F;hadoop&#x2F;conf</span><br><span class="line">export YARN_CONF_DIR&#x3D;&#x2F;etc&#x2F;hadoop&#x2F;conf</span><br><span class="line">export KYUUBI_JAVA_OPTS&#x3D;&quot;-Xmx10g -XX:+UnlockDiagnosticVMOptions -XX:ParGCCardsPerStrideChunk&#x3D;4096 -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:CMSInitiatingOccupancyFraction&#x3D;70 -XX:+UseCMSInitiatingOccupancyOnly -XX:+CMSClassUnloadingEnabled </span><br><span class="line">-XX:+CMSParallelRemarkEnabled -XX:+UseCondCardMark -XX:MaxDirectMemorySize&#x3D;1024m  -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath&#x3D;.&#x2F;logs -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintTenuringDistribution -Xloggc:.&#x2F;logs&#x2F;kyuubi-server-gc-%t.log -XX:+Us</span><br><span class="line">eGCLogFileRotation -XX:NumberOfGCLogFiles&#x3D;10 -XX:GCLogFileSize&#x3D;5M -XX:NewRatio&#x3D;3 -XX:MetaspaceSize&#x3D;512m&quot;</span><br></pre></td></tr></table></figure>
+<p>vi  conf/kyuubi-defaults.conf</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">kyuubi.frontend.bind.host                10.0.0.1</span><br><span class="line">kyuubi.frontend.protocols                THRIFT_BINARY</span><br><span class="line">kyuubi.frontend.thrift.binary.bind.port  10009</span><br><span class="line">#</span><br><span class="line"># kyuubi.engine.type                       SPARK_SQL</span><br><span class="line"># kyuubi.engine.share.level                USER</span><br><span class="line"># kyuubi.session.engine.initialize.timeout PT3M</span><br><span class="line">#</span><br><span class="line">kyuubi.ha.addresses                      zk1:2181,zk2:2181,zk3:2181</span><br><span class="line">kyuubi.ha.namespace                      kyuubi</span><br><span class="line"></span><br><span class="line"># 不指定 spark就是local模式运行了</span><br><span class="line">spark.master&#x3D;yarn</span><br><span class="line">spark.submit.deployMode&#x3D;cluster</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">kyuubi.authentication&#x3D;LDAP</span><br><span class="line">kyuubi.authentication.ldap.baseDN&#x3D;dc&#x3D;org</span><br><span class="line">kyuubi.authentication.ldap.domain&#x3D;apache.org</span><br><span class="line">kyuubi.authentication.ldap.binddn&#x3D;uid&#x3D;kyuubi,OU&#x3D;Users,DC&#x3D;apache,DC&#x3D;org</span><br><span class="line">kyuubi.authentication.ldap.bindpw&#x3D;kyuubi123123</span><br><span class="line">kyuubi.authentication.ldap.url&#x3D;ldap:&#x2F;&#x2F;hostname.com:389&#x2F;</span><br></pre></td></tr></table></figure>
+<h3 id="重启">重启</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">注意 ：kyuubi 停止的时候   spark on yarn的  kyuubi_application  并没有停掉，   需要在yarn里kill，  这样重启  才能加载新加入的jar包和新的配置文件。</span><br><span class="line"></span><br><span class="line">sudo -u hdfs bin&#x2F;kyuubi start</span><br><span class="line">sudo -u hdfs bin&#x2F;kyuubi stop</span><br><span class="line">sudo -u hdfs bin&#x2F;kyuubi restart</span><br></pre></td></tr></table></figure>
+<p>bin/beeline -u ‘jdbc:hive2://10.0.19.132:10009/’ -n hadoop</p>
+<p>bin/beeline -u ‘jdbc:hive2://172.20.192.36:10009/’ -n hadoop</p>
+<p>jdbc:hive2://172.20.192.36:10009/?spark.app.name=test_kyuubi_application;spark.sql.adaptive.enabled=true;spark.driver.memory=4G;spark.executor.instances=256;spark.executor.cores=4;spark.executor.memory=16g</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">?spark.app.name&#x3D;test_kyuubi_application;spark.dynamicAllocation.enabled&#x3D;true;spark.shuffle.service.enabled&#x3D;true;spark.shuffle.useOldFetchProtocol&#x3D;true;spark.dynamicAllocation.initialExecutors&#x3D;10;spark.dynamicAllocation.minExecutors&#x3D;5;spark.dynamicAllocation.maxExecutors&#x3D;200;spark.dynamicAllocation.executorIdleTimeout&#x3D;60s;spark.dynamicAllocation.cachedExecutorIdleTimeout&#x3D;10min;spark.executor.cores&#x3D;1;spark.executor.memory&#x3D;2G;spark.yarn.queue&#x3D;bf_yarn_pool.development</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>CDH6.3.2 升级 Spark3.3.0 版本</title>
+    <url>/2024/04/03/CDH6.3.2%20%E5%8D%87%E7%BA%A7%20Spark3.3.0%20%E7%89%88%E6%9C%AC/</url>
+    <content><![CDATA[<h1>CDH6.3.2 升级 Spark3.3.0 版本</h1>
+<p><a href="https://juejin.cn/post/7140053569431928845" target="_blank" rel="noopener">https://juejin.cn/post/7140053569431928845</a></p>
+<p>根据上面的文档进行部署  还有下列操作需要补充</p>
+<p>上传到要部署 spark3 的客户端机器</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tar -zxvf spark-3.3.0-bin-3.0.0-cdh6.3.2.tgz -C /opt/cloudera/parcels/CDH/lib</span><br><span class="line">cd /opt/cloudera/parcels/CDH/lib</span><br><span class="line">mv spark-3.3.0-bin-3.0.0-cdh6.3.2/ spark3</span><br></pre></td></tr></table></figure>
+<h3 id="配置-conf">配置 conf</h3>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">shell复制代码cd /opt/cloudera/parcels/CDH/lib/spark3/conf</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 开启日志</span></span></span><br><span class="line">mv log4j2.properties.template log4j2.properties</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># spark-defaults.conf 配置</span></span></span><br><span class="line">cp /opt/cloudera/parcels/CDH/lib/spark/conf/spark-defaults.conf ./</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 修改 spark-defaults.conf</span></span><br><span class="line">vim /opt/cloudera/parcels/CDH/lib/spark3/conf/spark-defaults.conf</span><br><span class="line">删除 spark.extraListeners、spark.sql.queryExecutionListeners、spark.yarn.jars</span><br><span class="line">添加 spark.yarn.jars=hdfs://ns1/user/spark/3versionJars/*</span><br><span class="line"></span><br><span class="line">hadoop fs -mkdir -p /spark/3versionJars</span><br><span class="line">cd /opt/cloudera/parcels/CDH/lib/spark3/jars</span><br><span class="line">hadoop fs -put *.jar hdfs://ns1/user/spark/3versionJars</span><br></pre></td></tr></table></figure>
+<h2 id="优化设置">优化设置</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">spark.kryoserializer.buffer.max 512m</span><br><span class="line">spark.serializer org.apache.spark.serializer.KryoSerializer</span><br><span class="line">spark.authenticate false   （关闭数据块传输服务SASL加密认证）</span><br><span class="line">spark.io.encryption.enabled false   （关闭I&#x2F;O加密）</span><br><span class="line">spark.network.crypto.enabled false  （关闭基于AES算法的RPC加密）</span><br><span class="line">spark.shuffle.service.enabled true  （启用外部ShuffleService提高Shuffle稳定性）</span><br><span class="line">spark.shuffle.service.port 7337  （这个外部ShuffleService由YarnNodeManager提供，默认端口7337）</span><br><span class="line">spark.shuffle.useOldFetchProtocol true  （兼容旧的Shuffle协议避免报错）</span><br><span class="line">spark.sql.cbo.enabled true  (启用CBO基于代价的优化-代替RBO基于规则的优化-Optimizer)</span><br><span class="line">spark.sql.cbo.starSchemaDetection true  （星型模型探测，判断列是否是表的主键）</span><br><span class="line">spark.sql.datetime.java8API.enabled false</span><br><span class="line">spark.sql.sources.partitionOverwriteMode dynamic </span><br><span class="line">spark.sql.orc.mergeSchema true  （ORC格式Schema加载时从所有数据文件收集）</span><br><span class="line">spark.sql.parquet.mergeSchema false (根据情况设置，我们集群大多数都是parquet，从所有文件收集Schema会影响性能，所以从随机一个Parquet文件收集Schema)</span><br><span class="line">spark.sql.parquet.writeLegacyFormat true  （兼容旧集群）</span><br><span class="line">spark.sql.autoBroadcastJoinThreshold 1048576  （当前仅支持运行了ANALYZE TABLE &lt;tableName&gt; COMPUTE STATISTICS noscan的Hive Metastore表，以及直接在数据文件上计算统计信息的基于文件的数据源表）</span><br><span class="line">spark.sql.adaptive.enabled true   （Spark AQE[adaptive query execution]启用，AQE的优势：执行计划可动态调整、调整的依据是中间结果的精确统计信息）</span><br><span class="line">spark.sql.adaptive.forceApply false</span><br><span class="line">spark.sql.adaptive.logLevel info</span><br><span class="line">spark.sql.adaptive.advisoryPartitionSizeInBytes 256m  （倾斜数据分区拆分，小数据分区合并优化时，建议的分区大小，与spark.sql.adaptive.shuffle.targetPostShuffleInputSize含义相同）</span><br><span class="line">spark.sql.adaptive.coalescePartitions.enabled true  （是否开启合并小数据分区默认开启，调优策略之一）</span><br><span class="line">spark.sql.adaptive.coalescePartitions.minPartitionSize 1m  （合并后最小的分区大小）</span><br><span class="line">spark.sql.adaptive.coalescePartitions.initialPartitionNum 1024  （合并前的初始分区数）</span><br><span class="line">spark.sql.adaptive.fetchShuffleBlocksInBatch true  （是否批量拉取blocks,而不是一个个的去取，给同一个map任务一次性批量拉取blocks可以减少io 提高性能）</span><br><span class="line">spark.sql.adaptive.localShuffleReader.enabled true （不需要Shuffle操作时，使用LocalShuffleReader，例如将SortMergeJoin转为BrocastJoin）</span><br><span class="line">spark.sql.adaptive.skewJoin.enabled true   （Spark会通过拆分的方式自动处理Join过程中有数据倾斜的分区）</span><br><span class="line">spark.sql.adaptive.skewJoin.skewedPartitionThresholdInBytes 128m</span><br><span class="line">spark.sql.adaptive.skewJoin.skewedPartitionFactor 5  （判断倾斜的条件：分区大小大于所有分区大小中位数的5倍，且大于spark.sql.adaptive.skewJoin.skewedPartitionThresholdInBytes的值）</span><br></pre></td></tr></table></figure>
+<p>将 CDH 集群的 <a href="http://spark-env.sh" target="_blank" rel="noopener">spark-env.sh</a> 复制到 /opt/cloudera/parcels/CDH/lib/spark3/conf 下:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cp /etc/spark/conf/spark-env.sh  /opt/cloudera/parcels/CDH/lib/spark3/conf</span><br><span class="line">chmod +x /opt/cloudera/parcels/CDH/lib/spark3/conf/spark-env.sh</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">修改 spark-env.sh</span></span><br><span class="line">vim /opt/cloudera/parcels/CDH/lib/spark3/conf/spark-env.sh</span><br><span class="line"></span><br><span class="line">export SPARK_HOME=/opt/cloudera/parcels/CDH/lib/spark3</span><br><span class="line">HADOOP_CONF_DIR=$&#123;HADOOP_CONF_DIR:-/etc/hadoop/conf&#125;</span><br></pre></td></tr></table></figure>
+<p>将 gateway 节点的 hive-site.xml 复制到 spark3/conf 目录下，不需要做变动:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/hive/conf/hive-site.xml /opt/cloudera/parcels/CDH/lib/spark3/conf/</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cp -r &#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;*.xml &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3&#x2F;conf&#x2F;</span><br><span class="line">cp &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;hive-site.xml &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3&#x2F;conf&#x2F;</span><br><span class="line"></span><br><span class="line"># 奇怪用快捷方式就不行</span><br><span class="line">cd &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3&#x2F;conf</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;hive-site.xml hive-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;hdfs-site.xml hdfs-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;core-site.xml core-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;mapred-site.xml mapred-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;yarn-site.xml yarn-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;spark&#x2F;conf&#x2F;spark-defaults.conf spark-defaults.conf</span><br><span class="line">ln -s &#x2F;etc&#x2F;spark&#x2F;conf&#x2F;spark-env.sh spark-env.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;local&#x2F;bin</span><br><span class="line">ln -s &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3&#x2F;bin&#x2F;pyspark pyspark3</span><br></pre></td></tr></table></figure>
+<p>新增一个spark3-shell的快捷方式</p>
+<p>vim  /opt/cloudera/parcels/CDH/bin/spark3-shell</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Autodetect JAVA_HOME <span class="keyword">if</span> not defined</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Reference: http://stackoverflow.com/questions/59895/can<span class="_">-a</span>-bash-script-tell-what-directory-its-stored-in</span></span><br><span class="line">SOURCE="$&#123;BASH_SOURCE[0]&#125;"</span><br><span class="line">BIN_DIR="$( dirname "$SOURCE" )"</span><br><span class="line">while [ -h "$SOURCE" ]</span><br><span class="line">do</span><br><span class="line">SOURCE="$(readlink "$SOURCE")"</span><br><span class="line">[[ $SOURCE != /* ]] &amp;&amp; SOURCE="$DIR/$SOURCE"</span><br><span class="line">BIN_DIR="$( cd -P "$( dirname "$SOURCE"  )" &amp;&amp; pwd )"</span><br><span class="line">done</span><br><span class="line">BIN_DIR="$( cd -P "$( dirname "$SOURCE" )" &amp;&amp; pwd )"</span><br><span class="line">CDH_LIB_DIR=$BIN_DIR/../../CDH/lib</span><br><span class="line">LIB_DIR=$BIN_DIR/../lib</span><br><span class="line">export HADOOP_HOME=$CDH_LIB_DIR/hadoop</span><br><span class="line">. $CDH_LIB_DIR/bigtop-utils/bigtop-detect-javahome</span><br><span class="line">exec $LIB_DIR/spark3/bin/spark-shell "$@"</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod +x &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;bin&#x2F;spark3-shell</span><br></pre></td></tr></table></figure>
+<p>用法：alternatives --install &lt;链接&gt; &lt;名称&gt; &lt;路径&gt; &lt;优先度&gt;</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">alternatives --install &#x2F;usr&#x2F;bin&#x2F;spark3-shell spark3-shell &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;bin&#x2F;spark3-shell 1</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>大数据平台常见异常处理汇总</title>
+    <url>/2024/04/02/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%B1%87%E6%80%BB/</url>
+    <content><![CDATA[<p>HiveMetaStore状态不良导DDLSQL耗时200s以上</p>
+<p>HMS进程报错：hive metastore server Failed to sync requested HMS notifications up to the event ID xxx</p>
+<p>原因分析：查看sentry异常CounterWait源码发现传递的id比currentid大导致一直等待超时，超时时间默认为200s（<a href="http://sentry.notification.sync.timeout.ms" target="_blank" rel="noopener">sentry.notification.sync.timeout.ms</a>）。 开启了hdfs-sentry acl同步后，hdfs，sentry，HMS三者间权限同步的消息处理。当突然大批量的目录权限消息需要处理，后台线程处理不过来，消息积压滞后就会出现这个异常。这个异常不影响集群使用，只是会导致create，drop table慢需要等200s，这样等待也是为了追上最新的id。我们这次同时出现了HMS参与同步消息处理的线程被异常退出，导致sentry的sentry_hms_notification_id表数据一直没更新，需要重启HMS。如果积压了太多消息，让它慢慢消费处理需要的时间太长，可能一直追不上，这时可以选择丢掉这些消息。</p>
+<p>解决：</p>
+<p>①可以通过设置sentry.notification.sync.timeout.ms参数调小超时时间，减小等待时间，积压不多的话可以让它自行消费处理掉。</p>
+<p>②丢掉未处理的消息，在sentry的sentry_hms_notification_id表中插入一条最大值(等于当前消息的id，从notification_sequence表中获取) ，重启sentry服务。（notification_log 表存储了消息日志信息）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT * from  NOTIFICATION_SEQUENCE</span><br><span class="line">insert into SENTRY_HMS_NOTIFICATION_ID VALUES (14094172);</span><br></pre></td></tr></table></figure>
+<p>Hive开启自动获取表上次访问时间(lastAccessTime)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;hive.security.authorization.sqlstd.confwhitelist.append&lt;&#x2F;name&gt;</span><br><span class="line">   &lt;value&gt;hive\.exec\.pre\.hooks&lt;&#x2F;value&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;hive.exec.pre.hooks&lt;&#x2F;name&gt;</span><br><span class="line">  &lt;value&gt;org.apache.hadoop.hive.ql.hooks.UpdateInputAccessTimeHook$PreExec&lt;&#x2F;value&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="Spark">Spark</h2>
+<p>Shuffle异常导致任务失败 报错：org.apache.spark.shuffle.MetadataFetchFailedException: Missing an output location for shuffle 1</p>
+<p>原因：</p>
+<p>shuffle分为shuffle write和shuffle read两部分。 shuffle write的分区数由上一阶段的RDD分区数控制，shuffle read的分区数则是由Spark提供的一些参数控制。 shuffle write可以简单理解为类似于saveAsLocalDiskFile的操作，将计算的中间结果按某种规则临时放到各个executor所在的本地磁盘上。 shuffle read的时候数据的分区数则是由spark提供的一些参数控制。可以想到的是，如果这个参数值设置的很小，同时shuffle read的量很大，那么将会导致一个task需要处理的数据非常大。结果导致JVM crash，从而导致取shuffle数据失败，同时executor也丢失了，看到Failed to connect to host的错误，也就是executor lost的意思。有时候即使不会导致JVM crash也会造成长时间的gc。</p>
+<p>解决思路：减少shuffle的数据量和增加处理shuffle数据的分区数</p>
+<p>①spark.sql.shuffle.partitions控制分区数，默认为200，根据shuffle的量以及计算的复杂度提高这个值 shuffle并行度</p>
+<p>②提高spark.executor.memory</p>
+<p>③map side join或是broadcast join来规避shuffle的产生</p>
+<p>④分析数据倾斜 解决数据倾斜</p>
+<p>⑤增加失败的重试次数和重试的时间间隔 通过spark.shuffle.io.maxRetries控制重试次数，默认是3，可适当增加，例如10。 通过spark.shuffle.io.retryWait控制重试的时间间隔，默认是5s，可适当增加，例如10s。</p>
+<p>⑥类似RemoteShuffleService的服务，解决Shuffle单台机器IO瓶颈，记录Shuffle状态，大批量提升Shuffle效率和稳定性。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>从 TiDB 集群迁移数据至另一 TiDB 集群</title>
+    <url>/2024/03/26/%E4%BB%8E%20TiDB%20%E9%9B%86%E7%BE%A4%E8%BF%81%E7%A7%BB%E6%95%B0%E6%8D%AE%E8%87%B3%E5%8F%A6%E4%B8%80%20TiDB%20%E9%9B%86%E7%BE%A4/</url>
+    <content><![CDATA[<h2 id="迁移全量数据">迁移全量数据</h2>
+<p>关闭 GC。</p>
+<p>为了保证增量迁移过程中新写入的数据不丢失，在开始备份之前，需要关闭上游集群的垃圾回收 (GC) 机制，以确保系统不再清理历史数据。</p>
+<p>执行如下命令关闭 GC：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">MySQL [test]&gt; SET GLOBAL tidb_gc_enable=FALSE;</span><br></pre></td></tr></table></figure>
+<p>备份数据。</p>
+<p>在上游集群中执行 BACKUP 语句备份数据：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">MySQL [(none)]&gt; BACKUP DATABASE * TO 's3://backup?access-key=minio&amp;secret-access-key=miniostorage&amp;endpoint=http://$&#123;HOST_IP&#125;:6060&amp;force-path-style=true' RATE_LIMIT = 120 MB/SECOND;</span><br></pre></td></tr></table></figure>
+<p>备份语句提交成功后，TiDB 会返回关于备份数据的元信息，这里需要重点关注 BackupTS，它意味着该时间点之前数据会被备份，后边的教程中，将使用 BackupTS 作为<strong>数据校验截止时间</strong>和 <strong>TiCDC 增量扫描的开始时间</strong>。</p>
+<p>恢复数据。</p>
+<p>在下游集群中执行 RESTORE 语句恢复数据：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">BACKUP</span> <span class="keyword">DATABASE</span> BASE <span class="keyword">TO</span> <span class="string">'s3://tidb/BASE_BAK20231031?access-key=minio&amp;secret-access-key=miniostorage&amp;endpoint=http://172.20.192.151:6060&amp;force-path-style=true'</span> RATE_LIMIT = <span class="number">120</span> MB/<span class="keyword">SECOND</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="使用-TiCDC-命令行工具来查看集群状态">使用 TiCDC 命令行工具来查看集群状态</h2>
+<p>tiup ctl:v6.5.0 cdc capture list --server=http://172.20.192.107:8300</p>
+<p>创建一个 TiCDC 同步任务，备份主集群数据到从集群</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tiup cdc cli changefeed create --server&#x3D;http:&#x2F;&#x2F;172.20.192.108:8300 --sink-uri&#x3D;&quot;mysql:&#x2F;&#x2F;root:Admi*@172.20.192.101:4000&quot; --changefeed-id&#x3D;&quot;upstream-to-downstream&quot; --start-ts&#x3D;&quot;445309452101091541&quot; -d</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>tidb常用操作</title>
+    <url>/2024/03/26/tidb%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<p>tidb常用操作</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tiup cluster deploy tidb-test-v1 v6.5.2 ./topology.yaml --user root -p</span><br><span class="line">tiup cluster list</span><br><span class="line">tiup cluster clean tidb-test-v1 --all</span><br><span class="line"><span class="meta">#</span><span class="bash"> tiup cluster destroy tidb-test-v1</span></span><br><span class="line">tiup cluster start tidb-test-v1 --init</span><br><span class="line">tiup cluster display tidb-prod</span><br><span class="line">tiup cluster stop tidb-test-v1</span><br><span class="line">tiup cluster restart tidb-test-v1 </span><br><span class="line">tiup cluster edit-config tidb-test-v1 </span><br><span class="line">tiup cluster check tidb-test-v1 scale-out.yml --cluster --user root -p</span><br><span class="line">tiup cluster check tidb-test-v1 scale-out.yml --cluster --apply --user root -p</span><br><span class="line">tiup cluster scale-out tidb-test-v1 scale-out.yml --user root -p</span><br><span class="line">tiup ctl:v6.5.2 pd -u http://172.20.192.70:2379 store limit all engine tiflash 200 add-peer</span><br><span class="line">-- 如果你使用 TiUP 部署，可以用 tiup ctl:v&lt;CLUSTER_VERSION&gt; pd 代替 pd-ctl -u &lt;pd_ip:pd_port&gt; 命令。</span><br><span class="line">tiup ctl:v6.5.2 pd store</span><br><span class="line">tiup ctl:v6.5.2 pd -u http://172.20.192.70:2379 store limit store id 8487838  220 add-peer</span><br><span class="line">tiup ctl:v6.5.2 pd -i -u http://172.20.192.70:2379</span><br><span class="line">tiup cluster restart tidb-test-v1 -N 172.20.192.74:9090</span><br><span class="line">tiup cluster reload tidb-test-v1</span><br><span class="line">tiup install bench</span><br><span class="line">tiup diag config clinic.token eyJrIjoicFpJaDJ1a042ZjQ0a2E2NyIsInUiOjYwMywiaWQiOjU3Nn0=</span><br><span class="line">tiup diag collect tidb-test-v1</span><br></pre></td></tr></table></figure>
+<h3 id="备份与恢复">备份与恢复</h3>
+<p>如果是 BR 备份，还原之后是同名的；<br>
+dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复到的数据库。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mycli -h172.20.192.70 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">BACKUP DATABASE test TO &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39; RATE_LIMIT &#x3D; 120 MB&#x2F;SECOND;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mycli -h172.20.192.115 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">mysql&gt; RESTORE DATABASE test FROM &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39;;</span><br></pre></td></tr></table></figure>
+<h4 id="不停机升级">不停机升级</h4>
+<p>tiup cluster upgrade tidb-prod v6.5.3</p>
+<p>重启grafana</p>
+<p>tiup cluster restart tidb-prod -R grafana</p>
+<h2 id="备份">备份</h2>
+<p>tiup br log start --task-name=pitr --pd=&quot;${PD_IP}:2379&quot; \ --storage=‘s3://tidb-pitr-bucket/backup-data/log-backup’</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>k8s-1.23.17离线安装</title>
+    <url>/2024/03/20/k8s-1.23.17%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<p><strong>k8s-1.23.17离线安装</strong></p>
+<h1>环境设置centos-7.9</h1>
+<p>init_env.sh</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo modprobe br_netfilter</span><br><span class="line">lsmod | grep br_netfilter</span><br><span class="line"></span><br><span class="line">cat&lt;&lt;EOF&gt; &#x2F;etc&#x2F;sysctl.d&#x2F;k8s.conf</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables &#x3D; 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables  &#x3D; 1</span><br><span class="line">net.ipv4.ip_forward                 &#x3D; 1</span><br><span class="line">EOF</span><br><span class="line">sysctl --system</span><br><span class="line">systemctl stop firewalld</span><br><span class="line">systemctl disable firewalld.service</span><br><span class="line"></span><br><span class="line">sed -i &#39;$acloudeon  ALL&#x3D;(ALL)  NOPASSWD: NOPASSWD: ALL&#39; &#x2F;etc&#x2F;sudoers</span><br><span class="line"></span><br><span class="line">swapoff -a</span><br><span class="line">sed -i &#39;s&#x2F;.*swap.*&#x2F;#&amp;&#x2F;&#39; &#x2F;etc&#x2F;fstab</span><br></pre></td></tr></table></figure>
+<h1>安装docker</h1>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tar -xvf rpm_docker_20.10.24.tar</span><br><span class="line">yum localinstall docker&#x2F;* -y</span><br><span class="line">systemctl start docker</span><br><span class="line">sudo cat &gt; &#x2F;etc&#x2F;docker&#x2F;daemon.json &lt;&lt;EOF</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [</span><br><span class="line">     &quot;https:&#x2F;&#x2F;5il73zj3.mirror.aliyuncs.com&quot;,</span><br><span class="line">     &quot;https:&#x2F;&#x2F;docker.mirrors.ustc.edu.cn&quot;,</span><br><span class="line">     &quot;https:&#x2F;&#x2F;registry.docker-cn.com&quot;</span><br><span class="line">  ],</span><br><span class="line">  &quot;insecure-registries&quot;: [&quot;dockerhub.baofu.com&quot;],</span><br><span class="line">  &quot;exec-opts&quot;: [&quot;native.cgroupdriver&#x3D;systemd&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br><span class="line">systemctl enable docker.service</span><br><span class="line">systemctl status docker</span><br><span class="line">docker -v</span><br><span class="line">docker info|grep &quot;Cgroup Driver&quot;</span><br><span class="line">docker load &lt; images_k8s_core_1.23.17.tar</span><br><span class="line">docker load &lt; images_k8s_cni_flannel_0.15.0.tar</span><br><span class="line">docker load &lt; images_k8s_dashboard_v2.5.1.tar</span><br></pre></td></tr></table></figure>
+<h1>安装k8s</h1>
+<h2 id="主节点">主节点</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tar -xvf rpm_k8s_1.23.17.tar</span><br><span class="line">yum localinstall k8s&#x2F;* -y</span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl start kubelet</span><br><span class="line">systemctl enable kubelet</span><br><span class="line">kubeadm init \</span><br><span class="line">--image-repository&#x3D;registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers \</span><br><span class="line">--kubernetes-version&#x3D;v1.23.17 \</span><br><span class="line">--pod-network-cidr&#x3D;10.244.0.0&#x2F;16</span><br><span class="line">mkdir -p $HOME&#x2F;.kube</span><br><span class="line">cp -i &#x2F;etc&#x2F;kubernetes&#x2F;admin.conf $HOME&#x2F;.kube&#x2F;config</span><br><span class="line">chown $(id -u):$(id -g) $HOME&#x2F;.kube&#x2F;config</span><br><span class="line">kubectl apply -f kube-flannel.yml</span><br></pre></td></tr></table></figure>
+<h2 id="工作节点">工作节点</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tar -xvf rpm_k8s_1.23.17.tar</span><br><span class="line">yum localinstall k8s&#x2F;* -y</span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl start kubelet</span><br><span class="line">systemctl enable kubelet</span><br><span class="line">kubeadm join ...</span><br></pre></td></tr></table></figure>
+<p>注意：  在master执行 kubeadm token create --print-join-command， 然后复制出 在work节点执行</p>
+<h2 id="开起主节点调度">开起主节点调度</h2>
+<p>kubectl edit node master</p>
+<p>把master的不可调度的污点给去掉</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">taints:</span><br><span class="line">- effect: NoSchedule</span><br><span class="line">  key: node-role.kubernetes.io&#x2F;master</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>安装 K8s 集群</title>
+    <url>/2024/03/20/%E5%AE%89%E8%A3%85%20K8s%20%E9%9B%86%E7%BE%A4/</url>
+    <content><![CDATA[<h1>安装 K8s 集群</h1>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#注意系统内核升级到5.4 及以上。</span><br><span class="line"></span><br><span class="line">rpm --import https:&#x2F;&#x2F;www.elrepo.org&#x2F;RPM-GPG-KEY-elrepo.org</span><br><span class="line">yum install https:&#x2F;&#x2F;www.elrepo.org&#x2F;elrepo-release-7.el7.elrepo.noarch.rpm</span><br><span class="line">yum --enablerepo&#x3D;elrepo-kernel install kernel-ml</span><br><span class="line">grub2-set-default 0</span><br><span class="line">reboot</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">VERSION&#x3D;&#96;curl -s https:&#x2F;&#x2F;api.github.com&#x2F;repos&#x2F;labring&#x2F;sealos&#x2F;releases&#x2F;latest | grep -oE &#39;&quot;tag_name&quot;: &quot;[^&quot;]+&quot;&#39; | head -n1 | cut -d&#39;&quot;&#39; -f4&#96;</span><br><span class="line"></span><br><span class="line">wget https:&#x2F;&#x2F;mirror.ghproxy.com&#x2F;https:&#x2F;&#x2F;github.com&#x2F;labring&#x2F;sealos&#x2F;releases&#x2F;download&#x2F;$&#123;VERSION&#125;&#x2F;sealos_$&#123;VERSION#v&#125;_linux_amd64.tar.gz \</span><br><span class="line">  &amp;&amp; tar zxvf sealos_$&#123;VERSION#v&#125;_linux_amd64.tar.gz sealos &amp;&amp; chmod +x sealos &amp;&amp; mv sealos &#x2F;usr&#x2F;bin</span><br><span class="line"></span><br><span class="line">#注意 master的cpu数量要大于1</span><br><span class="line">sealos run registry.cn-shanghai.aliyuncs.com&#x2F;labring&#x2F;kubernetes:v1.27.7 registry.cn-shanghai.aliyuncs.com&#x2F;labring&#x2F;helm:v3.9.4 registry.cn-shanghai.aliyuncs.com&#x2F;labring&#x2F;cilium:v1.13.4 \</span><br><span class="line">     --masters 10.6.59.131,10.6.59.132,10.6.59.133 \</span><br><span class="line">     --nodes 10.6.59.134,10.6.59.135 -p &quot;2haolou@64&quot;</span><br><span class="line">	 </span><br><span class="line">#要求hostname每个节点不一样	 </span><br><span class="line">hostnamectl set-hostname node1	 </span><br><span class="line"></span><br><span class="line">#重置集群</span><br><span class="line">sealos reset</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>k8s高可用集群搭建-详细版</title>
+    <url>/2024/03/19/k8s%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E8%AF%A6%E7%BB%86%E7%89%88/</url>
+    <content><![CDATA[<p><strong>k8s高可用集群搭建-详细版</strong></p>
+<h1>环境</h1>
+<p>系统: CenterOS 7.9</p>
+<p>docker: 20.10.24</p>
+<p>k8s: 1.23.17</p>
+<h1>目标</h1>
+<p>3个master节点、LoadBalancer、一个work节点</p>
+<p>172.23.80.241 master1</p>
+<p>172.23.80.242 master2</p>
+<p>172.23.80.243 master3</p>
+<p>172.23.80.244 worker1</p>
+<h1>三个阶段</h1>
+<h3 id="1、搭建k8s-master集群">1、搭建k8s master集群</h3>
+<p>​    每个k8s master节点都可以对外提供服务(apiserver)，但是集群本身不提供负载和故障转移的功能，这些高可用功能由Load Balancer提供，woker节点或client均通过Load Balancer加入或访问k8s master。k8s master 集群至少需要三个节点，因为k8s集群在组网时，etcd组件构成集群时至少需要三个节点，etcd为高可用存储数据库。</p>
+<p>​    每个k8s master节点之所以都可以独立对外提供服务，是因为k8s master唯一对外提高服务的组件apiserver是无状态实例，apiserver之所以无状态，是因为apiserver的数据都被存储到etcd数据库中，从而使得apiserver从有状态服务变成了一个无状态服务，所以Load Balancer 负载对象也就是apiserver（端口6443）。</p>
+<p>​    对于controller-manager、scheduler这两个组件来说，高可用的逻辑也是启用多个实例来实现的，不同与apiserver，这两个组件由于工作逻辑的独特性，一个k8s集群中有且只有一个controller-manager和scheduler在工作，所以启动多个实例它们必须工作在主备模式，即一个active，多个backup的模式；它们通过分布式锁的方式实现内部选举，决定谁来工作，最终抢到分布式锁（k8s集群endpoint）的controller-manager、scheduler成为active状态代表集群controller-manager、scheduler组件工作，抢到锁的controller-manager和scheduler会周期性的向apiserver通告自己的心跳信息，以维护自己active状态，避免其他controller-manager、scheduler进行抢占；其他controller-manager、scheduler收到活动的controller-manager、scheduler的心跳信息后自动切换为backup状态；一旦在规定时间备用controller-manager、scheduler没有收到活动的controller-manager、scheduler的心跳，此时就会触发选举，重复上述过程；</p>
+<h3 id="2、搭建Load-Balancer（提供负载和故障转移功能）">2、搭建Load Balancer（提供负载和故障转移功能）</h3>
+<h3 id="3、work节点（kubelet）通过Load-Balancer-join到k8s集群">3、work节点（kubelet）通过Load Balancer join到k8s集群</h3>
+<h1>前期准备（所有节点）</h1>
+<h3 id="1、修改主机名和配置-hosts">1、修改主机名和配置 hosts</h3>
+<p>hostnamectl set-hostname  k8s-master-80-241</p>
+<p>hostnamectl set-hostname  k8s-master-80-242</p>
+<p>hostnamectl set-hostname  k8s-master-80-243</p>
+<p>hostnamectl set-hostname  k8s-worker-80-244</p>
+<p><strong>master节点hosts配置</strong></p>
+<p>cat &gt;&gt; /etc/hosts&lt;&lt;EOF<br>
+172.23.80.241 k8s-master-80-241 cluster-endpoint<br>
+172.23.80.242 k8s-master-80-242<br>
+172.23.80.243 k8s-master-80-243<br>
+EOF</p>
+<p><strong>woker节点hosts配置</strong></p>
+<p>cat &gt;&gt; /etc/hosts&lt;&lt;EOF</p>
+<p>172.23.80.244 k8s-worker-80-244</p>
+<p>${LoadBalancerVIP} cluster-endpoint<br>
+EOF</p>
+<p>其中:</p>
+<p>cluster-endpoint 是映射到该 IP 的自定义 DNS 名称，这里配置hosts映射：192.168.0.113   cluster-endpoint。 这将允许你将 --control-plane-endpoint=cluster-endpoint 传递给 kubeadm init，并将相同的 DNS 名称传递给 kubeadm join。 之后你可以修改 cluster-endpoint 以指向高可用性方案中的负载均衡器的地址。</p>
+<p>${LoadBalancerVIP} 值为根据LoadBalancer设置的VIP地址。</p>
+<h3 id="2、时间同步">2、时间同步</h3>
+<p>yum install chrony -y<br>
+systemctl start chronyd<br>
+systemctl enable chronyd<br>
+chronyc sources</p>
+<h3 id="3、关闭防火墙">3、关闭防火墙</h3>
+<p>systemctl stop firewalld<br>
+systemctl disable firewalld</p>
+<h3 id="4、关闭swap">4、关闭swap</h3>
+<p># 临时关闭；关闭swap主要是为了性能考虑<br>
+swapoff -a<br>
+# 可以通过这个命令查看swap是否关闭了<br>
+free<br>
+# 永久关闭<br>
+sed -ri ‘s/.<em>swap.</em>/#&amp;/’ /etc/fstab</p>
+<h3 id="5、禁用SELinux">5、禁用SELinux</h3>
+<p># 临时关闭<br>
+setenforce 0<br>
+# 永久禁用<br>
+sed -i ‘s/^SELINUX=enforcing$/SELINUX=disabled/’ /etc/selinux/config</p>
+<h3 id="6、允许-iptables-检查桥接流量（可选）">6、允许 iptables 检查桥接流量（可选）</h3>
+<p>sudo modprobe br_netfilter<br>
+lsmod | grep br_netfilter</p>
+<p># 设置所需的 sysctl 参数，参数在重新启动后保持不变<br>
+cat &lt;&lt;EOF | sudo tee /etc/sysctl.d/k8s.conf<br>
+net.bridge.bridge-nf-call-iptables  = 1<br>
+net.bridge.bridge-nf-call-ip6tables = 1<br>
+net.ipv4.ip_forward                 = 1<br>
+EOF<br>
+# 应用 sysctl 参数而不重新启动<br>
+sudo sysctl --system</p>
+<h1>第一阶段</h1>
+<h2 id="安装Docker-所有">安装Docker(所有)</h2>
+<p>参考: k8s-1.23.17离线安装</p>
+<h2 id="安装master1">安装master1</h2>
+<p>参考: k8s-1.23.17离线安装</p>
+<p>#安装kubelet、kubeadm、kubectl</p>
+<p>#设置为开机自启并现在立即启动</p>
+<p>systemctl enable --now kubelet<br>
+#初始化 高可用k8s集群 核心在于master 初始化参数–control-plane-endpoint --v=5</p>
+<p>kubeadm init \</p>
+<p>–image-repository=<a href="http://registry.cn-hangzhou.aliyuncs.com/google_containers" target="_blank" rel="noopener">registry.cn-hangzhou.aliyuncs.com/google_containers</a> \</p>
+<p>–kubernetes-version=v1.23.17 \</p>
+<p>–control-plane-endpoint=cluster-endpoint \</p>
+<p>–service-cidr=10.1.0.0/16 \</p>
+<p>–pod-network-cidr=10.244.0.0/16 \</p>
+<p>–upload-certs \</p>
+<p>–v=5</p>
+<p>其中</p>
+<p>–control-plane-endpoint 这里的值是配置的DNS名称，因为LoadBalancer是在k8s master集群安装好之后。如果值要配置IP地址，其值必须配成LoadBalancer的负载地址，所以需要先安装好LoadBalancer。端口是LoadBalancer的负载端口可以不配置，默认6443。</p>
+<p>–upload-certs</p>
+<p>#安装网络插件</p>
+<h2 id="安装master2、master3，加入master1集群-构建高可用集群">安装master2、master3，加入master1集群,构建高可用集群</h2>
+<p>参考: k8s-1.23.17离线安装</p>
+<p>#安装kubelet、kubeadm、kubectl</p>
+<p>#设置为开机自启并现在立即启动</p>
+<p>systemctl enable --now kubelet</p>
+<p>#加入集群并初始化</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">kubeadm join cluster-endpoint:6443 --token c1pg2r.bt0a83bv4c3io8o4 \</span><br><span class="line">        --discovery-token-ca-cert-hash sha256:7a3586d7cdf45e5d7c681e22ebb7004f2a3a20c9dee31622ca2e887c56f25900 \</span><br><span class="line">        --control-plane \</span><br><span class="line">        --certificate-key 93a07f3e181677a5a18485f1eef5d374c7c874a80402f292a9440446bcc8d42c</span><br><span class="line">        --v&#x3D;5</span><br><span class="line"></span><br><span class="line"># 证如果过期了，可以使用下面命令生成新证书上传，这里会打印出certificate key(在master节点执行)</span><br><span class="line">kubeadm init phase upload-certs --upload-certs</span><br><span class="line"># 你还可以在 【init】期间指定自定义的 --certificate-key，以后可以由 join 使用。 要生成这样的密钥，可以使用以下命令</span><br><span class="line"># kubeadm certs certificate-key</span><br><span class="line"># --control-plane 标志通知 kubeadm join 创建一个新的控制平面，加入master必须加这个标记</span><br><span class="line"># --certificate-key ... 将导致从集群中的 kubeadm-certs Secret 下载控制平面证书并使用给定的密钥进行解密</span><br></pre></td></tr></table></figure>
+<p>组网成功后修改hosts配置</p>
+<p>master2</p>
+<p>172.23.80.241 k8s-master-80-241</p>
+<p>172.23.80.242 k8s-master-80-242 cluster-endpoint</p>
+<p>172.23.80.243 k8s-master-80-243</p>
+<p>master3</p>
+<p>172.23.80.241 k8s-master-80-241</p>
+<p>172.23.80.242 k8s-master-80-242</p>
+<p>172.23.80.243 k8s-master-80-243 cluster-endpoint</p>
+<h2 id="安装Dashboard">安装Dashboard</h2>
+<p>参考k8s-1.23.17离线安装</p>
+<p><strong>至此k8s master高可用集群（三个master）已经搭建完成</strong></p>
+<h1></h1>
+]]></content>
+  </entry>
+  <entry>
+    <title>挂载虚拟IP</title>
+    <url>/2024/02/27/%E6%8C%82%E8%BD%BD%E8%99%9A%E6%8B%9FIP/</url>
+    <content><![CDATA[<p>在200-223上关闭VIP：<br>
+/sbin/ifconfig bond0:1 192.168.192.1 netmask 255.255.255.0 down</p>
+<p>在200-223上启动VIP：<br>
+/sbin/ifconfig bond0:1 192.168.192.1 netmask 255.255.255.0 up</p>
+<p>/sbin/arping  -c 5 -U -I bond0 192.168.192.1 &gt;/dev/null 2&gt;&amp;1</p>
+<p>bond0:1  这是个别名</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>使用 Kubekey一键 离线 在线 部署 kubernetes 集群</title>
+    <url>/2024/02/01/%E4%BD%BF%E7%94%A8%20Kubekey%E4%B8%80%E9%94%AE%20%E7%A6%BB%E7%BA%BF%20%E5%9C%A8%E7%BA%BF%20%E9%83%A8%E7%BD%B2%20kubernetes%20%E9%9B%86%E7%BE%A4/</url>
+    <content><![CDATA[<h1>使用 Kubekey 一键 离线/在线 部署 kubernetes 集群</h1>
+<p>在线部署：</p>
+<p>创建配置文件</p>
+<p>./kk create config --with-kubesphere</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./kk  init os -f ./config-sample.yaml  <span class="comment"># 初始化集群机器，此操作会安装系统依赖，开启lpvs模块等。前提是确保对应node的网络通畅。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 选择中文区下载(访问 GitHub 受限时使用)</span></span><br><span class="line"><span class="built_in">export</span> KKZONE=cn</span><br><span class="line"></span><br><span class="line">./kk  create cluster -f ./config-sample.yaml  <span class="comment"># 创建集群</span></span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>oblogproxy 部署</title>
+    <url>/2024/01/29/oblogproxy%20%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<p>oblogproxy 部署</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> wget https:&#x2F;&#x2F;obbusiness-private.oss-cn-shanghai.aliyuncs.com&#x2F;download-center&#x2F;opensource&#x2F;oblogproxy&#x2F;v2.0.0_BP1&#x2F;oblogproxy-2.0.0-101000012023121819.el7.x86_64.rpm</span><br><span class="line"></span><br><span class="line">  rpm -i oblogproxy-2.0.0-101000012023121819.el7.x86_64.rpm </span><br><span class="line">  </span><br><span class="line"> cd &#x2F;usr&#x2F;local&#x2F;oblogproxy&#x2F;</span><br><span class="line"></span><br><span class="line">配置文件添加ob集群系统的用户名和密码</span><br><span class="line">  vim conf&#x2F;conf.json  </span><br><span class="line">  &quot;ob_sys_username&quot;: &quot;&quot;,</span><br><span class="line">  &quot;ob_sys_password&quot;: &quot;&quot;,</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  srun.sh start</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>使用图形化界面部署 OCP</title>
+    <url>/2024/01/26/%E4%BD%BF%E7%94%A8%E5%9B%BE%E5%BD%A2%E5%8C%96%E7%95%8C%E9%9D%A2%E9%83%A8%E7%BD%B2%20OCP/</url>
+    <content><![CDATA[<p>ocp部署</p>
+<h1>使用图形化界面部署 OCP</h1>
+<p><a href="https://www.oceanbase.com/docs/common-ocp-1000000000368849" target="_blank" rel="noopener">https://www.oceanbase.com/docs/common-ocp-1000000000368849</a></p>
+<h2 id="注意事项">注意事项</h2>
+<h3 id="1-注意要更改一下datafile-size大小，-不然会占满磁盘">1.<strong>注意要更改一下datafile_size大小， 不然会占满磁盘</strong></h3>
+<ul>
+<li>
+<p><code>datafile_size</code> 与 <code>datafile_disk_percentage</code> 均可以用来设置数据文件占用的磁盘空间，您可以选择其中任意一项进行配置。其他情况下：</p>
+<ul>
+<li>如果两个配置项均已配置，即 <code>datafile_size</code> 与 <code>datafile_disk_percentage</code> 同时配置为非 0 的值，则以 <code>datafile_size</code> 设置的值为准。</li>
+<li>如果两个配置项均未配置，即 <code>datafile_size</code> 的值为 <code>OM</code> 且 <code>datafile_disk_percentage</code> 的值为 <code>0</code>，则系统会根据日志和数据是否共用同一磁盘来自动计算数据文件占用其所在磁盘总空间的百分比，即：
+<ul>
+<li>如果日志和数据共用同一磁盘，则数据文件占用其所在磁盘总空间的百分比为 60%。</li>
+<li>如果日志和数据独占磁盘时，则数据文件占用其所在磁盘总空间的百分比为 90%。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>配置 <code>datafile_maxsize</code> 时，其值需要大于当前数据文件占用的磁盘空间大小 <code>datafile_size</code>（或 <code>datafile_disk_percentage</code>），如果设置的值小于当前数据文件占用的磁盘空间大小，则不会触发自动扩容。</p>
+</li>
+<li>
+<p>如果 <code>datafile_maxsize</code> 的值超过了当前磁盘的最大可用空间，则以实际磁盘的可用大小作为最大值。</p>
+</li>
+<li>
+<p>对于 <code>datafile_next</code>：</p>
+<ul>
+<li>
+<p>当 <code>datafile_next</code> 设置为小于或等于 <code>1G</code> 的值时，<code>datafile_next</code> 的取值为 <code>min (1G, datafile_maxsize * 10%)</code>。</p>
+</li>
+<li>
+<p>当 <code>datafile_next</code> 设置为大于 <code>1G</code> 的值时，<code>datafile_next</code> 的取值为 <code>min ( datafile_next, 磁盘剩余空间)</code>。</p>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">datafile_size  100G</span><br><span class="line">datafile_maxsize 100G</span><br><span class="line">log_disk_size 200G</span><br></pre></td></tr></table></figure>
+<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2024/01/image-20240125171731578.png" alt="image-20240125171731578"></p>
+<p>2.<strong>如果安装的不对，用命令删除集群，重新安装</strong></p>
+<p>obd cluster destroy myoceanbase</p>
+<p>3.<strong>要记住 元信息租户配置，以后用得上。</strong></p>
+<p>4.<strong>如果不能上网，打不开图形化安装界面。</strong></p>
+<h1>用户规划</h1>
+<ol>
+<li>
+<p>执行以下命令，创建用户。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">useradd -U oceanbase -d /home/oceanbase -s /bin/bash</span><br><span class="line">mkdir -p /home/oceanbase</span><br><span class="line">sudo chown -R oceanbase:oceanbase /home/oceanbase</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>执行以下命令，为用户 oceanbase 设置密码。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">passwd oceanbase</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>为用户 oceanbase 设置 sudo 权限。</p>
+<p>执行以下命令，打开 <code>/etc/sudoers</code> 文件。在 <code>/etc/sudoers</code> 文件末尾添加以下内容：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Same thing without a password</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> %wheel        ALL=(ALL)       NOPASSWD: ALL</span></span><br><span class="line">oceanbase       ALL=(ALL)       NOPASSWD: ALL</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>在执行以下命令，查看目录权限。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ls -ld /data</span><br><span class="line">ls -ld /home/oceanbase</span><br></pre></td></tr></table></figure>
+<p>返回以下结果：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">drwxr-xr-x 2 oceanbase oceanbase 4096 2 月 9 18:43</span><br><span class="line">drwxr-xr-x 2 oceanbase oceanbase 4096 2 月 9 18:43 /data</span><br><span class="line">drwxr-xr-x 2 oceanbase oceanbase 4096 2 月 9 18:43 /home/oceanbase</span><br></pre></td></tr></table></figure>
+<p>若 oceanbase 用户无权限，则以 root 用户执行以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">chown -R oceanbase:oceanbase /data</span><br><span class="line">chown -R oceanbase:oceanbase /home/oceanbase</span><br></pre></td></tr></table></figure>
+<p>此处填写您真实的挂载目录。此处 <code>/data</code>、<code>/home/oceanbase</code> 为示例挂载目录。</p>
+</li>
+</ol>
+<p><strong>修改ocp系统参数，重启生效</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">obd cluster stop myocp -c ocp-server-ce --wp</span><br><span class="line">obd cluster start myocp -c ocp-server-ce --wp</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>部署 OceanBase 集群环境</title>
+    <url>/2024/01/26/%E9%83%A8%E7%BD%B2%20OceanBase%20%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83/</url>
+    <content><![CDATA[<h2 id="部署-OceanBase-集群环境">部署 OceanBase 集群环境</h2>
+<p><strong>磁盘初始化</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">umount &#x2F;dfs&#x2F;data&#123;1..8&#125;</span><br><span class="line"></span><br><span class="line">pvcreate &#x2F;dev&#x2F;nvme&#123;0..7&#125;n1 -y</span><br><span class="line"></span><br><span class="line">vgcreate &#x2F;dev&#x2F;obvg &#x2F;dev&#x2F;nvme0n1 &#x2F;dev&#x2F;nvme1n1 &#x2F;dev&#x2F;nvme2n1 &#x2F;dev&#x2F;nvme3n1 &#x2F;dev&#x2F;nvme4n1 &#x2F;dev&#x2F;nvme5n1 &#x2F;dev&#x2F;nvme6n1 &#x2F;dev&#x2F;nvme7n1 </span><br><span class="line"></span><br><span class="line"># 日志盘 ，内存的三倍</span><br><span class="line">lvcreate -n ob-log -L 3096G obvg --stripes&#x3D;6 --stripesize&#x3D;128</span><br><span class="line">lvcreate -n ob-data -l 100%Free obvg --stripes&#x3D;6 --stripesize&#x3D;1024</span><br><span class="line"></span><br><span class="line">mkfs.ext4 &#x2F;dev&#x2F;obvg&#x2F;ob-log -O 64bit   </span><br><span class="line">mkfs.xfs &#x2F;dev&#x2F;obvg&#x2F;ob-data </span><br><span class="line"></span><br><span class="line">mkdir -p &#x2F;data&#x2F;&#123;1,log1&#125;  &amp;&amp; chmod -R 755 &#x2F;data</span><br><span class="line">vi &#x2F;etc&#x2F;fstab</span><br><span class="line">&#x2F;*写入*&#x2F;</span><br><span class="line">&#x2F;dev&#x2F;obvg&#x2F;ob-data &#x2F;data&#x2F;1        xfs    defaults,noatime,nodiratime    0  0</span><br><span class="line">&#x2F;dev&#x2F;obvg&#x2F;ob-log  &#x2F;data&#x2F;log1      ext4    defaults,noatime,nodiratime,nodelalloc,barrier&#x3D;0     0  0</span><br><span class="line">mount -a</span><br></pre></td></tr></table></figure>
+<h3 id="问题：-OBD-4300：x-x-x-x-failed-to-query-java-version-you-may-not-have-java-installed">问题：  OBD-4300：x.x.x.x: failed to query java version, you may not have java installed</h3>
+<p>解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ln -s &#x2F;usr&#x2F;java&#x2F;jdk1.8.0_181-cloudera&#x2F;bin&#x2F;java  &#x2F;usr&#x2F;bin&#x2F;java</span><br></pre></td></tr></table></figure>
+<h3 id="在线部署">在线部署</h3>
+<p>当您选择在线部署时，可以参考本节命令在中控机上安装 OBD。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[admin@test001 ~]$ sudo yum install -y yum-utils</span><br><span class="line">[admin@test001 ~]$ sudo yum-config-manager --add-repo https://mirrors.aliyun.com/oceanbase/OceanBase.repo</span><br><span class="line">[admin@test001 ~]$ sudo yum install -y ob-deploy</span><br><span class="line">[admin@test001 ~]$ source /etc/profile.d/obd.sh</span><br></pre></td></tr></table></figure>
+<h3 id="步骤二：使用白屏部署-OceanBase-数据库">步骤二：使用白屏部署 OceanBase 数据库</h3>
+<ol>
+<li>
+<p>命令行执行 <code>obd web</code> 命令启动白屏界面，根据输出地址登录白屏界面并单击 <strong>开启体验之旅</strong> 开始部署。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[admin@test001 ~]$ obd web</span><br><span class="line">start OBD WEB in 0.0.0.0:8680</span><br><span class="line">please open http://172.xx.xxx.233:8680</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="OBD-一键测试">OBD 一键测试</h2>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum-config-manager --add-repo https://mirrors.aliyun.com/oceanbase/OceanBase.repo</span><br><span class="line">sudo yum install obtpch</span><br><span class="line">sudo ln -s /usr/tpc-h-tools/tpc-h-tools/ /usr/local/</span><br><span class="line">obd test tpch myoceanbase --test-server 10.0.19.191 --tenant=ocp -s 100 --remote-tbl-dir=/tmp/tpch100</span><br><span class="line"></span><br><span class="line">obd test tpch myoceanbase --tenant=ocp  --test-only</span><br></pre></td></tr></table></figure>
+<h3 id="注意">注意</h3>
+<ul>
+<li>OBD 运行 tpch，详细参数介绍请参考 <a href="https://www.oceanbase.com/docs/community-obd-cn-10000000001031935" target="_blank" rel="noopener">obd test tpch</a>。</li>
+<li>在本例中，大幅参数使用的是默认参数，在用户场景下，可以根据自己的具体情况做一些参数上的调整。例如，在本例中使用的集群名为 <code>myoceanbase</code>，租户名是 <code>ocp</code>。</li>
+<li>-s 100  自动生成测试数据的规模，单位：G。</li>
+</ul>
+<h2 id="使用-OBD">使用 OBD</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">obd cluster list</span><br><span class="line">obd cluster restart myoceanbase</span><br><span class="line">查看集群列表</span><br><span class="line">obd cluster list</span><br><span class="line"></span><br><span class="line"># 查看集群状态，以部署名为 myoceanbase 为例</span><br><span class="line">obd cluster display myoceanbase</span><br><span class="line"></span><br><span class="line"># 停止运行中的集群，以部署名为 myoceanbase 为例</span><br><span class="line">obd cluster stop myoceanbase</span><br><span class="line"></span><br><span class="line"># 销毁已部署的集群，以部署名为 myoceanbase 为例</span><br><span class="line">obd cluster destroy myoceanbase</span><br><span class="line"></span><br><span class="line">obd cluster autodeploy</span><br><span class="line"></span><br><span class="line">obd cluster deploy</span><br><span class="line">obd cluster start</span><br><span class="line">obd cluster stop</span><br><span class="line">obd cluster reload</span><br><span class="line">obd cluster upgrade</span><br><span class="line">obd cluster edit-config  myoceanbase</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">部署集群</span><br><span class="line">obd cluster deploy myoceanbase -c config.yaml</span><br><span class="line"># 启动集群</span><br><span class="line">obd cluster start myoceanbase</span><br><span class="line"></span><br><span class="line"># 重启集群组件</span><br><span class="line">obd cluster stop myocp -c ocp-server-ce --wp</span><br><span class="line">obd cluster start myocp -c ocp-server-ce --wp</span><br><span class="line">obd cluster restart myocp -c oceanbase-ce --wp</span><br></pre></td></tr></table></figure>
+<p><strong>导入数据</strong></p>
+<p>并小于 2倍租户CPU就行</p>
+<p>bin/obloader -hxx.xx.xx.xx -P端口 -u用户名 -t租户名 -D数据库名 -p --table ‘*’ --par --external-data --file-suffix ‘.tbl’ -f /data/0/xxx/tpch/100g_data/ --truncate-table --thread 32 --rpc-port 11208 --direct --parallel 32</p>
+<p>t_history_trans_ethereum.ctrl</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">lang&#x3D;java</span><br><span class="line">(</span><br><span class="line">address &quot;none&quot; map(1),</span><br><span class="line">hash &quot;none&quot; map(3),</span><br><span class="line">pk_hex &quot;none&quot; map(2),</span><br><span class="line">hash_code &quot;none&quot; map(4),</span><br><span class="line">reorg &quot;none&quot; map(5),</span><br><span class="line">chain &quot;none&quot; map(6),</span><br><span class="line">block_number &quot;none&quot; map(7),</span><br><span class="line">block_timestamp &quot;none&quot; map(8),</span><br><span class="line">transaction_type &quot;none&quot; map(9),</span><br><span class="line">transaction_index &quot;none&quot; map(10),</span><br><span class="line">nonce &quot;none&quot; map(11),</span><br><span class="line">receipt_status &quot;none&quot; map(12),</span><br><span class="line">from_address &quot;none&quot; map(13),</span><br><span class="line">to_address &quot;none&quot; map(14),</span><br><span class="line">value &quot;none&quot; map(15),</span><br><span class="line">price &quot;none&quot; map(16),</span><br><span class="line">amount &quot;none&quot; map(17),</span><br><span class="line">function_code &quot;none&quot; map(18),</span><br><span class="line">action &quot;none&quot; map(19),</span><br><span class="line">gas_used &quot;none&quot; map(20),</span><br><span class="line">gas_price &quot;none&quot; map(21),</span><br><span class="line">transaction_fee &quot;none&quot; map(22)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>– 先单个文件测试， 并指定控制文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bin&#x2F;obloader -h172.20.192.146 -P2881 -uroot -tbf -Daddress -p --table &#39;t_history_trans_ethereum&#39; --par --external-data -f &#x2F;dfs&#x2F;data3&#x2F;data-source-dir&#x2F;part-04999-cb9f741d-fb71-4423-9890-9ed42da9270d-c000.snappy.parquet --ctl-path &#x2F;home&#x2F;hadoop&#x2F;controls</span><br></pre></td></tr></table></figure>
+<p>– 开启旁路，从hdfs批量导入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bin&#x2F;obloader -h172.20.192.146 -P2881 -uroot -tbf -Daddress -p --table &#39;t_history_trans_bsc&#39; --par --external-data  --file-regular-expression &#39;.*\.parquet&#39; --file-suffix &#39;.parquet&#39; -f &#x2F;dfs&#x2F;data3&#x2F;data-source-dir --storage-uri &#39;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;hive&#x2F;warehouse&#x2F;test.db&#x2F;history_bsc&#x2F;?hdfs-site-file&#x3D;&#x2F;dfs&#x2F;data3&#x2F;data-source-dir&#x2F;hadoop-conf&#x2F;hdfs-site.xml&amp;core-site-file&#x3D;&#x2F;dfs&#x2F;data3&#x2F;data-source-dir&#x2F;hadoop-conf&#x2F;core-site.xml&#39; --rpc-port 2882 --direct --thread 64 --parallel 16</span><br></pre></td></tr></table></figure>
+<p><strong>obdiag</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">source &#x2F;usr&#x2F;local&#x2F;oceanbase-diagnostic-tool&#x2F;init.sh</span><br><span class="line">obdiag check    -- 一键巡检</span><br><span class="line">obdiag analyze log --since 30m</span><br><span class="line">obdiag analyze flt_trace --flt_trace_id 00060d0f-aa35-8aec-3195-f6c9eb13b800</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
     <title>tidb部署</title>
     <url>/2023/11/02/tidb%E9%83%A8%E7%BD%B2/</url>
     <content><![CDATA[<p>新建用户</p>
@@ -68,22 +741,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>从 TiDB 集群迁移数据至另一 TiDB 集群</title>
-    <url>/2023/10/31/%E4%BB%8E%20TiDB%20%E9%9B%86%E7%BE%A4%E8%BF%81%E7%A7%BB%E6%95%B0%E6%8D%AE%E8%87%B3%E5%8F%A6%E4%B8%80%20TiDB%20%E9%9B%86%E7%BE%A4/</url>
-    <content><![CDATA[<h2 id="迁移全量数据">迁移全量数据</h2>
-<p>关闭 GC。</p>
-<p>为了保证增量迁移过程中新写入的数据不丢失，在开始备份之前，需要关闭上游集群的垃圾回收 (GC) 机制，以确保系统不再清理历史数据。</p>
-<p>执行如下命令关闭 GC：</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">MySQL [test]&gt; SET GLOBAL tidb_gc_enable=FALSE;</span><br></pre></td></tr></table></figure>
-<p>备份数据。</p>
-<p>在上游集群中执行 BACKUP 语句备份数据：</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">MySQL [(none)]&gt; BACKUP DATABASE * TO 's3://backup?access-key=minio&amp;secret-access-key=miniostorage&amp;endpoint=http://$&#123;HOST_IP&#125;:6060&amp;force-path-style=true' RATE_LIMIT = 120 MB/SECOND;</span><br></pre></td></tr></table></figure>
-<p>恢复数据。</p>
-<p>在下游集群中执行 RESTORE 语句恢复数据：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">BACKUP</span> <span class="keyword">DATABASE</span> BASE <span class="keyword">TO</span> <span class="string">'s3://tidb/BASE_BAK20231031?access-key=minio&amp;secret-access-key=miniostorage&amp;endpoint=http://172.20.192.151:6060&amp;force-path-style=true'</span> RATE_LIMIT = <span class="number">120</span> MB/<span class="keyword">SECOND</span>;</span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
     <title>SR运维</title>
     <url>/2023/09/13/SR%E8%BF%90%E7%BB%B4/</url>
     <content><![CDATA[<h2 id="修复tablet">修复tablet</h2>
@@ -94,89 +751,6 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">show tablet 341603</span><br><span class="line">SHOW PROC &#39;&#x2F;dbs&#x2F;12026&#x2F;335109&#x2F;partitions&#x2F;335078&#x2F;335110&#x2F;341603&#39;;</span><br></pre></td></tr></table></figure>
 <p>setBad</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ADMIN SET REPLICA STATUS PROPERTIES(&quot;tablet_id&quot; &#x3D; &quot;341603&quot;, &quot;backend_id&quot; &#x3D; &quot;10006&quot; , &quot;status&quot; &#x3D; &quot;bad&quot;);</span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
-    <title>Minio 模拟兼容 S3 的存储服务</title>
-    <url>/2023/09/05/Minio%20%E6%A8%A1%E6%8B%9F%E5%85%BC%E5%AE%B9%20S3%20%E7%9A%84%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1/</url>
-    <content><![CDATA[<h3 id="搭建-MinIO-作为备份存储系统-，兼容S3">搭建 MinIO 作为备份存储系统 ，兼容S3</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;dl.min.io&#x2F;server&#x2F;minio&#x2F;release&#x2F;linux-amd64&#x2F;minio</span><br><span class="line">chmod +x minio</span><br><span class="line"></span><br><span class="line"># 配置访问 minio 的 access-key access-screct-id</span><br><span class="line"></span><br><span class="line">export HOST_IP&#x3D;&#39;172.20.192.151&#39; </span><br><span class="line">export MINIO_ROOT_USER&#x3D;&#39;minio&#39;</span><br><span class="line">export MINIO_ROOT_PASSWORD&#x3D;&#39;miniostorage&#39;</span><br><span class="line"></span><br><span class="line"># 创建数据目录,  其中 backup 为 bucket 的名称</span><br><span class="line"></span><br><span class="line">mkdir -p data&#x2F;backup</span><br><span class="line"></span><br><span class="line"># 启动 minio, 暴露端口在 6060</span><br><span class="line"></span><br><span class="line">&#x2F;opt&#x2F;module&#x2F;minio server &#x2F;opt&#x2F;module&#x2F;data --address :6060 &amp;</span><br></pre></td></tr></table></figure>
-<h2 id="单节点部署多磁盘">单节点部署多磁盘</h2>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;opt&#x2F;module&#x2F;minio server --address :6060  &#x2F;dfs&#x2F;data1&#x2F;s3data &#x2F;dfs&#x2F;data2&#x2F;s3data &#x2F;dfs&#x2F;data3&#x2F;s3d &amp;</span><br></pre></td></tr></table></figure>
-<h2 id="备份-还原-TIDB数据">备份 还原 TIDB数据</h2>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mycli -h172.20.192.70 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">BACKUP DATABASE test TO &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39; RATE_LIMIT &#x3D; 120 MB&#x2F;SECOND;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mycli -h172.20.192.115 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">mysql&gt; RESTORE DATABASE test FROM &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39;;</span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
-    <title>cloudcanl 2.2.4 安装部署</title>
-    <url>/2023/08/22/cloudcanl%202.2.4%20%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[<p>cloudcanl 2.2.4 安装部署</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo yum update</span><br><span class="line"></span><br><span class="line"># base util</span><br><span class="line"></span><br><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum install -y lsof</span><br><span class="line">sudo yum install -y bc</span><br><span class="line">sudo yum install -y p7zip p7zip-plugins</span><br><span class="line"></span><br><span class="line"># install docker</span><br><span class="line"></span><br><span class="line">sudo yum-config-manager --add-repo https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br><span class="line">sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</span><br><span class="line">sudo systemctl start docker</span><br><span class="line">systemctl enable docker</span><br><span class="line">sudo wget &quot;https:&#x2F;&#x2F;pc.clougence.com&#x2F;docker-compose-1.28.3&quot; -O &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br><span class="line">sudo chmod +x &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br><span class="line"></span><br><span class="line"># check</span><br><span class="line"></span><br><span class="line">docker -v</span><br><span class="line">docker compose version</span><br></pre></td></tr></table></figure>
-<h2 id="系统准备">系统准备</h2>
-<p>clougence用户ulimit上限调整为102400</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi  &#x2F;etc&#x2F;security&#x2F;limits.d&#x2F;20-nproc.conf</span><br><span class="line">## 调节clougence用户的资源限制</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 解压*</span><br><span class="line">7z x cloudcanal-2.2.4.7z -o.&#x2F;cloudcanal_home</span><br><span class="line">cd cloudcanal_home</span><br></pre></td></tr></table></figure>
-<h2 id="5-启动CloudCanal">5. 启动CloudCanal</h2>
-<ul>
-<li>执行启动命令: <code>sh startup.sh</code></li>
-<li>当终端出现 cloudcanal start 时，即启动成功<br>
-<a href="https://www.askcug.com/assets/uploads/files/1620979032983-7b00e562-cd45-4905-a626-1356503d8213-image.png" target="_blank" rel="noopener"><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2023/04/1620979032983-7b00e562-cd45-4905-a626-1356503d8213-image-resized.png" alt="7b00e562-cd45-4905-a626-1356503d8213-image.png"></a></li>
-</ul>
-<h2 id="6-确认启动成功">6. 确认启动成功</h2>
-<ul>
-<li>启动过程将耗时 1 分钟左右，访问控制台 <code>http://{您部署机器的ip}:8111</code> 正确登录并开始操作</li>
-</ul>
-<h1>使用教程(必读)</h1>
-<ul>
-<li>为了方便您一开始快速体验 CloudCanal ，我们已自动帮您做好了一些初始化的工作</li>
-<li><strong>请务必使用提供的默认账号登入，方便您快速体验</strong></li>
-<li>用户名：test@clougence.com</li>
-<li>密码：clougence2021</li>
-<li>默认添加的测试 MySQL 数据库
-<ul>
-<li>cloudcanal_test_a(源端)和cloudcanal_test_b(目标端)这两个库中已准备用于测试的表和数据</li>
-</ul>
-</li>
-<li>默认已添加了一台运行机器，用于执行具体的数据同步任务</li>
-<li>如遇到需要发送短信的场景，<strong>先点击获取验证码，然后输入短信验证码 777777 即可</strong></li>
-</ul>
-<p>)</p>
-<h1>CloudCanal社区版高可用部署教程</h1>
-<p><a href="https://www.askcug.com/topic/111/cloudcanal%E7%A4%BE%E5%8C%BA%E7%89%88%E9%AB%98%E5%8F%AF%E7%94%A8%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">https://www.askcug.com/topic/111/cloudcanal社区版高可用部署教程</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>tidb常用操作</title>
-    <url>/2023/08/16/tidb%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<p>tidb常用操作</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tiup cluster deploy tidb-test-v1 v6.5.2 ./topology.yaml --user root -p</span><br><span class="line">tiup cluster list</span><br><span class="line">tiup cluster clean tidb-test-v1 --all</span><br><span class="line"><span class="meta">#</span><span class="bash"> tiup cluster destroy tidb-test-v1</span></span><br><span class="line">tiup cluster start tidb-test-v1 --init</span><br><span class="line">tiup cluster display tidb-test-v1</span><br><span class="line">tiup cluster stop tidb-test-v1</span><br><span class="line">tiup cluster restart tidb-test-v1 </span><br><span class="line">tiup cluster edit-config tidb-test-v1 </span><br><span class="line">tiup cluster check tidb-test-v1 scale-out.yml --cluster --user root -p</span><br><span class="line">tiup cluster check tidb-test-v1 scale-out.yml --cluster --apply --user root -p</span><br><span class="line">tiup cluster scale-out tidb-test-v1 scale-out.yml --user root -p</span><br><span class="line">tiup ctl:v6.5.2 pd -u http://172.20.192.70:2379 store limit all engine tiflash 200 add-peer</span><br><span class="line">-- 如果你使用 TiUP 部署，可以用 tiup ctl:v&lt;CLUSTER_VERSION&gt; pd 代替 pd-ctl -u &lt;pd_ip:pd_port&gt; 命令。</span><br><span class="line">tiup ctl:v6.5.2 pd store</span><br><span class="line">tiup ctl:v6.5.2 pd -u http://172.20.192.70:2379 store limit store id 8487838  220 add-peer</span><br><span class="line">tiup ctl:v6.5.2 pd -i -u http://172.20.192.70:2379</span><br><span class="line">tiup cluster restart tidb-test-v1 -N 172.20.192.74:9090</span><br><span class="line">tiup cluster reload tidb-test-v1</span><br><span class="line">tiup install bench</span><br><span class="line">tiup diag config clinic.token eyJrIjoicFpJaDJ1a042ZjQ0a2E2NyIsInUiOjYwMywiaWQiOjU3Nn0=</span><br><span class="line">tiup diag collect tidb-test-v1</span><br></pre></td></tr></table></figure>
-<h3 id="备份与恢复">备份与恢复</h3>
-<p>如果是 BR 备份，还原之后是同名的；<br>
-dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复到的数据库。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mycli -h172.20.192.70 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">BACKUP DATABASE test TO &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39; RATE_LIMIT &#x3D; 120 MB&#x2F;SECOND;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mycli -h172.20.192.115 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">mysql&gt; RESTORE DATABASE test FROM &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39;;</span><br></pre></td></tr></table></figure>
-<h4 id="不停机升级">不停机升级</h4>
-<p>tiup cluster upgrade tidb-prod v6.5.3</p>
-<p>重启grafana</p>
-<p>tiup cluster restart tidb-prod -R grafana</p>
-<h2 id="备份">备份</h2>
-<p>tiup br log start --task-name=pitr --pd=&quot;${PD_IP}:2379&quot; \ --storage=‘s3://tidb-pitr-bucket/backup-data/log-backup’</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>Nginx 高可用集群解决方案 Nginx + Keepalived</title>
-    <url>/2023/08/10/Nginx%20%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%20Nginx%20+%20Keepalived/</url>
-    <content><![CDATA[<h2 id="Nginx-高可用集群解决方案-Nginx-Keepalived">Nginx 高可用集群解决方案 Nginx + Keepalived</h2>
-<ol>
-<li>
-<p>修改 vim /opt/nginx/nginx.conf</p>
-</li>
-<li>
-<p>重启容器</p>
-</li>
-</ol>
-<p>docker restart 1f163b3a620a</p>
-<p>172.20.192.151</p>
-<p>172.20.192.152</p>
 ]]></content>
   </entry>
   <entry>
@@ -370,20 +944,6 @@ historyserver.archive.fs.refresh-interval: 10000</p>
 <p>wget <a href="https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-6.0.5.tgz" target="_blank" rel="noopener">https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-6.0.5.tgz</a></p>
 <p>参考   <a href="https://www.jianshu.com/p/21d33d6cb56c" target="_blank" rel="noopener">https://www.jianshu.com/p/21d33d6cb56c</a></p>
 <p><a href="https://blog.csdn.net/networken/article/details/115409367" target="_blank" rel="noopener">https://blog.csdn.net/networken/article/details/115409367</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>Apache Kyuubi on CDH 部署</title>
-    <url>/2023/04/25/Apache%20Kyuubi%20on%20CDH%20%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[<h1>Apache Kyuubi on CDH 部署</h1>
-<p><a href="https://shmily-qjj.top/ee1c2df4/" target="_blank" rel="noopener">https://shmily-qjj.top/ee1c2df4/</a></p>
-<h1>Apache Kyuubi on Spark 在 CDH 上的深度实践</h1>
-<p><a href="https://www.slidestalk.com/openLooKeng/22" target="_blank" rel="noopener">https://www.slidestalk.com/openLooKeng/22</a></p>
-<p>sudo -u hdfs bin/kyuubi start<br>
-sudo -u hdfs bin/kyuubi stop</p>
-<p>bin/beeline -u ‘jdbc:hive2://10.0.19.132:10009/’ -n hadoop</p>
-<p>bin/beeline -u ‘jdbc:hive2://172.20.192.36:10009/’ -n hadoop</p>
-<p>jdbc:hive2://172.20.192.36:10009/?spark.app.name=test_kyuubi_application;spark.sql.adaptive.enabled=true;spark.driver.memory=4G;spark.executor.instances=256;spark.executor.cores=4;spark.executor.memory=16g</p>
 ]]></content>
   </entry>
   <entry>
@@ -799,22 +1359,6 @@ tar -xf prometheus-2.29.1.linux-amd64.tar.gz -C /usr/local/</p>
 <h2 id="phoenix-client">phoenix client</h2>
 <p>172.20.192.151:/opt/module/phoenix-hbase-2.1-5.1.2/</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">phoenix-sqlline cdh192-150,cdh192-151,cdh192-152,cdh192-153,cdh192-154:2181</span><br><span class="line"></span><br><span class="line">&#x2F;opt&#x2F;module&#x2F;phoenix-hbase-2.1-5.1.2&#x2F;bin&#x2F;sqlline.py cdh192-150,cdh192-151,cdh192-152,cdh192-153,cdh192-154:2181</span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
-    <title>CDH6.3.2 升级 Spark3.3.0 版本</title>
-    <url>/2022/12/30/CDH6.3.2%20%E5%8D%87%E7%BA%A7%20Spark3.3.0%20%E7%89%88%E6%9C%AC/</url>
-    <content><![CDATA[<h1>CDH6.3.2 升级 Spark3.3.0 版本</h1>
-<p><a href="https://juejin.cn/post/7140053569431928845" target="_blank" rel="noopener">https://juejin.cn/post/7140053569431928845</a></p>
-<p>根据上面的文档进行部署  还有下列操作需要补充</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cp -r &#x2F;etc&#x2F;hadoop&#x2F;conf&#x2F;*.xml &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3&#x2F;conf&#x2F;</span><br><span class="line">cp &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;hive-site.xml &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3&#x2F;conf&#x2F;</span><br><span class="line"></span><br><span class="line"># 奇怪用快捷方式就不行</span><br><span class="line">cd &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3&#x2F;conf</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;hive-site.xml hive-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;hdfs-site.xml hdfs-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;core-site.xml core-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;mapred-site.xml mapred-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;hive&#x2F;conf&#x2F;yarn-site.xml yarn-site.xml</span><br><span class="line">ln -s &#x2F;etc&#x2F;spark&#x2F;conf&#x2F;spark-defaults.conf spark-defaults.conf</span><br><span class="line">ln -s &#x2F;etc&#x2F;spark&#x2F;conf&#x2F;spark-env.sh spark-env.sh</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;local&#x2F;bin</span><br><span class="line">ln -s &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3&#x2F;bin&#x2F;pyspark pyspark3</span><br></pre></td></tr></table></figure>
-<p>新增一个spark3-shell的快捷方式</p>
-<p>vim  /opt/cloudera/parcels/CDH/bin/spark3-shell</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Autodetect JAVA_HOME <span class="keyword">if</span> not defined</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Reference: http://stackoverflow.com/questions/59895/can<span class="_">-a</span>-bash-script-tell-what-directory-its-stored-in</span></span><br><span class="line">SOURCE="$&#123;BASH_SOURCE[0]&#125;"</span><br><span class="line">BIN_DIR="$( dirname "$SOURCE" )"</span><br><span class="line">while [ -h "$SOURCE" ]</span><br><span class="line">do</span><br><span class="line">SOURCE="$(readlink "$SOURCE")"</span><br><span class="line">[[ $SOURCE != /* ]] &amp;&amp; SOURCE="$DIR/$SOURCE"</span><br><span class="line">BIN_DIR="$( cd -P "$( dirname "$SOURCE"  )" &amp;&amp; pwd )"</span><br><span class="line">done</span><br><span class="line">BIN_DIR="$( cd -P "$( dirname "$SOURCE" )" &amp;&amp; pwd )"</span><br><span class="line">CDH_LIB_DIR=$BIN_DIR/../../CDH/lib</span><br><span class="line">LIB_DIR=$BIN_DIR/../lib</span><br><span class="line">export HADOOP_HOME=$CDH_LIB_DIR/hadoop</span><br><span class="line">. $CDH_LIB_DIR/bigtop-utils/bigtop-detect-javahome</span><br><span class="line">exec $LIB_DIR/spark3/bin/spark-shell "$@"</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod +x &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;bin&#x2F;spark3-shell</span><br></pre></td></tr></table></figure>
-<p>用法：alternatives --install &lt;链接&gt; &lt;名称&gt; &lt;路径&gt; &lt;优先度&gt;</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">alternatives --install &#x2F;usr&#x2F;bin&#x2F;spark3-shell spark3-shell &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;bin&#x2F;spark3-shell 1</span><br></pre></td></tr></table></figure>
 ]]></content>
   </entry>
   <entry>

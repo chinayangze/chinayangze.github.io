@@ -209,7 +209,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/11/23/xargs%E5%91%BD%E4%BB%A4/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/04/06/ClickHouse%20%E9%83%A8%E7%BD%B2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -223,7 +223,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/11/23/xargs%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">xargs命令</a>
+            <a href="/2021/04/06/ClickHouse%20%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">ClickHouse 部署</a>
         </h1>
 
         <div class="post-meta">
@@ -232,9 +232,8 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-11-23 15:43:13 / 修改时间：15:43:12" itemprop="dateCreated datePublished" datetime="2020-11-23T15:43:13+08:00">2020-11-23</time>
+              <time title="创建时间：2021-04-06 15:33:31" itemprop="dateCreated datePublished" datetime="2021-04-06T15:33:31+08:00">2021-04-06</time>
             </span>
 
           
@@ -248,22 +247,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>xargs可以将输入内容（通常通过命令行管道传递），转成后续命令的参数，通常用途有：</p>
-<ol>
-<li>命令组合：尤其是一些命令不支持管道输入，比如<code>ls</code>。</li>
-<li>避免参数过长：xargs可以通过<code>-nx</code>来将参数分组，避免参数过长。</li>
-</ol>
-<p>使用语法如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Usage: xargs [OPTION]... COMMAND INITIAL-ARGS...</span><br><span class="line">Run COMMAND with arguments INITIAL-ARGS and more arguments read from input.</span><br></pre></td></tr></table></figure>
-<h2 id="入门例子">入门例子</h2>
-<p>首先，创建测试文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch a.js b.js c.js</span><br></pre></td></tr></table></figure>
-<p>接着，运行如下命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls *.js | xargs ls -al</span><br></pre></td></tr></table></figure>
-<p>输出如下：</p>
+          <h1>ClickHouse 部署</h1>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install yum-utils</span><br><span class="line">sudo rpm --import https:&#x2F;&#x2F;repo.clickhouse.tech&#x2F;CLICKHOUSE-KEY.GPG</span><br><span class="line">sudo yum-config-manager --add-repo https:&#x2F;&#x2F;repo.clickhouse.tech&#x2F;rpm&#x2F;stable&#x2F;x86_64</span><br></pre></td></tr></table></figure>
+<p>如果您想使用最新的版本，请用<code>testing</code>替代<code>stable</code>(我们只推荐您用于测试环境)。<code>prestable</code>有时也可用。</p>
+<p>然后运行命令安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install clickhouse-server clickhouse-client</span><br></pre></td></tr></table></figure>
+<p>启动服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start clickhouse-server</span><br><span class="line">sudo systemctl stop clickhouse-server</span><br><span class="line">sudo systemctl status clickhouse-server</span><br></pre></td></tr></table></figure>
+<p>快速开始</p>
+<p>clickhouse-client -m</p>
+
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/11/23/xargs%E5%91%BD%E4%BB%A4/#more" rel="contents">
+              <a class="btn" href="/2021/04/06/ClickHouse%20%E9%83%A8%E7%BD%B2/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -287,7 +283,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/11/20/could%20only%20be%20written%20to%200%20of%20the%201%20minReplication%20nodes/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/31/%E5%BF%AB%E9%80%9F%E8%AF%95%E7%94%A8%20DolphinScheduler/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -301,7 +297,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/11/20/could%20only%20be%20written%20to%200%20of%20the%201%20minReplication%20nodes/" class="post-title-link" itemprop="url">could only be written to 0 of the 1 minReplication nodes</a>
+            <a href="/2021/03/31/%E5%BF%AB%E9%80%9F%E8%AF%95%E7%94%A8%20DolphinScheduler/" class="post-title-link" itemprop="url">快速试用 DolphinScheduler</a>
         </h1>
 
         <div class="post-meta">
@@ -311,7 +307,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-20 15:33:15" itemprop="dateCreated datePublished" datetime="2020-11-20T15:33:15+08:00">2020-11-20</time>
+              <time title="创建时间：2021-03-31 10:06:42" itemprop="dateCreated datePublished" datetime="2021-03-31T10:06:42+08:00">2021-03-31</time>
             </span>
 
           
@@ -325,19 +321,21 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>重启dn导致集群不能写入数据，几百个任务都失败了， 经过一个通宵的折腾，记录一下这次重大事故。</p>
-<h3 id="报错日志">报错日志</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DataStreamer Exception</span><br><span class="line">20-11-2020 09:48:59 CST mysql2sqoop-1-RD202006060009 INFO - org.apache.hadoop.ipc.RemoteException(java.io.IOException): File &#x2F;user&#x2F;yarn&#x2F;.staging&#x2F;job_1605809645188_1956&#x2F;job.jar could only be written to 0 of the 1 minReplication nodes. There are 66 datanode(s) running and no node(s) are excluded in this operation.</span><br></pre></td></tr></table></figure>
-<h3 id="报错的日志各种误导，走了很多弯路，只说一下，最终解决了这个问题的方法：">报错的日志各种误导，走了很多弯路，只说一下，最终解决了这个问题的方法：</h3>
-<p>网上有人出现这个问题是格式化解决，它们日志是There are 0 datanode(s) running and no node(s) are excluded in this operation.我的hdfs集群是正常的所有节点都在，只是不能写入数据。</p>
-<p>我用的分层策略是One_SSD，查看了DFS Storage Types，发现disk的空间不够。</p>
-<p><img src="/images/image-20201120151830207.png" alt="image-20201120151830207"></p>
-<h3 id="解决步骤">解决步骤</h3>
-<p>ssd磁盘的机器和普通磁盘的机器分2个角色组</p>
-<p>普通组不加[SSD]</p>
+          <p>快速试用 DolphinScheduler</p>
+<h5 id="1、下载源码-zip-包">1、下载源码 zip 包</h5>
+<ul>
+<li>请下载最新版本的源码包并进行解压</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建源码存放目录</span></span><br><span class="line">mkdir -p /opt/soft/dolphinscheduler;</span><br><span class="line">cd /opt/soft/dolphinscheduler;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 通过wget下载源码包</span></span><br><span class="line">wget https://mirrors.tuna.tsinghua.edu.cn/apache/incubator/dolphinscheduler/1.3.5/apache-dolphinscheduler-incubating-1.3.5-src.zip</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 通过curl下载源码包</span></span><br><span class="line">curl -O https://mirrors.tuna.tsinghua.edu.cn/apache/incubator/dolphinscheduler/1.3.5/apache-dolphinscheduler-incubating-1.3.5-src.zip</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 解压缩</span></span><br><span class="line">unzip apache-dolphinscheduler-incubating-1.3.5-src.zip</span><br><span class="line"></span><br><span class="line">mv apache-dolphinscheduler-incubating-1.3.5-src-release dolphinscheduler-src</span><br></pre></td></tr></table></figure>
+<h5 id="2、安装并启动服务">2、安装并启动服务</h5>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd dolphinscheduler-src&#x2F;docker&#x2F;docker-swarm</span><br><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+<h5 id="3、登录系统">3、登录系统</h5>
+<p>访问前端页面： <a href="http://bigdata-3.baofoo.cn:12345/dolphinscheduler" target="_blank" rel="noopener">http://bigdata-3.baofoo.cn:12345/dolphinscheduler</a></p>
+<p>默认的用户是<code>admin</code>，默认的密码是<code>dolphinscheduler123</code></p>
+<p>停止所有容器:</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/11/20/could%20only%20be%20written%20to%200%20of%20the%201%20minReplication%20nodes/#more" rel="contents">
+              <a class="btn" href="/2021/03/31/%E5%BF%AB%E9%80%9F%E8%AF%95%E7%94%A8%20DolphinScheduler/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -361,7 +359,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/11/10/python%E6%97%B6%E9%97%B4strftime%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%8E%BB%E9%99%A4%E5%89%8D%E5%AF%BC0/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/30/conda%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -375,7 +373,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/11/10/python%E6%97%B6%E9%97%B4strftime%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%8E%BB%E9%99%A4%E5%89%8D%E5%AF%BC0/" class="post-title-link" itemprop="url">python时间strftime格式化去除前导0</a>
+            <a href="/2021/03/30/conda%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">conda笔记</a>
         </h1>
 
         <div class="post-meta">
@@ -385,7 +383,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-10 17:27:45" itemprop="dateCreated datePublished" datetime="2020-11-10T17:27:45+08:00">2020-11-10</time>
+              <time title="创建时间：2021-03-30 17:21:58" itemprop="dateCreated datePublished" datetime="2021-03-30T17:21:58+08:00">2021-03-30</time>
             </span>
 
           
@@ -399,16 +397,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>python时间strftime格式化去除前导0</h1>
-<p><strong>解决方案：</strong></p>
-<h3 id="linux-加一个“-”符号">linux  (加一个“-”符号)</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">datetime.date(2020, 11, 9).strftime(&quot;%-m月%-d日&quot;)</span><br></pre></td></tr></table></figure>
-<h3 id="windows-加一个“-”符号">windows  (加一个“#”符号)</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">datetime.date(2020, 11, 9).strftime(&quot;%#m月%#d日&quot;)</span><br></pre></td></tr></table></figure>
+          <p><strong>Conda常用命令整理</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">conda --version #查看conda版本，验证是否安装</span><br><span class="line"></span><br><span class="line">conda update conda #更新至最新版本，也会更新其它相关包</span><br><span class="line"></span><br><span class="line">conda update --all #更新所有包</span><br><span class="line"></span><br><span class="line">conda update package_name #更新指定的包</span><br><span class="line"></span><br><span class="line">conda create -n env_name package_name #创建名为env_name的新环境，并在该环境下安装名为package_name 的包，可以指定新环境的版本号，例如：conda create -n python2 python=python2.7 numpy pandas，创建了python2环境，python版本为2.7，同时还安装了numpy pandas包</span><br><span class="line"></span><br><span class="line">conda activate env_name #切换至env_name环境</span><br><span class="line"></span><br><span class="line">conda deactivate #退出环境</span><br><span class="line"></span><br><span class="line">conda info -e #显示所有已经创建的环境</span><br><span class="line"></span><br><span class="line">conda create --name new_env_name --clone old_env_name #复制old_env_name为new_env_name</span><br><span class="line"></span><br><span class="line">conda remove --name env_name –all #删除环境</span><br><span class="line"></span><br><span class="line">conda list #查看所有已经安装的包</span><br><span class="line"></span><br><span class="line">conda install package_name #在当前环境中安装包</span><br><span class="line"></span><br><span class="line">conda install --name env_name package_name #在指定环境中安装包</span><br><span class="line"></span><br><span class="line">conda remove -- name env_name package #删除指定环境中的包</span><br><span class="line"></span><br><span class="line">conda remove package #删除当前环境中的包</span><br><span class="line"></span><br><span class="line">conda create -n tensorflow_env tensorflow</span><br><span class="line"></span><br><span class="line">conda activate tensorflow_env #conda 安装tensorflow的CPU版本</span><br><span class="line"></span><br><span class="line">conda create -n tensorflow_gpuenv tensorflow-gpu</span><br><span class="line"></span><br><span class="line">conda activate tensorflow_gpuenv #conda安装tensorflow的GPU版本</span><br><span class="line"></span><br><span class="line">conda env remove -n env_name #采用第10条的方法删除环境失败时，可采用这种方法</span><br></pre></td></tr></table></figure>
+<p><strong>Conda常用命令整理</strong></p>
+<p><a href="https://blog.csdn.net/menc15/article/details/71477949/" target="_blank" rel="noopener">https://blog.csdn.net/menc15/article/details/71477949/</a></p>
 
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/11/10/python%E6%97%B6%E9%97%B4strftime%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%8E%BB%E9%99%A4%E5%89%8D%E5%AF%BC0/#more" rel="contents">
+              <a class="btn" href="/2021/03/30/conda%E7%AC%94%E8%AE%B0/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -432,7 +428,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/10/23/hive%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%87%BA%EF%BC%8C%E5%B9%B6%E6%8C%87%E5%AE%9A%E5%88%86%E9%9A%94%E7%AC%A6%EF%BC%8C%E5%85%83%E7%B4%A0%E5%8C%85%E5%90%AB%E5%BC%95%E5%8F%B7%E7%AD%89/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/10/spark%E6%89%93%E5%8C%85%E6%8F%90%E4%BA%A4python%E7%A8%8B%E5%BA%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -446,7 +442,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/10/23/hive%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%87%BA%EF%BC%8C%E5%B9%B6%E6%8C%87%E5%AE%9A%E5%88%86%E9%9A%94%E7%AC%A6%EF%BC%8C%E5%85%83%E7%B4%A0%E5%8C%85%E5%90%AB%E5%BC%95%E5%8F%B7%E7%AD%89/" class="post-title-link" itemprop="url">hive数据导出，并指定分隔符，元素包含引号等</a>
+            <a href="/2021/03/10/spark%E6%89%93%E5%8C%85%E6%8F%90%E4%BA%A4python%E7%A8%8B%E5%BA%8F/" class="post-title-link" itemprop="url">spark打包提交python程序</a>
         </h1>
 
         <div class="post-meta">
@@ -456,7 +452,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-10-23 14:31:30" itemprop="dateCreated datePublished" datetime="2020-10-23T14:31:30+08:00">2020-10-23</time>
+              <time title="创建时间：2021-03-10 16:22:27" itemprop="dateCreated datePublished" datetime="2021-03-10T16:22:27+08:00">2021-03-10</time>
             </span>
 
           
@@ -470,63 +466,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="hive数据导出，并指定分隔符，元素包含引号等">hive数据导出，并指定分隔符，元素包含引号等</h3>
-<p>语法格式</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">beeline -n username -p password -u jdbc:hive2://host:10000 --verbose=<span class="literal">true</span>  --showHeader=<span class="literal">false</span> --outputformat=tsv2  --color=<span class="literal">true</span>  -e <span class="string">"select * from <span class="variable">$&#123;database&#125;</span>.<span class="variable">$&#123;tablename&#125;</span>"</span> &gt; <span class="variable">$&#123;tableName&#125;</span>.csv</span><br></pre></td></tr></table></figure>
-<p>通过 outputformat 指定输出格式</p>
-<blockquote>
-<p>–outputformat=[table/vertical/csv/tsv/dsv/csv2/tsv2] == 指定输出格式</p>
-<p>–delimiterForDSV=&quot;*&quot; ‘&amp;’ 前提（–outputformat=dsv） 指定分隔符</p>
-</blockquote>
-<p>不同格式对应的分隔符如下表：</p>
-<table>
-<thead>
-<tr>
-<th>格式</th>
-<th>分隔符</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>table</td>
-<td>表格式</td>
-</tr>
-<tr>
-<td>vertical</td>
-<td>如下所示</td>
-</tr>
-<tr>
-<td>csv</td>
-<td>‘,’ 逗号(元素包含引号)</td>
-</tr>
-<tr>
-<td>tsv</td>
-<td>‘\t’ 制表符(元素包含逗号)</td>
-</tr>
-<tr>
-<td>dsv</td>
-<td>默认‘|’ 竖线分割，可通过delimiterForDSV指定分隔符</td>
-</tr>
-<tr>
-<td>csv2</td>
-<td>‘,’ 逗号(不含引号)</td>
-</tr>
-<tr>
-<td>tsv2</td>
-<td>‘\t’ 制表符(不含引号)</td>
-</tr>
-</tbody>
-</table>
-<p>说明：</p>
-<blockquote>
-<p>csv格式 == 查询元素有’'单引号</p>
-<p>csv2格式没有单引号</p>
-<p>tsv，tsv2同上</p>
-</blockquote>
-<h3 id="实例">实例</h3>
+          <p><strong>spark-python版本依赖与三方模块方案</strong></p>
+<p>（1）使用conda创建python虚拟环境、安装第三方库</p>
+<p>假设虚拟环境是pyspark_py36，安装位置是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;root&#x2F;miniconda3&#x2F;envs&#x2F;pyspark_py36</span><br><span class="line">此处省略1w个字。</span><br></pre></td></tr></table></figure>
+<p>安装的第三方库是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">source activate pyspark_py36</span><br><span class="line"></span><br><span class="line">pip install pandas </span><br><span class="line">pip install sklearn</span><br><span class="line">pip install lightgbm</span><br></pre></td></tr></table></figure>
+<p>其他省略1w字。</p>
+<p>（2）打包整个虚拟环境</p>
+<p>进入虚拟环境目录，压缩整个文件夹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;root&#x2F;miniconda3&#x2F;envs&#x2F;</span><br><span class="line">zip -r -9 -q pyspark_py36.zip pyspark_py36&#x2F;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/10/23/hive%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%87%BA%EF%BC%8C%E5%B9%B6%E6%8C%87%E5%AE%9A%E5%88%86%E9%9A%94%E7%AC%A6%EF%BC%8C%E5%85%83%E7%B4%A0%E5%8C%85%E5%90%AB%E5%BC%95%E5%8F%B7%E7%AD%89/#more" rel="contents">
+              <a class="btn" href="/2021/03/10/spark%E6%89%93%E5%8C%85%E6%8F%90%E4%BA%A4python%E7%A8%8B%E5%BA%8F/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -550,7 +502,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/10/14/%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E6%A8%A1%E6%9D%BF/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/10/vi%E6%A8%A1%E5%BC%8F%E4%B8%8B%E6%9F%A5%E6%89%BE%E5%92%8C%E6%9B%BF%E6%8D%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -564,7 +516,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/10/14/%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E6%A8%A1%E6%9D%BF/" class="post-title-link" itemprop="url">插入图片模板</a>
+            <a href="/2021/03/10/vi%E6%A8%A1%E5%BC%8F%E4%B8%8B%E6%9F%A5%E6%89%BE%E5%92%8C%E6%9B%BF%E6%8D%A2/" class="post-title-link" itemprop="url">vi模式下查找和替换</a>
         </h1>
 
         <div class="post-meta">
@@ -574,7 +526,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-10-14 15:39:02" itemprop="dateCreated datePublished" datetime="2020-10-14T15:39:02+08:00">2020-10-14</time>
+              <time title="创建时间：2021-03-10 13:45:30" itemprop="dateCreated datePublished" datetime="2021-03-10T13:45:30+08:00">2021-03-10</time>
             </span>
 
           
@@ -588,13 +540,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <hr>
-<h2 id="typora-root-url-…">typora-root-url:…</h2>
-<p><img src="/images/image-20200116143338485.png" alt="image-20200116143338485"></p>
+          <p>linux基础命令之：vi模式下查找和替换</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">一、查找</span><br><span class="line">查找命令</span><br><span class="line">/pattern&lt;Enter&gt; ：向下查找pattern匹配字符串</span><br><span class="line">?pattern&lt;Enter&gt;：向上查找pattern匹配字符串</span><br><span class="line">使用了查找命令之后，使用如下两个键快速查找：</span><br><span class="line">n：按照同一方向继续查找</span><br><span class="line">N：按照反方向查找</span><br><span class="line">pattern是需要匹配的字符串，例如：</span><br><span class="line">/hello&lt;Enter&gt;      #查找hello</span><br><span class="line">/hello&lt;Enter&gt;    #查找hello单词（注意前后的空格）</span><br><span class="line">除此之外，pattern还可以使用一些特殊字符，包括（/、^、$、*、.），其中前三个这两个是vi与vim通用的，“/”为转义字符。</span><br><span class="line">/^hello&lt;Enter&gt;    #查找以hello开始的行</span><br><span class="line"><span class="meta">/hello$</span><span class="bash">&lt;Enter&gt;    <span class="comment">#查找以hello结束的行</span></span></span><br><span class="line">//^hello&lt;Enter&gt;    #查找^hello字符串</span><br><span class="line"> </span><br><span class="line">二、替换</span><br><span class="line">1.:[range]s/pattern/string/[c,e,g,i]</span><br><span class="line">range     指的是范围，1,7 指从第一行至第七行，1,$ 指从第一行至最后一行，也就是整篇文章，也可以 % 代表。 % 是目前编辑的文章，# 是前一次编辑的文章。</span><br><span class="line">pattern     就是要被替换掉的字串，可以用 regexp 来表示。</span><br><span class="line">string     将 pattern 由 string 所取代。</span><br><span class="line">c     confirm，每次替换前会询问。</span><br><span class="line">e     不显示 error。</span><br><span class="line">g     globe，不询问，整行替换。</span><br><span class="line">i     ignore 不分大小写。</span><br><span class="line">I     ignore 大小写敏感。</span><br><span class="line"> </span><br><span class="line">2.基本替换</span><br><span class="line">:s/lantian/sky/         #替换当前行第一个 lantian 为 sky</span><br><span class="line">:s/lantian/sky/g     #替换当前行所有 lantian 为 sky</span><br><span class="line">:n,$s/lantian/sky/     #替换第 n 行开始到最后一行中每一行的第一个 lantian 为 sky</span><br><span class="line">:n,$s/lantian/sky/g     #替换第 n 行开始到最后一行中每一行所有 lantian 为 sky</span><br><span class="line"><span class="meta">#</span><span class="bash">（n 为数字，若 n 为 .，表示从当前行开始到最后一行）</span></span><br><span class="line">:%s/lantian/sky/        #（等同于 :g/lantian/s//sky/） 替换每一行的第一个 lantian 为 sky</span><br><span class="line">:%s/lantian/sky/g    #（等同于 :g/lantian/s//sky/g） 替换每一行中所有 lantian 为 sky</span><br><span class="line">可以使用 #或+ 作为分隔符，此时中间出现的 / 不会作为分隔符</span><br><span class="line">:s#lantian/#sky/#         替换当前行第一个 lantian/ 为 sky/</span><br><span class="line">:%s+/oradata/apras/+/user01/apras1+ （</span><br><span class="line">使用+ 来 替换 / ）： /oradata/apras/替换成/user01/apras1/</span><br><span class="line"> </span><br><span class="line">3.删除文本中的^M</span><br><span class="line">问题描述：对于换行，window下用回车换行（0A0D）来表示，linux下是回车（0A）来表示。这样，将window上的文件拷到unix上用时，总会有个^M，请写个用在unix下的过滤windows文件的换行符（0D）的shell或c程序。</span><br><span class="line">使用命令：cat filename1 | tr -d “^V^M” &gt; newfile;</span><br><span class="line">使用命令：sed -e “s/^V^M//” filename &gt; outputfilename</span><br><span class="line">需要注意的是在1、2两种方法中，^V和^M指的是Ctrl+V和Ctrl+M。你必须要手工进行输入，而不是粘贴。</span><br><span class="line">在vi中处理：首先使用vi打开文件，然后按ESC键，接着输入命令：</span><br><span class="line">:%s/^V^M//</span><br><span class="line">:%s/^M$//g</span><br><span class="line">如果上述方法无用，则正确的解决办法是：</span><br><span class="line">tr -d “/r” &lt; src &gt;dest</span><br><span class="line">tr -d “/015″ dest</span><br><span class="line">strings A&gt;B</span><br><span class="line"> </span><br><span class="line">4.其它用法</span><br><span class="line">:s/str1/str2/          #用字符串 str2 替换行中首次出现的字符串 str1</span><br><span class="line">:s/str1/str2/g         #用字符串 str2 替换行中所有出现的字符串 str1</span><br><span class="line">:.,$ s/str1/str2/g     #用字符串 str2 替换正文当前行到末尾所有出现的字符串 str1</span><br><span class="line">:1,$ s/str1/str2/g     #用字符串 str2 替换正文中所有出现的字符串 str1</span><br><span class="line">:g/str1/s//str2/g      #功能同上</span><br><span class="line"> </span><br><span class="line">5.g的总结说明</span><br><span class="line">从上述替换命令可以看到：</span><br><span class="line">g 放在命令末尾，表示对指定行的搜索字符串的每次出现进行替换；不加 g，表示只对指定行的搜索字符串的首次出现进行替换；</span><br><span class="line">g 放在命令开头，表示对正文中所有包含搜索字符串的行进行替换操作。</span><br><span class="line">也就是说命令的开始可以添加影响的行，如果为g表示对所有行；命令的结尾可以使用g来表示是否对每一行的所有字符串都有影响。</span><br></pre></td></tr></table></figure>
 
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/10/14/%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E6%A8%A1%E6%9D%BF/#more" rel="contents">
+              <a class="btn" href="/2021/03/10/vi%E6%A8%A1%E5%BC%8F%E4%B8%8B%E6%9F%A5%E6%89%BE%E5%92%8C%E6%9B%BF%E6%8D%A2/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -618,7 +569,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/10/14/hive%E5%BB%BA%E8%A1%A8create%20table%20xxx%20as%20select%E7%9A%84%E9%97%AE%E9%A2%98/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/09/%E7%94%A8python%E8%BF%9B%E8%A1%8C%E9%87%8F%E5%8C%96%E6%8A%95%E8%B5%84/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -632,7 +583,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/10/14/hive%E5%BB%BA%E8%A1%A8create%20table%20xxx%20as%20select%E7%9A%84%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">hive建表create table xxx as select的问题</a>
+            <a href="/2021/03/09/%E7%94%A8python%E8%BF%9B%E8%A1%8C%E9%87%8F%E5%8C%96%E6%8A%95%E8%B5%84/" class="post-title-link" itemprop="url">用python进行量化投资</a>
         </h1>
 
         <div class="post-meta">
@@ -642,7 +593,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-10-14 15:07:26" itemprop="dateCreated datePublished" datetime="2020-10-14T15:07:26+08:00">2020-10-14</time>
+              <time title="创建时间：2021-03-09 16:25:47" itemprop="dateCreated datePublished" datetime="2021-03-09T16:25:47+08:00">2021-03-09</time>
             </span>
 
           
@@ -656,19 +607,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>hive建表create table xxx as select的问题</h1>
-<p>create table xxx as select的方式创建的表默认存储格式是text，所以要注意了假如as select的是其他格式的比如RCFile，<strong>则可能会导致一行变多行的情况</strong>（因为RCFile格式的可能字段包含换行符等），所以必须要加上<br>
-create table xxx stored as RCFile as select…<br>
-所以使用这种方式建表注意加上指定的存储格式。</p>
-<p>测试示例：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">exists</span> decision_model.member_close_reason;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> decision_model.member_close_reason <span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> <span class="string">'mongodb_member'</span> <span class="keyword">as</span> intype, *</span><br><span class="line"><span class="keyword">from</span> mongo_baofoo_log.log_update_member_state</span><br><span class="line">;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> decision_model.member_close_reason <span class="keyword">where</span> intype &lt;&gt; <span class="string">'mongodb_member'</span>;</span><br></pre></td></tr></table></figure>
-<p><img src="/images/image-20201014132306707.png" alt="img"></p>
-<p>正确的应该加上指定的存储格式。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">exists</span> decision_model.member_close_reason;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> decision_model.member_close_reason </span><br><span class="line">    <span class="keyword">row</span> <span class="keyword">format</span> <span class="keyword">delimited</span> </span><br><span class="line">    <span class="keyword">fields</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">'|'</span> </span><br><span class="line">    <span class="keyword">STORED</span> <span class="keyword">AS</span> RCFile </span><br><span class="line"><span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> <span class="string">'mongodb_member'</span> <span class="keyword">as</span> intype, *</span><br><span class="line"><span class="keyword">from</span> mongo_baofoo_log.log_update_member_state </span><br><span class="line">;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> decision_model.member_close_reason <span class="keyword">where</span> intype &lt;&gt; <span class="string">'mongodb_member'</span>;</span><br></pre></td></tr></table></figure>
+          <p><strong>用python进行量化投资：</strong></p>
+<p>自己编写:NumPy+pandas+Matplotlib+…</p>
+<p>在线平台:聚宽、优矿、米筐、Quantopian、…</p>
+<p>开源框架:RQAlpha、QUANTAXIS</p>
+<p>聚宽 <a href="https://www.joinquant.com/" target="_blank" rel="noopener">https://www.joinquant.com/</a></p>
+<p>优矿 <a href="https://uqer.datayes.com/" target="_blank" rel="noopener">https://uqer.datayes.com/</a></p>
+<p>rqalpha <a href="https://rqalpha.readthedocs.io/zh_CN/latest/index.html" target="_blank" rel="noopener">https://rqalpha.readthedocs.io/zh_CN/latest/index.html</a></p>
+<p>quantaxis <a href="https://doc.yutiansut.com/" target="_blank" rel="noopener">https://doc.yutiansut.com/</a></p>
 
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/10/14/hive%E5%BB%BA%E8%A1%A8create%20table%20xxx%20as%20select%E7%9A%84%E9%97%AE%E9%A2%98/#more" rel="contents">
+              <a class="btn" href="/2021/03/09/%E7%94%A8python%E8%BF%9B%E8%A1%8C%E9%87%8F%E5%8C%96%E6%8A%95%E8%B5%84/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -692,7 +642,7 @@ create table xxx stored as RCFile as select…<br>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/10/12/%E8%A7%A3%E5%86%B3spark%20streaming%E9%95%BF%E6%97%B6%E9%97%B4%E8%BF%90%E8%A1%8C%E6%97%A5%E5%BF%97%E4%B8%8D%E6%96%AD%E5%A2%9E%E9%95%BF%E9%97%AE%E9%A2%98/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/03/yarn%20webUI%20%E7%9C%8B%E4%B8%8D%E5%88%B0%E6%97%A5%E5%BF%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -706,7 +656,7 @@ create table xxx stored as RCFile as select…<br>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/10/12/%E8%A7%A3%E5%86%B3spark%20streaming%E9%95%BF%E6%97%B6%E9%97%B4%E8%BF%90%E8%A1%8C%E6%97%A5%E5%BF%97%E4%B8%8D%E6%96%AD%E5%A2%9E%E9%95%BF%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">解决spark streaming长时间运行日志不断增长问题</a>
+            <a href="/2021/03/03/yarn%20webUI%20%E7%9C%8B%E4%B8%8D%E5%88%B0%E6%97%A5%E5%BF%97/" class="post-title-link" itemprop="url">yarn webUI 看不到日志</a>
         </h1>
 
         <div class="post-meta">
@@ -716,7 +666,7 @@ create table xxx stored as RCFile as select…<br>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-10-12 15:33:53" itemprop="dateCreated datePublished" datetime="2020-10-12T15:33:53+08:00">2020-10-12</time>
+              <time title="创建时间：2021-03-03 13:36:22" itemprop="dateCreated datePublished" datetime="2021-03-03T13:36:22+08:00">2021-03-03</time>
             </span>
 
           
@@ -730,15 +680,14 @@ create table xxx stored as RCFile as select…<br>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>解决spark streaming长时间运行日志不断增长问题</h1>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">log4j.rootLogger=WARN,stdout,A1</span><br><span class="line"></span><br><span class="line">log4j.appender.stdout=org.apache.log4j.ConsoleAppender</span><br><span class="line">log4j.appender.stdout.Threshold=WARN</span><br><span class="line">log4j.appender.stdout.encoding=UTF-8</span><br><span class="line">log4j.appender.stdout.layout=org.apache.log4j.PatternLayout</span><br><span class="line">log4j.appender.stdout.layout.ConversionPattern=[%d&#123;yyyy-MM-dd HH:mm:ss,SSS&#125;] %m %n[%d&#123;yyyy-MM-dd HH:mm:ss,SSS&#125;] %p | %F:%L | %M%n%n</span><br><span class="line"></span><br><span class="line">log4j.appender.A1=org.apache.log4j.RollingFileAppender</span><br><span class="line">log4j.appender.A1.BufferedIO=true</span><br><span class="line">log4j.appender.A1.BufferSize=8192</span><br><span class="line">log4j.appender.A1.File=$&#123;spark.yarn.app.container.log.dir&#125;/stderr</span><br><span class="line">log4j.appender.A1.MaxFileSize=10MB</span><br><span class="line">log4j.appender.A1.MaxBackupIndex=9</span><br><span class="line">log4j.appender.A1.encoding=UTF-8</span><br><span class="line">log4j.appender.A1.Append=true</span><br><span class="line">log4j.appender.A1.Threshold=ERROR</span><br><span class="line">log4j.appender.A1.layout=org.apache.log4j.PatternLayout</span><br><span class="line">log4j.appender.A1.layout.ConversionPattern=[%d&#123;yyyy-MM-dd HH:mm:ss,SSS&#125;] %m %n[%d&#123;yyyy-MM-dd HH:mm:ss,SSS&#125;] %p | %F:%L | %M%n%n</span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">echo  "================= spark job:CbDimStreamDriver  start!!!========================"</span><br><span class="line"></span><br><span class="line">spark-submit \</span><br><span class="line">--master yarn  \</span><br><span class="line">--deploy-mode  cluster  \</span><br><span class="line">--name  stream-rm-cb-dim  \</span><br><span class="line">--queue bf_yarn_pool.production  \</span><br><span class="line">--class com.baofu.rm.streaming.CbDimStreamDriver  \</span><br><span class="line">--num-executors  32  \</span><br><span class="line">--driver-memory  3G  \</span><br><span class="line">--executor-memory  4G  \</span><br><span class="line">--executor-cores  1  \</span><br><span class="line">--conf spark.dynamicAllocation.enabled=false \</span><br><span class="line">--conf spark.executor.extraJavaOptions=-XX:+UseConcMarkSweepGC \</span><br><span class="line">--conf spark.streaming.backpressure.enabled=true \</span><br><span class="line">--conf spark.streaming.kafka.maxRatePerPartition=1000 \</span><br><span class="line">--conf spark.eventLog.enabled=false \</span><br><span class="line">--conf spark.driver.extraJavaOptions=-Dlog4j.configuration=file:log4j.properties \</span><br><span class="line">--conf spark.executor.extraJavaOptions=-Dlog4j.configuration=file:log4j.properties \</span><br><span class="line">--files ./log4j.properties \</span><br><span class="line">/home/bf_app_spark/spark-jobs/streams/fxJob/cbdim/rm-streaming-analysis-pro.jar</span><br><span class="line"></span><br><span class="line">rc=$?</span><br><span class="line">if [[ $rc != 0 ]]; then</span><br><span class="line">    echo "spark task: $0  failed,please check......"  </span><br><span class="line">    exit 1</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">echo "end run spark: `date "+%Y-%m-%d %H:%M:%S"`"  </span><br><span class="line">echo "================== spark job:CbDimStreamDriver  end!!!===================="</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup sh .&#x2F;stream_CbDimStreamDriver.sh &gt; &#x2F;dev&#x2F;null 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
-<p>参考： <a href="http://mkuthan.github.io/blog/2016/09/30/spark-streaming-on-yarn/" target="_blank" rel="noopener">http://mkuthan.github.io/blog/2016/09/30/spark-streaming-on-yarn/</a></p>
+          <p>yarn webUI 看不到日志</p>
+<p>解决办法：</p>
+<p>Resource Manager webUI No logs available for container</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">1. Please verify once if you could collect logs using "yarn logs" command as below?</span><br><span class="line">&#123;&#123;</span><br><span class="line">yarn logs -applicationId &lt;appID&gt; -appOwner &lt;user&gt;</span><br><span class="line">&#125;&#125;</span><br><span class="line"></span><br><span class="line">2.  please verify the below directories if they have right permissions</span><br><span class="line">&#123;&#123;</span><br><span class="line">hdfs dfs -ls /user/history/done</span><br><span class="line">hdfs dfs -ls  /user/history/done_intermediate</span><br><span class="line">&#125;&#125;</span><br><span class="line"></span><br><span class="line">3. Please verify if "Enable Log Aggregation" has been enabled or not</span><br><span class="line">&#123;&#123;</span><br><span class="line"><span class="meta">ClouderaManager--&gt;</span><span class="bash">Yarn--&gt;Configurations--&gt;<span class="string">"Enable Log Aggregation"</span></span></span><br><span class="line">&#125;&#125;</span><br><span class="line"></span><br><span class="line">4. Verify the permissions for /tmp/logs as below,</span><br><span class="line">&#123;&#123;</span><br><span class="line">hadoop fs -chown mapred:hadoop /tmp/logs</span><br><span class="line">hadoop fs -chown -R :hadoop /tmp/logs/*</span><br><span class="line">&#125;&#125;</span><br></pre></td></tr></table></figure>
 
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/10/12/%E8%A7%A3%E5%86%B3spark%20streaming%E9%95%BF%E6%97%B6%E9%97%B4%E8%BF%90%E8%A1%8C%E6%97%A5%E5%BF%97%E4%B8%8D%E6%96%AD%E5%A2%9E%E9%95%BF%E9%97%AE%E9%A2%98/#more" rel="contents">
+              <a class="btn" href="/2021/03/03/yarn%20webUI%20%E7%9C%8B%E4%B8%8D%E5%88%B0%E6%97%A5%E5%BF%97/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -762,7 +711,7 @@ create table xxx stored as RCFile as select…<br>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/09/30/%E6%9C%89%E9%81%93%E7%AC%94%E8%AE%B0%E6%96%87%E4%BB%B6%E5%A4%87%E4%BB%BD/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/02/%E7%94%A8Hue%E4%B8%AD%E7%9A%84Oozie%E6%89%A7%E8%A1%8CImpala%20Sheel%E8%84%9A%E6%9C%AC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -776,7 +725,7 @@ create table xxx stored as RCFile as select…<br>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/09/30/%E6%9C%89%E9%81%93%E7%AC%94%E8%AE%B0%E6%96%87%E4%BB%B6%E5%A4%87%E4%BB%BD/" class="post-title-link" itemprop="url">有道笔记文件备份</a>
+            <a href="/2021/03/02/%E7%94%A8Hue%E4%B8%AD%E7%9A%84Oozie%E6%89%A7%E8%A1%8CImpala%20Sheel%E8%84%9A%E6%9C%AC/" class="post-title-link" itemprop="url">用Hue中的Oozie执行Impala Sheel脚本</a>
         </h1>
 
         <div class="post-meta">
@@ -785,9 +734,8 @@ create table xxx stored as RCFile as select…<br>
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-09-30 17:26:28 / 修改时间：17:26:20" itemprop="dateCreated datePublished" datetime="2020-09-30T17:26:28+08:00">2020-09-30</time>
+              <time title="创建时间：2021-03-02 16:52:30" itemprop="dateCreated datePublished" datetime="2021-03-02T16:52:30+08:00">2021-03-02</time>
             </span>
 
           
@@ -801,315 +749,13 @@ create table xxx stored as RCFile as select…<br>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>有道笔记文件备份</h1>
-<ul>
-<li><a href="http://www.ask3.cn/files/(%E8%B6%85%E8%AF%A6%E7%BB%86,%E5%B8%A6%E4%BD%A0%E8%B8%A9%E5%9D%91)linux_centos7_%E5%9F%BA%E4%BA%8ECDH6.0.1%E9%85%8D%E7%BD%AEhive_on_tez_%E6%89%A7%E8%A1%8C%E5%BC%95%E6%93%8E(%E4%BA%B2%E6%B5%8B%E6%9C%89%E6%95%88).pdf">(超详细,带你踩坑)linux_centos7_基于CDH6.0.1配置hive_on_tez_执行引擎(亲测有效).pdf</a></li>
-<li><a href="http://www.ask3.cn/files/01%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90.pdf">01需求分析.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/1.0_OpenLDAP%E5%AE%89%E8%A3%85%E6%96%87%E6%A1%A3%E5%BC%80%E5%90%AFtls%EF%BC%8C%E4%B8%BB%E4%B8%BB%E5%90%8C%E6%AD%A5.pdf">1.0_OpenLDAP安装文档开启tls，主主同步.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Alluxio_%E6%95%88%E6%9E%9C%E6%B5%8B%E8%AF%95.pdf">Alluxio_效果测试.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Apache%E8%AE%BE%E7%BD%AE%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E8%BD%AC%E5%8F%91%E7%AB%AF%E5%8F%A3.pdf">Apache设置反向代理转发端口.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/CDH6_%E4%BB%8B%E7%BB%8D%EF%BC%8C%E5%AE%89%E8%A3%85%E5%92%8C%E6%B5%8B%E8%AF%95.pdf">CDH6_介绍，安装和测试.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/CDH6%E4%B8%8D%E8%83%BD%E5%85%B3%E6%8E%89_Auto-TLS_%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95.pdf">CDH6不能关掉_Auto-TLS_的解决办法.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/CDH6%E5%9C%A8%E5%AE%89%E8%A3%85agent%E6%97%B6%EF%BC%8C%E6%8F%90%E7%A4%BA%E5%AE%89%E8%A3%85%E5%A4%B1%E8%B4%A5%E6%97%A0%E6%B3%95%E6%8E%A5%E6%94%B6_Agent%E5%8F%91%E5%87%BA%E7%9A%84%E6%A3%80%E6%B5%8B%E4%BF%A1%E5%8F%B7.pdf">CDH6在安装agent时，提示安装失败无法接收_Agent发出的检测信号.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/CDH6%E7%8E%AF%E5%A2%83%E4%B8%ADPhoenix%E7%9A%84%E6%90%AD%E5%BB%BA%E5%92%8C%E4%BD%BF%E7%94%A8.pdf">CDH6环境中Phoenix的搭建和使用.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/CDH6%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3(1).pdf">CDH6部署文档(1).pdf</a></li>
-<li><a href="http://www.ask3.cn/files/CDH6%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3.pdf">CDH6部署文档.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/CDH_5.10.2_%E5%AE%89%E8%A3%85kudu_%E5%92%8C%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF%E6%95%B4%E7%90%86(1).pdf">CDH_5.10.2_安装kudu_和常见错误整理(1).pdf</a></li>
-<li><a href="http://www.ask3.cn/files/CDH_5.10.2_%E5%AE%89%E8%A3%85kudu_%E5%92%8C%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF%E6%95%B4%E7%90%86.pdf">CDH_5.10.2_安装kudu_和常见错误整理.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/CDH_%E4%BA%A4%E6%8D%A2%E5%86%85%E5%AD%98%E8%AD%A6%E5%91%8A%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3.pdf">CDH_交换内存警告问题解决.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/CDH_%E7%9A%84Cloudera_Manager%E5%85%8D%E8%B4%B9%E4%B8%8E%E6%94%B6%E8%B4%B9%E7%89%88%E7%9A%84%E5%AF%B9%E6%AF%94%E8%A1%A8_-_Hi%EF%BC%8C%E7%8E%8B%E6%9D%BE%E6%9F%8F_-_%E5%8D%9A%E5%AE%A2%E5%9B%AD.pdf">CDH_的Cloudera_Manager免费与收费版的对比表_-<em>Hi，王松柏</em>-_博客园.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/CDH%E5%85%83%E6%95%B0%E6%8D%AE%E5%B0%8F%E7%BB%93.pdf">CDH元数据小结.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/CDH%E5%90%AF%E7%94%A8Kerberos%E5%AF%BC%E8%87%B4hdfs,yarn%E7%AD%89%E9%A1%B5%E9%9D%A2%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%E8%A7%A3%E5%86%B3.pdf">CDH启用Kerberos导致hdfs,yarn等页面无法访问解决.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/CDH%E9%9B%86%E6%88%90%E7%9A%84KDC%E8%BF%81%E7%A7%BB%E8%87%B3FreeIPA%E7%9A%84Kerberos%E8%AE%A4%E8%AF%81.pdf">CDH集成的KDC迁移至FreeIPA的Kerberos认证.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/CDH%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%E7%AE%80%E4%BB%8B.pdf">CDH集群搭建简介.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/CDH%E9%9B%86%E7%BE%A4%E6%97%B6%E5%8C%BA%E9%97%AE%E9%A2%98.pdf">CDH集群时区问题.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2Livy.pdf">CDH集群部署Livy.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Cannot_obtain_block_length_for_LocatedBlock%E6%95%85%E9%9A%9C%E5%88%86%E8%A7%A3%E5%86%B3.pdf">Cannot_obtain_block_length_for_LocatedBlock故障分解决.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/CentOS6.X_%E5%8D%87%E7%BA%A7%E5%86%85%E6%A0%B8.pdf">CentOS6.X_升级内核.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/CentOS7%E4%B8%8A%E6%89%8B%E5%8A%A8%E9%87%8A%E6%94%BE%E5%86%85%E5%AD%98cache.pdf">CentOS7上手动释放内存cache.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/CentOS7%E4%B8%8B%E5%AE%89%E8%A3%85Anaconda3%E5%92%8CTensorflow.pdf">CentOS7下安装Anaconda3和Tensorflow.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Centos7%E8%A3%85NVIDIA%E6%98%BE%E5%8D%A1%E9%A9%B1%E5%8A%A8(GPU).pdf">Centos7装NVIDIA显卡驱动(GPU).pdf</a></li>
-<li><a href="http://www.ask3.cn/files/ClickHouse.pdf">ClickHouse.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/ClickHouse_%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8.pdf">ClickHouse_部署与使用.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/ClouderaManager_(cm)_%E6%97%B6%E5%8C%BA%E9%97%AE%E9%A2%98.pdf">ClouderaManager_(cm)_时区问题.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Cloudera_Manager%E4%B8%AD%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2Zeppelin%E6%9C%8D%E5%8A%A1.pdf">Cloudera_Manager中安装部署Zeppelin服务.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Cloudera_Manager%E5%9B%9E%E9%80%80.pdf">Cloudera_Manager回退.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Cloudera%E5%B9%B3%E5%8F%B0%E8%BD%AF%E4%BB%B6%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84.pdf">Cloudera平台软件体系结构.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Could_not_open_client_transport_with_JDBC_Uri_jdbchive2.pdf">Could_not_open_client_transport_with_JDBC_Uri_jdbchive2.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/DataX_Hdfs_HA(%E9%AB%98%E5%8F%AF%E7%94%A8)%E9%85%8D%E7%BD%AE%E6%94%AF%E6%8C%81.pdf">DataX_Hdfs_HA(高可用)配置支持.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/ELK+filebeat_%E5%AE%89%E8%A3%85%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.pdf">ELK+filebeat_安装问题总结.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Elasticsearch5.0%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2_%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93.pdf">Elasticsearch5.0集群部署_问题总结.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/FTP%E7%9A%84%E6%96%B9%E5%BC%8F%E8%AE%BF%E9%97%AECDH%E4%B8%ADHDFS%E6%96%87%E4%BB%B6.pdf">FTP的方式访问CDH中HDFS文件.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Flink%E9%9B%86%E7%BE%A4.pdf">Flink集群.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/FreeIPA_%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86.pdf">FreeIPA_常用命令整理.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/FreeIPA%E9%83%A8%E7%BD%B2%E5%8F%8A%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8.pdf">FreeIPA部署及基本使用.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Full_GC__%E5%AF%BC%E8%87%B4RegionServer%E6%8C%82%E4%BA%86.pdf">Full_GC__导致RegionServer挂了.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/HBase2.0_%E5%BC%BA%E5%88%B6%E5%88%A0%E9%99%A4%E8%A1%A8.pdf">HBase2.0_强制删除表.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/HBase_2.0.0_META_%E6%95%B0%E6%8D%AE%E4%BF%AE%E5%A4%8D%E5%B7%A5%E5%85%B7.pdf">HBase_2.0.0_META_数据修复工具.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/HBase_%E7%94%A8phoenix%E5%88%9B%E5%BB%BA%E4%BA%8C%E7%BA%A7%E7%B4%A2%E5%BC%95.pdf">HBase_用phoenix创建二级索引.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/HBase_%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87%E8%AF%8A%E6%B2%BB.pdf">HBase_疑难杂症诊治.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/HBase%E6%95%B0%E6%8D%AE%E5%9D%97NotServingRegionException%E6%8E%92%E6%9F%A5.pdf">HBase数据块NotServingRegionException排查.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/HBase%E8%BF%90%E7%BB%B4%E5%AE%9E%E8%B7%B5.pdf">HBase运维实践.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/HDFS%E5%88%86%E5%B1%82%E5%AD%98%E5%82%A8.pdf">HDFS分层存储.pdf</a></li>
-<li>[HIVE删除分区表FAILED_Execution_Error,_return_code_1…_MetaException(messageInvalid_p.pdf](<a href="http://www.ask3.cn/files/HIVE%E5%88%A0%E9%99%A4%E5%88%86%E5%8C%BA%E8%A1%A8FAILED_Execution_Error,_return_code_1">http://www.ask3.cn/files/HIVE删除分区表FAILED_Execution_Error,_return_code_1</a>…_MetaException(messageInvalid_p.pdf)</li>
-<li><a href="http://www.ask3.cn/files/Hadoop%E8%B0%83%E4%BC%98.pdf">Hadoop调优.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Hbase_%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB%E4%B8%8E%E8%BF%98%E5%8E%9F.pdf">Hbase_数据迁移与还原.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Hbase%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6.pdf">Hbase权限控制.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Hbase%E8%87%AA%E5%B8%A6%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95%E5%91%BD%E4%BB%A4.pdf">Hbase自带压力测试命令.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Hive_SQL_Syntax_for_Use_with_Sentry.pdf">Hive_SQL_Syntax_for_Use_with_Sentry.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Hive%E4%B9%8B%E2%80%94%E2%80%94%E5%86%85%E9%83%A8%E8%A1%A8%E4%B8%8E%E5%A4%96%E9%83%A8%E8%A1%A8%E7%9B%B8%E4%BA%92%E7%9B%B8%E4%BA%92%E8%BD%AC%E5%8C%96.pdf">Hive之——内部表与外部表相互相互转化.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Hive%E5%88%86%E5%8C%BA%E8%A1%A8%E6%96%B0%E5%A2%9E%E5%AD%97%E6%AE%B5.pdf">Hive分区表新增字段.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Hive%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%A2%9E%E5%88%97.pdf">Hive实现自增列.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Hive%E8%A1%A8%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81.pdf">Hive表中文乱码.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/IIS%E5%86%85%E9%83%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%94%99%E8%AF%AF_dedecms%E7%94%9F%E6%88%90%E9%9D%99%E6%80%81%E9%A1%B5%E9%9D%A2%E8%B6%85%E6%97%B6%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88.pdf">IIS内部服务器错误_dedecms生成静态页面超时解决方案.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/IPFS%E9%9F%B3%E4%B9%90%E6%92%AD%E6%94%BE%E5%99%A8.pdf">IPFS音乐播放器.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Impala%E9%85%8D%E7%BD%AELDAP%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81.pdf">Impala配置LDAP身份认证.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/JanusGraph%E5%8D%95%E6%9C%BA%E6%B5%8B%E8%AF%95.pdf">JanusGraph单机测试.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Kerberos%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.pdf">Kerberos常用命令.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Linux_%E5%91%BD%E4%BB%A4%E7%A7%AF%E7%B4%AF.pdf">Linux_命令积累.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Linux_%E7%BB%99%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9%E6%B7%BB%E5%8A%A0_%E6%96%87%E4%BB%B6%E5%A4%B4.pdf">Linux_给文件内容添加_文件头.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Linux%E4%B8%8B%E4%BD%BF%E7%94%A8Webmin%E6%90%AD%E5%BB%BADNS%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%80%8C%E4%B8%8D%E6%98%AFhosts%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90%E4%B8%BB%E6%9C%BA%E5%90%8D.pdf">Linux下使用Webmin搭建DNS服务器而不是hosts文件解析主机名.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Linux%E4%B8%8B%E6%9B%B4%E6%94%B9%E8%BD%AC%E7%A7%BBmysql%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9B%AE%E5%BD%95.pdf">Linux下更改转移mysql数据库目录.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Livy_%E5%A4%9A%E7%94%A8%E6%88%B7%E4%BD%BF%E7%94%A8.pdf">Livy_多用户使用.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/NFS%E5%BC%82%E5%B8%B8%E5%AF%BC%E8%87%B4Host_Monitor%E5%8F%8AAgent%E6%9C%8D%E5%8A%A1%E9%94%99%E8%AF%AF.pdf">NFS异常导致Host_Monitor及Agent服务错误.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Navicat_for_MySQL_%E5%BF%AB%E6%8D%B7%E9%94%AE.pdf">Navicat_for_MySQL_快捷键.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Neo4j%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE.pdf">Neo4j安装与配置.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Phoenix%E5%AE%89%E8%A3%85%E5%8F%8A%E5%85%B6%E4%BD%BF%E7%94%A8.pdf">Phoenix安装及其使用.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Presto_%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%B7%A5%E5%85%B7%E5%92%8C%E7%95%8C%E9%9D%A2.pdf">Presto_客户端工具和界面.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Presto%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2%E5%8F%8A%E4%BD%BF%E7%94%A8.pdf">Presto安装部署及使用.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Ranger_%E9%85%8D%E7%BD%AE_LDAP_%E8%B4%A6%E5%8F%B7%EF%BC%88FreeIPA%EF%BC%89%E5%90%8C%E6%AD%A5%E8%B4%A6%E5%8F%B7.pdf">Ranger_配置_LDAP_账号（FreeIPA）同步账号.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Redis5.0%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85.pdf">Redis5.0集群安装.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/R%E8%AF%AD%E8%A8%80%E6%93%8D%E4%BD%9Chive,%E5%B9%B6%E8%B0%83%E5%BA%A6.pdf">R语言操作hive,并调度.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Shell_%E6%8C%89%E6%97%A5%E6%9C%9F%E5%BE%AA%E7%8E%AF%E6%89%A7%E8%A1%8C.pdf">Shell_按日期循环执行.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Solr%E5%BC%82%E5%B8%B8%E5%85%B3%E9%97%AD%E5%AF%BC%E8%87%B4index_locked.pdf">Solr异常关闭导致index_locked.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Spark,Impala,Hive_%E8%AE%BE%E7%BD%AE%E9%98%9F%E5%88%97.pdf">Spark,Impala,Hive_设置队列.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Spark_on_Yarn_%E4%B9%8BPython%E7%8E%AF%E5%A2%83%E5%AE%9A%E5%88%B6.pdf">Spark_on_Yarn_之Python环境定制.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/TiDB%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E5%92%8C%E6%B5%8B%E8%AF%95.pdf">TiDB快速部署和测试.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/WORDPRESS_%E6%97%A0%E6%B3%95%E6%AD%A3%E5%B8%B8%E6%98%BE%E7%A4%BA%E5%9B%9E%E8%BD%A6%E6%8D%A2%E8%A1%8C%E7%A9%BA%E8%A1%8C%E5%9B%9E%E8%A1%8C%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95.pdf">WORDPRESS_无法正常显示回车换行空行回行的解决方法.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/Windows_%E4%B8%8B_Confluence_%E9%AA%8C%E8%AF%81%E7%A0%81%E6%97%A0%E6%B3%95%E6%98%BE%E7%A4%BA_%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95.pdf">Windows_下_Confluence_验证码无法显示_解决办法.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/YAML%E6%A0%BC%E5%BC%8F%E8%A7%A3%E6%9E%90.pdf">YAML格式解析.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/alluxio%E5%AE%89%E8%A3%85%E5%92%8C_%E7%BB%93%E5%90%88cdh%E4%BD%BF%E7%94%A8%EF%BC%8Calluxio%E5%92%8C_spark%E6%95%B4%E5%90%88.pdf">alluxio安装和_结合cdh使用，alluxio和_spark整合.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/ambari_hortonworks_%EF%BC%88hdp%EF%BC%89%E5%AE%89%E8%A3%85%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9.pdf">ambari_hortonworks_（hdp）安装注意事项.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/ansible_ansible-demo3_-m_copy_-a_src=testdircopytest_dest=testdir.pdf">ansible_ansible-demo3_-m_copy_-a_src=testdircopytest_dest=testdir.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/azkaban%E9%80%9A%E8%BF%87%E8%84%9A%E6%9C%AC%E6%89%93%E5%8C%85%E5%8F%91%E5%B8%83%E5%B7%A5%E7%A8%8B.pdf">azkaban通过脚本打包发布工程.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/bat_%E8%BE%93%E5%85%A5%E6%83%B3%E6%89%A7%E8%A1%8C%E7%9A%84%E6%AC%A1%E6%95%B0_%E6%AF%8F%E9%9A%943%E7%A7%92%E9%92%9F%E5%BE%AA%E7%8E%AF%E6%89%A7%E8%A1%8C%E4%B8%80%E6%AC%A1%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F.pdf">bat_输入想执行的次数_每隔3秒钟循环执行一次应用程序.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/can_only_run_host_inspector_when_host_is_healthy_cloudera.pdf">can_only_run_host_inspector_when_host_is_healthy_cloudera.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/cdh6.0.1_spark%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AE%BE%E7%BD%AE.pdf">cdh6.0.1_spark客户端设置.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/cdh6.3.2-%E6%96%B0%E5%8A%9F%E8%83%BD%E6%B5%8B%E8%AF%95.pdf">cdh6.3.2-新功能测试.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/cdh6.3.2%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2.pdf">cdh6.3.2安装部署.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/cdh6_hbase%E6%96%B0%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%95%B4%E7%90%86.pdf">cdh6_hbase新集群配置项整理.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/cdh6_oozie%E8%B0%83%E5%BA%A6shell%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81.pdf">cdh6_oozie调度shell中文乱码.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/cdh%E6%9C%8D%E5%8A%A1_%E6%89%8B%E5%8A%A8%E6%93%8D%E4%BD%9C.pdf">cdh服务_手动操作.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/cdh%E6%A0%B9%E6%8D%AE%E6%9C%BA%E5%99%A8%E6%95%B0%E9%87%8F%E5%88%92%E5%88%86%E8%A7%92%E8%89%B2.pdf">cdh根据机器数量划分角色.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/cdp_+freeipa___kerberos%E8%AE%A4%E8%AF%81.pdf">cdp_+freeipa___kerberos认证.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/cdp%EF%BC%88cdh7%EF%BC%89.pdf">cdp（cdh7）.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/centos7.%E4%BD%BF%E7%94%A8Tor_%E5%88%9B%E5%BB%BA%E5%8C%BF%E5%90%8D%E6%9C%8D%E5%8A%A1%E5%92%8C%E5%8C%BF%E5%90%8D%E7%BD%91%E7%AB%99%EF%BC%88.onion%EF%BC%89.pdf">centos7.使用Tor_创建匿名服务和匿名网站（.onion）.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/centos7_openldap%E5%8F%8C%E4%B8%BB%E9%83%A8%E7%BD%B2.pdf">centos7_openldap双主部署.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/centos_7%E8%AE%BE%E7%BD%AE%E6%9C%80%E5%A4%A7%E6%96%87%E4%BB%B6%E6%89%93%E5%BC%80%E6%95%B0%EF%BC%8C%E4%B8%8D%E7%94%9F%E6%95%88%E9%97%AE%E9%A2%98.pdf">centos_7设置最大文件打开数，不生效问题.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/clickhouse%E4%BD%BF%E7%94%A8.pdf">clickhouse使用.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/clouder_manager_(cm)%E9%99%8D%E7%BA%A7.pdf">clouder_manager_(cm)降级.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/cloudera_solr_%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA.pdf">cloudera_solr_集群搭建.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/cloudera_%E6%94%B6%E8%B4%B9%E7%89%88%E5%8A%9F%E8%83%BD.pdf">cloudera_收费版功能.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/css_url_%E7%9B%B8%E5%AF%B9%E8%B7%AF%E5%BE%84.pdf">css_url_相对路径.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/dbvisualizer_pro_64%E4%BD%8D%E7%A0%B4%E8%A7%A3%E7%89%88_v10.0.20%E4%B8%93%E4%B8%9A%E7%89%88.pdf">dbvisualizer_pro_64位破解版_v10.0.20专业版.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/django%E5%81%9A%E4%B8%80%E4%B8%AA%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84%E5%BA%97%E5%95%86%E7%BD%91%E7%AB%99.pdf">django做一个最简单的店商网站.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/dokuwiki_%E5%AE%89%E8%A3%85%E4%B8%8E%E8%AE%BE%E7%BD%AE%E5%92%8C%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9.pdf">dokuwiki_安装与设置和注意事项.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/elasticsearch6.4.2%E8%AE%B8%E5%8F%AF%E8%AF%81%E8%BF%87%E6%9C%9F%E4%BA%86_es%E7%A0%B4%E8%A7%A3.pdf">elasticsearch6.4.2许可证过期了_es破解.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/elasticsearch%E6%95%B0%E6%8D%AE%E5%A4%87%E4%BB%BD%E4%B8%8E%E8%BF%81%E7%A7%BB.pdf">elasticsearch数据备份与迁移.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/es-sql_(elasticsearch-sql)%E6%8F%92%E4%BB%B6%E5%AE%89%E8%A3%85.pdf">es-sql_(elasticsearch-sql)插件安装.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/es%E6%98%A0%E5%B0%84%E5%88%B0hive_%E7%B1%BB%E5%9E%8B%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E5%9C%B0%E6%96%B9.pdf">es映射到hive_类型需要注意的地方.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/filebeat.yml_%E9%85%8D%E7%BD%AE.pdf">filebeat.yml_配置.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/filebeat%E8%AF%A6%E8%A7%A3.pdf">filebeat详解.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/fuser%E5%91%BD%E4%BB%A4.pdf">fuser命令.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/github%E6%90%AD%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2.pdf">github搭建hexo博客.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/gpu%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95.pdf">gpu压力测试.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hadoop3.0%E4%B8%AD%E4%BD%BF%E7%94%A8%E7%BA%A0%E5%88%A0%E7%A0%81.pdf">hadoop3.0中使用纠删码.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hadoop%E7%94%9F%E6%80%81%E5%9C%88.pdf">hadoop生态圈.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hadoop%E8%B7%A8%E9%9B%86%E7%BE%A4%E4%B9%8B%E9%97%B4%E8%BF%81%E7%A7%BBhive%E6%95%B0%E6%8D%AE.pdf">hadoop跨集群之间迁移hive数据.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hadoop%E9%9B%86%E7%BE%A4tmp%E7%9B%AE%E5%BD%95%E8%AE%B8%E5%A4%9ADATANODE_.hprof%E6%96%87%E4%BB%B6.pdf">hadoop集群tmp目录许多DATANODE_.hprof文件.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hadoop%E9%9B%86%E7%BE%A4%E6%8F%90%E9%AB%98%E7%A3%81%E7%9B%98_IO_%E7%9A%84%E6%95%88%E7%8E%87%E3%80%81%E6%8F%90%E5%8D%87%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%80%A7%E8%83%BD%E3%80%82.pdf">hadoop集群提高磁盘_IO_的效率、提升文件系统的性能。.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hbase2.0__master.pdf">hbase2.0__master.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hbase_jdbc%E8%BF%9E%E6%8E%A5.pdf">hbase_jdbc连接.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hbase_shel_l%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E8%BF%87%E6%BB%A4%E5%99%A8.pdf">hbase_shel_l中常用的过滤器.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hbase_%E7%A0%B4%E5%9D%8F%E6%80%A7%E6%B5%8B%E8%AF%95_%E5%8F%8Cmaster%E6%8C%82%E6%8E%89.pdf">hbase_破坏性测试_双master挂掉.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hbase%E5%BF%AB%E7%85%A7.pdf">hbase快照.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hbase%E6%89%B9%E9%87%8F%E5%88%A0%E9%99%A4%E8%A1%A8%E6%95%B0%E6%8D%AE.pdf">hbase批量删除表数据.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hbase%E6%95%B0%E6%8D%AE%E5%A4%87%E4%BB%BD%E5%AE%9E%E6%88%98.pdf">hbase数据备份实战.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hdfs_balancer.pdf">hdfs_balancer.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hdfs_%E6%89%B9%E9%87%8F%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%A4%B9%E5%90%8D%E7%A7%B0(1).pdf">hdfs_批量修改文件夹名称(1).pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hdfs_%E6%89%B9%E9%87%8F%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%A4%B9%E5%90%8D%E7%A7%B0.pdf">hdfs_批量修改文件夹名称.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hdfs%E5%9D%97%E4%B8%A2%E5%A4%B1%E5%9D%97%E5%AF%BC%E8%87%B4%E7%9A%84%E5%BC%82%E5%B8%B8%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E8%A7%A3%E5%86%B3.pdf">hdfs块丢失块导致的异常问题排查解决.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hive,impala%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BD%BF%E7%94%A8.pdf">hive,impala客户端使用.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hive_jdbc_%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95.pdf">hive_jdbc_压力测试.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hive_%E7%94%9F%E4%BA%A7%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE.pdf">hive_生产测试数据.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hive_%E8%A7%A3%E9%94%81.pdf">hive_解锁.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hive_%E8%BF%87%E6%BB%A4%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6.pdf">hive_过滤特殊字符.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hive%E5%85%B3%E8%81%94es_,json%E5%B5%8C%E5%A5%97%EF%BC%8Cstruct%EF%BC%8Carry_%E7%AD%89%E7%89%B9%E6%AE%8A%E7%B1%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86.pdf">hive关联es_,json嵌套，struct，arry_等特殊类型数据处理.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hive%E5%88%9B%E5%BB%BA%E6%B0%B8%E4%B9%85%E5%87%BD%E6%95%B0%E5%92%8C%E4%B8%B4%E6%97%B6%E5%87%BD%E6%95%B0.pdf">hive创建永久函数和临时函数.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hive%E5%8F%AF%E8%A7%86%E5%8C%96%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6%E6%80%BB%E7%BB%93.pdf">hive可视化权限控制总结.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hive%E5%A4%84%E7%90%86json%E5%92%8C%E6%95%B0%E7%BB%84%E6%95%B0%E6%8D%AE.pdf">hive处理json和数组数据.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hive%E5%AF%BC%E6%95%B0%E6%8D%AE%E5%88%B0neo4j.pdf">hive导数据到neo4j.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hive%E5%BF%AB%E9%80%9F%E5%A4%8D%E5%88%B6%E4%B8%80%E5%BC%A0%E5%88%86%E5%8C%BA%E8%A1%A8.pdf">hive快速复制一张分区表.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hive%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96.pdf">hive性能优化.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hive%E6%89%A7%E8%A1%8C%E6%97%A5%E5%BF%97%E8%A7%A3%E6%9E%90%EF%BC%8Cjob%E6%97%A5%E5%BF%97%E8%A7%A3%E6%9E%90.pdf">hive执行日志解析，job日志解析.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hive%E6%98%A0%E5%B0%84hbase.pdf">hive映射hbase.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hive%E6%98%A0%E5%B0%84phoenix_&amp;&amp;_cdh_hive%E7%BB%84%E4%BB%B6%E5%8D%87%E7%BA%A7.pdf">hive映射phoenix_&amp;&amp;_cdh_hive组件升级.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hive%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6.pdf">hive权限控制.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/http%E4%B8%8B%E8%BD%BDhdfsd.pdf">http下载hdfsd.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hue4.2_%E8%BF%9E%E6%8E%A5hbase_Api_Error_timed_out.pdf">hue4.2_连接hbase_Api_Error_timed_out.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/hue%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AEHbase.pdf">hue远程访问Hbase.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/impala.pdf">impala.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/impala%E4%BC%98%E5%8C%96.pdf">impala优化.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/impala%E4%BD%BF%E7%94%A8udf%E5%87%BD%E6%95%B0.pdf">impala使用udf函数.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/impala%E5%90%8C%E6%AD%A5%E5%85%83%E6%95%B0%E6%8D%AE%E4%BD%BF%E7%94%A8%E5%8E%9F%E5%88%99.pdf">impala同步元数据使用原则.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/impala%E9%A9%B1%E5%8A%A8%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%96%B9%E5%BC%8F.pdf">impala驱动的连接方式.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/ipython%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD,_iPython_%E5%AE%89%E8%A3%85_%E6%AF%94shell%E5%A5%BD%E7%94%A8.pdf">ipython常用功能,_iPython_安装_比shell好用.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/janusgraph%E9%83%A8%E7%BD%B2.pdf">janusgraph部署.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/js_%E8%8E%B7%E5%8F%96%E5%BD%93%E5%A4%A9%E5%87%8C%E6%99%A8%E7%9A%84%E6%97%B6%E9%97%B4%E6%88%B3%EF%BC%8C%E5%87%A0%E5%A4%A9%E5%89%8D%E5%87%8C%E6%99%A8%E7%9A%84%E6%97%B6%E9%97%B4%E6%88%B3.pdf">js_获取当天凌晨的时间戳，几天前凌晨的时间戳.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/json_%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%85%A5hive_%E5%88%A9%E7%94%A8_get_json_object_%E5%92%8Cjson_tuple_%E5%87%BD%E6%95%B0.pdf">json_数据导入hive_利用_get_json_object_和json_tuple_函数.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/jstat_-gcutil_%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8.pdf">jstat_-gcutil_命令使用.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/jvm%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E8%B0%83%E4%BC%98.pdf">jvm垃圾回收器调优.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/kafka_%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3.pdf">kafka_参数详解.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/kerberos%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93.pdf">kerberos使用总结.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/kubeflow_%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2.pdf">kubeflow_安装部署.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/kubernetes_pv_pvc%E4%B8%8Enfs_%E6%B5%8B%E8%AF%95.pdf">kubernetes_pv_pvc与nfs_测试.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/kudu_%EF%BC%8CNot_enough_live_tablet_servers_to_create_a_table.pdf">kudu_，Not_enough_live_tablet_servers_to_create_a_table.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/kudu%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.pdf">kudu常见问题.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/kudu%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98.pdf">kudu性能调优.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/kylin%E5%AE%89%E8%A3%85_%E5%92%8Ckylin%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86.pdf">kylin安装_和kylin用户权限管理.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/ldap_%E6%B7%BB%E5%8A%A0%E7%B4%A2%E5%BC%95.pdf">ldap_添加索引.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/ldap%E5%AE%9E%E7%8E%B0Linux%E7%99%BB%E5%BD%95%E8%B4%A6%E5%8F%B7%E7%BB%9F%E4%B8%80%E7%AE%A1%E7%90%86.pdf">ldap实现Linux登录账号统一管理.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/ldap%E8%BF%87%E6%BB%A4%E5%99%A8.pdf">ldap过滤器.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/linux_%E7%94%A8%E6%88%B7%E8%BF%81%E7%A7%BB.pdf">linux_用户迁移.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/linux%E4%B8%8B%E8%A7%A3%E5%8E%8B%E7%BC%A9rar%E6%A0%BC%E5%BC%8F%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%8C%85.pdf">linux下解压缩rar格式的压缩包.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/linux%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5_NTP%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF%E5%8A%A8.pdf">linux时间同步_NTP配置与开机自启动.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/linux%E6%9F%A5%E7%9C%8B%E6%9F%90%E4%B8%AA%E6%97%B6%E9%97%B4%E6%AE%B5%E7%9A%84%E6%97%A5%E5%BF%97.pdf">linux查看某个时间段的日志.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/linux%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%A5%E5%BF%97%E7%9A%84%E4%B8%80%E4%BA%9B%E5%AE%9E%E7%94%A8%E6%93%8D%E4%BD%9C.pdf">linux查看系统的日志的一些实用操作.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/messagehive.metastore.sasl.enabled_can%E2%80%99t_be_false_in_non-testing_mode.pdf">messagehive.metastore.sasl.enabled_can’t_be_false_in_non-testing_mode.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/messages%E6%97%A5%E5%BF%97%E8%BF%87%E6%BB%A4%E6%8E%89ldapd%E7%9A%84%E9%94%99%E8%AF%AF.pdf">messages日志过滤掉ldapd的错误.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/mt5__K%E7%BA%BF%E5%9B%BE_%E6%9C%80%E5%8F%B3%E8%BE%B9%E7%95%99%E7%82%B9%E7%A9%BA%E7%99%BD.pdf">mt5__K线图_最右边留点空白.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/mysql%E4%B8%8Ehive_sql_%E5%AF%B9%E6%AF%94.pdf">mysql与hive_sql_对比.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/nfs%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4.pdf">nfs常用操作命令.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/nfs%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86.pdf">nfs问题处理.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/nohup%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8Cscp,ftp%E7%AD%89%E9%9C%80%E8%A6%81%E8%BE%93%E5%85%A5%E5%AF%86%E7%A0%81%E7%9A%84%E5%91%BD%E4%BB%A4.pdf">nohup后台运行scp,ftp等需要输入密码的命令.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/nxlog%E9%85%8D%E7%BD%AE%E5%B8%AE%E5%8A%A9.pdf">nxlog配置帮助.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/oozie_%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%93%8D%E4%BD%9C.pdf">oozie_命令行操作.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/oozie%E8%B0%83%E5%BA%A6ssh%E6%89%A7%E8%A1%8Cshell.pdf">oozie调度ssh执行shell.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/openldap_ssl%E9%85%8D%E7%BD%AE.pdf">openldap_ssl配置.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/openldap%E5%AE%89%E8%A3%85%EF%BC%8Chue%E3%80%81hive%E3%80%81impala%E9%9B%86%E6%88%90ldap.pdf">openldap安装，hue、hive、impala集成ldap.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/openldap%E8%AE%BE%E7%BD%AE%E7%94%A8%E6%88%B7%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A0%81%E6%9D%83%E9%99%90_%E5%AF%86%E7%A0%81%E8%BF%87%E6%9C%9F.pdf">openldap设置用户修改密码权限_密码过期.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/oracle_%E5%92%8CSAS%E4%B9%8B%E9%97%B4%E4%BC%A0%E9%80%92%E6%95%B0%E6%8D%AE_sas%E4%B8%AD%E6%96%87%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA.pdf">oracle_和SAS之间传递数据_sas中文日期格式输出.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/pgsql%E4%BD%BF%E7%94%A8%E5%B8%AE%E5%8A%A9.pdf">pgsql使用帮助.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/pip.pdf">pip.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/pip_%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8_%E4%BB%A3%E7%90%86%E5%AE%89%E8%A3%85.pdf">pip_代理服务器_代理安装.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/pm2.pdf">pm2.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/presto-elasticsearch.pdf">presto-elasticsearch.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/presto_admin_%E5%AE%89%E8%A3%85.pdf">presto_admin_安装.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/presto_%E6%9B%B4%E6%96%B0hive%E6%95%B0%E6%8D%AE_insert_owerwrite__table.pdf">presto_更新hive数据_insert_owerwrite__table.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/presto%E6%9F%A5%E8%AF%A2%E5%8C%BA%E5%88%86%E5%A4%A7%E5%B0%8F%E5%86%99%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93(mysql%EF%BC%8Cmongo)%E8%A1%A8%EF%BC%8C%E6%8A%A5%E9%94%99%E8%A1%A8%E5%90%8D%E4%B8%8D%E5%AD%98%E5%9C%A8.pdf">presto查询区分大小写的数据库(mysql，mongo)表，报错表名不存在.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/presto%E9%85%8D%E7%BD%AEldap%E7%94%A8%E4%BA%8E%E7%94%A8%E6%88%B7%E8%AE%A4%E8%AF%81.pdf">presto配置ldap用于用户认证.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/presto%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86.pdf">presto集群管理.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/python-module_'pymysql'_has_no_attribute_'connect'.pdf">python-module_‘pymysql’<em>has_no_attribute</em>’connect’.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/python3%E6%93%8D%E4%BD%9Chive.pdf">python3操作hive.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/python_%E6%93%8D%E4%BD%9Cneo4j.pdf">python_操作neo4j.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/python%E4%B8%AD%E7%9A%84urlencode%E4%B8%8Eurldecode.pdf">python中的urlencode与urldecode.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/python%E6%93%8D%E4%BD%9Chive.pdf">python操作hive.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/python%E6%93%8D%E4%BD%9Cimpala.pdf">python操作impala.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/python%E7%94%A8%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%B0%86%E7%BD%91%E9%A1%B5%E4%B8%AD%E6%89%80%E6%9C%89img_src=XXX_%E5%BD%A2%E5%BC%8F%E4%B8%AD%E7%9A%84XXX%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8F%90%E5%8F%96%E5%87%BA.pdf">python用正则表达式将网页中所有img_src=XXX_形式中的XXX的字符串提取出.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/solr_%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96.pdf">solr_查询优化.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/spark%E5%81%9Aetl%E6%B8%85%E6%B4%97json%E6%95%B0%E6%8D%AE.pdf">spark做etl清洗json数据.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/spark%E8%B0%83%E4%BC%98.pdf">spark调优.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/sqoop%E8%BF%9E%E6%8E%A5oralce.pdf">sqoop连接oralce.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/top%E5%91%BD%E4%BB%A4%E6%8C%87%E5%8D%97.pdf">top命令指南.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/visionapp_Remote_Desktop_2010.pdf">visionapp_Remote_Desktop_2010.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/win10_%E4%BD%BF%E7%94%A8Tor_%E5%88%9B%E5%BB%BA%E5%8C%BF%E5%90%8D%E6%9C%8D%E5%8A%A1%E5%92%8C%E5%8C%BF%E5%90%8D%E7%BD%91%E7%AB%99%EF%BC%88.onion.pdf">win10_使用Tor_创建匿名服务和匿名网站（.onion.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/win10%E4%B8%8B%E5%8F%8C%E7%B3%BB%E7%BB%9F_%E4%BD%BF%E7%94%A8%E5%B8%AE%E5%8A%A9.pdf">win10下双系统_使用帮助.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/windows%E4%B8%AD%E7%B1%BB%E4%BC%BClinux%E7%9A%84ln%E5%91%BD%E4%BB%A4.pdf">windows中类似linux的ln命令.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/window%E4%B8%8Bpython%E8%BF%9E%E6%8E%A5hive.pdf">window下python连接hive.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/wordpress_%E4%B8%BB%E9%A2%98.pdf">wordpress_主题.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/zeppelin.pdf">zeppelin.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E4%B8%8A%E6%B5%B7%E5%8D%81%E6%9D%A1%E9%AA%91%E8%BD%A6%E8%B7%AF%E7%BA%BF%E6%8E%A8%E8%8D%90.pdf">上海十条骑车路线推荐.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E4%BD%BF%E7%94%A8HiveServer2%E7%AE%A1%E7%90%86udf%E5%87%BD%E6%95%B0.pdf">使用HiveServer2管理udf函数.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E4%BD%BF%E7%94%A8Hive%E8%AF%BB%E5%86%99ElasticSearch%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE.pdf">使用Hive读写ElasticSearch中的数据.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E4%BD%BF%E7%94%A8PHP%E7%9A%84mail%E5%87%BD%E6%95%B0%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6.pdf">使用PHP的mail函数发送邮件.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E4%BD%BF%E7%94%A8dd%E6%B5%8B%E8%AF%95%E7%A1%AC%E7%9B%98%E8%AF%BB%E5%86%99%E9%80%9F%E5%BA%A6%EF%BC%8C%E5%AE%9E%E6%B5%8B%E8%85%BE%E8%AE%AF%E4%BA%91%E9%98%BF%E9%87%8C%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8.pdf">使用dd测试硬盘读写速度，实测腾讯云阿里云服务器.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E4%BD%BF%E7%94%A8python%E6%9F%A5%E8%AF%A2Elasticsearch%E5%B9%B6%E5%AF%BC%E5%87%BA%E6%89%80%E6%9C%89%E6%95%B0%E6%8D%AE.pdf">使用python查询Elasticsearch并导出所有数据.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E4%BD%BF%E7%94%A8scp%E4%BF%9D%E7%95%99%E6%9D%83%E9%99%90.pdf">使用scp保留权限.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E4%BF%AE%E6%94%B9cdh5%E9%9B%86%E7%BE%A4%E4%B8%AD%E4%B8%BB%E6%9C%BAhostName.pdf">修改cdh5集群中主机hostName.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E5%85%A5%E8%81%8C%E6%8C%87%E5%8D%97.pdf">入职指南.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E5%88%86%E5%8C%BA%E8%A1%A8%E5%A2%9E%E5%8A%A0%E5%AD%97%E6%AE%B5%E6%8A%A5%E9%94%99_Unable_to_alter_partition._alter_is_not_possible.pdf">分区表增加字段报错_Unable_to_alter_partition._alter_is_not_possible.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E5%9B%9B%E7%A7%8D%E6%96%B9%E6%B3%95%E6%8A%8AmongDB%E8%BF%81%E7%A7%BB%E6%95%B0%E6%8D%AE%E5%88%B0hive%E6%88%96Hbase.pdf">四种方法把mongDB迁移数据到hive或Hbase.pdf</a></li>
-<li>[图数据库JanusGraph实战<a href="http://www.ask3.cn/files/%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93JanusGraph%E5%AE%9E%E6%88%98%5B5%5D_JanusGraph%E5%8F%AF%E8%A7%86%E5%8C%96%E4%B9%8BGephi.pdf">5]_JanusGraph可视化之Gephi.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E5%9C%A8HBase%E9%9B%86%E7%BE%A4%E8%BF%90%E8%A1%8C%E7%9A%84%E6%97%B6%E5%80%99%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB.pdf">在HBase集群运行的时候进行数据迁移.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E5%9C%A8Hadoop_%E4%B8%8A%E8%BF%90%E8%A1%8CTensorflow.pdf">在Hadoop_上运行Tensorflow.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E5%A0%86%E5%A4%96%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86.pdf">堆外内存知识.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%B5%B7%E9%87%8F%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%A6%82%E4%BD%95%E8%BF%90%E7%BB%B4.pdf">大数据环境下海量服务器如何运维.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E5%A6%82%E4%BD%95%E4%B8%BAPresto%E9%9B%86%E6%88%90Kerberos%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84Hive.pdf">如何为Presto集成Kerberos环境下的Hive.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8StreamSets%E5%AE%9E%E7%8E%B0MySQL%E4%B8%AD%E5%8F%98%E5%8C%96%E6%95%B0%E6%8D%AE%E5%AE%9E%E6%97%B6%E5%86%99%E5%85%A5Kudu.pdf">如何使用StreamSets实现MySQL中变化数据实时写入Kudu.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AEimpala%E8%87%AA%E5%8A%A8%E5%90%8C%E6%AD%A5HMS%E5%85%83%E6%95%B0%E6%8D%AE.pdf">如何配置impala自动同步HMS元数据.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E5%AE%89%E8%A3%85kafka%E6%8E%A7%E5%88%B6%E5%8F%B0kafka_web_console.pdf">安装kafka控制台kafka_web_console.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E5%AE%9D%E4%BB%98%E4%B8%9A%E5%8A%A1%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A1%A8_.pdf">宝付业务数据库表_.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E5%B0%86%E7%B3%BB%E7%BB%9F%E7%94%A8%E6%88%B7%E5%AF%BC%E5%85%A5FreeIPA%E4%B8%AD.pdf">将系统用户导入FreeIPA中.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E5%B8%A6kerberos%E8%AE%A4%E8%AF%81%E7%9A%84hdfs%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C.pdf">带kerberos认证的hdfs文件操作.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E5%BC%80%E9%80%9A%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86%E5%90%8Ecsv%E5%AF%BC%E5%85%A5hive%E5%BB%BA%E8%A1%A8%E9%97%AE%E9%A2%98.pdf">开通权限管理后csv导入hive建表问题.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E5%BC%82%E5%B8%B8%E6%97%A5%E5%BF%97%EF%BC%9A_No_data_or_no_sasl_data_in_the_stream.pdf">异常日志：_No_data_or_no_sasl_data_in_the_stream.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E5%BC%BA%E5%88%B6%E5%88%A0%E9%99%A4hive%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93.pdf">强制删除hive的数据库.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E6%89%93%E5%8D%B0Spark_RDD%E4%B8%AD%E7%9A%84top_n_%E5%86%85%E5%AE%B9.pdf">打印Spark_RDD中的top_n_内容.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E6%8A%8Ahdfs%E4%B8%8A%E7%9A%84%E5%A4%9A%E4%B8%AA%E7%9B%AE%E5%BD%95%E4%B8%8B%E7%9A%84%E6%96%87%E4%BB%B6%E5%90%88%E5%B9%B6%E4%B8%BA%E4%B8%80%E4%B8%AA%E6%96%87%E4%BB%B6.pdf">把hdfs上的多个目录下的文件合并为一个文件.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E6%8B%9B%E8%81%98%E9%9D%A2%E8%AF%95.pdf">招聘面试.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E6%90%AD%E5%BB%BAOpenLDAP%E8%87%AA%E5%8A%A9%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A0%81%E7%B3%BB%E7%BB%9FSelf_Service_Password.pdf">搭建OpenLDAP自助修改密码系统Self_Service_Password.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E6%90%AD%E5%BB%BAtensorflow-gpu%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83,GPU%E6%B5%8B%E8%AF%95.pdf">搭建tensorflow-gpu深度学习环境,GPU测试.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E6%95%88%E7%8E%87%E7%AC%94%E8%AE%B0_2019.04.18.pdf">效率笔记_2019.04.18.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E6%96%B0%E7%A3%81%E7%9B%98%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%B8%8E%E6%8C%82%E8%BD%BD.pdf">新磁盘格式化与挂载.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E6%97%B6%E9%92%9F%E5%81%8F%E5%B7%AE.pdf">时钟偏差.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E6%9D%83%E9%99%90_sentry%E8%BF%81%E7%A7%BB.pdf">权限_sentry迁移.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E6%9F%A5%E7%9C%8Byarn%E6%97%A5%E5%BF%97%E6%8A%A5%E9%94%99Error_getting_logs_at_hostname8041.pdf">查看yarn日志报错Error_getting_logs_at_hostname8041.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E6%9F%A5%E8%AF%A2cloudera__manager_%E9%85%8D%E7%BD%AE%E4%BF%AE%E6%94%B9.pdf">查询cloudera__manager_配置修改.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E6%A0%B9%E6%8D%AEmapreduce_%E6%A0%B9%E6%8D%AE_job_id_%E5%BF%AB%E9%80%9F%E6%9F%A5%E5%8E%9F%E5%9B%A0.pdf">根据mapreduce_根据_job_id_快速查原因.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E6%AC%A2%E8%BF%8E%E4%BD%BF%E7%94%A8%E6%9C%89%E9%81%93%E4%BA%91%E7%AC%94%E8%AE%B0.pdf">欢迎使用有道云笔记.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E6%AC%A2%E8%BF%8E%E6%9D%A5%E5%88%B0%E5%85%A8%E6%96%B0%E7%9A%84%E6%9C%89%E9%81%93%E4%BA%91%E7%AC%94%E8%AE%B0.pdf">欢迎来到全新的有道云笔记.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E6%B5%8B%E8%AF%95cpu%E5%92%8Cgpu%E7%9A%84%E9%80%9F%E5%BA%A6%E5%B7%AE%E8%B7%9D.pdf">测试cpu和gpu的速度差距.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83Kerberos%E3%80%81LDAP%E5%AE%89%E8%A3%85.pdf">测试环境Kerberos、LDAP安装.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E6%B7%BB%E5%8A%A0pgsql%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE_&amp;&amp;_%E9%87%8D%E5%90%AFcloudera_manager%E7%9A%84pgsql.pdf">添加pgsql远程访问_&amp;&amp;_重启cloudera_manager的pgsql.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E6%B9%98%E4%B9%A1%E8%AF%9D%E6%96%B9%E8%A8%80%E7%BF%BB%E8%AF%91.pdf">湘乡话方言翻译.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E6%B9%98%E6%BD%AD%E7%AB%9E%E4%BB%B7%E5%89%8D%E5%8F%B0%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F.pdf">湘潭竞价前台管理系统.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E6%B9%98%E6%BD%AD%E7%AB%9E%E4%BB%B7%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F.pdf">湘潭竞价后台管理系统.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E7%94%A8StreamSets%E5%AE%9E%E7%8E%B0MySQL%E4%B8%AD%E5%8F%98%E5%8C%96%E6%95%B0%E6%8D%AE%E5%AE%9E%E6%97%B6%E5%86%99%E5%85%A5Kudu.pdf">用StreamSets实现MySQL中变化数据实时写入Kudu.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E7%94%A8cloudera_manager_%E5%AE%89%E8%A3%85kudu%E6%97%B6%E6%8A%A5%E9%94%99%E8%AF%AF.pdf">用cloudera_manager_安装kudu时报错误.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E7%9B%91%E5%90%AC%E7%AB%AF%E5%8F%A3_%E5%8F%91%E7%8E%B0%E7%A8%8B%E5%BA%8F%E5%AE%95%E4%BA%86%E3%80%82%E9%87%8D%E5%90%AF%E7%A8%8B%E5%BA%8F.pdf">监听端口_发现程序宕了。重启程序.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E7%9B%B4%E6%8E%A5%E4%BB%8Ehdfs%E4%B8%8B%E8%BD%BD%E6%95%B0%E6%8D%AE.pdf">直接从hdfs下载数据.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E7%A3%81%E7%9B%98%E4%B8%8D%E8%83%BD%E8%AF%BB%E5%86%99.pdf">磁盘不能读写.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E7%A6%81%E7%94%A8Hive.pdf">禁用Hive.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E7%A6%81%E7%94%A8_ssh.pdf">禁用_ssh.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E8%80%81%E9%9B%86%E7%BE%A4%E8%A1%A5%E5%8E%86%E5%8F%B2%E6%95%B0%E6%8D%AE.pdf">老集群补历史数据.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7_Ansible_%E5%9C%A8%E9%83%A8%E7%BD%B2%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E4%B8%8B%E7%9A%84%E5%BA%94%E7%94%A8.pdf">自动化运维工具_Ansible_在部署大数据平台下的应用.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E8%A7%A3%E5%86%B3RegionServer_%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6%E6%95%B0%E6%8A%A5%E8%AD%A6.pdf">解决RegionServer_打开文件描述符数报警.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E8%A7%A3%E5%86%B3_wordpress_ftp%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5.pdf">解决_wordpress_ftp无法连接.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E8%A7%A3%E5%86%B3hive_comment_%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98.pdf">解决hive_comment_中文乱码问题.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E8%A7%A3%E5%86%B3parquet%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8FImpala%E4%B8%8EHive%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4%E4%B8%8D%E5%90%8C.pdf">解决parquet文件格式Impala与Hive日期时间不同.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E8%A7%A3%E5%86%B3spark_streaming%E9%95%BF%E6%97%B6%E9%97%B4%E8%BF%90%E8%A1%8C%E6%97%A5%E5%BF%97%E4%B8%8D%E6%96%AD%E5%A2%9E%E9%95%BF%E9%97%AE%E9%A2%98.pdf">解决spark_streaming长时间运行日志不断增长问题.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BA%BF%E4%B8%8A%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%A2%91%E7%B9%81%E5%AE%95%E6%9C%BA.pdf">记一次线上服务器频繁宕机.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E8%AE%BE%E7%BD%AE%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%81%E8%AE%B8Kerberos%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81.pdf">设置浏览器允许Kerberos身份验证.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E8%B0%88%E8%B0%88spark%E4%B8%AD%E5%AF%B9RDD%E7%9A%84%E8%AE%A4%E8%AF%86%E3%80%82.pdf">谈谈spark中对RDD的认识。.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E8%B7%A8%E7%89%88%E6%9C%ACdistcp%E6%8A%A5Check-sum%E9%94%99%E8%AF%AF.pdf">跨版本distcp报Check-sum错误.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E8%BF%9C%E7%A8%8B%E5%8A%9E%E5%85%AC%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88_%E6%90%AD%E5%BB%BA%E5%B1%80%E5%9F%9F%E7%BD%91vpn%E6%9C%8D%E5%8A%A1%E5%99%A8.pdf">远程办公解决方案_搭建局域网vpn服务器.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E8%BF%9E%E6%8E%A5HiveServer2%E4%BC%A0%E9%80%92%E5%8F%82%E6%95%B0%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F.pdf">连接HiveServer2传递参数的几种方式.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E9%83%A8%E7%BD%B2Harbor%E7%A7%81%E6%9C%89%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93.pdf">部署Harbor私有镜像仓库.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E9%85%8D%E7%BD%AEOpenLDAP%E7%9A%84%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6.pdf">配置OpenLDAP的日志文件.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E9%98%BF%E9%87%8Capi%E4%BD%BF%E7%94%A8.pdf">阿里api使用.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E9%9B%86%E5%9B%A2%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E9%A1%B9%E7%9B%AE%E6%95%B4%E4%BD%93%E6%96%B9%E6%A1%88%E8%A7%84%E5%88%92.pdf">集团大数据平台项目整体方案规划.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E9%9B%86%E5%9B%A2%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E9%A1%B9%E7%9B%AE%E6%95%B4%E6%94%B9%E6%96%B9%E6%A1%88%E8%A7%84%E5%88%92.pdf">集团大数据平台项目整改方案规划.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E9%9B%86%E7%BE%A4%E6%8B%86%E5%88%86%E9%A1%B9%E7%9B%AE%E5%B7%A5%E4%BD%9C%E8%BF%9B%E5%BA%A6.pdf">集群拆分项目工作进度.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E9%9B%86%E7%BE%A4%E6%96%B0%E5%8A%A0%E8%8A%82%E7%82%B9%EF%BC%8C%E5%AE%89%E8%A3%85tensorflow.pdf">集群新加节点，安装tensorflow.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E9%9D%9E%E5%B8%B8%E7%AE%80%E5%8D%95%E7%9A%84PYTHON_HTTP%E6%9C%8D%E5%8A%A1.pdf">非常简单的PYTHON_HTTP服务.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E9%AA%91%E8%A1%8C%E9%81%82%E6%98%8C.pdf">骑行遂昌.pdf</a></li>
-<li><a href="http://www.ask3.cn/files/%E9%B1%BC%E5%84%BF%E8%80%81%E5%B8%88%E7%9A%84%E7%AC%94%E8%AE%B0.pdf">鱼儿老师的笔记.pdf</a></li>
-<li></li>
-</ul>
+          <h3 id="用Hue中的Oozie执行Impala-Sheel脚本">用Hue中的Oozie执行Impala Sheel脚本</h3>
+<p>在Oozie中不能像执行hive SQL那样直接执行impala SQL脚本。目前没有Impala操作，因此你必须使用调用impala-shell的shell操作。调用impala-shell的shell脚本中还必须包含设置PYTHON EGGS位置的环境变量</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export PYTHON_EGG_CACHE=.python-eggs   </span><br><span class="line"></span><br><span class="line">impala-shell -i 172.20.15.10:21000 -u hpt -l --auth_creds_ok_in_clear --ldap_password_cmd='echo -n ***' -q 'SET request_pool=development;'</span><br></pre></td></tr></table></figure>
 
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/09/30/%E6%9C%89%E9%81%93%E7%AC%94%E8%AE%B0%E6%96%87%E4%BB%B6%E5%A4%87%E4%BB%BD/#more" rel="contents">
+              <a class="btn" href="/2021/03/02/%E7%94%A8Hue%E4%B8%AD%E7%9A%84Oozie%E6%89%A7%E8%A1%8CImpala%20Sheel%E8%84%9A%E6%9C%AC/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1133,7 +779,7 @@ create table xxx stored as RCFile as select…<br>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/09/30/IPFS%E9%9F%B3%E4%B9%90%E6%92%AD%E6%94%BE%E5%99%A8/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/02/hudi/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -1147,7 +793,7 @@ create table xxx stored as RCFile as select…<br>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/09/30/IPFS%E9%9F%B3%E4%B9%90%E6%92%AD%E6%94%BE%E5%99%A8/" class="post-title-link" itemprop="url">IPFS音乐播放器</a>
+            <a href="/2021/03/02/hudi/" class="post-title-link" itemprop="url">hudi</a>
         </h1>
 
         <div class="post-meta">
@@ -1157,7 +803,7 @@ create table xxx stored as RCFile as select…<br>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-09-30 13:43:22" itemprop="dateCreated datePublished" datetime="2020-09-30T13:43:22+08:00">2020-09-30</time>
+              <time title="创建时间：2021-03-02 16:50:28" itemprop="dateCreated datePublished" datetime="2021-03-02T16:50:28+08:00">2021-03-02</time>
             </span>
 
           
@@ -1171,63 +817,13 @@ create table xxx stored as RCFile as select…<br>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>IPFS音乐播放器</h1>
-<h2 id="IPFS相关">IPFS相关</h2>
-<h3 id="IPFS第一次亲密接触">IPFS第一次亲密接触</h3>
-<ul>
-<li>什么是IPFS</li>
-<li>IPFS对比HTTP/FTP等协议的优势</li>
-<li>IPFS应用场景</li>
-</ul>
-<p>-移动数据 交易 路由 网络</p>
-<ul>
-<li>定义数据 命名</li>
-<li>使用数据</li>
-</ul>
-<p>具体场景;<br>
-挂载全球文件<br>
-版本管理功能<br>
-数据库<br>
-加密平台<br>
-各种类型cdn<br>
-永久访问的链接</p>
-<h3 id="ipfs入门">ipfs入门</h3>
-<ul>
-<li>官网地址：<a href="https://ipfs.io/" target="_blank" rel="noopener">https://ipfs.io</a></li>
-<li>下载安装：<a href="https://dist.ipfs.io/#go-ipfs" target="_blank" rel="noopener">https://dist.ipfs.io/#go-ipfs</a></li>
-<li>节点初始化
-<ul>
-<li><code>ipfs init</code></li>
-<li>如果出现<code>Error: cannot acquire lock: can't lock file</code>删除其后边给出的repo.lock文件即可</li>
-</ul>
-</li>
-<li>节点配置
-<ul>
-<li><code>ipfs id</code> 查看当前节点id等信息</li>
-<li><code>ipfs config show</code> ipfs配置信息</li>
-</ul>
-</li>
-<li>节点服务器daemon
-<ul>
-<li><code>ipfs daemon</code></li>
-</ul>
-</li>
-<li>修改IPFS默认路径</li>
-<li>开放API请求
-<ul>
-<li>ipfs config --json Addresses.API ‘&quot;/ip4/0.0.0.0/tcp/5001&quot;’</li>
-</ul>
-</li>
-<li>开放公共网关
-<ul>
-<li>ipfs config --json Addresses.Gateway ‘&quot;/ip4/0.0.0.0/tcp/8080&quot;’</li>
-</ul>
-</li>
-</ul>
-<h3 id="发布数据">发布数据</h3>
+          <p><strong>注意：<strong>目前Hudi使用的是</strong>hadoop2.7.3</strong>版本，CDH6.3.0 环境使用的是<strong>hadoop3.0.0</strong>， 所以在打包的时候需要加上**-Dhadoop.version=3.0.0** 参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean install -DskipTests -DskipITs -Dcheckstyle.skip&#x3D;true -Drat.skip&#x3D;true -Dhadoop.version&#x3D;3.0.0</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo -u yarn spark-shell  \</span><br><span class="line">  --queue bf_yarn_pool.development \</span><br><span class="line">  --packages org.apache.spark:spark-avro_2.11:2.4.0 \</span><br><span class="line">  --conf 'spark.serializer=org.apache.spark.serializer.KryoSerializer' \</span><br><span class="line">  --jars `ls /opt/hudi/packaging/hudi-spark-bundle/target/hudi-spark-bundle_2.11-*.*.*-SNAPSHOT.jar`</span><br></pre></td></tr></table></figure>
+
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/09/30/IPFS%E9%9F%B3%E4%B9%90%E6%92%AD%E6%94%BE%E5%99%A8/#more" rel="contents">
+              <a class="btn" href="/2021/03/02/hudi/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1251,7 +847,7 @@ create table xxx stored as RCFile as select…<br>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/09/11/hbase%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E5%AE%9E%E6%88%98/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/02/20/%E7%94%A8FsImage%E6%9F%A5%E6%89%BEhadoop%E9%9B%86%E7%BE%A4%E5%B0%8F%E6%96%87%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -1265,7 +861,7 @@ create table xxx stored as RCFile as select…<br>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/09/11/hbase%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E5%AE%9E%E6%88%98/" class="post-title-link" itemprop="url">hbase常用命令操作实战</a>
+            <a href="/2021/02/20/%E7%94%A8FsImage%E6%9F%A5%E6%89%BEhadoop%E9%9B%86%E7%BE%A4%E5%B0%8F%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">用FsImage查找hadoop集群小文件</a>
         </h1>
 
         <div class="post-meta">
@@ -1275,7 +871,7 @@ create table xxx stored as RCFile as select…<br>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-09-11 15:06:49" itemprop="dateCreated datePublished" datetime="2020-09-11T15:06:49+08:00">2020-09-11</time>
+              <time title="创建时间：2021-02-20 15:55:17" itemprop="dateCreated datePublished" datetime="2021-02-20T15:55:17+08:00">2021-02-20</time>
             </span>
 
           
@@ -1289,19 +885,19 @@ create table xxx stored as RCFile as select…<br>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="hbase-hbck2">hbase-hbck2</h2>
-<p>从官网下载hbck2 执行文件</p>
-<p><a href="http://hbase.apache.org/downloads.html" target="_blank" rel="noopener">http://hbase.apache.org/downloads.html</a></p>
-<p>或 wget  <a href="https://www.apache.org/dyn/closer.lua/hbase/hbase-operator-tools-1.0.0/hbase-operator-tools-1.0.0-bin.tar.gz" target="_blank" rel="noopener">https://www.apache.org/dyn/closer.lua/hbase/hbase-operator-tools-1.0.0/hbase-operator-tools-1.0.0-bin.tar.gz</a></p>
-<p>cdh官网的使用帮助</p>
-<p><a href="https://docs.cloudera.com/documentation/enterprise/6/6.3/topics/admin_hbase_hbck.html#concept_hkk_q25_llb" target="_blank" rel="noopener">https://docs.cloudera.com/documentation/enterprise/6/6.3/topics/admin_hbase_hbck.html#concept_hkk_q25_llb</a></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/hbase-operator-tools-1.0.0/hbase-hbck2</span><br><span class="line"></span><br><span class="line">hbase hbck -j hbase-hbck2-1.0.0.jar -s  assigns 1588230740</span><br><span class="line"></span><br><span class="line">hbase hbck -j hbase-hbck2-1.0.0.jar -s  assigns hbase:namespace,,1594264903686.db55eec81d86ac0ae26eba718518ce26</span><br><span class="line"></span><br><span class="line">hbase hbck -j hbase-hbck2-1.0.0.jar -s addFsRegionsMissingInMeta default:test n1:tbl_2 n2</span><br></pre></td></tr></table></figure>
-<h2 id="hbase-shell-实战">hbase shell  实战</h2>
-<p>移动表的数据到另外一个服务器</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 语法：move &#39;encodeRegionName&#39;, &#39;ServerName&#39;&#96;&#96;</span><br><span class="line"># encodeRegionName指的regioName后面的编码，ServerName指的是master-status的Region Servers列表</span><br><span class="line">move &#39;61a647884b761a785daf3b38049aaa27&#39;,&#39;bigdata-5.baofoo.cn,16020,1595233360076&#39;</span><br></pre></td></tr></table></figure>
+          <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd /tmp</span><br><span class="line">hdfs dfsadmin -fetchImage ./tmp_meta</span><br><span class="line">hdfs oiv -i ./tmp_meta -o ./fsimage.csv -p Delimited</span><br><span class="line">hdfs dfs -mkdir -p /tmp/hdfs_metadata/fsimage</span><br><span class="line">hdfs dfs -copyFromLocal ./fsimage.csv /tmp/hdfs_metadata/fsimage</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">exists</span> hdfs_meta_temp;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">external</span> <span class="keyword">table</span> hdfs_meta_temp (<span class="keyword">path</span> <span class="keyword">string</span> ,</span><br><span class="line">repl <span class="built_in">int</span> ,</span><br><span class="line">modification_time <span class="keyword">string</span> ,accesstime <span class="keyword">string</span> ,</span><br><span class="line">preferredblocksize <span class="built_in">int</span> ,blockcount <span class="keyword">double</span>,</span><br><span class="line">filesize <span class="keyword">double</span> ,nsquota <span class="built_in">int</span> ,</span><br><span class="line">dsquota <span class="built_in">int</span> ,</span><br><span class="line">permission <span class="keyword">string</span> ,username <span class="keyword">string</span> ,groupname <span class="keyword">string</span>)<span class="keyword">row</span> <span class="keyword">format</span> <span class="keyword">delimited</span></span><br><span class="line"><span class="keyword">fields</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">'\t'</span> location <span class="string">'/tmp/hdfs_metadata/fsimage/'</span> ;</span><br><span class="line"></span><br><span class="line"><span class="comment">--将临时表转换为Impala的 Parquet表</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> hdfs_meta</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> hdfs_meta <span class="keyword">stored</span> <span class="keyword">as</span> parquet <span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">path</span>,</span><br><span class="line">repl,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">concat</span>(modification_time, <span class="string">' :00'</span>) <span class="keyword">as</span> <span class="built_in">timestamp</span>) modification_time,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">concat</span>(accesstime,<span class="string">':00'</span>) <span class="keyword">as</span> <span class="built_in">timestamp</span>) accesstime,</span><br><span class="line">preferredblocksize,</span><br><span class="line">blockcount,</span><br><span class="line">filesize,nsquota,dsquota,permission,username,groupname</span><br><span class="line"><span class="keyword">from</span> hdfs_meta_temp;</span><br></pre></td></tr></table></figure>
+<p>instr(path,’/’,1,2)这两个参数主要表示指定统计的HDFS目录以及目录钻取深度，instr()函数中的最后一个参数即为目录钻取深度</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line"><span class="comment">--concat('/',split_part(path,'/',2))  basepath,</span></span><br><span class="line"><span class="comment">--concat('/',split_part(path,'/',2),'/',split_part(path,'/',3))  basepath,</span></span><br><span class="line"><span class="comment">--concat('/',split_part(path,'/',2),'/',split_part(path,'/',3),'/',split_part(path,'/',4))  basepath,</span></span><br><span class="line"><span class="keyword">concat</span>(<span class="string">'/'</span>,split_part(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">2</span>),<span class="string">'/'</span>,split_part(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">3</span>),<span class="string">'/'</span>,split_part(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">4</span>),<span class="string">'/'</span>,split_part(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">5</span>))  basepath,</span><br><span class="line"><span class="keyword">sum</span>(blockcount) blockcounts,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">sum</span>(filesize)/<span class="number">1024</span>/<span class="number">1024</span>/<span class="number">1024</span> <span class="keyword">as</span> <span class="built_in">decimal</span>(<span class="number">18</span>,<span class="number">2</span>) ) filesizes,</span><br><span class="line"><span class="keyword">count</span>(*) file_nums,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">count</span>(*)/<span class="keyword">sum</span>(blockcount) <span class="keyword">as</span> <span class="built_in">decimal</span>(<span class="number">18</span>,<span class="number">2</span>) ) <span class="keyword">as</span> avg_block ,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">sum</span>(filesize)/<span class="keyword">count</span>(*)/<span class="number">1024</span> <span class="keyword">as</span> <span class="built_in">decimal</span>(<span class="number">18</span>,<span class="number">2</span>) ) <span class="keyword">AS</span> avg_filesize</span><br><span class="line"><span class="keyword">FROM</span> tmp.hdfs_meta </span><br><span class="line"><span class="keyword">where</span> <span class="keyword">instr</span>(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">1</span>,<span class="number">4</span>)&gt;<span class="number">0</span></span><br><span class="line"><span class="comment">--and strleft(path, instr(path,'/',1,4)-1)='/user/hive/warehouse'</span></span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> basepath  </span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> file_nums <span class="keyword">desc</span>, avg_filesize </span><br><span class="line"><span class="keyword">limit</span> <span class="number">200</span></span><br></pre></td></tr></table></figure>
+<p><strong>总结</strong></p>
+<p>如上SQL的统计分析可以看到有三个比较重要的统计指标file_nums、blockcounts和avg_filesize。通过这三个指标进行小文件分析，进行如下分析：</p>
+<p>如果file_nums/blockcounts的值越大且avg_filesize越小则说明该HDFS或Hive表的小文件越多。</p>
+<p><strong>方法二、</strong></p>
+<p>使用Sqoop脚本将Hive元数据中关于Hive库和表的信息抽取的Hive中</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">sqoop import \</span><br><span class="line">-D mapred.job.queue.name=bf_yarn_pool.development \</span><br><span class="line">--connect "jdbc:mysql://10.0.20.107:3306/baofoo_hive_2" \</span><br><span class="line">--username cs_yangz \</span><br><span class="line">--password *** \</span><br><span class="line">--query 'select c.NAME,c.DB_LOCATION_URI,a.TBL_NAME,a.OWNER,a.TBL_TYPE,b.LOCATION from TBLS a,SDS b,DBS c where a.SD_ID=b.SD_ID and a.DB_ID=c.DB_ID and $CONDITIONS' \</span><br><span class="line">--fields-terminated-by ',' \</span><br><span class="line">--delete-target-dir \</span><br><span class="line">--hive-database default \</span><br><span class="line">--target-dir /tmp/hive_tables_temp \</span><br><span class="line">--hive-import \</span><br><span class="line">--hive-overwrite \</span><br><span class="line">--hive-table hive_tables_temp \</span><br><span class="line">--m 1</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/09/11/hbase%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E5%AE%9E%E6%88%98/#more" rel="contents">
+              <a class="btn" href="/2021/02/20/%E7%94%A8FsImage%E6%9F%A5%E6%89%BEhadoop%E9%9B%86%E7%BE%A4%E5%B0%8F%E6%96%87%E4%BB%B6/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1325,7 +921,7 @@ create table xxx stored as RCFile as select…<br>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1393,7 +989,7 @@ create table xxx stored as RCFile as select…<br>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">155</span>
+          <span class="site-state-item-count">171</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1434,7 +1030,7 @@ create table xxx stored as RCFile as select…<br>
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
