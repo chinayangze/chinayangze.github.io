@@ -209,7 +209,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/04/03/Apache%20Kyuubi%20on%20CDH%20%E9%83%A8%E7%BD%B2/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/11/29/centos7%E5%AE%89%E8%A3%85influxdb/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -223,7 +223,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2024/04/03/Apache%20Kyuubi%20on%20CDH%20%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">Apache Kyuubi on CDH 部署</a>
+            <a href="/2024/11/29/centos7%E5%AE%89%E8%A3%85influxdb/" class="post-title-link" itemprop="url">centos7安装influxdb</a>
         </h1>
 
         <div class="post-meta">
@@ -233,7 +233,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-04-03 17:51:10" itemprop="dateCreated datePublished" datetime="2024-04-03T17:51:10+08:00">2024-04-03</time>
+              <time title="创建时间：2024-11-29 10:38:54" itemprop="dateCreated datePublished" datetime="2024-11-29T10:38:54+08:00">2024-11-29</time>
             </span>
 
           
@@ -247,19 +247,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>Apache Kyuubi on CDH 部署</h1>
-<p><a href="https://shmily-qjj.top/ee1c2df4/" target="_blank" rel="noopener">https://shmily-qjj.top/ee1c2df4/</a></p>
-<h1>Apache Kyuubi on Spark 在 CDH 上的深度实践</h1>
-<p><a href="https://www.slidestalk.com/openLooKeng/22" target="_blank" rel="noopener">https://www.slidestalk.com/openLooKeng/22</a></p>
-<p>vi  <a href="http://kyuubi-env.sh" target="_blank" rel="noopener">kyuubi-env.sh</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk1.8.0_181-cloudera</span><br><span class="line">export SPARK_HOME&#x3D;&#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3</span><br><span class="line">export FLINK_HOME&#x3D;&#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;FLINK</span><br><span class="line">export HIVE_HOME&#x3D;&#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hive</span><br><span class="line">export HADOOP_CONF_DIR&#x3D;&#x2F;etc&#x2F;hadoop&#x2F;conf</span><br><span class="line">export YARN_CONF_DIR&#x3D;&#x2F;etc&#x2F;hadoop&#x2F;conf</span><br><span class="line">export KYUUBI_JAVA_OPTS&#x3D;&quot;-Xmx10g -XX:+UnlockDiagnosticVMOptions -XX:ParGCCardsPerStrideChunk&#x3D;4096 -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:CMSInitiatingOccupancyFraction&#x3D;70 -XX:+UseCMSInitiatingOccupancyOnly -XX:+CMSClassUnloadingEnabled </span><br><span class="line">-XX:+CMSParallelRemarkEnabled -XX:+UseCondCardMark -XX:MaxDirectMemorySize&#x3D;1024m  -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath&#x3D;.&#x2F;logs -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintTenuringDistribution -Xloggc:.&#x2F;logs&#x2F;kyuubi-server-gc-%t.log -XX:+Us</span><br><span class="line">eGCLogFileRotation -XX:NumberOfGCLogFiles&#x3D;10 -XX:GCLogFileSize&#x3D;5M -XX:NewRatio&#x3D;3 -XX:MetaspaceSize&#x3D;512m&quot;</span><br></pre></td></tr></table></figure>
-<p>vi  conf/kyuubi-defaults.conf</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">kyuubi.frontend.bind.host                10.0.0.1</span><br><span class="line">kyuubi.frontend.protocols                THRIFT_BINARY</span><br><span class="line">kyuubi.frontend.thrift.binary.bind.port  10009</span><br><span class="line">#</span><br><span class="line"># kyuubi.engine.type                       SPARK_SQL</span><br><span class="line"># kyuubi.engine.share.level                USER</span><br><span class="line"># kyuubi.session.engine.initialize.timeout PT3M</span><br><span class="line">#</span><br><span class="line">kyuubi.ha.addresses                      zk1:2181,zk2:2181,zk3:2181</span><br><span class="line">kyuubi.ha.namespace                      kyuubi</span><br><span class="line"></span><br><span class="line"># 不指定 spark就是local模式运行了</span><br><span class="line">spark.master&#x3D;yarn</span><br><span class="line">spark.submit.deployMode&#x3D;cluster</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">kyuubi.authentication&#x3D;LDAP</span><br><span class="line">kyuubi.authentication.ldap.baseDN&#x3D;dc&#x3D;org</span><br><span class="line">kyuubi.authentication.ldap.domain&#x3D;apache.org</span><br><span class="line">kyuubi.authentication.ldap.binddn&#x3D;uid&#x3D;kyuubi,OU&#x3D;Users,DC&#x3D;apache,DC&#x3D;org</span><br><span class="line">kyuubi.authentication.ldap.bindpw&#x3D;kyuubi123123</span><br><span class="line">kyuubi.authentication.ldap.url&#x3D;ldap:&#x2F;&#x2F;hostname.com:389&#x2F;</span><br></pre></td></tr></table></figure>
-<h3 id="重启">重启</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">注意 ：kyuubi 停止的时候   spark on yarn的  kyuubi_application  并没有停掉，   需要在yarn里kill，  这样重启  才能加载新加入的jar包和新的配置文件。</span><br><span class="line"></span><br><span class="line">sudo -u hdfs bin&#x2F;kyuubi start</span><br><span class="line">sudo -u hdfs bin&#x2F;kyuubi stop</span><br><span class="line">sudo -u hdfs bin&#x2F;kyuubi restart</span><br></pre></td></tr></table></figure>
+          <h1>centos7安装influxdb</h1>
+<p>更改存储路径时，记得给路径权限， 不然数据写不进</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@cdh85-99 influxdb]# chown influxdb:influxdb -R data&#x2F; </span><br><span class="line">[root@cdh85-99 influxdb]# chown influxdb:influxdb -R wal</span><br></pre></td></tr></table></figure>
+<p><a href="https://blog.csdn.net/tongzidane/article/details/131850118" target="_blank" rel="noopener">https://blog.csdn.net/tongzidane/article/details/131850118</a></p>
+
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/04/03/Apache%20Kyuubi%20on%20CDH%20%E9%83%A8%E7%BD%B2/#more" rel="contents">
+              <a class="btn" href="/2024/11/29/centos7%E5%AE%89%E8%A3%85influxdb/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -283,7 +278,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/04/03/CDH6.3.2%20%E5%8D%87%E7%BA%A7%20Spark3.3.0%20%E7%89%88%E6%9C%AC/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/11/13/ocp%E5%8D%87%E7%BA%A7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -297,7 +292,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2024/04/03/CDH6.3.2%20%E5%8D%87%E7%BA%A7%20Spark3.3.0%20%E7%89%88%E6%9C%AC/" class="post-title-link" itemprop="url">CDH6.3.2 升级 Spark3.3.0 版本</a>
+            <a href="/2024/11/13/ocp%E5%8D%87%E7%BA%A7/" class="post-title-link" itemprop="url">ocp升级</a>
         </h1>
 
         <div class="post-meta">
@@ -307,7 +302,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-04-03 16:34:34" itemprop="dateCreated datePublished" datetime="2024-04-03T16:34:34+08:00">2024-04-03</time>
+              <time title="创建时间：2024-11-13 10:27:33" itemprop="dateCreated datePublished" datetime="2024-11-13T10:27:33+08:00">2024-11-13</time>
             </span>
 
           
@@ -321,19 +316,26 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>CDH6.3.2 升级 Spark3.3.0 版本</h1>
-<p><a href="https://juejin.cn/post/7140053569431928845" target="_blank" rel="noopener">https://juejin.cn/post/7140053569431928845</a></p>
-<p>根据上面的文档进行部署  还有下列操作需要补充</p>
-<p>上传到要部署 spark3 的客户端机器</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf spark-3.3.0-bin-3.0.0-cdh6.3.2.tgz -C /opt/cloudera/parcels/CDH/lib</span><br><span class="line">cd /opt/cloudera/parcels/CDH/lib</span><br><span class="line">mv spark-3.3.0-bin-3.0.0-cdh6.3.2/ spark3</span><br></pre></td></tr></table></figure>
-<h3 id="配置-conf">配置 conf</h3>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">shell复制代码cd /opt/cloudera/parcels/CDH/lib/spark3/conf</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 开启日志</span></span></span><br><span class="line">mv log4j2.properties.template log4j2.properties</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># spark-defaults.conf 配置</span></span></span><br><span class="line">cp /opt/cloudera/parcels/CDH/lib/spark/conf/spark-defaults.conf ./</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 修改 spark-defaults.conf</span></span><br><span class="line">vim /opt/cloudera/parcels/CDH/lib/spark3/conf/spark-defaults.conf</span><br><span class="line">删除 spark.extraListeners、spark.sql.queryExecutionListeners、spark.yarn.jars</span><br><span class="line">添加 spark.yarn.jars=hdfs://ns1/user/spark/3versionJars/*</span><br><span class="line"></span><br><span class="line">hadoop fs -mkdir -p /spark/3versionJars</span><br><span class="line">cd /opt/cloudera/parcels/CDH/lib/spark3/jars</span><br><span class="line">hadoop fs -put *.jar hdfs://ns1/user/spark/3versionJars</span><br></pre></td></tr></table></figure>
-<h2 id="优化设置">优化设置</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">spark.kryoserializer.buffer.max 512m</span><br><span class="line">spark.serializer org.apache.spark.serializer.KryoSerializer</span><br><span class="line">spark.authenticate false   （关闭数据块传输服务SASL加密认证）</span><br><span class="line">spark.io.encryption.enabled false   （关闭I&#x2F;O加密）</span><br><span class="line">spark.network.crypto.enabled false  （关闭基于AES算法的RPC加密）</span><br><span class="line">spark.shuffle.service.enabled true  （启用外部ShuffleService提高Shuffle稳定性）</span><br><span class="line">spark.shuffle.service.port 7337  （这个外部ShuffleService由YarnNodeManager提供，默认端口7337）</span><br><span class="line">spark.shuffle.useOldFetchProtocol true  （兼容旧的Shuffle协议避免报错）</span><br><span class="line">spark.sql.cbo.enabled true  (启用CBO基于代价的优化-代替RBO基于规则的优化-Optimizer)</span><br><span class="line">spark.sql.cbo.starSchemaDetection true  （星型模型探测，判断列是否是表的主键）</span><br><span class="line">spark.sql.datetime.java8API.enabled false</span><br><span class="line">spark.sql.sources.partitionOverwriteMode dynamic </span><br><span class="line">spark.sql.orc.mergeSchema true  （ORC格式Schema加载时从所有数据文件收集）</span><br><span class="line">spark.sql.parquet.mergeSchema false (根据情况设置，我们集群大多数都是parquet，从所有文件收集Schema会影响性能，所以从随机一个Parquet文件收集Schema)</span><br><span class="line">spark.sql.parquet.writeLegacyFormat true  （兼容旧集群）</span><br><span class="line">spark.sql.autoBroadcastJoinThreshold 1048576  （当前仅支持运行了ANALYZE TABLE &lt;tableName&gt; COMPUTE STATISTICS noscan的Hive Metastore表，以及直接在数据文件上计算统计信息的基于文件的数据源表）</span><br><span class="line">spark.sql.adaptive.enabled true   （Spark AQE[adaptive query execution]启用，AQE的优势：执行计划可动态调整、调整的依据是中间结果的精确统计信息）</span><br><span class="line">spark.sql.adaptive.forceApply false</span><br><span class="line">spark.sql.adaptive.logLevel info</span><br><span class="line">spark.sql.adaptive.advisoryPartitionSizeInBytes 256m  （倾斜数据分区拆分，小数据分区合并优化时，建议的分区大小，与spark.sql.adaptive.shuffle.targetPostShuffleInputSize含义相同）</span><br><span class="line">spark.sql.adaptive.coalescePartitions.enabled true  （是否开启合并小数据分区默认开启，调优策略之一）</span><br><span class="line">spark.sql.adaptive.coalescePartitions.minPartitionSize 1m  （合并后最小的分区大小）</span><br><span class="line">spark.sql.adaptive.coalescePartitions.initialPartitionNum 1024  （合并前的初始分区数）</span><br><span class="line">spark.sql.adaptive.fetchShuffleBlocksInBatch true  （是否批量拉取blocks,而不是一个个的去取，给同一个map任务一次性批量拉取blocks可以减少io 提高性能）</span><br><span class="line">spark.sql.adaptive.localShuffleReader.enabled true （不需要Shuffle操作时，使用LocalShuffleReader，例如将SortMergeJoin转为BrocastJoin）</span><br><span class="line">spark.sql.adaptive.skewJoin.enabled true   （Spark会通过拆分的方式自动处理Join过程中有数据倾斜的分区）</span><br><span class="line">spark.sql.adaptive.skewJoin.skewedPartitionThresholdInBytes 128m</span><br><span class="line">spark.sql.adaptive.skewJoin.skewedPartitionFactor 5  （判断倾斜的条件：分区大小大于所有分区大小中位数的5倍，且大于spark.sql.adaptive.skewJoin.skewedPartitionThresholdInBytes的值）</span><br></pre></td></tr></table></figure>
-<p>将 CDH 集群的 <a href="http://spark-env.sh" target="_blank" rel="noopener">spark-env.sh</a> 复制到 /opt/cloudera/parcels/CDH/lib/spark3/conf 下:</p>
+          <h3 id="ocp升级">ocp升级</h3>
+<p>要在obd服务器上操作：</p>
+<ol>
+<li>
+<p>登录 OBD 宿主机。</p>
+</li>
+<li>
+<p>执行如下命令，使环境变量生效。</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;obbusiness-private.oss-cn-shanghai.aliyuncs.com&#x2F;download-center&#x2F;opensource&#x2F;oceanbase-all-in-one&#x2F;7&#x2F;x86_64&#x2F;oceanbase-all-in-one-4.3.3.1_20241023.el7.x86_64.tar.gz</span><br><span class="line"></span><br><span class="line">tar -xzvf oceanbase-all-in-one-4.3.3.1_20241023.el7.x86_64.tar.gz</span><br><span class="line"></span><br><span class="line">cd oceanbase-all-in-one&#x2F;bin &amp;&amp; bash install.sh</span><br><span class="line"></span><br><span class="line">source ~&#x2F;.oceanbase-all-in-one&#x2F;bin&#x2F;env.sh</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>执行 <code>obd web upgrade</code> ，在返回信息中获取升级向导页面的 IP 地址。   （升级的地址不一定是ocp-server的地址）</li>
+</ol>
+<p>数据库升级软件包目录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;home&#x2F;root&#x2F;software&#x2F;sys-package</span><br></pre></td></tr></table></figure>
+
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/04/03/CDH6.3.2%20%E5%8D%87%E7%BA%A7%20Spark3.3.0%20%E7%89%88%E6%9C%AC/#more" rel="contents">
+              <a class="btn" href="/2024/11/13/ocp%E5%8D%87%E7%BA%A7/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -357,7 +359,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/04/02/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%B1%87%E6%80%BB/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/10/18/%E7%88%B1%E5%8F%AF%E7%94%9F%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0%E6%B5%8B%E8%AF%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -371,7 +373,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2024/04/02/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%B1%87%E6%80%BB/" class="post-title-link" itemprop="url">大数据平台常见异常处理汇总</a>
+            <a href="/2024/10/18/%E7%88%B1%E5%8F%AF%E7%94%9F%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">爱可生数据管理平台测试</a>
         </h1>
 
         <div class="post-meta">
@@ -381,7 +383,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-04-02 13:51:47" itemprop="dateCreated datePublished" datetime="2024-04-02T13:51:47+08:00">2024-04-02</time>
+              <time title="创建时间：2024-10-18 15:24:48" itemprop="dateCreated datePublished" datetime="2024-10-18T15:24:48+08:00">2024-10-18</time>
             </span>
 
           
@@ -395,19 +397,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>HiveMetaStore状态不良导DDLSQL耗时200s以上</p>
-<p>HMS进程报错：hive metastore server Failed to sync requested HMS notifications up to the event ID xxx</p>
-<p>原因分析：查看sentry异常CounterWait源码发现传递的id比currentid大导致一直等待超时，超时时间默认为200s（<a href="http://sentry.notification.sync.timeout.ms" target="_blank" rel="noopener">sentry.notification.sync.timeout.ms</a>）。 开启了hdfs-sentry acl同步后，hdfs，sentry，HMS三者间权限同步的消息处理。当突然大批量的目录权限消息需要处理，后台线程处理不过来，消息积压滞后就会出现这个异常。这个异常不影响集群使用，只是会导致create，drop table慢需要等200s，这样等待也是为了追上最新的id。我们这次同时出现了HMS参与同步消息处理的线程被异常退出，导致sentry的sentry_hms_notification_id表数据一直没更新，需要重启HMS。如果积压了太多消息，让它慢慢消费处理需要的时间太长，可能一直追不上，这时可以选择丢掉这些消息。</p>
-<p>解决：</p>
-<p>①可以通过设置sentry.notification.sync.timeout.ms参数调小超时时间，减小等待时间，积压不多的话可以让它自行消费处理掉。</p>
-<p>②丢掉未处理的消息，在sentry的sentry_hms_notification_id表中插入一条最大值(等于当前消息的id，从notification_sequence表中获取) ，重启sentry服务。（notification_log 表存储了消息日志信息）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT * from  NOTIFICATION_SEQUENCE</span><br><span class="line">insert into SENTRY_HMS_NOTIFICATION_ID VALUES (14094172);</span><br></pre></td></tr></table></figure>
-<p>Hive开启自动获取表上次访问时间(lastAccessTime)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;hive.security.authorization.sqlstd.confwhitelist.append&lt;&#x2F;name&gt;</span><br><span class="line">   &lt;value&gt;hive\.exec\.pre\.hooks&lt;&#x2F;value&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;hive.exec.pre.hooks&lt;&#x2F;name&gt;</span><br><span class="line">  &lt;value&gt;org.apache.hadoop.hive.ql.hooks.UpdateInputAccessTimeHook$PreExec&lt;&#x2F;value&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="Spark">Spark</h2>
+          <p>yum install -y sudo vi less which wget net-tools fontconfig libaio hwloc libpciaccess lsof perl-Data-Dumper perl lz4 libunwind libev zstd</p>
+<p>把包上传到10.0.19.151  上然后执行  tar -zxvf dmpother.tar.gz -C /data/umc/components/  就可以了</p>
+<p>/opt/mysql/base/5.7.25/bin/mysql -uroot -p -P3306 -h10.0.19.151 #mysql-jfdfh6 #10.0.19.151:3306 #mysql-g001</p>
+<p>mysql-g003<br>
+caZgcDQG-85lJS=@</p>
+<p>mysql-g002<br>
+vjE$v-+h2PJq4OCe</p>
+<p>mysql-g001<br>
+_qx%Xc$$+X-934$*</p>
+<p>mysql-g004</p>
+<p>HiqxgHl0ho@#_=Xw</p>
+<p><a href="https://www.cnblogs.com/f-ck-need-u/p/9279703.html" target="_blank" rel="noopener">https://www.cnblogs.com/f-ck-need-u/p/9279703.html</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">sysbench --mysql-host&#x3D;10.0.19.47 \</span><br><span class="line">         --mysql-port&#x3D;3306 \</span><br><span class="line">         --mysql-user&#x3D;yangze \</span><br><span class="line">         --mysql-password&#x3D;yangze \</span><br><span class="line">         &#x2F;usr&#x2F;share&#x2F;sysbench&#x2F;oltp_common.lua \</span><br><span class="line">         --tables&#x3D;2 \</span><br><span class="line">         --table_size&#x3D;50000000 \</span><br><span class="line">         prepare</span><br><span class="line">         </span><br><span class="line">sysbench --mysql-host&#x3D;10.0.19.47 \</span><br><span class="line">         --mysql-port&#x3D;3306 \</span><br><span class="line">         --mysql-user&#x3D;yangze \</span><br><span class="line">         --mysql-password&#x3D;yangze \</span><br><span class="line">         &#x2F;usr&#x2F;share&#x2F;sysbench&#x2F;oltp_common.lua \</span><br><span class="line">         --tables&#x3D;2 \</span><br><span class="line">         cleanup</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/04/02/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%B1%87%E6%80%BB/#more" rel="contents">
+              <a class="btn" href="/2024/10/18/%E7%88%B1%E5%8F%AF%E7%94%9F%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0%E6%B5%8B%E8%AF%95/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -431,7 +436,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/03/26/%E4%BB%8E%20TiDB%20%E9%9B%86%E7%BE%A4%E8%BF%81%E7%A7%BB%E6%95%B0%E6%8D%AE%E8%87%B3%E5%8F%A6%E4%B8%80%20TiDB%20%E9%9B%86%E7%BE%A4/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/08/28/Yarn%20ResourceManager%20HA%20%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -445,7 +450,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2024/03/26/%E4%BB%8E%20TiDB%20%E9%9B%86%E7%BE%A4%E8%BF%81%E7%A7%BB%E6%95%B0%E6%8D%AE%E8%87%B3%E5%8F%A6%E4%B8%80%20TiDB%20%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">从 TiDB 集群迁移数据至另一 TiDB 集群</a>
+            <a href="/2024/08/28/Yarn%20ResourceManager%20HA%20%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/" class="post-title-link" itemprop="url">Yarn ResourceManager HA 故障转移问题定位</a>
         </h1>
 
         <div class="post-meta">
@@ -455,7 +460,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-03-26 17:10:10" itemprop="dateCreated datePublished" datetime="2024-03-26T17:10:10+08:00">2024-03-26</time>
+              <time title="创建时间：2024-08-28 18:27:35" itemprop="dateCreated datePublished" datetime="2024-08-28T18:27:35+08:00">2024-08-28</time>
             </span>
 
           
@@ -469,19 +474,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="迁移全量数据">迁移全量数据</h2>
-<p>关闭 GC。</p>
-<p>为了保证增量迁移过程中新写入的数据不丢失，在开始备份之前，需要关闭上游集群的垃圾回收 (GC) 机制，以确保系统不再清理历史数据。</p>
-<p>执行如下命令关闭 GC：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; SET GLOBAL tidb_gc_enable=FALSE;</span><br></pre></td></tr></table></figure>
-<p>备份数据。</p>
-<p>在上游集群中执行 BACKUP 语句备份数据：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MySQL [(none)]&gt; BACKUP DATABASE * TO 's3://backup?access-key=minio&amp;secret-access-key=miniostorage&amp;endpoint=http://$&#123;HOST_IP&#125;:6060&amp;force-path-style=true' RATE_LIMIT = 120 MB/SECOND;</span><br></pre></td></tr></table></figure>
-<p>备份语句提交成功后，TiDB 会返回关于备份数据的元信息，这里需要重点关注 BackupTS，它意味着该时间点之前数据会被备份，后边的教程中，将使用 BackupTS 作为<strong>数据校验截止时间</strong>和 <strong>TiCDC 增量扫描的开始时间</strong>。</p>
-<p>恢复数据。</p>
+          <h1>Yarn ResourceManager HA 故障转移问题定位</h1>
+<p>用户无法在yarn集群上提交任务</p>
+<p><strong>解决方案:</strong></p>
+<p>关闭所有的ResourceManager进程</p>
+<p>通过zk客户端查看</p>
+<p>sh /opt/cloudera/parcels/CDH/lib/zookeeper/bin/zkCli.sh</p>
+<p>ls /rmstore/ZKRMStateRoot/RMAppRoot 目录下</p>
+<p>不为空则使用该命令 rmr  /rmstore/ZKRMStateRoot/RMAppRoot 删除目录文件</p>
+<p>删除完再启动ResourceManager恢复正常<br>
+此种方式是将ZK中需要RM恢复的任务清空实现的，即RM不恢复正在运行的任务，会导致集群正在运行的任务停止</p>
+<p>原文链接：<a href="https://blog.csdn.net/anguoan/article/details/128613672" target="_blank" rel="noopener">https://blog.csdn.net/anguoan/article/details/128613672</a></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/03/26/%E4%BB%8E%20TiDB%20%E9%9B%86%E7%BE%A4%E8%BF%81%E7%A7%BB%E6%95%B0%E6%8D%AE%E8%87%B3%E5%8F%A6%E4%B8%80%20TiDB%20%E9%9B%86%E7%BE%A4/#more" rel="contents">
+              <a class="btn" href="/2024/08/28/Yarn%20ResourceManager%20HA%20%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -505,7 +511,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/03/26/tidb%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/08/28/%E7%94%A8%E6%88%B7%E6%97%A0%E6%B3%95%E5%9C%A8yarn%E9%9B%86%E7%BE%A4%E4%B8%8A%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -519,7 +525,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2024/03/26/tidb%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">tidb常用操作</a>
+            <a href="/2024/08/28/%E7%94%A8%E6%88%B7%E6%97%A0%E6%B3%95%E5%9C%A8yarn%E9%9B%86%E7%BE%A4%E4%B8%8A%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1/" class="post-title-link" itemprop="url">用户无法在yarn集群上提交任务</a>
         </h1>
 
         <div class="post-meta">
@@ -529,7 +535,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-03-26 16:33:46" itemprop="dateCreated datePublished" datetime="2024-03-26T16:33:46+08:00">2024-03-26</time>
+              <time title="创建时间：2024-08-28 18:26:08" itemprop="dateCreated datePublished" datetime="2024-08-28T18:26:08+08:00">2024-08-28</time>
             </span>
 
           
@@ -543,20 +549,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>tidb常用操作</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">tiup cluster deploy tidb-test-v1 v6.5.2 ./topology.yaml --user root -p</span><br><span class="line">tiup cluster list</span><br><span class="line">tiup cluster clean tidb-test-v1 --all</span><br><span class="line"><span class="meta">#</span><span class="bash"> tiup cluster destroy tidb-test-v1</span></span><br><span class="line">tiup cluster start tidb-test-v1 --init</span><br><span class="line">tiup cluster display tidb-prod</span><br><span class="line">tiup cluster stop tidb-test-v1</span><br><span class="line">tiup cluster restart tidb-test-v1 </span><br><span class="line">tiup cluster edit-config tidb-test-v1 </span><br><span class="line">tiup cluster check tidb-test-v1 scale-out.yml --cluster --user root -p</span><br><span class="line">tiup cluster check tidb-test-v1 scale-out.yml --cluster --apply --user root -p</span><br><span class="line">tiup cluster scale-out tidb-test-v1 scale-out.yml --user root -p</span><br><span class="line">tiup ctl:v6.5.2 pd -u http://172.20.192.70:2379 store limit all engine tiflash 200 add-peer</span><br><span class="line">-- 如果你使用 TiUP 部署，可以用 tiup ctl:v&lt;CLUSTER_VERSION&gt; pd 代替 pd-ctl -u &lt;pd_ip:pd_port&gt; 命令。</span><br><span class="line">tiup ctl:v6.5.2 pd store</span><br><span class="line">tiup ctl:v6.5.2 pd -u http://172.20.192.70:2379 store limit store id 8487838  220 add-peer</span><br><span class="line">tiup ctl:v6.5.2 pd -i -u http://172.20.192.70:2379</span><br><span class="line">tiup cluster restart tidb-test-v1 -N 172.20.192.74:9090</span><br><span class="line">tiup cluster reload tidb-test-v1</span><br><span class="line">tiup install bench</span><br><span class="line">tiup diag config clinic.token eyJrIjoicFpJaDJ1a042ZjQ0a2E2NyIsInUiOjYwMywiaWQiOjU3Nn0=</span><br><span class="line">tiup diag collect tidb-test-v1</span><br></pre></td></tr></table></figure>
-<h3 id="备份与恢复">备份与恢复</h3>
-<p>如果是 BR 备份，还原之后是同名的；<br>
-dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复到的数据库。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mycli -h172.20.192.70 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">BACKUP DATABASE test TO &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39; RATE_LIMIT &#x3D; 120 MB&#x2F;SECOND;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mycli -h172.20.192.115 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">mysql&gt; RESTORE DATABASE test FROM &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39;;</span><br></pre></td></tr></table></figure>
-<h4 id="不停机升级">不停机升级</h4>
-<p>tiup cluster upgrade tidb-prod v6.5.3</p>
-<p>重启grafana</p>
-<p>tiup cluster restart tidb-prod -R grafana</p>
-<h2 id="备份">备份</h2>
+          <h1>Yarn ResourceManager HA 故障转移问题定位</h1>
+<p>用户无法在yarn集群上提交任务</p>
+<p><strong>解决方案:</strong></p>
+<p>关闭所有的ResourceManager进程</p>
+<p>通过zk客户端查看</p>
+<p>sh /opt/cloudera/parcels/CDH/lib/zookeeper/bin/zkCli.sh</p>
+<p>ls /rmstore/ZKRMStateRoot/RMAppRoot 目录下</p>
+<p>不为空则使用该命令 rmr  /rmstore/ZKRMStateRoot/RMAppRoot 删除目录文件</p>
+<p>删除完再启动ResourceManager恢复正常<br>
+此种方式是将ZK中需要RM恢复的任务清空实现的，即RM不恢复正在运行的任务，会导致集群正在运行的任务停止</p>
+<p>原文链接：<a href="https://blog.csdn.net/anguoan/article/details/128613672" target="_blank" rel="noopener">https://blog.csdn.net/anguoan/article/details/128613672</a></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/03/26/tidb%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/#more" rel="contents">
+              <a class="btn" href="/2024/08/28/%E7%94%A8%E6%88%B7%E6%97%A0%E6%B3%95%E5%9C%A8yarn%E9%9B%86%E7%BE%A4%E4%B8%8A%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -580,7 +586,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/03/20/k8s-1.23.17%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/08/19/SR%E6%97%A5%E5%B8%B8%E8%BF%90%E7%BB%B4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -594,7 +600,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2024/03/20/k8s-1.23.17%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85/" class="post-title-link" itemprop="url">k8s-1.23.17离线安装</a>
+            <a href="/2024/08/19/SR%E6%97%A5%E5%B8%B8%E8%BF%90%E7%BB%B4/" class="post-title-link" itemprop="url">SR日常运维</a>
         </h1>
 
         <div class="post-meta">
@@ -604,7 +610,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-03-20 14:24:14" itemprop="dateCreated datePublished" datetime="2024-03-20T14:24:14+08:00">2024-03-20</time>
+              <time title="创建时间：2024-08-19 18:22:18" itemprop="dateCreated datePublished" datetime="2024-08-19T18:22:18+08:00">2024-08-19</time>
             </span>
 
           
@@ -618,19 +624,36 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><strong>k8s-1.23.17离线安装</strong></p>
-<h1>环境设置centos-7.9</h1>
-<p>init_env.sh</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">sudo modprobe br_netfilter</span><br><span class="line">lsmod | grep br_netfilter</span><br><span class="line"></span><br><span class="line">cat&lt;&lt;EOF&gt; &#x2F;etc&#x2F;sysctl.d&#x2F;k8s.conf</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables &#x3D; 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables  &#x3D; 1</span><br><span class="line">net.ipv4.ip_forward                 &#x3D; 1</span><br><span class="line">EOF</span><br><span class="line">sysctl --system</span><br><span class="line">systemctl stop firewalld</span><br><span class="line">systemctl disable firewalld.service</span><br><span class="line"></span><br><span class="line">sed -i &#39;$acloudeon  ALL&#x3D;(ALL)  NOPASSWD: NOPASSWD: ALL&#39; &#x2F;etc&#x2F;sudoers</span><br><span class="line"></span><br><span class="line">swapoff -a</span><br><span class="line">sed -i &#39;s&#x2F;.*swap.*&#x2F;#&amp;&#x2F;&#39; &#x2F;etc&#x2F;fstab</span><br></pre></td></tr></table></figure>
-<h1>安装docker</h1>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">tar -xvf rpm_docker_20.10.24.tar</span><br><span class="line">yum localinstall docker&#x2F;* -y</span><br><span class="line">systemctl start docker</span><br><span class="line">sudo cat &gt; &#x2F;etc&#x2F;docker&#x2F;daemon.json &lt;&lt;EOF</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [</span><br><span class="line">     &quot;https:&#x2F;&#x2F;5il73zj3.mirror.aliyuncs.com&quot;,</span><br><span class="line">     &quot;https:&#x2F;&#x2F;docker.mirrors.ustc.edu.cn&quot;,</span><br><span class="line">     &quot;https:&#x2F;&#x2F;registry.docker-cn.com&quot;</span><br><span class="line">  ],</span><br><span class="line">  &quot;insecure-registries&quot;: [&quot;dockerhub.baofu.com&quot;],</span><br><span class="line">  &quot;exec-opts&quot;: [&quot;native.cgroupdriver&#x3D;systemd&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br><span class="line">systemctl enable docker.service</span><br><span class="line">systemctl status docker</span><br><span class="line">docker -v</span><br><span class="line">docker info|grep &quot;Cgroup Driver&quot;</span><br><span class="line">docker load &lt; images_k8s_core_1.23.17.tar</span><br><span class="line">docker load &lt; images_k8s_cni_flannel_0.15.0.tar</span><br><span class="line">docker load &lt; images_k8s_dashboard_v2.5.1.tar</span><br></pre></td></tr></table></figure>
-<h1>安装k8s</h1>
-<h2 id="主节点">主节点</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">tar -xvf rpm_k8s_1.23.17.tar</span><br><span class="line">yum localinstall k8s&#x2F;* -y</span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl start kubelet</span><br><span class="line">systemctl enable kubelet</span><br><span class="line">kubeadm init \</span><br><span class="line">--image-repository&#x3D;registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers \</span><br><span class="line">--kubernetes-version&#x3D;v1.23.17 \</span><br><span class="line">--pod-network-cidr&#x3D;10.244.0.0&#x2F;16</span><br><span class="line">mkdir -p $HOME&#x2F;.kube</span><br><span class="line">cp -i &#x2F;etc&#x2F;kubernetes&#x2F;admin.conf $HOME&#x2F;.kube&#x2F;config</span><br><span class="line">chown $(id -u):$(id -g) $HOME&#x2F;.kube&#x2F;config</span><br><span class="line">kubectl apply -f kube-flannel.yml</span><br></pre></td></tr></table></figure>
-<h2 id="工作节点">工作节点</h2>
+          <h2 id="1-发生-“close-index-channel-failed”-和-“too-many-tablet-versions”-错误应该如何处理？">1. 发生 “close index channel failed” 和 “too many tablet versions” 错误应该如何处理？</h2>
+<p>上述报错是因为导入频率太快，数据没能及时合并 (Compaction) ，从而导致版本数超过支持的最大未合并版本数。默认支持的最大未合并版本数为 1000。可以通过如下方法解决上述报错：</p>
+<ul>
+<li>
+<p>增大单次导入的数据量，降低导入频率。</p>
+</li>
+<li>
+<p>修改 BE 配置文件 <strong>be.conf</strong> 中相关参数的配置，以加快 Compaction：</p>
+<ul>
+<li>
+<p>对于明细表、聚合表和更新表，可以适当调大 <code>cumulative_compaction_num_threads_per_disk</code>、<code>base_compaction_num_threads_per_disk</code> 和 <code>cumulative_compaction_check_interval_seconds</code> 的值。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cumulative_compaction_num_threads_per_disk &#x3D; 4</span><br><span class="line">base_compaction_num_threads_per_disk &#x3D; 2</span><br><span class="line">cumulative_compaction_check_interval_seconds &#x3D; 2</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>对于主键表，可以适当调大 <code>update_compaction_num_threads_per_disk</code> 的值。适当调小 <code>update_compaction_per_tablet_min_interval_seconds</code> 的值。</p>
+</li>
+</ul>
+<p>修改完成后，需要观察内存和 I/O，确保内存和 I/O 正常。</p>
+</li>
+</ul>
+<p>curl -XPOST <a href="http://172.20.85.188:8040/api/update_config?tablet_max_versions=10000" target="_blank" rel="noopener">http://172.20.85.188:8040/api/update_config?tablet_max_versions=10000</a></p>
+<p>动态修改分桶是生效的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE BAOFOO_CM_V2.cm_entry_asy_ma SET (&quot;dynamic_partition.buckets&quot; &#x3D; &quot;9&quot;)</span><br></pre></td></tr></table></figure>
+<p>动态修改分区周期是生效的，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE test_db.&#96;yq_protocol_payment_order2&#96; SET (&quot;dynamic_partition.time_unit&quot; &#x3D; &quot;month&quot;);</span><br><span class="line"></span><br><span class="line">ALTER TABLE test_db.&#96;yq_protocol_payment_order2&#96; SET (&quot;dynamic_partition.enable&quot; &#x3D; &quot;false&quot;);</span><br><span class="line">ALTER TABLE test_db.&#96;yq_protocol_payment_order2&#96; ADD PARTITIONS START (&quot;2022-01-10&quot;) END (&quot;2025-01-01&quot;) EVERY (interval 1 month);</span><br><span class="line">ALTER TABLE test_db.&#96;yq_protocol_payment_order2&#96; SET (&quot;dynamic_partition.enable&quot; &#x3D; &quot;true&quot;);</span><br></pre></td></tr></table></figure>
+<p>START (“2022-01-10”) END (“2025-01-01”) EVERY (interval 1 month)  这种方式添加分区要<strong>注意周期的结束时间</strong></p>
+<p><strong>但是要注意结束的周期， 必须手动补全缺失的分区</strong></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/03/20/k8s-1.23.17%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85/#more" rel="contents">
+              <a class="btn" href="/2024/08/19/SR%E6%97%A5%E5%B8%B8%E8%BF%90%E7%BB%B4/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -654,7 +677,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/03/20/%E5%AE%89%E8%A3%85%20K8s%20%E9%9B%86%E7%BE%A4/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/08/19/starRocks%E5%89%AF%E6%9C%AC%E6%95%B0%E4%BF%AE%E6%94%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -668,7 +691,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2024/03/20/%E5%AE%89%E8%A3%85%20K8s%20%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">安装 K8s 集群</a>
+            <a href="/2024/08/19/starRocks%E5%89%AF%E6%9C%AC%E6%95%B0%E4%BF%AE%E6%94%B9/" class="post-title-link" itemprop="url">starRocks副本数修改</a>
         </h1>
 
         <div class="post-meta">
@@ -678,7 +701,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-03-20 08:59:54" itemprop="dateCreated datePublished" datetime="2024-03-20T08:59:54+08:00">2024-03-20</time>
+              <time title="创建时间：2024-08-19 17:59:25" itemprop="dateCreated datePublished" datetime="2024-08-19T17:59:25+08:00">2024-08-19</time>
             </span>
 
           
@@ -692,12 +715,19 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>安装 K8s 集群</h1>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#注意系统内核升级到5.4 及以上。</span><br><span class="line"></span><br><span class="line">rpm --import https:&#x2F;&#x2F;www.elrepo.org&#x2F;RPM-GPG-KEY-elrepo.org</span><br><span class="line">yum install https:&#x2F;&#x2F;www.elrepo.org&#x2F;elrepo-release-7.el7.elrepo.noarch.rpm</span><br><span class="line">yum --enablerepo&#x3D;elrepo-kernel install kernel-ml</span><br><span class="line">grub2-set-default 0</span><br><span class="line">reboot</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">VERSION&#x3D;&#96;curl -s https:&#x2F;&#x2F;api.github.com&#x2F;repos&#x2F;labring&#x2F;sealos&#x2F;releases&#x2F;latest | grep -oE &#39;&quot;tag_name&quot;: &quot;[^&quot;]+&quot;&#39; | head -n1 | cut -d&#39;&quot;&#39; -f4&#96;</span><br><span class="line"></span><br><span class="line">wget https:&#x2F;&#x2F;mirror.ghproxy.com&#x2F;https:&#x2F;&#x2F;github.com&#x2F;labring&#x2F;sealos&#x2F;releases&#x2F;download&#x2F;$&#123;VERSION&#125;&#x2F;sealos_$&#123;VERSION#v&#125;_linux_amd64.tar.gz \</span><br><span class="line">  &amp;&amp; tar zxvf sealos_$&#123;VERSION#v&#125;_linux_amd64.tar.gz sealos &amp;&amp; chmod +x sealos &amp;&amp; mv sealos &#x2F;usr&#x2F;bin</span><br><span class="line"></span><br><span class="line">#注意 master的cpu数量要大于1</span><br><span class="line">sealos run registry.cn-shanghai.aliyuncs.com&#x2F;labring&#x2F;kubernetes:v1.27.7 registry.cn-shanghai.aliyuncs.com&#x2F;labring&#x2F;helm:v3.9.4 registry.cn-shanghai.aliyuncs.com&#x2F;labring&#x2F;cilium:v1.13.4 \</span><br><span class="line">     --masters 10.6.59.131,10.6.59.132,10.6.59.133 \</span><br><span class="line">     --nodes 10.6.59.134,10.6.59.135 -p &quot;2haolou@64&quot;</span><br><span class="line">	 </span><br><span class="line">#要求hostname每个节点不一样	 </span><br><span class="line">hostnamectl set-hostname node1	 </span><br><span class="line"></span><br><span class="line">#重置集群</span><br><span class="line">sealos reset</span><br></pre></td></tr></table></figure>
-
+          <p>前面提到过，我们可以为分区设置单独的存储策略，比如增加分区时使用新的副本数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE starrocks.table07</span><br><span class="line">ADD PARTITION p20210313 VALUES LESS THAN (&quot;2021-03-14&quot;)</span><br><span class="line">(&quot;replication_num&quot;&#x3D;&quot;1&quot;);</span><br></pre></td></tr></table></figure>
+<p>修改分区副本数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE starrocks.table07</span><br><span class="line">MODIFY PARTITION p20210313 SET(&quot;replication_num&quot;&#x3D;&quot;2&quot;);</span><br></pre></td></tr></table></figure>
+<p>修改表的默认副本数量，新建分区副本数量默认使用此值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE starrocks.table07</span><br><span class="line">SET (&quot;default.replication_num&quot; &#x3D; &quot;2&quot;);</span><br></pre></td></tr></table></figure>
+<p>修改单分区表的实际副本数量（只限单分区表）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE starrocks.table06</span><br><span class="line">SET (&quot;replication_num&quot; &#x3D; &quot;1&quot;);</span><br></pre></td></tr></table></figure>
+<p>修改表所有分区的副本数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE starrocks.table01</span><br><span class="line">MODIFY PARTITION(*)</span><br><span class="line">SET (&quot;replication_num&quot; &#x3D; &quot;3&quot;);</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/03/20/%E5%AE%89%E8%A3%85%20K8s%20%E9%9B%86%E7%BE%A4/#more" rel="contents">
+              <a class="btn" href="/2024/08/19/starRocks%E5%89%AF%E6%9C%AC%E6%95%B0%E4%BF%AE%E6%94%B9/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -721,7 +751,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/03/19/k8s%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E8%AF%A6%E7%BB%86%E7%89%88/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/08/08/CDH%205.13%E5%8D%87%E7%BA%A7%E5%88%B05.16/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -735,7 +765,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2024/03/19/k8s%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E8%AF%A6%E7%BB%86%E7%89%88/" class="post-title-link" itemprop="url">k8s高可用集群搭建-详细版</a>
+            <a href="/2024/08/08/CDH%205.13%E5%8D%87%E7%BA%A7%E5%88%B05.16/" class="post-title-link" itemprop="url">CDH 5.13升级到5.16</a>
         </h1>
 
         <div class="post-meta">
@@ -745,7 +775,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-03-19 15:45:35" itemprop="dateCreated datePublished" datetime="2024-03-19T15:45:35+08:00">2024-03-19</time>
+              <time title="创建时间：2024-08-08 14:26:16" itemprop="dateCreated datePublished" datetime="2024-08-08T14:26:16+08:00">2024-08-08</time>
             </span>
 
           
@@ -759,19 +789,23 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><strong>k8s高可用集群搭建-详细版</strong></p>
-<h1>环境</h1>
-<p>系统: CenterOS 7.9</p>
-<p>docker: 20.10.24</p>
-<p>k8s: 1.23.17</p>
-<h1>目标</h1>
-<p>3个master节点、LoadBalancer、一个work节点</p>
-<p>172.23.80.241 master1</p>
-<p>172.23.80.242 master2</p>
-<p>172.23.80.243 master3</p>
+          <h1>CDH 5.13升级到5.16</h1>
+<p>本篇章节主要介绍如何从CDH 5.13升级到5.16版本，此步骤也可以借鉴用来作其他CDH版本升级的指导。</p>
+<p>首先，准备CDH 5.16的安装包，包括CM 5.16的rpm包，及CDH 5.16的parcel包。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;parcel包</span><br><span class="line">-rw-r--r-- 1 root root 2132782197 Oct 14 16:01 CDH-5.16.2-1.cdh5.16.2.p0.8-el7.parcel </span><br><span class="line">-rw-r--r-- 1 root root         41 Oct 14 16:01 CDH-5.16.2-1.cdh5.16.2.p0.8-el7.parcel.sha </span><br><span class="line">&#x2F;&#x2F;CM安装包</span><br><span class="line">cloudera-manager-agent-5.16.2-1.cm5162.p0.7.el7.x86_64.rpm     </span><br><span class="line">cloudera-manager-server-5.16.2-1.cm5162.p0.7.el7.x86_64.rpm       </span><br><span class="line">cloudera-manager-daemons-5.16.2-1.cm5162.p0.7.el7.x86_64.rpm   </span><br><span class="line">cloudera-manager-server-db-2-5.16.2-1.cm5162.p0.7.el7.x86_64.rpm  repodata</span><br></pre></td></tr></table></figure>
+<p>配置临时http服务及本地yum源<br>
+进入到cm rpm安装包所在的目录，执行命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install -y createrepo</span><br><span class="line">createrepo .</span><br><span class="line">python -m SimpleHTTPServer 8900 &amp;</span><br></pre></td></tr></table></figure>
+<p>，启动http服务监听，端口为8900<br>
+配置本地yum源，添加cm_local.repo文件到/etc/yum.repos.d/目录下，内容如下，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[cm_local] </span><br><span class="line">name&#x3D;cm_local </span><br><span class="line">baseurl&#x3D;http:&#x2F;&#x2F;192.168.81.50:8900&#x2F; </span><br><span class="line">enabled&#x3D;1 </span><br><span class="line">gpgcheck&#x3D;0</span><br></pre></td></tr></table></figure>
+<p>将此文件复制到集群每个节点</p>
+<p>停止所有节点的Hadoop服务及cm server及cm agent服务<br>
+从7180网页中停止Hadoop集群服务<br>
+使用以下命令停止cm server及agent服务</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/03/19/k8s%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E8%AF%A6%E7%BB%86%E7%89%88/#more" rel="contents">
+              <a class="btn" href="/2024/08/08/CDH%205.13%E5%8D%87%E7%BA%A7%E5%88%B05.16/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -795,7 +829,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/02/27/%E6%8C%82%E8%BD%BD%E8%99%9A%E6%8B%9FIP/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/07/29/starRocks%E9%83%A8%E7%BD%B2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -809,7 +843,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2024/02/27/%E6%8C%82%E8%BD%BD%E8%99%9A%E6%8B%9FIP/" class="post-title-link" itemprop="url">挂载虚拟IP</a>
+            <a href="/2024/07/29/starRocks%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">starRocks部署</a>
         </h1>
 
         <div class="post-meta">
@@ -819,7 +853,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-02-27 11:00:23" itemprop="dateCreated datePublished" datetime="2024-02-27T11:00:23+08:00">2024-02-27</time>
+              <time title="创建时间：2024-07-29 16:25:58" itemprop="dateCreated datePublished" datetime="2024-07-29T16:25:58+08:00">2024-07-29</time>
             </span>
 
           
@@ -833,16 +867,24 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>在200-223上关闭VIP：<br>
-/sbin/ifconfig bond0:1 192.168.192.1 netmask 255.255.255.0 down</p>
-<p>在200-223上启动VIP：<br>
-/sbin/ifconfig bond0:1 192.168.192.1 netmask 255.255.255.0 up</p>
-<p>/sbin/arping  -c 5 -U -I bond0 192.168.192.1 &gt;/dev/null 2&gt;&amp;1</p>
-<p>bond0:1  这是个别名</p>
-
+          <p>[clickhouse]<br>
+172.20.85.[111:113]<br>
+172.20.85.[138:142]</p>
+<p>[fe]<br>
+172.20.85.[111:113]</p>
+<p>[be]<br>
+172.20.85.[138:142]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible clickhouse -m copy -a &quot;src&#x3D;&#x2F;root&#x2F;.bashrc dest&#x3D;&#x2F;root&#x2F;.bashrc &quot;</span><br><span class="line">ansible clickhouse -m shell -a &quot;java -version  &quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ansible clickhouse -m shell -a <span class="string">"yum install -y rsync  "</span></span><br><span class="line">ansible clickhouse  -m synchronize  -a <span class="string">"src=/opt/module/StarRocks dest=/opt/module/"</span>  </span><br><span class="line">ansible clickhouse -m shell -a <span class="string">" ls /opt/module/StarRocks "</span></span><br></pre></td></tr></table></figure>
+<h2 id="fe部署">fe部署</h2>
+<p>第一次启动需指定–helper参数，后续再启动无需指定此参数<br>
+sh /opt/module/StarRocks/fe/bin/start_fe.sh --helper 172.20.85.111:9010 --daemon</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;fe&#x2F;bin&#x2F;stop_fe.sh &quot;</span><br><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;fe&#x2F;bin&#x2F;start_fe.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mysql -h 127.0.0.1 -P9030 -uroot -p</span><br><span class="line">mysql&gt; SHOW PROC '/frontends'\G</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"172.20.85.112:9010"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"172.20.85.142:9010"</span>;</span><br><span class="line"><span class="comment"># ALTER SYSTEM DROP FOLLOWER "172.20.85.142:9010";</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> OBSERVER <span class="string">"172.20.85.113:9010"</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="be-部署">be 部署</h2>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/02/27/%E6%8C%82%E8%BD%BD%E8%99%9A%E6%8B%9FIP/#more" rel="contents">
+              <a class="btn" href="/2024/07/29/starRocks%E9%83%A8%E7%BD%B2/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -866,7 +908,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/02/01/%E4%BD%BF%E7%94%A8%20Kubekey%E4%B8%80%E9%94%AE%20%E7%A6%BB%E7%BA%BF%20%E5%9C%A8%E7%BA%BF%20%E9%83%A8%E7%BD%B2%20kubernetes%20%E9%9B%86%E7%BE%A4/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/07/05/%E5%9C%A8vim%E4%BF%9D%E5%AD%98%E6%97%B6%E8%8E%B7%E5%BE%97sudo%E6%9D%83%E9%99%90/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -880,7 +922,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2024/02/01/%E4%BD%BF%E7%94%A8%20Kubekey%E4%B8%80%E9%94%AE%20%E7%A6%BB%E7%BA%BF%20%E5%9C%A8%E7%BA%BF%20%E9%83%A8%E7%BD%B2%20kubernetes%20%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">使用 Kubekey一键 离线 在线 部署 kubernetes 集群</a>
+            <a href="/2024/07/05/%E5%9C%A8vim%E4%BF%9D%E5%AD%98%E6%97%B6%E8%8E%B7%E5%BE%97sudo%E6%9D%83%E9%99%90/" class="post-title-link" itemprop="url">在vim保存时获得sudo权限</a>
         </h1>
 
         <div class="post-meta">
@@ -890,7 +932,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-02-01 17:47:21" itemprop="dateCreated datePublished" datetime="2024-02-01T17:47:21+08:00">2024-02-01</time>
+              <time title="创建时间：2024-07-05 16:16:05" itemprop="dateCreated datePublished" datetime="2024-07-05T16:16:05+08:00">2024-07-05</time>
             </span>
 
           
@@ -904,15 +946,19 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>使用 Kubekey 一键 离线/在线 部署 kubernetes 集群</h1>
-<p>在线部署：</p>
-<p>创建配置文件</p>
-<p>./kk create config --with-kubesphere</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">./kk  init os -f ./config-sample.yaml  <span class="comment"># 初始化集群机器，此操作会安装系统依赖，开启lpvs模块等。前提是确保对应node的网络通畅。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 选择中文区下载(访问 GitHub 受限时使用)</span></span><br><span class="line"><span class="built_in">export</span> KKZONE=cn</span><br><span class="line"></span><br><span class="line">./kk  create cluster -f ./config-sample.yaml  <span class="comment"># 创建集群</span></span><br></pre></td></tr></table></figure>
+          <h1>在vim保存时获得sudo权限</h1>
+<p>在维护线上服务的时候，经常要编辑一些不属于操作用户的文件，就是只有r权限的那种，每次保存都会提示read only。只能先记下来改了什么，然后再退出，然后 sudo vim 再做保存。</p>
+<p>下面的命令可以不退出vim进程，直接用<a href="https://so.csdn.net/so/search?q=vim%E5%91%BD%E4%BB%A4&amp;spm=1001.2101.3001.7020" target="_blank" rel="noopener">vim命令</a>获取sudo权限，然后直接保存文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:w !  sudo  tee  %</span><br></pre></td></tr></table></figure>
+<p>命令:w !{cmd}，让 vim 执行一个外部命令{cmd}，然后把当前缓冲区的内容从 stdin 传入。</p>
+<p>tee 是一个把 stdin 保存到文件的小工具。</p>
+<p>而 %，是vim当中一个只读寄存器的名字，总保存着当前编辑文件的文件路径。</p>
+<p>所以执行这个命令，就相当于从vim外部修改了当前编辑的文件。</p>
+<p>执行<code>:w !</code> <code>sudo</code> <code>tee</code> %后，会提示输入密码，之后再选择重新加载文件，即可看到保存后的文件</p>
 
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/02/01/%E4%BD%BF%E7%94%A8%20Kubekey%E4%B8%80%E9%94%AE%20%E7%A6%BB%E7%BA%BF%20%E5%9C%A8%E7%BA%BF%20%E9%83%A8%E7%BD%B2%20kubernetes%20%E9%9B%86%E7%BE%A4/#more" rel="contents">
+              <a class="btn" href="/2024/07/05/%E5%9C%A8vim%E4%BF%9D%E5%AD%98%E6%97%B6%E8%8E%B7%E5%BE%97sudo%E6%9D%83%E9%99%90/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -936,7 +982,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1004,7 +1050,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">171</span>
+          <span class="site-state-item-count">185</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1045,7 +1091,7 @@ dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

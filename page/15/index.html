@@ -209,7 +209,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/09-4.%E9%83%A8%E7%BD%B2%20metrics-server%20%E6%8F%92%E4%BB%B6/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/08/27/CDH-HBase%20%E4%BD%BF%E7%94%A8%20HBCK2%20%E8%BF%90%E7%BB%B4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -223,7 +223,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/01/07/09-4.%E9%83%A8%E7%BD%B2%20metrics-server%20%E6%8F%92%E4%BB%B6/" class="post-title-link" itemprop="url">09-4.部署 metrics-server 插件</a>
+            <a href="/2020/08/27/CDH-HBase%20%E4%BD%BF%E7%94%A8%20HBCK2%20%E8%BF%90%E7%BB%B4/" class="post-title-link" itemprop="url">CDH-HBase 使用 HBCK2 运维</a>
         </h1>
 
         <div class="post-meta">
@@ -232,9 +232,8 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-01-07 11:09:40 / 修改时间：16:57:42" itemprop="dateCreated datePublished" datetime="2020-01-07T11:09:40+08:00">2020-01-07</time>
+              <time title="创建时间：2020-08-27 16:40:07" itemprop="dateCreated datePublished" datetime="2020-08-27T16:40:07+08:00">2020-08-27</time>
             </span>
 
           
@@ -248,50 +247,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>tags: addons, metrics, metrics-server</p>
-<h1>09-4.部署 metrics-server 插件</h1>
-<h2 id="创建-metrics-server-使用的证书">创建 metrics-server 使用的证书</h2>
-<p>创建 metrics-server 证书签名请求:</p>
-<pre><code>cat &gt; metrics-server-csr.json &lt;&lt;EOF
-{
-  &quot;CN&quot;: &quot;aggregator&quot;,
-  &quot;hosts&quot;: [],
-  &quot;key&quot;: {
-    &quot;algo&quot;: &quot;rsa&quot;,
-    &quot;size&quot;: 2048
-  },
-  &quot;names&quot;: [
-    {
-      &quot;C&quot;: &quot;CN&quot;,
-      &quot;ST&quot;: &quot;BeiJing&quot;,
-      &quot;L&quot;: &quot;BeiJing&quot;,
-      &quot;O&quot;: &quot;k8s&quot;,
-      &quot;OU&quot;: &quot;4Paradigm&quot;
-    }
-  ]
-}
-EOF
-</code></pre>
-<ul>
-<li>注意： CN 名称为 aggregator，需要与 kube-apiserver 的 --requestheader-allowed-names 参数配置一致；</li>
-</ul>
-<p>生成 metrics-server 证书和私钥：</p>
-<pre><code>cfssl gencert -ca=/etc/kubernetes/cert/ca.pem \
-  -ca-key=/etc/kubernetes/cert/ca-key.pem  \
-  -config=/etc/kubernetes/cert/ca-config.json  \
-  -profile=kubernetes metrics-server-csr.json | cfssljson -bare metrics-server
-</code></pre>
-<p>将生成的证书和私钥文件拷贝到 kube-apiserver 节点：</p>
-<pre><code>source /opt/k8s/bin/environment.sh
-for node_ip in ${NODE_IPS[@]}
-  do
-    echo &quot;&gt;&gt;&gt; ${node_ip}&quot;
-    scp metrics-server*.pem k8s@${node_ip}:/etc/kubernetes/cert/
-  done
-</code></pre>
+          <h4 id="前言">前言</h4>
+<p>周末 CDH6.3 的集群断电，导致 HBase 出现 RIT 状态。</p>
+<p>赶紧把之前学的 hbck2 的知识实践顺便回顾下</p>
+<h4 id="过程">过程</h4>
+<p>将项目拉取到本地 <code>git clone https://github.com/apache/hbase-operator-tools.git --depth 1</code></p>
+<p>编译出jar包上传到集群上 <code>mvn clean package -Dmaven.skip.test=true</code></p>
+<p>CDH 集群的话将其上传至<code>/opt/cloudera/parcels/CDH/lib/hbase/lib</code>路径下</p>
+<h4 id="使用">使用</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hbase org.apache.hbase.HBCK2 &lt;命令&gt;</span><br><span class="line"></span><br><span class="line"># 验证是否可以使用</span><br><span class="line">hbase org.apache.hbase.HBCK2 -v</span><br></pre></td></tr></table></figure>
+<p>结果当头一棒，不支持 2.1.0-cdh6.3.1</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/01/07/09-4.%E9%83%A8%E7%BD%B2%20metrics-server%20%E6%8F%92%E4%BB%B6/#more" rel="contents">
+              <a class="btn" href="/2020/08/27/CDH-HBase%20%E4%BD%BF%E7%94%A8%20HBCK2%20%E8%BF%90%E7%BB%B4/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -315,7 +283,7 @@ for node_ip in ${NODE_IPS[@]}
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/09-3.%E9%83%A8%E7%BD%B2%20heapster%20%E6%8F%92%E4%BB%B6/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/02/28/Linux(CentOS7)%E4%BF%AE%E6%94%B9mysql%E9%BB%98%E8%AE%A4%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -329,7 +297,7 @@ for node_ip in ${NODE_IPS[@]}
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/01/07/09-3.%E9%83%A8%E7%BD%B2%20heapster%20%E6%8F%92%E4%BB%B6/" class="post-title-link" itemprop="url">09-3.部署 heapster 插件</a>
+            <a href="/2020/02/28/Linux(CentOS7)%E4%BF%AE%E6%94%B9mysql%E9%BB%98%E8%AE%A4%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95/" class="post-title-link" itemprop="url">Linux(CentOS7)修改mysql默认数据文件目录</a>
         </h1>
 
         <div class="post-meta">
@@ -340,7 +308,7 @@ for node_ip in ${NODE_IPS[@]}
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-01-07 11:09:30 / 修改时间：16:57:45" itemprop="dateCreated datePublished" datetime="2020-01-07T11:09:30+08:00">2020-01-07</time>
+              <time title="创建时间：2020-02-28 16:21:08 / 修改时间：16:21:07" itemprop="dateCreated datePublished" datetime="2020-02-28T16:21:08+08:00">2020-02-28</time>
             </span>
 
           
@@ -354,775 +322,675 @@ for node_ip in ${NODE_IPS[@]}
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>tags: addons, heapster</p>
-<h1>09-3.部署 heapster 插件</h1>
-<p>Heapster是一个收集者，将每个Node上的cAdvisor的数据进行汇总，然后导到第三方工具(如InfluxDB)。</p>
-<p>Heapster 是通过调用 kubelet 的 http API 来获取 cAdvisor 的 metrics 数据的。</p>
-<p>由于 kublet 只在 10250 端口接收 https 请求，故需要修改 heapster 的 deployment 配置。同时，需要赋予 kube-system:heapster ServiceAccount 调用 kubelet API 的权限。</p>
-<h2 id="下载-heapster-文件">下载 heapster 文件</h2>
-<p>到 <a href="https://github.com/kubernetes/heapster/releases" target="_blank" rel="noopener">heapster release 页面</a> 下载最新版本的 heapster</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/kubernetes/heapster/archive/v1.5.3.tar.gz</span><br><span class="line">tar -xzvf v1.5.3.tar.gz</span><br><span class="line">mv v1.5.3.tar.gz heapster-1.5.3.tar.gz</span><br></pre></td></tr></table></figure>
-<p>官方文件目录： <code>heapster-1.5.3/deploy/kube-config/influxdb</code></p>
-<h2 id="修改配置">修改配置</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/07/09-3.%E9%83%A8%E7%BD%B2%20heapster%20%E6%8F%92%E4%BB%B6/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/09-2.%E9%83%A8%E7%BD%B2%20dashboard%20%E6%8F%92%E4%BB%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/09-2.%E9%83%A8%E7%BD%B2%20dashboard%20%E6%8F%92%E4%BB%B6/" class="post-title-link" itemprop="url">09-2.部署 dashboard 插件</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-01-07 11:09:20 / 修改时间：16:41:34" itemprop="dateCreated datePublished" datetime="2020-01-07T11:09:20+08:00">2020-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>09-2.部署 dashboard 插件</h1>
-<h2 id="修改配置文件">修改配置文件</h2>
-<p>将下载的 kubernetes-server-linux-amd64.tar.gz 解压后，再解压其中的 kubernetes-src.tar.gz 文件。</p>
-<p>dashboard 对应的目录是：<code>cluster/addons/dashboard</code>。</p>
-<pre><code>$ pwd
-/opt/k8s/kubernetes/cluster/addons/dashboard
-
-$ cp dashboard-controller.yaml{,.orig}
-
-$ diff dashboard-controller.yaml{,.orig}
-33c33
-&lt;         image: siriuszg/kubernetes-dashboard-amd64:v1.8.3
----
-&gt;         image: k8s.gcr.io/kubernetes-dashboard-amd64:v1.8.3
-
-$ cp dashboard-service.yaml{,.orig}
-
-$ diff dashboard-service.yaml.orig dashboard-service.yaml
-10a11
-&gt;   type: NodePort
-</code></pre>
-<ul>
-<li>指定端口类型为 NodePort，这样外界可以通过地址 nodeIP:nodePort 访问 dashboard；</li>
-</ul>
-<h2 id="执行所有定义文件">执行所有定义文件</h2>
-<pre><code>$ ls *.yaml
-dashboard-configmap.yaml  dashboard-controller.yaml  dashboard-rbac.yaml  dashboard-secret.yaml  dashboard-service.yaml
-
-$ kubectl create -f  .
-</code></pre>
-<h2 id="查看分配的-NodePort">查看分配的 NodePort</h2>
-<pre><code>$ kubectl get deployment kubernetes-dashboard  -n kube-system
-NAME                   DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-kubernetes-dashboard   1         1         1            1           2m
-
-$ kubectl --namespace kube-system get pods -o wide
-NAME                                    READY     STATUS    RESTARTS   AGE       IP            NODE
-coredns-77c989547b-6l6jr                1/1       Running   0          58m       172.30.39.3   kube-node3
-coredns-77c989547b-d9lts                1/1       Running   0          58m       172.30.81.3   kube-node1
-kubernetes-dashboard-65f7b4f486-wgc6j   1/1       Running   0          2m        172.30.81.5   kube-node1
-
-$ kubectl get services kubernetes-dashboard -n kube-system
-NAME                   TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
-kubernetes-dashboard   NodePort   10.254.96.204   &lt;none&gt;        443:8607/TCP   2m
-</code></pre>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/07/09-2.%E9%83%A8%E7%BD%B2%20dashboard%20%E6%8F%92%E4%BB%B6/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/09-1.%E9%83%A8%E7%BD%B2%20coredns%20%E6%8F%92%E4%BB%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/09-1.%E9%83%A8%E7%BD%B2%20coredns%20%E6%8F%92%E4%BB%B6/" class="post-title-link" itemprop="url">09-1.部署 coredns 插件</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-01-07 11:09:10 / 修改时间：16:55:25" itemprop="dateCreated datePublished" datetime="2020-01-07T11:09:10+08:00">2020-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>09-1.部署 coredns 插件</h1>
-<h2 id="修改配置文件">修改配置文件</h2>
-<p>将下载的 kubernetes-server-linux-amd64.tar.gz 解压后，再解压其中的 kubernetes-src.tar.gz 文件。</p>
-<p>coredns 对应的目录是：<code>cluster/addons/dns</code>。</p>
-<pre><code>$ pwd
-/opt/k8s/kubernetes/cluster/addons/dns
-
-$ cp coredns.yaml.base coredns.yaml
-$ diff coredns.yaml.base coredns.yaml
-61c61
-&lt;         kubernetes __PILLAR__DNS__DOMAIN__ in-addr.arpa ip6.arpa {
----
-&gt;         kubernetes cluster.local. in-addr.arpa ip6.arpa {
-153c153
-&lt;   clusterIP: __PILLAR__DNS__SERVER__
----
-&gt;   clusterIP: 10.254.0.2
-</code></pre>
-<h2 id="创建-coredns">创建 coredns</h2>
-<pre><code>$ kubectl create -f coredns.yaml
-</code></pre>
-<h2 id="检查-coredns-功能">检查 coredns 功能</h2>
-<pre><code>$ kubectl get all -n kube-system
-NAME                           READY     STATUS    RESTARTS   AGE
-pod/coredns-77c989547b-6l6jr   1/1       Running   0          3m
-pod/coredns-77c989547b-d9lts   1/1       Running   0          3m
-
-NAME              TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)         AGE
-service/coredns   ClusterIP   10.254.0.2   &lt;none&gt;        53/UDP,53/TCP   3m
-
-NAME                      DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/coredns   2         2         2            2           3m
-
-NAME                                 DESIRED   CURRENT   READY     AGE
-replicaset.apps/coredns-77c989547b   2         2         2         3m
-</code></pre>
-<p>新建一个 Deployment</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/07/09-1.%E9%83%A8%E7%BD%B2%20coredns%20%E6%8F%92%E4%BB%B6/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/08.%E9%AA%8C%E8%AF%81%E9%9B%86%E7%BE%A4%E5%8A%9F%E8%83%BD/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/08.%E9%AA%8C%E8%AF%81%E9%9B%86%E7%BE%A4%E5%8A%9F%E8%83%BD/" class="post-title-link" itemprop="url">08.验证集群功能</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-01-07 11:08:00 / 修改时间：16:40:33" itemprop="dateCreated datePublished" datetime="2020-01-07T11:08:00+08:00">2020-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>tags: verify</p>
-<h1>08.验证集群功能</h1>
-<p>本文档使用 daemonset 验证 master 和 worker 节点是否工作正常。</p>
-<h2 id="检查节点状态">检查节点状态</h2>
-<pre><code>$ kubectl get nodes
-NAME         STATUS    ROLES     AGE       VERSION
-kube-node1   Ready     &lt;none&gt;    3h        v1.10.4
-kube-node2   Ready     &lt;none&gt;    3h        v1.10.4
-kube-node3   Ready     &lt;none&gt;    3h        v1.10.4
-</code></pre>
-<p>都为 Ready 时正常。</p>
-<h2 id="创建测试文件">创建测试文件</h2>
-<pre><code>$ cat &gt; nginx-ds.yml &lt;&lt;EOF
-apiVersion: v1
-kind: Service
-metadata:
-  name: nginx-ds
-  labels:
-    app: nginx-ds
-spec:
-  type: NodePort
-  selector:
-    app: nginx-ds
-  ports:
-  - name: http
-    port: 80
-    targetPort: 80
----
-apiVersion: extensions/v1beta1
-kind: DaemonSet
-metadata:
-  name: nginx-ds
-  labels:
-    addonmanager.kubernetes.io/mode: Reconcile
-spec:
-  template:
-    metadata:
-      labels:
-        app: nginx-ds
-    spec:
-      containers:
-      - name: my-nginx
-        image: nginx:1.7.9
-        ports:
-        - containerPort: 80
-EOF
-</code></pre>
-<h2 id="执行定义文件">执行定义文件</h2>
-<pre><code>$ kubectl create -f nginx-ds.yml
-service &quot;nginx-ds&quot; created
-daemonset.extensions &quot;nginx-ds&quot; created
-</code></pre>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/07/08.%E9%AA%8C%E8%AF%81%E9%9B%86%E7%BE%A4%E5%8A%9F%E8%83%BD/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/07-3.%E9%83%A8%E7%BD%B2%20kube-proxy%20%E7%BB%84%E4%BB%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/07-3.%E9%83%A8%E7%BD%B2%20kube-proxy%20%E7%BB%84%E4%BB%B6/" class="post-title-link" itemprop="url">07-3.部署 kube-proxy 组件</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-01-07 11:07:30 / 修改时间：16:39:50" itemprop="dateCreated datePublished" datetime="2020-01-07T11:07:30+08:00">2020-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>07-3.部署 kube-proxy 组件</h1>
-<p>kube-proxy 运行在所有 worker 节点上，，它监听 apiserver 中 service 和 Endpoint 的变化情况，创建路由规则来进行服务负载均衡。</p>
-<p>本文档讲解部署 kube-proxy 的部署，使用 ipvs 模式。</p>
-<h2 id="下载和分发-kube-proxy-二进制文件">下载和分发 kube-proxy 二进制文件</h2>
-<p>参考 <a href="https://www.orchome.com/657" target="_blank" rel="noopener">06-0.部署master节点.md</a></p>
-<h2 id="安装依赖包">安装依赖包</h2>
-<p>各节点需要安装 <code>ipvsadm</code> 和 <code>ipset</code> 命令，加载 <code>ip_vs</code> 内核模块。</p>
-<p>参考 <a href="https://www.orchome.com/658" target="_blank" rel="noopener">07-0.部署worker节点.md</a></p>
-<h2 id="创建-kube-proxy-证书">创建 kube-proxy 证书</h2>
-<p>创建证书签名请求：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/07/07-3.%E9%83%A8%E7%BD%B2%20kube-proxy%20%E7%BB%84%E4%BB%B6/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/07-2-%E9%83%A8%E7%BD%B2-kubelet-%E7%BB%84%E4%BB%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/07-2-%E9%83%A8%E7%BD%B2-kubelet-%E7%BB%84%E4%BB%B6/" class="post-title-link" itemprop="url">07-2.部署 kubelet 组件</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-01-07 11:07:20 / 修改时间：16:39:20" itemprop="dateCreated datePublished" datetime="2020-01-07T11:07:20+08:00">2020-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>tags: worker, kubelet</p>
-<h1>07-2.部署 kubelet 组件</h1>
-<p>kublet 运行在每个 worker 节点上，接收 kube-apiserver 发送的请求，管理 Pod 容器，执行交互式命令，如 exec、run、logs 等。</p>
-<p>kublet 启动时自动向 kube-apiserver 注册节点信息，内置的 cadvisor 统计和监控节点的资源使用情况。</p>
-<p>为确保安全，本文档只开启接收 https 请求的安全端口，对请求进行认证和授权，拒绝未授权的访问(如 apiserver、heapster)。</p>
-<h2 id="下载和分发-kubelet-二进制文件">下载和分发 kubelet 二进制文件</h2>
-<p>参考 <a href="https://www.orchome.com/657" target="_blank" rel="noopener">06-0.部署master节点.md</a></p>
-<h2 id="安装依赖包">安装依赖包</h2>
-<p>参考 <a href="https://www.orchome.com/658" target="_blank" rel="noopener">07-0.部署worker节点.md</a></p>
-<h2 id="创建-kubelet-bootstrap-kubeconfig-文件">创建 kubelet bootstrap kubeconfig 文件</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/07/07-2-%E9%83%A8%E7%BD%B2-kubelet-%E7%BB%84%E4%BB%B6/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/07-1.%E9%83%A8%E7%BD%B2%20docker%20%E7%BB%84%E4%BB%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/07-1.%E9%83%A8%E7%BD%B2%20docker%20%E7%BB%84%E4%BB%B6/" class="post-title-link" itemprop="url">07-1.部署 docker 组件</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-01-07 11:07:10 / 修改时间：16:38:38" itemprop="dateCreated datePublished" datetime="2020-01-07T11:07:10+08:00">2020-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>07-1.部署 docker 组件</h1>
-<p>docker 是容器的运行环境，管理它的生命周期。kubelet 通过 Container Runtime Interface (CRI) 与 docker 进行交互。</p>
-<h2 id="安装依赖包">安装依赖包</h2>
-<p>参考 <a href="https://www.orchome.com/658" target="_blank" rel="noopener">07-0.部署worker节点.md</a></p>
-<h2 id="下载和分发-docker-二进制文件">下载和分发 docker 二进制文件</h2>
-<p>到 <a href="https://download.docker.com/linux/static/stable/x86_64/" target="_blank" rel="noopener">https://download.docker.com/linux/static/stable/x86_64/</a> 页面下载最新发布包：</p>
-<pre><code>wget https://download.docker.com/linux/static/stable/x86_64/docker-18.03.1-ce.tgz
-tar -xvf docker-18.03.1-ce.tgz
-</code></pre>
-<p>分发二进制文件到所有 worker 节点：</p>
-<pre><code>source /opt/k8s/bin/environment.sh
-for node_ip in ${NODE_IPS[@]}
-  do
-    echo &quot;&gt;&gt;&gt; ${node_ip}&quot;
-    scp docker/docker*  k8s@${node_ip}:/opt/k8s/bin/
-    ssh k8s@${node_ip} &quot;chmod +x /opt/k8s/bin/*&quot;
-  done
-</code></pre>
-<h2 id="创建和分发-systemd-unit-文件">创建和分发 systemd unit 文件</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/07/07-1.%E9%83%A8%E7%BD%B2%20docker%20%E7%BB%84%E4%BB%B6/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/07-0.%E9%83%A8%E7%BD%B2%20worker%20%E8%8A%82%E7%82%B9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/07-0.%E9%83%A8%E7%BD%B2%20worker%20%E8%8A%82%E7%82%B9/" class="post-title-link" itemprop="url">07-0.部署 worker 节点</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-01-07 11:07:00 / 修改时间：16:38:04" itemprop="dateCreated datePublished" datetime="2020-01-07T11:07:00+08:00">2020-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>07-0.部署 worker 节点</h1>
-<p>kubernetes work 节点运行如下组件：</p>
-<ul>
-<li>docker</li>
-<li>kubelet</li>
-<li>kube-proxy</li>
-</ul>
-<h2 id="安装和配置-flanneld">安装和配置 flanneld</h2>
-<p>参考 <a href="/656">05-部署flannel网络.md</a></p>
-<h2 id="安装依赖包">安装依赖包</h2>
-<p>CentOS:</p>
-<pre><code>source /opt/k8s/bin/environment.sh
-for node_ip in ${NODE_IPS[@]}
-  do
-    echo &quot;&gt;&gt;&gt; ${node_ip}&quot;
-    ssh root@${node_ip} &quot;yum install -y epel-release&quot;
-    ssh root@${node_ip} &quot;yum install -y conntrack ipvsadm ipset jq iptables curl sysstat libseccomp &amp;&amp; /usr/sbin/modprobe ip_vs &quot;
-  done
-</code></pre>
-<p>Ubuntu:</p>
-<pre><code>source /opt/k8s/bin/environment.sh
-for node_ip in ${NODE_IPS[@]}
-  do
-    echo &quot;&gt;&gt;&gt; ${node_ip}&quot;
-    ssh root@${node_ip} &quot;apt-get install -y conntrack ipvsadm ipset jq iptables curl sysstat libseccomp &amp;&amp; /usr/sbin/modprobe ip_vs &quot;
-  done</code></pre>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/07/07-0.%E9%83%A8%E7%BD%B2%20worker%20%E8%8A%82%E7%82%B9/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/06-4.%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%20kube-scheduler%20%E9%9B%86%E7%BE%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/07/06-4.%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%20kube-scheduler%20%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">06-4.部署高可用 kube-scheduler 集群</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-01-07 11:06:40 / 修改时间：16:37:28" itemprop="dateCreated datePublished" datetime="2020-01-07T11:06:40+08:00">2020-01-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>06-4.部署高可用 kube-scheduler 集群</h1>
-<p>本文档介绍部署高可用 kube-scheduler 集群的步骤。</p>
-<p>该集群包含 3 个节点，启动后将通过竞争选举机制产生一个 leader 节点，其它节点为阻塞状态。当 leader 节点不可用后，剩余节点将再次进行选举产生新的 leader 节点，从而保证服务的可用性。</p>
-<p>为保证通信安全，本文档先生成 x509 证书和私钥，kube-scheduler 在如下两种情况下使用该证书：</p>
+          <p>默认情况下<code>mysql</code>的数据路径应该在</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd /var/lib/mysql</span></span><br></pre></td></tr></table></figure>
+<p>现在我们要将它转移到<code>/data</code></p>
 <ol>
-<li>与 kube-apiserver 的安全端口通信;</li>
-<li>在<strong>安全端口</strong>(https，10251) 输出 prometheus 格式的 metrics；</li>
+<li>停掉mysql服务</li>
 </ol>
-<h2 id="准备工作">准备工作</h2>
-<p>下载最新版本的二进制文件、安装和配置 flanneld 参考：<a href="https://www.orchome.com/657" target="_blank" rel="noopener">06-0.部署master节点</a></p>
-<h2 id="创建-kube-scheduler-证书和私钥">创建 kube-scheduler 证书和私钥</h2>
-<p>创建证书签名请求：</p>
-<pre><code>cat &gt; kube-scheduler-csr.json &lt;&lt;EOF
-{
-    &quot;CN&quot;: &quot;system:kube-scheduler&quot;,
-    &quot;hosts&quot;: [
-      &quot;127.0.0.1&quot;,
-      &quot;172.27.129.105&quot;,
-      &quot;172.27.129.111&quot;,
-      &quot;172.27.129.112&quot;
-    ],
-    &quot;key&quot;: {
-        &quot;algo&quot;: &quot;rsa&quot;,
-        &quot;size&quot;: 2048
-    },
-    &quot;names&quot;: [
-      {
-        &quot;C&quot;: &quot;CN&quot;,
-        &quot;ST&quot;: &quot;BeiJing&quot;,
-        &quot;L&quot;: &quot;BeiJing&quot;,
-        &quot;O&quot;: &quot;system:kube-scheduler&quot;,
-        &quot;OU&quot;: &quot;4Paradigm&quot;
-      }
-    ]
-}
-EOF
-</code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># service mysql stop</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>将原数据目录转移到<code>data</code>目录下</li>
+</ol>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mv /<span class="keyword">var</span>/lib/mysql /<span class="keyword">data</span>/</span><br></pre></td></tr></table></figure>
+<ol>
+<li>修改<code># vi /etc/my.cnf</code>文件,增加以下行</li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">datadir = <span class="regexp">/data/my</span>sql</span><br><span class="line">socket = <span class="regexp">/data/my</span>sql/mysql.sock</span><br></pre></td></tr></table></figure>
+<ol>
+<li>修改<code># vi /etc/init.d/mysql</code>文件,增加以下行</li>
+</ol>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/01/07/06-4.%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%20kube-scheduler%20%E9%9B%86%E7%BE%A4/#more" rel="contents">
+              <a class="btn" href="/2020/02/28/Linux(CentOS7)%E4%BF%AE%E6%94%B9mysql%E9%BB%98%E8%AE%A4%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/02/25/Linux%E6%9F%A5%E6%89%BE%E5%90%AB%E6%9C%89%E6%9F%90%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/25/Linux%E6%9F%A5%E6%89%BE%E5%90%AB%E6%9C%89%E6%9F%90%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">Linux查找含有某字符串的所有文件</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-25 14:39:58" itemprop="dateCreated datePublished" datetime="2020-02-25T14:39:58+08:00">2020-02-25</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>如果你想在当前目录下 查找&quot;hello,world!&quot;字符串,可以这样:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -rn &quot;hello,world!&quot; *</span><br></pre></td></tr></table></figure>
+<p><code>*</code> : 表示当前目录所有文件，也可以是某个文件名</p>
+<ul>
+<li>-r 是递归查找</li>
+<li>-n 是显示行号</li>
+<li>-R 查找所有文件包含子目录</li>
+<li>-i 忽略大小写</li>
+</ul>
+<h4 id="下面是一些有意思的命令行参数：">下面是一些有意思的命令行参数：</h4>
+<p>grep -i pattern files ：不区分大小写地搜索。默认情况区分大小写，<br>
+grep -l pattern files ：只列出匹配的文件名，<br>
+grep -L pattern files ：列出不匹配的文件名，<br>
+grep -w pattern files ：只匹配整个单词，而不是字符串的一部分（如匹配‘magic’，而不是‘magical’），</p>
+<p>grep -C number pattern files ：匹配的上下文分别显示[number]行，<br>
+grep pattern1 | pattern2 files ：显示匹配 pattern1 或 pattern2 的行，<br>
+grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 pattern2 的行。</p>
+<h4 id="这里还有些用于搜索的特殊符号：">这里还有些用于搜索的特殊符号：</h4>
+<p>&lt; 和 &gt; 分别标注单词的开始与结尾。</p>
+<h4 id="例如：">例如：</h4>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/02/25/Linux%E6%9F%A5%E6%89%BE%E5%90%AB%E6%9C%89%E6%9F%90%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/16/CDH6%20%E6%96%B0%E5%8A%A0%E8%8A%82%E7%82%B9%EF%BC%8C%E4%B8%8D%E8%83%BD%E5%85%B3%E6%8E%89%20Auto-TLS%20%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/16/CDH6%20%E6%96%B0%E5%8A%A0%E8%8A%82%E7%82%B9%EF%BC%8C%E4%B8%8D%E8%83%BD%E5%85%B3%E6%8E%89%20Auto-TLS%20%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/" class="post-title-link" itemprop="url">CDH6 新加节点，不能关掉 Auto-TLS 的解决办法</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-16 14:33:48" itemprop="dateCreated datePublished" datetime="2020-01-16T14:33:48+08:00">2020-01-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>CDH6 新加节点，不能关掉 Auto-TLS 的解决办法</h1>
+<p>坑一：新加节点 必须关掉TLS ，但是关不到</p>
+<p>参考官网</p>
+<p><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html" target="_blank" rel="noopener">https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html</a></p>
+<p>使用“添加主机向导”添加主机</p>
+<p>您可以使用“添加主机”向导在主机上安装CDH，Impala和Cloudera Manager Agent。</p>
+<ol>
+<li><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html#cmug_topic_7_5_1__title_214" target="_blank" rel="noopener">禁用TLS加密或身份验证</a></li>
+<li><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html#cmug_topic_7_5_1__section_t4z_zyk_kcb" target="_blank" rel="noopener">在不禁用TLS的情况下安装Cloudera Manager Agent的替代方法</a></li>
+<li><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html#cmug_topic_7_5_1__title_215" target="_blank" rel="noopener">使用“添加主机向导”</a></li>
+<li><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html#cmug_topic_7_5_1__title_217" target="_blank" rel="noopener">启用TLS加密或身份验证</a></li>
+<li><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html#cmug_topic_7_5_1__section_ejz_fdw_yr" target="_blank" rel="noopener">为CDH组件启用TLS / SSL</a></li>
+<li><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/cm_mc_adding_hosts.html#cmug_topic_7_5_1__section_ny1_bxv_ls" target="_blank" rel="noopener">启用Kerberos</a></li>
+</ol>
+<p>分析：</p>
+<p><a href="https://www.cloudera.com/documentation/enterprise/6/6.1/topics/install_cm_server.html" target="_blank" rel="noopener">https://www.cloudera.com/documentation/enterprise/6/6.1/topics/install_cm_server.html</a></p>
+<p>由于安装的时候设置了</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/16/CDH6%20%E6%96%B0%E5%8A%A0%E8%8A%82%E7%82%B9%EF%BC%8C%E4%B8%8D%E8%83%BD%E5%85%B3%E6%8E%89%20Auto-TLS%20%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/Typora%E8%BD%BB%E4%BE%BF%E7%AE%80%E6%B4%81%E7%9A%84Markdown%E7%BC%96%E8%BE%91%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/Typora%E8%BD%BB%E4%BE%BF%E7%AE%80%E6%B4%81%E7%9A%84Markdown%E7%BC%96%E8%BE%91%E5%99%A8/" class="post-title-link" itemprop="url">Typora轻便简洁的Markdown编辑器</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-07 17:41:10" itemprop="dateCreated datePublished" datetime="2020-01-07T17:41:10+08:00">2020-01-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Typora是一款轻便简洁的Markdown编辑器，支持即时渲染技术，这也是与其他Markdown编辑器最显著的区别。即时渲染使得你写Markdown就想是写Word文档一样流畅自如，不像其他编辑器的有编辑栏和显示栏。</p>
+<h1>对文字的特殊标注</h1>
+<p>标题</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 一阶标题  或者快捷键Ctrl+1</span></span><br><span class="line"><span class="comment">## 二阶标题 或者快捷键Ctrl+2</span></span><br><span class="line"><span class="comment">### 三阶标题    或者快捷键Ctrl+3</span></span><br><span class="line"><span class="comment">#### 四阶标题   或者快捷键Ctrl+4</span></span><br><span class="line"><span class="comment">##### 五阶标题  或者快捷键Ctrl+5</span></span><br><span class="line"><span class="comment">###### 六阶标题 或者快捷键Ctrl+6</span></span><br></pre></td></tr></table></figure>
+<p>下划线</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">u</span>&gt;</span>下划线的内容<span class="tag">&lt;/<span class="name">u</span>&gt;</span> 或按快捷键Ctrl+U</span><br></pre></td></tr></table></figure>
+<p>字体加粗</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">**加粗内容**    或按快捷键Ctrl+B</span><br></pre></td></tr></table></figure>
+<p>斜体</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*倾斜内容*  或按快捷键Ctrl+I</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/Typora%E8%BD%BB%E4%BE%BF%E7%AE%80%E6%B4%81%E7%9A%84Markdown%E7%BC%96%E8%BE%91%E5%99%A8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/%E4%B8%BAhexo%E6%B7%BB%E5%8A%A0hexo-admin%E7%BB%84%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/%E4%B8%BAhexo%E6%B7%BB%E5%8A%A0hexo-admin%E7%BB%84%E4%BB%B6/" class="post-title-link" itemprop="url">为hexo添加hexo-admin组件</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-07 17:34:11" itemprop="dateCreated datePublished" datetime="2020-01-07T17:34:11+08:00">2020-01-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="准备工作">准备工作</h4>
+<blockquote>
+<p>已安装好<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">hexo</a>，选择好自己的<a href="https://hexo.io/themes/" target="_blank" rel="noopener">主题</a>(我选择的主题是<a href="https://github.com/Molunerfinn/hexo-theme-melody" target="_blank" rel="noopener">melody</a>)，并部署到<a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>等静态托管服务器上。</p>
+</blockquote>
+<h4 id="插件介绍">插件介绍</h4>
+<blockquote>
+<p><a href="https://github.com/jaredly/hexo-admin" target="_blank" rel="noopener"><strong>hexo-admin</strong></a> 是一个Hexo博客引擎的管理用户界面插件。这个插件最初是作为本地编辑器设计的，在本地运行<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">hexo</a>使用<strong>hexo-admin</strong>编写文章，然后通过<code>hexo g</code>或<code>hexo d</code>（<code>hexo g</code>是本地渲染，<code>hexo d</code>是将渲染的静态页面发布到<a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>）将生成的静态页面发布到<a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>等静态服务器。如果你使用的是非静态托管服务器，比如自己买的主机搭建的<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">hexo</a>，那么一定要设置<a href="https://github.com/jaredly/hexo-admin" target="_blank" rel="noopener"><strong>hexo-admin</strong></a>  的密码，否则谁都可以编辑你的文章。</p>
+</blockquote>
+<h4 id="插件安装">插件安装</h4>
+<ol>
+<li>
+<p>首先进入hexo创建的博客项目的根目录下，执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save hexo-admin</span><br></pre></td></tr></table></figure>
+<p>mac可能需要root权限，前面加个<code>sudo</code> 就可以了。如果报错缺少组件，则缺少什么安装什么，<code>npm install</code> 加缺少的组件。</p>
+</li>
+<li>
+<p>运行下列命令启动<a href="https://github.com/jaredly/hexo-admin" target="_blank" rel="noopener"><strong>hexo-admin</strong></a> ：</p>
+<p>hexo server -d<br>
+打开 <a href="http://localhost:4000/admin/" target="_blank" rel="noopener">http://localhost:4000/admin/</a>  就可以访问到hexo-admin管理页面了。</p>
+</li>
+</ol>
+<h4 id="密码保护">密码保护</h4>
+<p>打开<code>setting</code>，点击<code>Setup authentification here</code>输入用户名，密码，密钥，下面会自动生成配置文件，复制加在<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">hexo</a>根目录下的<code>_config.yml</code>中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">admin:</span><br><span class="line">  username: myfavoritename</span><br><span class="line">  password_hash: be121740bf988b2225a313fa1f107ca1</span><br><span class="line">  secret: a secret something</span><br></pre></td></tr></table></figure>
+<p>重启<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">hexo</a>，就可以看到登录页面了</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/%E4%B8%BAhexo%E6%B7%BB%E5%8A%A0hexo-admin%E7%BB%84%E4%BB%B6/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/Shell%E6%95%B0%E7%BB%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/Shell%E6%95%B0%E7%BB%84/" class="post-title-link" itemprop="url">Shell数组</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-07 17:28:40" itemprop="dateCreated datePublished" datetime="2020-01-07T17:28:40+08:00">2020-01-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Shell在编程方面比Windows批处理强大很多，无论是在循环、运算。</p>
+<p>bash支持一维数组（不支持多维数组），并且没有限定数组的大小。类似与C语言，数组元素的下标由0开始编号。获取数组中的元素要利用下标，下标可以是整数或算术表达式，其值应大于或等于0。<br>
+定义数组</p>
+<p>在Shell中，用括号来表示数组，数组元素用“空格”符号分割开。定义数组的一般形式为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array_name&#x3D;(value1 ... valuen)</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array_name&#x3D;(value0 value1 value2 value3)</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">array_name&#x3D;(</span><br><span class="line">value0</span><br><span class="line">value1</span><br><span class="line">value2</span><br><span class="line">value3</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>还可以单独定义数组的各个分量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array_name[0]&#x3D;value0</span><br><span class="line">array_name[1]&#x3D;value1</span><br><span class="line">array_name[2]&#x3D;value2</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/Shell%E6%95%B0%E7%BB%84/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/liunx%E6%9F%A5%E7%9C%8B%E5%86%85%E5%AD%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/liunx%E6%9F%A5%E7%9C%8B%E5%86%85%E5%AD%98/" class="post-title-link" itemprop="url">liunx查看内存</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-07 17:16:57" itemprop="dateCreated datePublished" datetime="2020-01-07T17:16:57+08:00">2020-01-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="监控内存">监控内存</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">top -d 1</span><br></pre></td></tr></table></figure>
+<p>然后使用<code>shift + m</code>以内存排列。<a href="https://www.orchome.com/100" target="_blank" rel="noopener">top命令详解</a></p>
+<h3 id="查看内存的使用">查看内存的使用</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">free -g</span><br><span class="line">free -m</span><br></pre></td></tr></table></figure>
+<p>可参考：<a href="https://www.orchome.com/296" target="_blank" rel="noopener">free命令详解</a></p>
+<h3 id="查看内存">查看内存</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">grep MemTotal &#x2F;proc&#x2F;meminfo</span><br><span class="line">grep MemTotal &#x2F;proc&#x2F;meminfo | cut -f2 -d:</span><br><span class="line">free -m |grep &quot;Mem&quot; | awk &#39;&#123;print $2&#125;’</span><br></pre></td></tr></table></figure>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/liunx%E6%9F%A5%E7%9C%8B%E5%86%85%E5%AD%98/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/kubernetes%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/kubernetes%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8/" class="post-title-link" itemprop="url">kubernetes命令大全</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-07 17:11:46" itemprop="dateCreated datePublished" datetime="2020-01-07T17:11:46+08:00">2020-01-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="状态查询">状态查询</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 查看集群信息</span><br><span class="line">kubectl cluster-info</span><br><span class="line"></span><br><span class="line">systemctl status kube-apiserver</span><br><span class="line">systemctl status kubelet</span><br><span class="line">systemctl status kube-proxy</span><br><span class="line">systemctl status kube-scheduler</span><br><span class="line">systemctl status kube-controller-manager</span><br><span class="line">systemctl status docker</span><br></pre></td></tr></table></figure>
+<h2 id="node相关">node相关</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># 查看namespaces</span><br><span class="line">kubectl get namespaces</span><br><span class="line"></span><br><span class="line"># 为节点增加lable</span><br><span class="line">kubectl label nodes 10.126.72.31 points&#x3D;test</span><br><span class="line"></span><br><span class="line"># 查看节点和lable</span><br><span class="line">kubectl get nodes --show-labels</span><br><span class="line"></span><br><span class="line"># 查看状态</span><br><span class="line">kubectl get componentstatuses</span><br><span class="line"></span><br><span class="line"># Node的隔离与恢复</span><br><span class="line">## 隔离</span><br><span class="line">kubectl cordon k8s-node1</span><br><span class="line"></span><br><span class="line">## 恢复</span><br><span class="line">kubectl uncordon k8s-node1</span><br></pre></td></tr></table></figure>
+<h2 id="查询">查询</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"># 查看nodes节点</span><br><span class="line">kubectl get nodes</span><br><span class="line"></span><br><span class="line"># 通过yaml文件查询</span><br><span class="line">kubectl get -f xxx-yaml&#x2F;</span><br><span class="line"></span><br><span class="line"># 查询资源</span><br><span class="line">kubectl get resourcequota</span><br><span class="line"></span><br><span class="line"># endpoints端</span><br><span class="line">kubectl get endpoints</span><br><span class="line"></span><br><span class="line"># 查看pods</span><br><span class="line"></span><br><span class="line"># 查看指定空间&#96;kube-system&#96;的pods</span><br><span class="line">kubectl get po -n kube-system</span><br><span class="line"></span><br><span class="line"># 查看所有空间的</span><br><span class="line">kubectl get pods -o wide --all-namespaces</span><br><span class="line"></span><br><span class="line"># 其他的写法</span><br><span class="line">kubectl get pod -o wide --namespace&#x3D;kube-system</span><br><span class="line"></span><br><span class="line"># 获取svc</span><br><span class="line">kubectl get svc --all-namespaces</span><br><span class="line"></span><br><span class="line"># 其他写法</span><br><span class="line">kubectl get services --all-namespaces</span><br><span class="line"></span><br><span class="line"># 通过lable查询</span><br><span class="line">kubectl get pods -l app&#x3D;nginx -o yaml|grep podIP</span><br><span class="line"></span><br><span class="line"># 当我们发现一个pod迟迟无法创建时，描述一个pods</span><br><span class="line">kubectl describe pod xxx</span><br></pre></td></tr></table></figure>
+<h2 id="删除所有pod">删除所有pod</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># 删除所有pods</span><br><span class="line">kubectl delete pods --all</span><br><span class="line"></span><br><span class="line"># 删除所有包含某个lable的pod和serivce</span><br><span class="line">kubectl delete pods,services -l name&#x3D;&lt;lable-name&gt;</span><br><span class="line"></span><br><span class="line"># 删除ui server,然后重建</span><br><span class="line">kubectl delete deployments kubernetes-dashboard --namespace&#x3D;kube-system</span><br><span class="line">kubectl delete services kubernetes-dashboard --namespace&#x3D;kube-system</span><br><span class="line"></span><br><span class="line"># 强制删除部署</span><br><span class="line">kubectl delete deployment kafka-1</span><br><span class="line"></span><br><span class="line"># 删除rc</span><br><span class="line">kubectl delete rs --all &amp;&amp; kubectl delete rc --all</span><br><span class="line"></span><br><span class="line">## 强制删除Terminating状态的pod</span><br><span class="line">kubectl delete deployment kafka-1 --grace-period&#x3D;0 --force</span><br></pre></td></tr></table></figure>
+<h2 id="滚动">滚动</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 升级</span><br><span class="line">kubectl apply -f xxx.yaml --record</span><br><span class="line"></span><br><span class="line"># 回滚</span><br><span class="line">kubectl rollout undo deployment javademo</span><br><span class="line"></span><br><span class="line"># 查看滚动升级记录</span><br><span class="line">kubectl rollout history deployment &#123;名称&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/kubernetes%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2020/01/07/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E8%A7%84%E5%88%92%E6%96%B9%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/07/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E8%A7%84%E5%88%92%E6%96%B9%E6%A1%88/" class="post-title-link" itemprop="url">数据平台规划方案</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-07 17:09:41" itemprop="dateCreated datePublished" datetime="2020-01-07T17:09:41+08:00">2020-01-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-09-21 17:20:09" itemprop="dateModified" datetime="2018-09-21T17:20:09+08:00">2018-09-21</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="大数据平台现状">大数据平台现状</h2>
+<ul>
+<li>总可用节点：36个（各节点内存512G，CPU 56核）</li>
+<li>总可用内存：9.38T（平均每个节点开放260G）</li>
+<li>总可用CPU：1120个（平均每个节点开放31个）</li>
+</ul>
+<p>包含了文件存储、计算、数据库等集群服务。</p>
+<p><strong>现有集群职能包括：</strong></p>
+<ul>
+<li>离线OLAP数据调度同步（原始数据）</li>
+<li>各产品线离线生产任务（雷达、探针、定制产品、回溯测试等业务）</li>
+<li>离线OLTP数据更新（HBase数据更新）</li>
+<li>线下模型、数据测试（商户定制与联合建模）</li>
+<li>模型训练、迭代与更新（评分卡、推荐、联合模型等）</li>
+<li>基础数据实时流（底层实时数据处理）</li>
+<li>各产品线实时流计算（雷达、探针等上层业务）</li>
+<li>日常数据分析任务（大量数据分析、行业分析等需求）</li>
+<li>OLTP数据库服务（HBase）</li>
+<li>监控报表任务（BI、数据监控等）</li>
+<li>数据仓库（数据整合、清洗、调度等）</li>
+<li>宝付大数据平台相关任务（Spark、Hive、Impala等）</li>
+</ul>
+<p>由于当前集群职能繁多，网络带宽、磁盘IO等为集群共享，<strong>会因大型离线任务占用大量网络或磁盘IO峰值，对线上业务会造成短暂延迟。且集群环境较为复杂，有较多对线上业务造成影响的风险。</strong></p>
+<h2 id="规划方案">规划方案</h2>
+<p>鉴于后续业务发展，大数据平台的使用人数和执行任务将会快速上升，为了避免对线上业务的直接影响，提议部署一个次规模（20个节点内）的生产集群（以下简称在线集群）承接部分职能，减轻现有集群（以下简称离线离线计算集群）的压力，同时规划与隔离不同等级的任务。</p>
+<p>在线集群<strong>主要职能为OLTP数据库服务（HBase）</strong>，将业务主库迁移至在线集群可保证业务不受任何大规模计算任务（或者计算量比较集中的情况）所带来的延迟影响。</p>
+<p>除此之外，<strong>在线集群将不会进行其他任何程序与任务以保证线上服务的稳定性。</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/07/%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E8%A7%84%E5%88%92%E6%96%B9%E6%A1%88/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1146,7 +1014,7 @@ EOF
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/14/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/16/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/14/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/16/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1214,7 +1082,7 @@ EOF
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">171</span>
+          <span class="site-state-item-count">185</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1255,7 +1123,7 @@ EOF
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -209,7 +209,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/30/%E5%AE%89%E8%A3%85%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC%E7%9A%84php/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/03/03/clickhouse%E8%BF%90%E7%BB%B4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -223,7 +223,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/12/30/%E5%AE%89%E8%A3%85%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC%E7%9A%84php/" class="post-title-link" itemprop="url">安装不同版本的php</a>
+            <a href="/2022/03/03/clickhouse%E8%BF%90%E7%BB%B4/" class="post-title-link" itemprop="url">clickhouse运维</a>
         </h1>
 
         <div class="post-meta">
@@ -233,7 +233,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-12-30 09:20:43" itemprop="dateCreated datePublished" datetime="2021-12-30T09:20:43+08:00">2021-12-30</time>
+              <time title="创建时间：2022-03-03 16:42:49" itemprop="dateCreated datePublished" datetime="2022-03-03T16:42:49+08:00">2022-03-03</time>
             </span>
 
           
@@ -247,19 +247,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="移除php">移除php</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum remove php-common -y</span><br></pre></td></tr></table></figure>
-<p><a href="https://www.cnblogs.com/hongdada/p/9687330.html" target="_blank" rel="noopener">yum仓库中源的配置与使用</a></p>
-<p>yum 仓库管理工具 <code>yum-config-manager</code>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum-config-manager --add-repo repository_url</span><br></pre></td></tr></table></figure>
-<p>查询仓库</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum repolist enabled # 显示所有启动的仓库</span><br><span class="line">yum repolist disabled # 显示所有禁用的仓库</span><br><span class="line">yum repolist all # 显示所有仓库</span><br></pre></td></tr></table></figure>
-<p>修改仓库</p>
-<p>最常用的修改操作就是启动和停用, 可以使用以下命令实现:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum-config-manager --enable repository…</span><br><span class="line">yum-config-manager --disable repository…</span><br></pre></td></tr></table></figure>
+          <p>查看后台进程并杀死</p>
+<p>– 这个命令和mysql是一样的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show processlist</span><br></pre></td></tr></table></figure>
+<p>– 如果进程太多，也可用通过查询系统表 processes，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from system.processes</span><br></pre></td></tr></table></figure>
+<p>– 指定主要关心字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select </span><br><span class="line">  user,query_id,query,elapsed,memory_usage</span><br><span class="line">from system.processes</span><br></pre></td></tr></table></figure>
+<p>杀死后台进程<br>
+–  通过上面指令获取到进程相关信息后，可以用query_id条件kill进程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">KILL QUERY WHERE query_id&#x3D;&#39;2-857d-4a57-9ee0-327da5d60a90&#39;</span><br></pre></td></tr></table></figure>
+<p>– 杀死default用户下的所有进程</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/12/30/%E5%AE%89%E8%A3%85%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC%E7%9A%84php/#more" rel="contents">
+              <a class="btn" href="/2022/03/03/clickhouse%E8%BF%90%E7%BB%B4/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -283,7 +284,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/24/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/02/22/%E6%9F%A5%E7%9C%8Brcfile%E3%80%81orc%E3%80%81text%E5%92%8Cpaquet%E7%AD%89%E6%A0%BC%E5%BC%8F%E7%9A%84%E6%96%87%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -297,7 +298,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/12/24/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub/" class="post-title-link" itemprop="url">hexo部署到GitHub</a>
+            <a href="/2022/02/22/%E6%9F%A5%E7%9C%8Brcfile%E3%80%81orc%E3%80%81text%E5%92%8Cpaquet%E7%AD%89%E6%A0%BC%E5%BC%8F%E7%9A%84%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">查看rcfile、orc、text和paquet等格式的文件</a>
         </h1>
 
         <div class="post-meta">
@@ -307,7 +308,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-12-24 09:23:23" itemprop="dateCreated datePublished" datetime="2021-12-24T09:23:23+08:00">2021-12-24</time>
+              <time title="创建时间：2022-02-22 16:05:00" itemprop="dateCreated datePublished" datetime="2022-02-22T16:05:00+08:00">2022-02-22</time>
             </span>
 
           
@@ -321,19 +322,21 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>参考这篇文章就可以了</p>
-<p>GitHub+Hexo 搭建个人网站详细教程  <a href="https://zhuanlan.zhihu.com/p/26625249" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/26625249</a></p>
-<p>其他相关笔记</p>
-<p><strong>安装插件</strong></p>
-<p>npm i -S hexo-prism-plugin</p>
-<p><strong>卸载插件</strong></p>
-<p>npm uninstall hexo-prism-plugin --save</p>
-<p><strong>next7.X版本关于设置阅读全文</strong></p>
-<p>网上查了好多资料始终都没得到解决如何去设置“阅读全文”。最后查了最细的next7.6文档才发现还要下载插件 然后在主题配置文件_config.yml配置下就好了。</p>
-<p>一，在博客目录下执行</p>
+          <h3 id="hive查看rcfile和orc">hive查看rcfile和orc</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hive --rcfilecat hdfs:&#x2F;&#x2F;cluster1&#x2F;tmp&#x2F;youni_user_profile_ft&#x2F;000000_0</span><br><span class="line">hive --rcfilecat hdfs:&#x2F;&#x2F;cluster1&#x2F;tmp&#x2F;000000-000009&#x2F;000000_0</span><br></pre></td></tr></table></figure>
+<h3 id="hive查看orc">hive查看orc</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive --orcfiledump &#x2F;data&#x2F;datawarehouse&#x2F;xx&#x2F;xxxx&#x2F;xxxx&#x2F;part-00199</span><br></pre></td></tr></table></figure>
+<h3 id="查看文本格式">查看文本格式</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop fs -text &#x2F;tmp&#x2F;part-m-00000.snappy</span><br></pre></td></tr></table></figure>
+<h3 id="查看parquet文件格式内容">查看parquet文件格式内容</h3>
+<ol>
+<li>下载对应的parquet-tools jar:<a href="http://logservice-resource.oss-cn-shanghai.aliyuncs.com/tools/parquet-tools-1.6.0rc3-SNAPSHOT.jar?spm=5176.doc52798.2.7.H3s2kL&amp;file=parquet-tools-1.6.0rc3-SNAPSHOT.jar" target="_blank" rel="noopener">http://logservice-resource.oss-cn-shanghai.aliyuncs.com/tools/parquet-tools-1.6.0rc3-SNAPSHOT.jar?spm=5176.doc52798.2.7.H3s2kL&amp;file=parquet-tools-1.6.0rc3-SNAPSHOT.jar</a></li>
+</ol>
+<p>git：<a href="https://github.com/apache/parquet-mr/tree/master/parquet-tools?spm=5176.doc52798.2.6.H3s2kL" target="_blank" rel="noopener">https://github.com/apache/parquet-mr/tree/master/parquet-tools?spm=5176.doc52798.2.6.H3s2kL</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">查看schema:</span><br><span class="line">java -jar  parquet-tools-1.6.0rc3-SNAPSHOT.jar  schema -d myparquet.parquet | head -n 10</span><br><span class="line">查看内容：</span><br><span class="line">java -jar  parquet-tools-1.6.0rc3-SNAPSHOT.jar  head -n 10 myparquet.parquet</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/12/24/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub/#more" rel="contents">
+              <a class="btn" href="/2022/02/22/%E6%9F%A5%E7%9C%8Brcfile%E3%80%81orc%E3%80%81text%E5%92%8Cpaquet%E7%AD%89%E6%A0%BC%E5%BC%8F%E7%9A%84%E6%96%87%E4%BB%B6/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -357,7 +360,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/23/presto%20%E8%BF%9E%E6%8E%A5clickhouse/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/02/14/tar%E4%B8%8D%E8%A6%86%E7%9B%96%E5%B7%B2%E5%AD%98%E5%9C%A8%E6%96%87%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -371,7 +374,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/12/23/presto%20%E8%BF%9E%E6%8E%A5clickhouse/" class="post-title-link" itemprop="url">presto 连接clickhouse</a>
+            <a href="/2022/02/14/tar%E4%B8%8D%E8%A6%86%E7%9B%96%E5%B7%B2%E5%AD%98%E5%9C%A8%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">tar不覆盖已存在文件</a>
         </h1>
 
         <div class="post-meta">
@@ -381,7 +384,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-12-23 15:39:26" itemprop="dateCreated datePublished" datetime="2021-12-23T15:39:26+08:00">2021-12-23</time>
+              <time title="创建时间：2022-02-14 09:58:04" itemprop="dateCreated datePublished" datetime="2022-02-14T09:58:04+08:00">2022-02-14</time>
             </span>
 
           
@@ -395,14 +398,61 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>presto 连接clickhouse</h1>
-<p>presto350版本，不支持clickhouse ，需要升级，</p>
-<p>presto350版本之后 presto改名为trino，导致不兼容，升级后 对应的jdbc驱动 ，客户端都需要换成新的。</p>
-<p>客户端工具用DBeaver比较好，DbVisualizer 不支持trino</p>
+          <p>tar在解压或创建的时候一不小心就盖已存在文件</p>
+<p>tar 工具的 -k 参数就提供干这事<br>
+-k,–keep-old-files 不覆盖已存在文件<br>
+keep existing files; don’t overwrite them from archive</p>
+<p>如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxfk filename.tar.gz</span><br></pre></td></tr></table></figure>
+<p>tar 【参数】 【文件或目录】</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#压缩比如把x文件夹打包并用gzip压缩。</span><br><span class="line">tar -zcvf x.tar.gz x</span><br><span class="line"></span><br><span class="line">#解压到当前目录</span><br><span class="line">tar -xzvf x.tar.gz</span><br><span class="line"></span><br><span class="line">#解压到父目录</span><br><span class="line">tar -xzvf x.tar.gz -C ..</span><br></pre></td></tr></table></figure>
+<h4 id="常用参数：">常用参数：</h4>
+<table>
+<thead>
+<tr>
+<th>指定归档</th>
+<th><strong>-f</strong> <strong>后面必须直接跟归档名</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>打包（create）</td>
+<td><strong>-c</strong></td>
+</tr>
+<tr>
+<td>解包</td>
+<td><strong>-x</strong></td>
+</tr>
+<tr>
+<td>详细地列出处理的文件</td>
+<td><strong>-v</strong></td>
+</tr>
+<tr>
+<td>查看打包的文件</td>
+<td><strong>-t</strong></td>
+</tr>
+<tr>
+<td>压缩</td>
+<td><strong>-z</strong> <strong>调用<strong><strong>gzip</strong></strong>压缩</strong>  <strong>-j<strong><strong>调用</strong></strong>bzip2****压缩</strong></td>
+</tr>
+<tr>
+<td>时间限制参数</td>
+<td><strong>-N</strong> **比后面接的日期(yyyy/mm/dd)**<strong>还要新的才会被打包进新建的文件中</strong></td>
+</tr>
+<tr>
+<td>排除指定文件</td>
+<td><strong>–exclude FILE</strong>**：**<strong>不将</strong> <strong>FILE</strong> <strong>打包！</strong></td>
+</tr>
+<tr>
+<td>保留原本文件的属性</td>
+<td><strong>-p</strong></td>
+</tr>
+</tbody>
+</table>
 
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/12/23/presto%20%E8%BF%9E%E6%8E%A5clickhouse/#more" rel="contents">
+              <a class="btn" href="/2022/02/14/tar%E4%B8%8D%E8%A6%86%E7%9B%96%E5%B7%B2%E5%AD%98%E5%9C%A8%E6%96%87%E4%BB%B6/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -426,7 +476,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/08/ckman%E9%83%A8%E7%BD%B2/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/02/14/centos7%E5%88%A0%E9%99%A4%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E5%90%8E%E7%A3%81%E7%9B%98%E4%B8%8D%E9%87%8A%E6%94%BE%E7%A9%BA%E9%97%B4%E5%A4%84%E7%90%86%E8%84%9A%E6%9C%AC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -440,7 +490,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/12/08/ckman%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">ckman部署</a>
+            <a href="/2022/02/14/centos7%E5%88%A0%E9%99%A4%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E5%90%8E%E7%A3%81%E7%9B%98%E4%B8%8D%E9%87%8A%E6%94%BE%E7%A9%BA%E9%97%B4%E5%A4%84%E7%90%86%E8%84%9A%E6%9C%AC/" class="post-title-link" itemprop="url">centos7删除日志文件后磁盘不释放空间处理脚本</a>
         </h1>
 
         <div class="post-meta">
@@ -450,7 +500,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-12-08 13:31:48" itemprop="dateCreated datePublished" datetime="2021-12-08T13:31:48+08:00">2021-12-08</time>
+              <time title="创建时间：2022-02-14 09:14:44" itemprop="dateCreated datePublished" datetime="2022-02-14T09:14:44+08:00">2022-02-14</time>
             </span>
 
           
@@ -464,19 +514,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>ckman部署</p>
-<h3 id="安装">安装</h3>
-<p><code>rpm</code>安装直接使用命令安装即可：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh ckman-1.3.1.x86_64.rpm</span><br></pre></td></tr></table></figure>
-<p>安装完成后，在<code>/etc/ckman</code>目录下，会生成工作目录（日志和配置文件等都在该目录下）。</p>
-<h3 id="启动">启动</h3>
-<p><code>rpm</code>方式安装的<code>ckman</code>有两种启动方式：</p>
-<h4 id="方式一：">方式一：</h4>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;local&#x2F;bin&#x2F;ckman -c&#x3D;&#x2F;etc&#x2F;ckman&#x2F;conf&#x2F;ckman.yaml -p&#x3D;&#x2F;run&#x2F;ckman&#x2F;ckman.pid -l&#x3D;&#x2F;var&#x2F;log&#x2F;ckman&#x2F;ckman.log -d</span><br></pre></td></tr></table></figure>
-<h4 id="方式二：">方式二：</h4>
+          <blockquote>
+<p>背景：日志文件被人为删除，但日志对应的程序仍然在运行（进程在，IO未关闭），df看磁盘未释放<br>
+但du看磁盘已释放空间。<br>
+操作系统：<a href="https://so.csdn.net/so/search?q=CentOS7&amp;spm=1001.2101.3001.7020" target="_blank" rel="noopener">CentOS7</a>.5</p>
+</blockquote>
+<p>以下脚本可通过找出被删文件彻底释放磁盘空间</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">for p in &#96;ls &#x2F;proc&#x2F; |egrep &#39;^[0-9]&#123;1,5&#125;&#39;&#96;</span><br><span class="line">do</span><br><span class="line">cd &#x2F;proc&#x2F;$&#123;p&#125;&#x2F;fd;ls -l|grep deleted &amp;&amp; &gt;1 &amp;&amp; &gt;2</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/12/08/ckman%E9%83%A8%E7%BD%B2/#more" rel="contents">
+              <a class="btn" href="/2022/02/14/centos7%E5%88%A0%E9%99%A4%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E5%90%8E%E7%A3%81%E7%9B%98%E4%B8%8D%E9%87%8A%E6%94%BE%E7%A9%BA%E9%97%B4%E5%A4%84%E7%90%86%E8%84%9A%E6%9C%AC/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -500,7 +548,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/12/06/%E5%8D%87%E7%BA%A7OpenSSH%E4%B9%8B%E5%90%8E%E7%99%BB%E5%BD%95%E4%B8%8D%E4%B8%8A%E5%8E%BB/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/02/07/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -514,7 +562,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/12/06/%E5%8D%87%E7%BA%A7OpenSSH%E4%B9%8B%E5%90%8E%E7%99%BB%E5%BD%95%E4%B8%8D%E4%B8%8A%E5%8E%BB/" class="post-title-link" itemprop="url">升级OpenSSH之后登录不上去</a>
+            <a href="/2022/02/07/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">CDH集群部署</a>
         </h1>
 
         <div class="post-meta">
@@ -524,7 +572,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-12-06 14:01:54" itemprop="dateCreated datePublished" datetime="2021-12-06T14:01:54+08:00">2021-12-06</time>
+              <time title="创建时间：2022-02-07 10:34:00" itemprop="dateCreated datePublished" datetime="2022-02-07T10:34:00+08:00">2022-02-07</time>
             </span>
 
           
@@ -538,13 +586,48 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/ssh/sshd_config</span><br></pre></td></tr></table></figure>
-<p>需要在配置文件中添加：</p>
-<p>PermitRootLogin yes</p>
-
+          <h2 id="一、集群规划">一、集群规划</h2>
+<p>如果你正准备从0开始搭建一套CDH集群应用于生产环境，那么此时需要做的事情应该是 <strong>结合当前的数据、业务、硬件、节点、服务等对集群做合理的规划</strong>，而不是马上动手去安装软件。</p>
+<p>合理的集群规划应该做到以下几点：</p>
+<ul>
+<li>充分了解当前的数据现状</li>
+<li>与业务方深入沟通，了解将会在集群上运行的业务，集群将会为业务提供什么服务</li>
+<li>结合数据现状与业务，合理预估未来的数据量增长</li>
+<li>盘点当前可用的硬件资源，包括机柜机架、服务器、交换机等</li>
+<li>当前硬件资源不充足的情况下，根据数据评估情况作出采购建议</li>
+<li>根据业务属性与组成，合理规划集群的部署架构</li>
+<li>根据可用硬件资源，对集群节点的服务角色进行合理划分</li>
+</ul>
+<p>以上步骤完成之后才是动手进行安装与部署。</p>
+<p>你将会对集群的架构模式、应用方向与业务场景了然于胸，并确保这个集群（或者是集群组）能够<strong>提供稳定、高效、高性能的服务</strong>，为业务保驾护航。</p>
+<p>并有能力能够提供 <strong>集群建设目标</strong>：</p>
+<ul>
+<li>
+<p>性能需求</p>
+</li>
+<li>
+<ul>
+<li>简单查询100G数据量时，耗时上限</li>
+<li>复杂查询（join）时，耗时上限</li>
+<li>历史数据导入时，耗时上限</li>
+<li>增量数据导入时，耗时上限</li>
+</ul>
+</li>
+<li>
+<p>可靠性需求：每月宕机次数（&lt;1），每月宕机时间（&lt;10min）</p>
+</li>
+<li>
+<p>可用性：每台机器每月的宕机时间</p>
+</li>
+<li>
+<p>容错性：机器故障，数据不丢失</p>
+</li>
+</ul>
+<h3 id="1-1-硬件规划">1.1 硬件规划</h3>
+<p>硬件规划决定集群将使用多少硬件资源，以及什么配置的硬件资源。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/12/06/%E5%8D%87%E7%BA%A7OpenSSH%E4%B9%8B%E5%90%8E%E7%99%BB%E5%BD%95%E4%B8%8D%E4%B8%8A%E5%8E%BB/#more" rel="contents">
+              <a class="btn" href="/2022/02/07/CDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -568,7 +651,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/11/19/clickhouse%E4%B9%8BHDFS%E4%BA%91%E5%AD%98%E5%82%A8/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/29/DBeaver%20Enterprise%2021.2.0%20%E7%A0%B4%E8%A7%A3%E7%89%88%20%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -582,7 +665,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/11/19/clickhouse%E4%B9%8BHDFS%E4%BA%91%E5%AD%98%E5%82%A8/" class="post-title-link" itemprop="url">clickhouse之HDFS云存储</a>
+            <a href="/2022/01/29/DBeaver%20Enterprise%2021.2.0%20%E7%A0%B4%E8%A7%A3%E7%89%88%20%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/" class="post-title-link" itemprop="url">DBeaver Enterprise 21.2.0 破解版 安装教程</a>
         </h1>
 
         <div class="post-meta">
@@ -592,7 +675,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-11-19 09:23:57" itemprop="dateCreated datePublished" datetime="2021-11-19T09:23:57+08:00">2021-11-19</time>
+              <time title="创建时间：2022-01-29 17:18:06" itemprop="dateCreated datePublished" datetime="2022-01-29T17:18:06+08:00">2022-01-29</time>
             </span>
 
           
@@ -606,19 +689,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>clickhouse之HDFS云存储</h1>
-<p>参考： <a href="https://blog.csdn.net/weixin_40104766/article/details/120029525" target="_blank" rel="noopener">https://blog.csdn.net/weixin_40104766/article/details/120029525</a></p>
-<p>按照官方文档说明，在config.xml文件中添加如下配置：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">storage_configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">disks</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">diskname</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">type</span>&gt;</span>hdfs<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">endpoint</span>&gt;</span>hdfs://10.0.19.241:8020/ckdata/<span class="tag">&lt;/<span class="name">endpoint</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">diskname</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">disks</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">policies</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">hdfs</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">volumes</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">volumename</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">disk</span>&gt;</span>diskname<span class="tag">&lt;/<span class="name">disk</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">volumename</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">volumes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">hdfs</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">policies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">storage_configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>配置完成后，重启clickhouse-server服务，验证是否生效：</p>
-<p>1.通过system.storage_policies表查看存储策略是否OK</p>
-<p>select * from system.storage_policies;</p>
-<p>2.通过settings参数指定storage_policy为我们配置好的hdfs，建表语句如下：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> test_data <span class="keyword">engine</span>=MergeTree <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">id</span> <span class="keyword">settings</span> storage_policy=<span class="string">'hdfs'</span> <span class="keyword">as</span> <span class="keyword">with</span> (<span class="keyword">select</span> [<span class="string">'A'</span>,<span class="string">'a'</span>,<span class="string">'A'</span>,<span class="string">'A'</span>,<span class="string">'B'</span>,<span class="string">'B'</span>,<span class="string">'B'</span>,<span class="string">'B'</span>,<span class="string">'B'</span>,<span class="string">'A'</span>,<span class="string">'59'</span>,<span class="string">'90'</span>,<span class="string">'80'</span>,<span class="string">'85'</span>,<span class="string">'90'</span>,<span class="string">'929'</span>,<span class="string">'80'</span>,<span class="string">'72'</span>,<span class="string">'90'</span>,<span class="string">'123'</span>]) <span class="keyword">AS</span> dict <span class="keyword">select</span> dict[<span class="built_in">number</span>%<span class="number">10</span> + <span class="number">1</span>] <span class="keyword">as</span> <span class="keyword">id</span>,dict[<span class="built_in">number</span> + <span class="number">11</span>] <span class="keyword">as</span> val <span class="keyword">from</span> system.numbers <span class="keyword">limit</span> <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+          <h1>DBeaver Enterprise 21.2.0 破解版 安装教程</h1>
+<h2 id="制作绿色包-开箱即用">制作绿色包  开箱即用</h2>
+<p><a href="https://blog.csdn.net/u012234419/article/details/120091206" target="_blank" rel="noopener">https://blog.csdn.net/u012234419/article/details/120091206</a></p>
+<p>亲测可用，感谢楼主~</p>
 
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/11/19/clickhouse%E4%B9%8BHDFS%E4%BA%91%E5%AD%98%E5%82%A8/#more" rel="contents">
+              <a class="btn" href="/2022/01/29/DBeaver%20Enterprise%2021.2.0%20%E7%A0%B4%E8%A7%A3%E7%89%88%20%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -642,7 +720,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/10/28/%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99%E6%B5%8B%E8%AF%95/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/26/clickhouse%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5mysql%E6%95%B0%E6%8D%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -656,7 +734,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/10/28/%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">磁盘读写测试</a>
+            <a href="/2022/01/26/clickhouse%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5mysql%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">clickhouse实时同步mysql数据</a>
         </h1>
 
         <div class="post-meta">
@@ -666,7 +744,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-10-28 16:44:32" itemprop="dateCreated datePublished" datetime="2021-10-28T16:44:32+08:00">2021-10-28</time>
+              <time title="创建时间：2022-01-26 18:03:14" itemprop="dateCreated datePublished" datetime="2022-01-26T18:03:14+08:00">2022-01-26</time>
             </span>
 
           
@@ -680,19 +758,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="磁盘读写测试">磁盘读写测试</h2>
-<p>FIO安装<br>
-wget <a href="http://brick.kernel.dk/snaps/fio-2.2.5.tar.gz" target="_blank" rel="noopener">http://brick.kernel.dk/snaps/fio-2.2.5.tar.gz</a></p>
-<p>yum install libaio-devel<br>
-tar -zxvf fio-2.2.5.tar.gz<br>
-cd fio-2.2.5<br>
-make<br>
-make install</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">测试：</span><br><span class="line">顺序读：</span><br><span class="line">fio -filename=/dev/sda -direct=1 -iodepth 1 -thread -rw=read -ioengine=psync -bs=16k -size=2G -numjobs=10 -runtime=60 -group_reporting -name=mytest</span><br><span class="line"></span><br><span class="line">随机写：</span><br><span class="line">fio -filename=/dev/sda -direct=1 -iodepth 1 -thread -rw=randwrite -ioengine=psync -bs=16k -size=2G -numjobs=10 -runtime=60 -group_reporting -name=mytest</span><br><span class="line"></span><br><span class="line">顺序写：</span><br><span class="line">fio -filename=/dev/sda -direct=1 -iodepth 1 -thread -rw=write -ioengine=psync -bs=16k -size=2G -numjobs=10 -runtime=60 -group_reporting -name=mytest</span><br><span class="line"></span><br><span class="line">混合随机读写：</span><br><span class="line">fio -filename=/dev/sda -direct=1 -iodepth 1 -thread -rw=randrw -rwmixread=70 -ioengine=psync -bs=16k -size=2G -numjobs=10 -runtime=60 -group_reporting -name=mytest -ioscheduler=noop</span><br></pre></td></tr></table></figure>
-
+          <h1>clickhouse实时同步mysql数据</h1>
+<p>clickhouse-client -m --password ‘admin’</p>
+<h1>使用 MaterializedMySQL 引擎实时同步</h1>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> allow_experimental_database_materialized_mysql = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> dbtest <span class="keyword">ENGINE</span> = MaterializedMySQL(<span class="string">'10.6.123.23:3306'</span>, <span class="string">'dbtest'</span>, <span class="string">'cs_yangz'</span>, <span class="string">'***'</span>) <span class="keyword">SETTINGS</span> allows_query_when_mysql_lost=<span class="literal">true</span>,max_wait_time_when_mysql_unavailable=<span class="number">10000</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看磁盘容量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    <span class="keyword">name</span>,</span><br><span class="line">    <span class="keyword">path</span>,</span><br><span class="line">    formatReadableSize(free_space) <span class="keyword">AS</span> free,</span><br><span class="line">    formatReadableSize(total_space) <span class="keyword">AS</span> total,</span><br><span class="line">    formatReadableSize(keep_free_space) <span class="keyword">AS</span> reserved</span><br><span class="line"><span class="keyword">FROM</span> system.disks</span><br></pre></td></tr></table></figure>
+<h2 id="安装配置-MySQL-同步用户">安装配置 MySQL 同步用户</h2>
+<ul>
+<li>创建用户</li>
+<li>全局赋予 replication client,replication slave, reload 权限</li>
+<li>对同步库 db 赋予 select 权限</li>
+</ul>
+<p>如果赋予权限不正确，会报错，</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">'clickhouse'</span>@<span class="string">'%'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'alitrack'</span>;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">select</span> <span class="keyword">ON</span> db.* <span class="keyword">TO</span> <span class="string">'clickhouse'</span>@<span class="string">'%'</span>;</span><br><span class="line"><span class="keyword">GRANT</span>  <span class="keyword">replication</span> <span class="keyword">client</span>,<span class="keyword">replication</span> <span class="keyword">slave</span>, reload <span class="keyword">on</span> *.* <span class="keyword">to</span> <span class="string">'clickhouse'</span>@<span class="string">'%'</span>;</span><br><span class="line"><span class="keyword">FLUSH</span> <span class="keyword">PRIVILEGES</span>;</span><br></pre></td></tr></table></figure>
+<p>遇到没有主键的表，</p>
+<p>如果没有初始化完成，删掉没有主键的表，直接重启clickhouse就可以了</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/10/28/%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99%E6%B5%8B%E8%AF%95/#more" rel="contents">
+              <a class="btn" href="/2022/01/26/clickhouse%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5mysql%E6%95%B0%E6%8D%AE/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -716,7 +798,7 @@ make install</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/07/20/%E6%99%BA%E8%83%BD%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0USDP%E6%93%8D%E4%BD%9C%E9%83%A8%E7%BD%B2/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/26/nginx%E4%BB%A3%E7%90%86clickhouse/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -730,7 +812,7 @@ make install</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/07/20/%E6%99%BA%E8%83%BD%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0USDP%E6%93%8D%E4%BD%9C%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">智能大数据平台USDP操作部署</a>
+            <a href="/2022/01/26/nginx%E4%BB%A3%E7%90%86clickhouse/" class="post-title-link" itemprop="url">nginx代理clickhouse</a>
         </h1>
 
         <div class="post-meta">
@@ -740,7 +822,7 @@ make install</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-07-20 13:48:23" itemprop="dateCreated datePublished" datetime="2021-07-20T13:48:23+08:00">2021-07-20</time>
+              <time title="创建时间：2022-01-26 16:14:14" itemprop="dateCreated datePublished" datetime="2022-01-26T16:14:14+08:00">2022-01-26</time>
             </span>
 
           
@@ -754,19 +836,19 @@ make install</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="智能大数据平台USDP操作部署">智能大数据平台USDP操作部署</h2>
-<p>USDP部署操作指南：<a href="https://mp.weixin.qq.com/s/COnkLXPTWL5OK1PFYooThw?scene=25#wechat_redirect" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/COnkLXPTWL5OK1PFYooThw?scene=25#wechat_redirect</a></p>
-<p>bash <a href="http://repair.sh" target="_blank" rel="noopener">repair.sh</a> initAll   这个步骤大约要30多分钟，重复执行也慢。</p>
-<p>注意：</p>
-<p>1.在repair-host-info-add.properties文件中，仅需配置每次新增的节点信息即可，若存在已修复过的节点信息时，在下次运行“<a href="http://repair.sh" target="_blank" rel="noopener">repair.sh</a> initSingle”指令前，请清除。</p>
-<p>2.jdk 安装在 /opt/module 下面，不允许随意删除，否则 java 环境失效。</p>
-<p>3.数据库密码中不得包含 “@” 。</p>
-<p>4.主机名设置不得包含 “_”，&quot;-&quot; 。</p>
-<p>启动服务  bin/stop-udp-server.sh</p>
-<p>查看日志目录  /var/log/udp</p>
+          <h2 id="下载编译源码包">下载编译源码包</h2>
+<p>下载源码包到指定的目录，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://nginx.org/download/nginx-1.20.2.tar.gz</span><br></pre></td></tr></table></figure>
+<p>解压并编译源码</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf  nginx-1.20.2.tar.gz</span><br><span class="line">cd nginx-1.20.2/</span><br></pre></td></tr></table></figure>
+<p>1）配置Nginx编译文件参数</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure --<span class="keyword">with</span>-stream</span><br></pre></td></tr></table></figure>
+<p>2）编译、安装，make &amp;&amp; make install</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">make</span> &amp; <span class="built_in">make</span> install</span><br></pre></td></tr></table></figure>
+<p>vim  /usr/local/nginx/conf/nginx.conf</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/07/20/%E6%99%BA%E8%83%BD%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0USDP%E6%93%8D%E4%BD%9C%E9%83%A8%E7%BD%B2/#more" rel="contents">
+              <a class="btn" href="/2022/01/26/nginx%E4%BB%A3%E7%90%86clickhouse/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -790,7 +872,7 @@ make install</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/07/14/%E9%BB%91%E9%B2%A8%E6%B8%B8%E6%88%8F%E6%89%8B%E6%9C%BA%E8%A7%A3BL%E9%94%81%EF%BC%8C%E5%88%B7REC%EF%BC%8CROOT%20%E5%92%8C%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/26/presto%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -804,7 +886,7 @@ make install</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/07/14/%E9%BB%91%E9%B2%A8%E6%B8%B8%E6%88%8F%E6%89%8B%E6%9C%BA%E8%A7%A3BL%E9%94%81%EF%BC%8C%E5%88%B7REC%EF%BC%8CROOT%20%E5%92%8C%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">黑鲨游戏手机解BL锁，刷REC，ROOT 和问题总结</a>
+            <a href="/2022/01/26/presto%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86/" class="post-title-link" itemprop="url">presto集群管理</a>
         </h1>
 
         <div class="post-meta">
@@ -814,7 +896,7 @@ make install</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-07-14 13:41:35" itemprop="dateCreated datePublished" datetime="2021-07-14T13:41:35+08:00">2021-07-14</time>
+              <time title="创建时间：2022-01-26 11:12:57" itemprop="dateCreated datePublished" datetime="2022-01-26T11:12:57+08:00">2022-01-26</time>
             </span>
 
           
@@ -828,21 +910,16 @@ make install</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="黑鲨游戏手机解BL锁，刷REC，ROOT-和问题总结">黑鲨游戏手机解BL锁，刷REC，ROOT 和问题总结</h2>
-<p>参考帮助  <a href="https://www.bilibili.com/video/BV1Cf4y1U7gn?from=search&amp;seid=14731760489436726457" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1Cf4y1U7gn?from=search&amp;seid=14731760489436726457</a></p>
-<h2 id="总的步骤：">总的步骤：</h2>
-<p><img src="/images/image-20210714100219695.png" alt="image-20210714100219695"></p>
-<p>需要用到的文件</p>
-<p><img src="/images/image-20210714110634447.png" alt="image-20210714110634447"></p>
-<h3 id="第一步-系统降级">第一步.系统降级</h3>
-<p>黑鲨1代<br>
-系统版本:G66X1811300CN00MPX安卓版本:8.1下载地址:<a href="https://ota-1256119282.file.myqcloud.com/SKR-A0/2018-11-30_shark_mp_ota11_20180929shark-ota-eng.buildfarm.zip" target="_blank" rel="noopener">https://ota-1256119282.file.myqcloud.com/SKR-A0/2018-11-30_shark_mp_ota11_20180929shark-ota-eng.buildfarm.zip</a><br>
-系统版本:G66X1905170CN00MPP安卓版本:P(安卓9)下载地址:<a href="https://ota-1256119282.file.myqcloud.com/SKR-A0/shark-ota-eng.buildfarm_2019-05-17_sdm845_p_mp_ota1_20190430.zip" target="_blank" rel="noopener">https://ota-1256119282.file.myqcloud.com/SKR-A0/shark-ota-eng.buildfarm_2019-05-17_sdm845_p_mp_ota1_20190430.zip</a></p>
-<p><strong>刷机的准备工作：</strong></p>
-<p>1、根据自己机型下载对应版本型号的黑鲨手机全量包到电脑，将文件重命名为<strong>update.zip</strong></p>
+          <p>在ansible环境下，控制其他机器，除了/etc/profile文件需要修改，还需要修改/root/.bashrc文件中的值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ansible presto -m copy -a &quot;src&#x3D;&#x2F;root&#x2F;.bashrc dest&#x3D;&#x2F;root&#x2F;.bashrc &quot;</span><br><span class="line"></span><br><span class="line">ansible presto -m shell -a &quot;java -version &quot;</span><br><span class="line"></span><br><span class="line">ansible presto -m copy -a &quot;src&#x3D;&#x2F;opt&#x2F;presto&#x2F;etc&#x2F;catalog  dest&#x3D;&#x2F;opt&#x2F;presto&#x2F;etc&#x2F;&quot;</span><br><span class="line"></span><br><span class="line">ansible presto -m shell -a &quot;ls &#x2F;opt&#x2F;presto&#x2F;etc&#x2F;catalog &quot;</span><br></pre></td></tr></table></figure>
+<h3 id="增加新的连接">增加新的连接</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ansible presto -m copy -a &quot;src&#x3D;&#x2F;opt&#x2F;presto&#x2F;etc&#x2F;catalog&#x2F;mysql_80_20.properties  dest&#x3D;&#x2F;opt&#x2F;presto&#x2F;etc&#x2F;catalog&#x2F;mysql_80_20.properties&quot;</span><br><span class="line"></span><br><span class="line"> ansible presto -m shell -a &quot;&#x2F;opt&#x2F;presto&#x2F;bin&#x2F;launcher restart &quot;</span><br></pre></td></tr></table></figure>
+<p><a href="https://repo1.maven.org/maven2/io/prestosql/presto-server/350/" target="_blank" rel="noopener">https://repo1.maven.org/maven2/io/prestosql/presto-server/350/</a></p>
+<p>350版本之后更名成trino</p>
+
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/07/14/%E9%BB%91%E9%B2%A8%E6%B8%B8%E6%88%8F%E6%89%8B%E6%9C%BA%E8%A7%A3BL%E9%94%81%EF%BC%8C%E5%88%B7REC%EF%BC%8CROOT%20%E5%92%8C%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/#more" rel="contents">
+              <a class="btn" href="/2022/01/26/presto%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -866,7 +943,7 @@ make install</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/07/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AE%A1%E7%90%86%E8%A7%84%E8%8C%83(V1)/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/01/25/Alluxio%E8%BF%90%E7%BB%B4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -880,7 +957,7 @@ make install</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/07/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AE%A1%E7%90%86%E8%A7%84%E8%8C%83(V1)/" class="post-title-link" itemprop="url">服务器管理规范(V1)</a>
+            <a href="/2022/01/25/Alluxio%E8%BF%90%E7%BB%B4/" class="post-title-link" itemprop="url">Alluxio运维</a>
         </h1>
 
         <div class="post-meta">
@@ -890,7 +967,7 @@ make install</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-07-13 09:26:43" itemprop="dateCreated datePublished" datetime="2021-07-13T09:26:43+08:00">2021-07-13</time>
+              <time title="创建时间：2022-01-25 11:01:01" itemprop="dateCreated datePublished" datetime="2022-01-25T11:01:01+08:00">2022-01-25</time>
             </span>
 
           
@@ -904,19 +981,32 @@ make install</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="服务器管理规范-V1">服务器管理规范(V1)</h4>
-<p><strong>一 配置管理规范</strong></p>
-<p>所有设备信息必须录入配置管理系统，在配置系统中能随时查询到现网业务的部署分布情况 具体信息待配置管理系统建立后再补充</p>
-<p>主机命名规范</p>
-<p>网卡vlan规范</p>
-<p>安全策略命名规范</p>
-<p>监控/部署/插件/模块命名规范</p>
-<p>版本命名规范</p>
-<p><strong>二 文件系统管理规范</strong></p>
-<p>2.1 文件布局</p>
+          <h2 id="Alluxio命令">Alluxio命令</h2>
+<h3 id="alluxio-fsadmin">alluxio fsadmin</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 查看服务状态</span><br><span class="line">alluxio fsadmin report</span><br><span class="line"></span><br><span class="line"># 查看挂掉的服务ip</span><br><span class="line">alluxio fsadmin report capacity -lost</span><br></pre></td></tr></table></figure>
+<h3 id="alluxio-getConf">alluxio getConf</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查看配置参数</span><br><span class="line">alluxio getConf --master</span><br></pre></td></tr></table></figure>
+<h2 id="Alluxio运维实战">Alluxio运维实战</h2>
+<h3 id="Worker节点挂掉">Worker节点挂掉</h3>
+<ol>
+<li>
+<p>查看服务状态，发现有一台worker节点丢失</p>
+<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2022/01/5586288e0f4a956c99cfbba8eb4ffbba.webp" alt="img"></p>
+</li>
+<li>
+<p>查看丢失的节点是哪一台</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ alluxio fsadmin report capacity -lost</span><br><span class="line">sjsysc-hh405-zbhx700w</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>登录到丢失的worker节点，启动worker</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ssh sjsysc-hh405-zbhx700w</span><br><span class="line">$ alluxio-start.sh worker SudoMount</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="设置子目录挂载点">设置子目录挂载点</h3>
+<p>待Alluxio启动完毕之后，用户可以在挂载其他子目录，例如，将另一个hadoop集群的hdfs目录挂载到alluxio中。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/07/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AE%A1%E7%90%86%E8%A7%84%E8%8C%83(V1)/#more" rel="contents">
+              <a class="btn" href="/2022/01/25/Alluxio%E8%BF%90%E7%BB%B4/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -940,7 +1030,7 @@ make install</p>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1008,7 +1098,7 @@ make install</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">171</span>
+          <span class="site-state-item-count">185</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1049,7 +1139,7 @@ make install</p>
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

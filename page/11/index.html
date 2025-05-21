@@ -209,7 +209,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/04/06/ClickHouse%20%E9%83%A8%E7%BD%B2/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/10/28/%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99%E6%B5%8B%E8%AF%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -223,7 +223,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/04/06/ClickHouse%20%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">ClickHouse 部署</a>
+            <a href="/2021/10/28/%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">磁盘读写测试</a>
         </h1>
 
         <div class="post-meta">
@@ -233,7 +233,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-04-06 15:33:31" itemprop="dateCreated datePublished" datetime="2021-04-06T15:33:31+08:00">2021-04-06</time>
+              <time title="创建时间：2021-10-28 16:44:32" itemprop="dateCreated datePublished" datetime="2021-10-28T16:44:32+08:00">2021-10-28</time>
             </span>
 
           
@@ -247,19 +247,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>ClickHouse 部署</h1>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install yum-utils</span><br><span class="line">sudo rpm --import https:&#x2F;&#x2F;repo.clickhouse.tech&#x2F;CLICKHOUSE-KEY.GPG</span><br><span class="line">sudo yum-config-manager --add-repo https:&#x2F;&#x2F;repo.clickhouse.tech&#x2F;rpm&#x2F;stable&#x2F;x86_64</span><br></pre></td></tr></table></figure>
-<p>如果您想使用最新的版本，请用<code>testing</code>替代<code>stable</code>(我们只推荐您用于测试环境)。<code>prestable</code>有时也可用。</p>
-<p>然后运行命令安装：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install clickhouse-server clickhouse-client</span><br></pre></td></tr></table></figure>
-<p>启动服务</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start clickhouse-server</span><br><span class="line">sudo systemctl stop clickhouse-server</span><br><span class="line">sudo systemctl status clickhouse-server</span><br></pre></td></tr></table></figure>
-<p>快速开始</p>
-<p>clickhouse-client -m</p>
+          <h2 id="磁盘读写测试">磁盘读写测试</h2>
+<p>FIO安装<br>
+wget <a href="http://brick.kernel.dk/snaps/fio-2.2.5.tar.gz" target="_blank" rel="noopener">http://brick.kernel.dk/snaps/fio-2.2.5.tar.gz</a></p>
+<p>yum install libaio-devel<br>
+tar -zxvf fio-2.2.5.tar.gz<br>
+cd fio-2.2.5<br>
+make<br>
+make install</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">测试：</span><br><span class="line">顺序读：</span><br><span class="line">fio -filename=/dev/sda -direct=1 -iodepth 1 -thread -rw=read -ioengine=psync -bs=16k -size=2G -numjobs=10 -runtime=60 -group_reporting -name=mytest</span><br><span class="line"></span><br><span class="line">随机写：</span><br><span class="line">fio -filename=/dev/sda -direct=1 -iodepth 1 -thread -rw=randwrite -ioengine=psync -bs=16k -size=2G -numjobs=10 -runtime=60 -group_reporting -name=mytest</span><br><span class="line"></span><br><span class="line">顺序写：</span><br><span class="line">fio -filename=/dev/sda -direct=1 -iodepth 1 -thread -rw=write -ioengine=psync -bs=16k -size=2G -numjobs=10 -runtime=60 -group_reporting -name=mytest</span><br><span class="line"></span><br><span class="line">混合随机读写：</span><br><span class="line">fio -filename=/dev/sda -direct=1 -iodepth 1 -thread -rw=randrw -rwmixread=70 -ioengine=psync -bs=16k -size=2G -numjobs=10 -runtime=60 -group_reporting -name=mytest -ioscheduler=noop</span><br></pre></td></tr></table></figure>
 
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/04/06/ClickHouse%20%E9%83%A8%E7%BD%B2/#more" rel="contents">
+              <a class="btn" href="/2021/10/28/%E7%A3%81%E7%9B%98%E8%AF%BB%E5%86%99%E6%B5%8B%E8%AF%95/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -283,7 +283,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/31/%E5%BF%AB%E9%80%9F%E8%AF%95%E7%94%A8%20DolphinScheduler/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/07/20/%E6%99%BA%E8%83%BD%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0USDP%E6%93%8D%E4%BD%9C%E9%83%A8%E7%BD%B2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -297,7 +297,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/03/31/%E5%BF%AB%E9%80%9F%E8%AF%95%E7%94%A8%20DolphinScheduler/" class="post-title-link" itemprop="url">快速试用 DolphinScheduler</a>
+            <a href="/2021/07/20/%E6%99%BA%E8%83%BD%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0USDP%E6%93%8D%E4%BD%9C%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">智能大数据平台USDP操作部署</a>
         </h1>
 
         <div class="post-meta">
@@ -307,7 +307,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-03-31 10:06:42" itemprop="dateCreated datePublished" datetime="2021-03-31T10:06:42+08:00">2021-03-31</time>
+              <time title="创建时间：2021-07-20 13:48:23" itemprop="dateCreated datePublished" datetime="2021-07-20T13:48:23+08:00">2021-07-20</time>
             </span>
 
           
@@ -321,21 +321,597 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>快速试用 DolphinScheduler</p>
-<h5 id="1、下载源码-zip-包">1、下载源码 zip 包</h5>
+          <h2 id="智能大数据平台USDP操作部署">智能大数据平台USDP操作部署</h2>
+<p>USDP部署操作指南：<a href="https://mp.weixin.qq.com/s/COnkLXPTWL5OK1PFYooThw?scene=25#wechat_redirect" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/COnkLXPTWL5OK1PFYooThw?scene=25#wechat_redirect</a></p>
+<p>bash <a href="http://repair.sh" target="_blank" rel="noopener">repair.sh</a> initAll   这个步骤大约要30多分钟，重复执行也慢。</p>
+<p>注意：</p>
+<p>1.在repair-host-info-add.properties文件中，仅需配置每次新增的节点信息即可，若存在已修复过的节点信息时，在下次运行“<a href="http://repair.sh" target="_blank" rel="noopener">repair.sh</a> initSingle”指令前，请清除。</p>
+<p>2.jdk 安装在 /opt/module 下面，不允许随意删除，否则 java 环境失效。</p>
+<p>3.数据库密码中不得包含 “@” 。</p>
+<p>4.主机名设置不得包含 “_”，&quot;-&quot; 。</p>
+<p>启动服务  bin/stop-udp-server.sh</p>
+<p>查看日志目录  /var/log/udp</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/20/%E6%99%BA%E8%83%BD%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0USDP%E6%93%8D%E4%BD%9C%E9%83%A8%E7%BD%B2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/07/14/%E9%BB%91%E9%B2%A8%E6%B8%B8%E6%88%8F%E6%89%8B%E6%9C%BA%E8%A7%A3BL%E9%94%81%EF%BC%8C%E5%88%B7REC%EF%BC%8CROOT%20%E5%92%8C%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/14/%E9%BB%91%E9%B2%A8%E6%B8%B8%E6%88%8F%E6%89%8B%E6%9C%BA%E8%A7%A3BL%E9%94%81%EF%BC%8C%E5%88%B7REC%EF%BC%8CROOT%20%E5%92%8C%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">黑鲨游戏手机解BL锁，刷REC，ROOT 和问题总结</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-14 13:41:35" itemprop="dateCreated datePublished" datetime="2021-07-14T13:41:35+08:00">2021-07-14</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="黑鲨游戏手机解BL锁，刷REC，ROOT-和问题总结">黑鲨游戏手机解BL锁，刷REC，ROOT 和问题总结</h2>
+<p>参考帮助  <a href="https://www.bilibili.com/video/BV1Cf4y1U7gn?from=search&amp;seid=14731760489436726457" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1Cf4y1U7gn?from=search&amp;seid=14731760489436726457</a></p>
+<h2 id="总的步骤：">总的步骤：</h2>
+<p><img src="/images/image-20210714100219695.png" alt="image-20210714100219695"></p>
+<p>需要用到的文件</p>
+<p><img src="/images/image-20210714110634447.png" alt="image-20210714110634447"></p>
+<h3 id="第一步-系统降级">第一步.系统降级</h3>
+<p>黑鲨1代<br>
+系统版本:G66X1811300CN00MPX安卓版本:8.1下载地址:<a href="https://ota-1256119282.file.myqcloud.com/SKR-A0/2018-11-30_shark_mp_ota11_20180929shark-ota-eng.buildfarm.zip" target="_blank" rel="noopener">https://ota-1256119282.file.myqcloud.com/SKR-A0/2018-11-30_shark_mp_ota11_20180929shark-ota-eng.buildfarm.zip</a><br>
+系统版本:G66X1905170CN00MPP安卓版本:P(安卓9)下载地址:<a href="https://ota-1256119282.file.myqcloud.com/SKR-A0/shark-ota-eng.buildfarm_2019-05-17_sdm845_p_mp_ota1_20190430.zip" target="_blank" rel="noopener">https://ota-1256119282.file.myqcloud.com/SKR-A0/shark-ota-eng.buildfarm_2019-05-17_sdm845_p_mp_ota1_20190430.zip</a></p>
+<p><strong>刷机的准备工作：</strong></p>
+<p>1、根据自己机型下载对应版本型号的黑鲨手机全量包到电脑，将文件重命名为<strong>update.zip</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/14/%E9%BB%91%E9%B2%A8%E6%B8%B8%E6%88%8F%E6%89%8B%E6%9C%BA%E8%A7%A3BL%E9%94%81%EF%BC%8C%E5%88%B7REC%EF%BC%8CROOT%20%E5%92%8C%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/07/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AE%A1%E7%90%86%E8%A7%84%E8%8C%83(V1)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AE%A1%E7%90%86%E8%A7%84%E8%8C%83(V1)/" class="post-title-link" itemprop="url">服务器管理规范(V1)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-13 09:26:43" itemprop="dateCreated datePublished" datetime="2021-07-13T09:26:43+08:00">2021-07-13</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="服务器管理规范-V1">服务器管理规范(V1)</h4>
+<p><strong>一 配置管理规范</strong></p>
+<p>所有设备信息必须录入配置管理系统，在配置系统中能随时查询到现网业务的部署分布情况 具体信息待配置管理系统建立后再补充</p>
+<p>主机命名规范</p>
+<p>网卡vlan规范</p>
+<p>安全策略命名规范</p>
+<p>监控/部署/插件/模块命名规范</p>
+<p>版本命名规范</p>
+<p><strong>二 文件系统管理规范</strong></p>
+<p>2.1 文件布局</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AE%A1%E7%90%86%E8%A7%84%E8%8C%83(V1)/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/06/29/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/29/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">Docker常用命令</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-06-29 10:30:08" itemprop="dateCreated datePublished" datetime="2021-06-29T10:30:08+08:00">2021-06-29</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <table>
+<thead>
+<tr>
+<th>COMMAND</th>
+<th>DESC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>查看</td>
+<td></td>
+</tr>
+<tr>
+<td>docker images</td>
+<td>列出所有镜像(images)</td>
+</tr>
+<tr>
+<td>docker ps</td>
+<td>列出正在运行的容器(containers)</td>
+</tr>
+<tr>
+<td>docker ps -a</td>
+<td>列出所有的容器</td>
+</tr>
+<tr>
+<td>docker pull centos</td>
+<td>下载centos镜像</td>
+</tr>
+<tr>
+<td>docker top ‘container’</td>
+<td>查看容器内部运行程序</td>
+</tr>
+<tr>
+<td>容器</td>
+<td></td>
+</tr>
+<tr>
+<td>docker exec -it 容器ID sh</td>
+<td>进入容器</td>
+</tr>
+<tr>
+<td>docker stop ‘container’</td>
+<td>停止一个正在运行的容器，‘container’可以是容器ID或名称</td>
+</tr>
+<tr>
+<td>docker start ‘container’</td>
+<td>启动一个已经停止的容器</td>
+</tr>
+<tr>
+<td>docker restart ‘container’</td>
+<td>重启容器</td>
+</tr>
+<tr>
+<td>docker rm ‘container’</td>
+<td>删除容器</td>
+</tr>
+<tr>
+<td>docker run -i -t -p :80 LAMP /bin/bash</td>
+<td>运行容器并做http端口转发</td>
+</tr>
+<tr>
+<td>docker exec -it ‘container’ /bin/bash</td>
+<td>进入ubuntu类容器的bash</td>
+</tr>
+<tr>
+<td>docker exec -it /bin/sh</td>
+<td>进入alpine类容器的sh</td>
+</tr>
+<tr>
+<td>docker rm <code>docker ps -a -q</code></td>
+<td>删除所有已经停止的容器</td>
+</tr>
+<tr>
+<td>docker kill $(docker ps -a -q)</td>
+<td>杀死所有正在运行的容器，$()功能同``</td>
+</tr>
+<tr>
+<td>镜像</td>
+<td></td>
+</tr>
+<tr>
+<td>docker build -t wp-api .</td>
+<td>构建1个镜像,-t(镜像的名字及标签) wp-api(镜像名) .(构建的目录)</td>
+</tr>
+<tr>
+<td>docker run -i -t wp-api</td>
+<td>-t -i以交互伪终端模式运行,可以查看输出信息</td>
+</tr>
+<tr>
+<td>docker run -d -p 80:80 wp-api</td>
+<td>镜像端口 -d后台模式运行镜像</td>
+</tr>
+<tr>
+<td>docker rmi [image-id]</td>
+<td>删除镜像</td>
+</tr>
+<tr>
+<td>docker rmi $(docker images -q)</td>
+<td>删除所有镜像</td>
+</tr>
+<tr>
+<td>docker rmi $(sudo docker images --filter “dangling=true” -q --no-trunc)</td>
+<td>删除无用镜像</td>
+</tr>
+<tr>
+<td>docker run --help</td>
+<td>帮助</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>更多命令查看Docker 命令大全 | 菜鸟教程</p>
+</blockquote>
+<h3 id="场景二：下载镜像并直接运行">场景二：下载镜像并直接运行</h3>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run  --name ubuntu -it ubuntu bash </span><br><span class="line">docker cp dd ubuntu:tmp/ #复制文件dd 到容器的/tmp 目录</span><br><span class="line">Ctrl-p Ctrl-q  #退出</span><br></pre></td></tr></table></figure>
+<h3 id="场景三：修改镜像，并保存到私有仓库">场景三：修改镜像，并保存到私有仓库</h3>
+<blockquote>
+<p>期望结果:在ubuntu 镜像中添加 apache，将新的镜像保存到私有仓库中</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it ubuntu bash </span><br><span class="line">apt-<span class="keyword">get</span> update</span><br><span class="line">apt-<span class="keyword">get</span> install apache2</span><br><span class="line">Ctrl-p Ctrl-q  #退出</span><br><span class="line">docker commit -a "mir355" -m "ubuntu add apache2" &#123;ID&#125;  private/ubuntu_apache:v1   #保存镜像</span><br><span class="line">docker stop ubuntu </span><br><span class="line">docker rm ubuntu</span><br><span class="line">docker run -i -t --name apache2 -p <span class="number">8080</span>:<span class="number">80</span> private/ubuntu_apache:v1 /bin/bash</span><br><span class="line">/etc/init.d/apache2 start</span><br><span class="line">Ctrl-p Ctrl-q  #退出</span><br><span class="line">#通过 docker tag重命名镜像，使之与registry匹配</span><br><span class="line">docker tag private/ubuntu_apache:v1 <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">5000</span>/private/ubuntu_apache:v1</span><br><span class="line">#保存到私有仓库</span><br><span class="line">docker push <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">5000</span>/private/ubuntu_apache:v1</span><br><span class="line">curl http:<span class="comment">//127.0.0.1:5000/v2/_catalog</span></span><br><span class="line"></span><br><span class="line">#下载镜像</span><br><span class="line">docker pull <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">5000</span>/private/ubuntu_apache:v1</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/29/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/06/25/mapreduce%E3%80%81spark%E7%9A%84%E6%A0%B7%E4%BE%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/25/mapreduce%E3%80%81spark%E7%9A%84%E6%A0%B7%E4%BE%8B/" class="post-title-link" itemprop="url">mapreduce、spark的样例</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-06-25 16:04:01" itemprop="dateCreated datePublished" datetime="2021-06-25T16:04:01+08:00">2021-06-25</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>mapreduce、spark的样例</h1>
+<h3 id="指定队列和优先级">指定队列和优先级</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-mapreduce-examples.jar pi \</span><br><span class="line">-D mapreduce.job.queuename=bf_yarn_pool.development \</span><br><span class="line">-D mapreduce.job.priority=VERY_HIGH 5 5</span><br></pre></td></tr></table></figure>
+<h3 id="TestDFSIO">TestDFSIO</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo -u hdfs hadoop jar &#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hadoop-mapreduce&#x2F;hadoop-mapreduce-client-jobclient-3.0.0-cdh6.0.1-tests.jar  TestDFSIO \</span><br><span class="line">-D mapreduce.job.queuename&#x3D;bf_yarn_pool.production \</span><br><span class="line">-D test.build.data&#x3D;&#x2F;tmp&#x2F;benchmark \</span><br><span class="line">-D mapreduce.output.fileoutputformat.compress&#x3D;false \</span><br><span class="line">-write -nrFiles 10 -fileSize 1000</span><br></pre></td></tr></table></figure>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/25/mapreduce%E3%80%81spark%E7%9A%84%E6%A0%B7%E4%BE%8B/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/05/18/Windows%20Server%202019%E5%92%8CWin10%20%E5%AE%89%E8%A3%85%20Linux%20%E5%AD%90%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/05/18/Windows%20Server%202019%E5%92%8CWin10%20%E5%AE%89%E8%A3%85%20Linux%20%E5%AD%90%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">Windows Server 2019和Win10 安装 Linux 子系统</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-18 15:52:31" itemprop="dateCreated datePublished" datetime="2021-05-18T15:52:31+08:00">2021-05-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>Windows Server</strong>版本 安装参考  <a href="https://blog.51cto.com/professor/2411436" target="_blank" rel="noopener">https://blog.51cto.com/professor/2411436</a></p>
+<p>注意：如果先安装的ConEmu ，可能没有bash  ，刷新一系default tasks，如下图：</p>
+<p><img src="/images/image-20210518154415530.png" alt="image-20210518154415530"></p>
+<p>win10版本 参考之前写的文档：</p>
+<p><strong>Win10 Subsystem Linux : Ubuntu 的root密码</strong></p>
+<p>每次开机都有一个新的root密码。我们可以在终端输入命令 sudo passwd，</p>
+<p>然后输入当前用户的密码，enter，终端会提示我们输入新的密码并确认，</p>
+<p>此时的密码就是root新密码。修改成功后，输入命令 su root，再输入新的密码就ok了。</p>
+<p><strong>win10 linux子系统设置默认用户</strong></p>
+<p><a href="https://blog.csdn.net/ijiabao520/article/details/79285041" target="_blank" rel="noopener">https://blog.csdn.net/ijiabao520/article/details/79285041</a></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/05/18/Windows%20Server%202019%E5%92%8CWin10%20%E5%AE%89%E8%A3%85%20Linux%20%E5%AD%90%E7%B3%BB%E7%BB%9F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/05/18/%E8%BF%90%E7%BB%B4%E5%92%8C%E5%8F%91%E5%B1%95%E7%BA%BF%E8%B7%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/05/18/%E8%BF%90%E7%BB%B4%E5%92%8C%E5%8F%91%E5%B1%95%E7%BA%BF%E8%B7%AF/" class="post-title-link" itemprop="url">运维和发展线路</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-18 15:26:56" itemprop="dateCreated datePublished" datetime="2021-05-18T15:26:56+08:00">2021-05-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="运维和发展的一个线路">运维和发展的一个线路</h2>
 <ul>
-<li>请下载最新版本的源码包并进行解压</li>
+<li>1.搭建服务（部署并运行起来）</li>
+<li>2.用好服务（监控、管理、优化）</li>
+<li>3.自动化（服务直接的关联和协同工作）</li>
+<li>4.产品设计（如何设计一个监控系统）</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建源码存放目录</span></span><br><span class="line">mkdir -p /opt/soft/dolphinscheduler;</span><br><span class="line">cd /opt/soft/dolphinscheduler;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 通过wget下载源码包</span></span><br><span class="line">wget https://mirrors.tuna.tsinghua.edu.cn/apache/incubator/dolphinscheduler/1.3.5/apache-dolphinscheduler-incubating-1.3.5-src.zip</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 通过curl下载源码包</span></span><br><span class="line">curl -O https://mirrors.tuna.tsinghua.edu.cn/apache/incubator/dolphinscheduler/1.3.5/apache-dolphinscheduler-incubating-1.3.5-src.zip</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 解压缩</span></span><br><span class="line">unzip apache-dolphinscheduler-incubating-1.3.5-src.zip</span><br><span class="line"></span><br><span class="line">mv apache-dolphinscheduler-incubating-1.3.5-src-release dolphinscheduler-src</span><br></pre></td></tr></table></figure>
-<h5 id="2、安装并启动服务">2、安装并启动服务</h5>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd dolphinscheduler-src&#x2F;docker&#x2F;docker-swarm</span><br><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
-<h5 id="3、登录系统">3、登录系统</h5>
-<p>访问前端页面： <a href="http://bigdata-3.baofoo.cn:12345/dolphinscheduler" target="_blank" rel="noopener">http://bigdata-3.baofoo.cn:12345/dolphinscheduler</a></p>
-<p>默认的用户是<code>admin</code>，默认的密码是<code>dolphinscheduler123</code></p>
-<p>停止所有容器:</p>
+<p><strong>云计算的核心竞争力是运维！</strong></p>
+<p>系统架构师（偏管理）：网络  系统  数据库  开发  云计算  自动化  运维管理  服务管理 项目管理  测试  业务<br>
+专注于某一领域<br>
+解决方案架构师</p>
+<h2 id="运维工作内容分类">运维工作内容分类</h2>
+<ul>
+<li>监控运维（7x24运维值班、故障处理）</li>
+<li>应用运维（业务熟悉、服务部署、业务部署、版本管理、灰度发布、应用监控）</li>
+<li>安全运维（整体的安全方案、规范、漏洞监测、安全防护等）</li>
+<li>系统运维（架构层面的分布式缓存、分布式文件系统、日志收集、环境规划（测试、开发、生产）、架构设计、性能优化）</li>
+<li>基础服务运维（包含运维开发）（内部DNS、负载均衡、系统监控、资产管理、运维平台）</li>
+<li>基础设施运维（系统初始化、网络维护）</li>
+<li>机房运维（负责设备上下架、巡检、报修、硬件监控）</li>
+</ul>
+<p>阿里云:<br>
+SLB  LVS + Tengine（Nginx）<br>
+ECS  KVM</p>
+<h2 id="运维标准化">运维标准化</h2>
+<p><strong>物理设备层面：</strong><br>
+1.服务器标签化、设备负责人、设备采购详情、设备摆放标准<br>
+2.网络划分、远程控制卡、网卡端口<br>
+3.服务器机型、硬盘、内存统一，根据业务分类<br>
+4.资产命名规范、编号规范、类型规范<br>
+5.监控标准</p>
+<p><strong>操作系统层面</strong><br>
+1.操作系统版本<br>
+2.系统初始化（配置DNS、NTP、内核参数调优）<br>
+3.基础Agent配备（Zabbix agent、logstash agent、salt minion）<br>
+4.系统监控标准（CPU、内存、硬盘、网络、进程）</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/03/31/%E5%BF%AB%E9%80%9F%E8%AF%95%E7%94%A8%20DolphinScheduler/#more" rel="contents">
+              <a class="btn" href="/2021/05/18/%E8%BF%90%E7%BB%B4%E5%92%8C%E5%8F%91%E5%B1%95%E7%BA%BF%E8%B7%AF/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -359,7 +935,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/30/conda%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/04/30/CDH%20Disk%20Balancer%20%E7%A3%81%E7%9B%98%E6%95%B0%E6%8D%AE%E5%9D%87%E8%A1%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -373,7 +949,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/03/30/conda%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">conda笔记</a>
+            <a href="/2021/04/30/CDH%20Disk%20Balancer%20%E7%A3%81%E7%9B%98%E6%95%B0%E6%8D%AE%E5%9D%87%E8%A1%A1/" class="post-title-link" itemprop="url">CDH Disk Balancer 磁盘数据均衡</a>
         </h1>
 
         <div class="post-meta">
@@ -383,7 +959,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-03-30 17:21:58" itemprop="dateCreated datePublished" datetime="2021-03-30T17:21:58+08:00">2021-03-30</time>
+              <time title="创建时间：2021-04-30 09:58:57" itemprop="dateCreated datePublished" datetime="2021-04-30T09:58:57+08:00">2021-04-30</time>
             </span>
 
           
@@ -397,14 +973,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><strong>Conda常用命令整理</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">conda --version #查看conda版本，验证是否安装</span><br><span class="line"></span><br><span class="line">conda update conda #更新至最新版本，也会更新其它相关包</span><br><span class="line"></span><br><span class="line">conda update --all #更新所有包</span><br><span class="line"></span><br><span class="line">conda update package_name #更新指定的包</span><br><span class="line"></span><br><span class="line">conda create -n env_name package_name #创建名为env_name的新环境，并在该环境下安装名为package_name 的包，可以指定新环境的版本号，例如：conda create -n python2 python=python2.7 numpy pandas，创建了python2环境，python版本为2.7，同时还安装了numpy pandas包</span><br><span class="line"></span><br><span class="line">conda activate env_name #切换至env_name环境</span><br><span class="line"></span><br><span class="line">conda deactivate #退出环境</span><br><span class="line"></span><br><span class="line">conda info -e #显示所有已经创建的环境</span><br><span class="line"></span><br><span class="line">conda create --name new_env_name --clone old_env_name #复制old_env_name为new_env_name</span><br><span class="line"></span><br><span class="line">conda remove --name env_name –all #删除环境</span><br><span class="line"></span><br><span class="line">conda list #查看所有已经安装的包</span><br><span class="line"></span><br><span class="line">conda install package_name #在当前环境中安装包</span><br><span class="line"></span><br><span class="line">conda install --name env_name package_name #在指定环境中安装包</span><br><span class="line"></span><br><span class="line">conda remove -- name env_name package #删除指定环境中的包</span><br><span class="line"></span><br><span class="line">conda remove package #删除当前环境中的包</span><br><span class="line"></span><br><span class="line">conda create -n tensorflow_env tensorflow</span><br><span class="line"></span><br><span class="line">conda activate tensorflow_env #conda 安装tensorflow的CPU版本</span><br><span class="line"></span><br><span class="line">conda create -n tensorflow_gpuenv tensorflow-gpu</span><br><span class="line"></span><br><span class="line">conda activate tensorflow_gpuenv #conda安装tensorflow的GPU版本</span><br><span class="line"></span><br><span class="line">conda env remove -n env_name #采用第10条的方法删除环境失败时，可采用这种方法</span><br></pre></td></tr></table></figure>
-<p><strong>Conda常用命令整理</strong></p>
-<p><a href="https://blog.csdn.net/menc15/article/details/71477949/" target="_blank" rel="noopener">https://blog.csdn.net/menc15/article/details/71477949/</a></p>
-
+          <h3 id="CDH-Disk-Balancer-磁盘数据均衡">CDH Disk Balancer 磁盘数据均衡</h3>
+<p>1.设置dfs.disk.balancer.enabled  为true , 可以单个datanode设置，重启单个datanode生效。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.disk.balancer.enabled<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="/images/image-20210429175922996.png" alt="image-20210429175922996">
+<p>1.创建均衡任务并生成计划任务配置文件</p>
+<p>sudo -u hdfs hdfs diskbalancer -plan cdh85-73</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@cdh85-73 tmp]# sudo -u hdfs hdfs diskbalancer -plan cdh85-73</span><br><span class="line">21/04/29 17:02:45 INFO planner.GreedyPlanner: Starting plan for Node : cdh85-73:9867</span><br><span class="line">21/04/29 17:02:45 INFO planner.GreedyPlanner: Disk Volume set f4da1504-1dfc-42d0-ac61-020dd7b02620 Type : DISK plan completed.</span><br><span class="line">21/04/29 17:02:45 INFO planner.GreedyPlanner: Compute Plan for Node : cdh85-73:9867 took 7 ms </span><br><span class="line">21/04/29 17:02:46 INFO command.Command: Writing plan to:</span><br><span class="line">21/04/29 17:02:46 INFO command.Command: /system/diskbalancer/2021-Apr-29-17-02-45/cdh85-73.plan.json</span><br><span class="line">Writing plan to:</span><br><span class="line">/system/diskbalancer/2021-Apr-29-17-02-45/cdh85-73.plan.json</span><br></pre></td></tr></table></figure>
+<p>注意： 这个路径是HDFS的路径，不是本地路径</p>
+<p>2.查看配置文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@cdh85-73 tmp]# hdfs dfs -ls  /system/diskbalancer/2021-Apr-29-16-45-51</span><br><span class="line">Found 2 items</span><br><span class="line">-rw-r--r--   3 hdfs supergroup     192586 2021-04-29 16:45 /system/diskbalancer/2021-Apr-29-16-45-51/cdh85-73.before.json</span><br><span class="line">-rw-r--r--   3 hdfs supergroup       4546 2021-04-29 16:45 /system/diskbalancer/2021-Apr-29-16-45-51/cdh85-73.plan.json</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/03/30/conda%E7%AC%94%E8%AE%B0/#more" rel="contents">
+              <a class="btn" href="/2021/04/30/CDH%20Disk%20Balancer%20%E7%A3%81%E7%9B%98%E6%95%B0%E6%8D%AE%E5%9D%87%E8%A1%A1/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -428,7 +1009,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/10/spark%E6%89%93%E5%8C%85%E6%8F%90%E4%BA%A4python%E7%A8%8B%E5%BA%8F/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/04/27/chia%E6%8C%96%E7%9F%BF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -442,7 +1023,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2021/03/10/spark%E6%89%93%E5%8C%85%E6%8F%90%E4%BA%A4python%E7%A8%8B%E5%BA%8F/" class="post-title-link" itemprop="url">spark打包提交python程序</a>
+            <a href="/2021/04/27/chia%E6%8C%96%E7%9F%BF/" class="post-title-link" itemprop="url">chia挖矿</a>
         </h1>
 
         <div class="post-meta">
@@ -452,7 +1033,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-03-10 16:22:27" itemprop="dateCreated datePublished" datetime="2021-03-10T16:22:27+08:00">2021-03-10</time>
+              <time title="创建时间：2021-04-27 10:52:45" itemprop="dateCreated datePublished" datetime="2021-04-27T10:52:45+08:00">2021-04-27</time>
             </span>
 
           
@@ -466,438 +1047,21 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><strong>spark-python版本依赖与三方模块方案</strong></p>
-<p>（1）使用conda创建python虚拟环境、安装第三方库</p>
-<p>假设虚拟环境是pyspark_py36，安装位置是：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;root&#x2F;miniconda3&#x2F;envs&#x2F;pyspark_py36</span><br><span class="line">此处省略1w个字。</span><br></pre></td></tr></table></figure>
-<p>安装的第三方库是：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">source activate pyspark_py36</span><br><span class="line"></span><br><span class="line">pip install pandas </span><br><span class="line">pip install sklearn</span><br><span class="line">pip install lightgbm</span><br></pre></td></tr></table></figure>
-<p>其他省略1w字。</p>
-<p>（2）打包整个虚拟环境</p>
-<p>进入虚拟环境目录，压缩整个文件夹</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;root&#x2F;miniconda3&#x2F;envs&#x2F;</span><br><span class="line">zip -r -9 -q pyspark_py36.zip pyspark_py36&#x2F;</span><br></pre></td></tr></table></figure>
+          <h4 id="用家里的老电脑做一个测试-，p了一块k32的盘">用家里的老电脑做一个测试 ，p了一块k32的盘</h4>
+<p>矿池的具体接入教程描述得非常浅显易懂了，这里我就不做重复搬运了，直接参考 <a href="https://www.hpool.com/help/tutorial/Chia%E6%8C%96%E7%9F%BF%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">Chia挖矿教程</a></p>
+<p>linux P盘</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup &#x2F;opt&#x2F;chia-plotter&#x2F;chia-plotter-linux-amd64 -action plotting -plotting-fpk 0x85f80829a93d960313a99ca5482703fea2caae1d07db589344e76eba135db14c8f70d08dadc991805ae917d61626fd8d -plotting-ppk 0x970214947045bd1c6fbb0b3b3499dafab837eb26b58356504aea4d8ee19e9c5c064a5dfdad0cb5f7f047e0030f088a65 -plotting-n 1 -b 8000 -t &#x2F;data1&#x2F;chia -d &#x2F;opt&#x2F;chia  &gt;&gt; plots2.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+<p>晒一下收益效果：</p>
+<p><img src="/images/image-20210427101445602.png" alt="image-20210427101445602"></p>
+<h4 id="相关资料：">相关资料：</h4>
+<p><strong>谋杀SSD磁盘</strong></p>
+<p><a href="https://www.expreview.com/78802.html" target="_blank" rel="noopener">https://www.expreview.com/78802.html</a></p>
+<blockquote>
+<p>生成一个K=32文件大概需要6.5小时，生成三个K33两个K32文件总共占了829GB的硬盘空间，而HDD的写入量是840.1GB，但SSD的读写非常厉害，整个P盘过程，SSD读取11.8TB，写入12.06TB，因为SSD的写入次数是有限的，把这个6TB的红盘P满虽然不至于把SSD写死，但磨损也很厉害。</p>
+</blockquote>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/03/10/spark%E6%89%93%E5%8C%85%E6%8F%90%E4%BA%A4python%E7%A8%8B%E5%BA%8F/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/10/vi%E6%A8%A1%E5%BC%8F%E4%B8%8B%E6%9F%A5%E6%89%BE%E5%92%8C%E6%9B%BF%E6%8D%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/10/vi%E6%A8%A1%E5%BC%8F%E4%B8%8B%E6%9F%A5%E6%89%BE%E5%92%8C%E6%9B%BF%E6%8D%A2/" class="post-title-link" itemprop="url">vi模式下查找和替换</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-03-10 13:45:30" itemprop="dateCreated datePublished" datetime="2021-03-10T13:45:30+08:00">2021-03-10</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>linux基础命令之：vi模式下查找和替换</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">一、查找</span><br><span class="line">查找命令</span><br><span class="line">/pattern&lt;Enter&gt; ：向下查找pattern匹配字符串</span><br><span class="line">?pattern&lt;Enter&gt;：向上查找pattern匹配字符串</span><br><span class="line">使用了查找命令之后，使用如下两个键快速查找：</span><br><span class="line">n：按照同一方向继续查找</span><br><span class="line">N：按照反方向查找</span><br><span class="line">pattern是需要匹配的字符串，例如：</span><br><span class="line">/hello&lt;Enter&gt;      #查找hello</span><br><span class="line">/hello&lt;Enter&gt;    #查找hello单词（注意前后的空格）</span><br><span class="line">除此之外，pattern还可以使用一些特殊字符，包括（/、^、$、*、.），其中前三个这两个是vi与vim通用的，“/”为转义字符。</span><br><span class="line">/^hello&lt;Enter&gt;    #查找以hello开始的行</span><br><span class="line"><span class="meta">/hello$</span><span class="bash">&lt;Enter&gt;    <span class="comment">#查找以hello结束的行</span></span></span><br><span class="line">//^hello&lt;Enter&gt;    #查找^hello字符串</span><br><span class="line"> </span><br><span class="line">二、替换</span><br><span class="line">1.:[range]s/pattern/string/[c,e,g,i]</span><br><span class="line">range     指的是范围，1,7 指从第一行至第七行，1,$ 指从第一行至最后一行，也就是整篇文章，也可以 % 代表。 % 是目前编辑的文章，# 是前一次编辑的文章。</span><br><span class="line">pattern     就是要被替换掉的字串，可以用 regexp 来表示。</span><br><span class="line">string     将 pattern 由 string 所取代。</span><br><span class="line">c     confirm，每次替换前会询问。</span><br><span class="line">e     不显示 error。</span><br><span class="line">g     globe，不询问，整行替换。</span><br><span class="line">i     ignore 不分大小写。</span><br><span class="line">I     ignore 大小写敏感。</span><br><span class="line"> </span><br><span class="line">2.基本替换</span><br><span class="line">:s/lantian/sky/         #替换当前行第一个 lantian 为 sky</span><br><span class="line">:s/lantian/sky/g     #替换当前行所有 lantian 为 sky</span><br><span class="line">:n,$s/lantian/sky/     #替换第 n 行开始到最后一行中每一行的第一个 lantian 为 sky</span><br><span class="line">:n,$s/lantian/sky/g     #替换第 n 行开始到最后一行中每一行所有 lantian 为 sky</span><br><span class="line"><span class="meta">#</span><span class="bash">（n 为数字，若 n 为 .，表示从当前行开始到最后一行）</span></span><br><span class="line">:%s/lantian/sky/        #（等同于 :g/lantian/s//sky/） 替换每一行的第一个 lantian 为 sky</span><br><span class="line">:%s/lantian/sky/g    #（等同于 :g/lantian/s//sky/g） 替换每一行中所有 lantian 为 sky</span><br><span class="line">可以使用 #或+ 作为分隔符，此时中间出现的 / 不会作为分隔符</span><br><span class="line">:s#lantian/#sky/#         替换当前行第一个 lantian/ 为 sky/</span><br><span class="line">:%s+/oradata/apras/+/user01/apras1+ （</span><br><span class="line">使用+ 来 替换 / ）： /oradata/apras/替换成/user01/apras1/</span><br><span class="line"> </span><br><span class="line">3.删除文本中的^M</span><br><span class="line">问题描述：对于换行，window下用回车换行（0A0D）来表示，linux下是回车（0A）来表示。这样，将window上的文件拷到unix上用时，总会有个^M，请写个用在unix下的过滤windows文件的换行符（0D）的shell或c程序。</span><br><span class="line">使用命令：cat filename1 | tr -d “^V^M” &gt; newfile;</span><br><span class="line">使用命令：sed -e “s/^V^M//” filename &gt; outputfilename</span><br><span class="line">需要注意的是在1、2两种方法中，^V和^M指的是Ctrl+V和Ctrl+M。你必须要手工进行输入，而不是粘贴。</span><br><span class="line">在vi中处理：首先使用vi打开文件，然后按ESC键，接着输入命令：</span><br><span class="line">:%s/^V^M//</span><br><span class="line">:%s/^M$//g</span><br><span class="line">如果上述方法无用，则正确的解决办法是：</span><br><span class="line">tr -d “/r” &lt; src &gt;dest</span><br><span class="line">tr -d “/015″ dest</span><br><span class="line">strings A&gt;B</span><br><span class="line"> </span><br><span class="line">4.其它用法</span><br><span class="line">:s/str1/str2/          #用字符串 str2 替换行中首次出现的字符串 str1</span><br><span class="line">:s/str1/str2/g         #用字符串 str2 替换行中所有出现的字符串 str1</span><br><span class="line">:.,$ s/str1/str2/g     #用字符串 str2 替换正文当前行到末尾所有出现的字符串 str1</span><br><span class="line">:1,$ s/str1/str2/g     #用字符串 str2 替换正文中所有出现的字符串 str1</span><br><span class="line">:g/str1/s//str2/g      #功能同上</span><br><span class="line"> </span><br><span class="line">5.g的总结说明</span><br><span class="line">从上述替换命令可以看到：</span><br><span class="line">g 放在命令末尾，表示对指定行的搜索字符串的每次出现进行替换；不加 g，表示只对指定行的搜索字符串的首次出现进行替换；</span><br><span class="line">g 放在命令开头，表示对正文中所有包含搜索字符串的行进行替换操作。</span><br><span class="line">也就是说命令的开始可以添加影响的行，如果为g表示对所有行；命令的结尾可以使用g来表示是否对每一行的所有字符串都有影响。</span><br></pre></td></tr></table></figure>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/10/vi%E6%A8%A1%E5%BC%8F%E4%B8%8B%E6%9F%A5%E6%89%BE%E5%92%8C%E6%9B%BF%E6%8D%A2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/09/%E7%94%A8python%E8%BF%9B%E8%A1%8C%E9%87%8F%E5%8C%96%E6%8A%95%E8%B5%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/09/%E7%94%A8python%E8%BF%9B%E8%A1%8C%E9%87%8F%E5%8C%96%E6%8A%95%E8%B5%84/" class="post-title-link" itemprop="url">用python进行量化投资</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-03-09 16:25:47" itemprop="dateCreated datePublished" datetime="2021-03-09T16:25:47+08:00">2021-03-09</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><strong>用python进行量化投资：</strong></p>
-<p>自己编写:NumPy+pandas+Matplotlib+…</p>
-<p>在线平台:聚宽、优矿、米筐、Quantopian、…</p>
-<p>开源框架:RQAlpha、QUANTAXIS</p>
-<p>聚宽 <a href="https://www.joinquant.com/" target="_blank" rel="noopener">https://www.joinquant.com/</a></p>
-<p>优矿 <a href="https://uqer.datayes.com/" target="_blank" rel="noopener">https://uqer.datayes.com/</a></p>
-<p>rqalpha <a href="https://rqalpha.readthedocs.io/zh_CN/latest/index.html" target="_blank" rel="noopener">https://rqalpha.readthedocs.io/zh_CN/latest/index.html</a></p>
-<p>quantaxis <a href="https://doc.yutiansut.com/" target="_blank" rel="noopener">https://doc.yutiansut.com/</a></p>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/09/%E7%94%A8python%E8%BF%9B%E8%A1%8C%E9%87%8F%E5%8C%96%E6%8A%95%E8%B5%84/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/03/yarn%20webUI%20%E7%9C%8B%E4%B8%8D%E5%88%B0%E6%97%A5%E5%BF%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/03/yarn%20webUI%20%E7%9C%8B%E4%B8%8D%E5%88%B0%E6%97%A5%E5%BF%97/" class="post-title-link" itemprop="url">yarn webUI 看不到日志</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-03-03 13:36:22" itemprop="dateCreated datePublished" datetime="2021-03-03T13:36:22+08:00">2021-03-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>yarn webUI 看不到日志</p>
-<p>解决办法：</p>
-<p>Resource Manager webUI No logs available for container</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">1. Please verify once if you could collect logs using "yarn logs" command as below?</span><br><span class="line">&#123;&#123;</span><br><span class="line">yarn logs -applicationId &lt;appID&gt; -appOwner &lt;user&gt;</span><br><span class="line">&#125;&#125;</span><br><span class="line"></span><br><span class="line">2.  please verify the below directories if they have right permissions</span><br><span class="line">&#123;&#123;</span><br><span class="line">hdfs dfs -ls /user/history/done</span><br><span class="line">hdfs dfs -ls  /user/history/done_intermediate</span><br><span class="line">&#125;&#125;</span><br><span class="line"></span><br><span class="line">3. Please verify if "Enable Log Aggregation" has been enabled or not</span><br><span class="line">&#123;&#123;</span><br><span class="line"><span class="meta">ClouderaManager--&gt;</span><span class="bash">Yarn--&gt;Configurations--&gt;<span class="string">"Enable Log Aggregation"</span></span></span><br><span class="line">&#125;&#125;</span><br><span class="line"></span><br><span class="line">4. Verify the permissions for /tmp/logs as below,</span><br><span class="line">&#123;&#123;</span><br><span class="line">hadoop fs -chown mapred:hadoop /tmp/logs</span><br><span class="line">hadoop fs -chown -R :hadoop /tmp/logs/*</span><br><span class="line">&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/03/yarn%20webUI%20%E7%9C%8B%E4%B8%8D%E5%88%B0%E6%97%A5%E5%BF%97/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/02/%E7%94%A8Hue%E4%B8%AD%E7%9A%84Oozie%E6%89%A7%E8%A1%8CImpala%20Sheel%E8%84%9A%E6%9C%AC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/02/%E7%94%A8Hue%E4%B8%AD%E7%9A%84Oozie%E6%89%A7%E8%A1%8CImpala%20Sheel%E8%84%9A%E6%9C%AC/" class="post-title-link" itemprop="url">用Hue中的Oozie执行Impala Sheel脚本</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-03-02 16:52:30" itemprop="dateCreated datePublished" datetime="2021-03-02T16:52:30+08:00">2021-03-02</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="用Hue中的Oozie执行Impala-Sheel脚本">用Hue中的Oozie执行Impala Sheel脚本</h3>
-<p>在Oozie中不能像执行hive SQL那样直接执行impala SQL脚本。目前没有Impala操作，因此你必须使用调用impala-shell的shell操作。调用impala-shell的shell脚本中还必须包含设置PYTHON EGGS位置的环境变量</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export PYTHON_EGG_CACHE=.python-eggs   </span><br><span class="line"></span><br><span class="line">impala-shell -i 172.20.15.10:21000 -u hpt -l --auth_creds_ok_in_clear --ldap_password_cmd='echo -n ***' -q 'SET request_pool=development;'</span><br></pre></td></tr></table></figure>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/02/%E7%94%A8Hue%E4%B8%AD%E7%9A%84Oozie%E6%89%A7%E8%A1%8CImpala%20Sheel%E8%84%9A%E6%9C%AC/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/03/02/hudi/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/02/hudi/" class="post-title-link" itemprop="url">hudi</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-03-02 16:50:28" itemprop="dateCreated datePublished" datetime="2021-03-02T16:50:28+08:00">2021-03-02</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><strong>注意：<strong>目前Hudi使用的是</strong>hadoop2.7.3</strong>版本，CDH6.3.0 环境使用的是<strong>hadoop3.0.0</strong>， 所以在打包的时候需要加上**-Dhadoop.version=3.0.0** 参数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean install -DskipTests -DskipITs -Dcheckstyle.skip&#x3D;true -Drat.skip&#x3D;true -Dhadoop.version&#x3D;3.0.0</span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo -u yarn spark-shell  \</span><br><span class="line">  --queue bf_yarn_pool.development \</span><br><span class="line">  --packages org.apache.spark:spark-avro_2.11:2.4.0 \</span><br><span class="line">  --conf 'spark.serializer=org.apache.spark.serializer.KryoSerializer' \</span><br><span class="line">  --jars `ls /opt/hudi/packaging/hudi-spark-bundle/target/hudi-spark-bundle_2.11-*.*.*-SNAPSHOT.jar`</span><br></pre></td></tr></table></figure>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/02/hudi/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2021/02/20/%E7%94%A8FsImage%E6%9F%A5%E6%89%BEhadoop%E9%9B%86%E7%BE%A4%E5%B0%8F%E6%96%87%E4%BB%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="datasir">
-      <meta itemprop="description" content="小杨随笔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="爱思考">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/02/20/%E7%94%A8FsImage%E6%9F%A5%E6%89%BEhadoop%E9%9B%86%E7%BE%A4%E5%B0%8F%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">用FsImage查找hadoop集群小文件</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-02-20 15:55:17" itemprop="dateCreated datePublished" datetime="2021-02-20T15:55:17+08:00">2021-02-20</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd /tmp</span><br><span class="line">hdfs dfsadmin -fetchImage ./tmp_meta</span><br><span class="line">hdfs oiv -i ./tmp_meta -o ./fsimage.csv -p Delimited</span><br><span class="line">hdfs dfs -mkdir -p /tmp/hdfs_metadata/fsimage</span><br><span class="line">hdfs dfs -copyFromLocal ./fsimage.csv /tmp/hdfs_metadata/fsimage</span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">exists</span> hdfs_meta_temp;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">external</span> <span class="keyword">table</span> hdfs_meta_temp (<span class="keyword">path</span> <span class="keyword">string</span> ,</span><br><span class="line">repl <span class="built_in">int</span> ,</span><br><span class="line">modification_time <span class="keyword">string</span> ,accesstime <span class="keyword">string</span> ,</span><br><span class="line">preferredblocksize <span class="built_in">int</span> ,blockcount <span class="keyword">double</span>,</span><br><span class="line">filesize <span class="keyword">double</span> ,nsquota <span class="built_in">int</span> ,</span><br><span class="line">dsquota <span class="built_in">int</span> ,</span><br><span class="line">permission <span class="keyword">string</span> ,username <span class="keyword">string</span> ,groupname <span class="keyword">string</span>)<span class="keyword">row</span> <span class="keyword">format</span> <span class="keyword">delimited</span></span><br><span class="line"><span class="keyword">fields</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">'\t'</span> location <span class="string">'/tmp/hdfs_metadata/fsimage/'</span> ;</span><br><span class="line"></span><br><span class="line"><span class="comment">--将临时表转换为Impala的 Parquet表</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> hdfs_meta</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> hdfs_meta <span class="keyword">stored</span> <span class="keyword">as</span> parquet <span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">path</span>,</span><br><span class="line">repl,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">concat</span>(modification_time, <span class="string">' :00'</span>) <span class="keyword">as</span> <span class="built_in">timestamp</span>) modification_time,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">concat</span>(accesstime,<span class="string">':00'</span>) <span class="keyword">as</span> <span class="built_in">timestamp</span>) accesstime,</span><br><span class="line">preferredblocksize,</span><br><span class="line">blockcount,</span><br><span class="line">filesize,nsquota,dsquota,permission,username,groupname</span><br><span class="line"><span class="keyword">from</span> hdfs_meta_temp;</span><br></pre></td></tr></table></figure>
-<p>instr(path,’/’,1,2)这两个参数主要表示指定统计的HDFS目录以及目录钻取深度，instr()函数中的最后一个参数即为目录钻取深度</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line"><span class="comment">--concat('/',split_part(path,'/',2))  basepath,</span></span><br><span class="line"><span class="comment">--concat('/',split_part(path,'/',2),'/',split_part(path,'/',3))  basepath,</span></span><br><span class="line"><span class="comment">--concat('/',split_part(path,'/',2),'/',split_part(path,'/',3),'/',split_part(path,'/',4))  basepath,</span></span><br><span class="line"><span class="keyword">concat</span>(<span class="string">'/'</span>,split_part(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">2</span>),<span class="string">'/'</span>,split_part(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">3</span>),<span class="string">'/'</span>,split_part(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">4</span>),<span class="string">'/'</span>,split_part(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">5</span>))  basepath,</span><br><span class="line"><span class="keyword">sum</span>(blockcount) blockcounts,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">sum</span>(filesize)/<span class="number">1024</span>/<span class="number">1024</span>/<span class="number">1024</span> <span class="keyword">as</span> <span class="built_in">decimal</span>(<span class="number">18</span>,<span class="number">2</span>) ) filesizes,</span><br><span class="line"><span class="keyword">count</span>(*) file_nums,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">count</span>(*)/<span class="keyword">sum</span>(blockcount) <span class="keyword">as</span> <span class="built_in">decimal</span>(<span class="number">18</span>,<span class="number">2</span>) ) <span class="keyword">as</span> avg_block ,</span><br><span class="line"><span class="keyword">cast</span>(<span class="keyword">sum</span>(filesize)/<span class="keyword">count</span>(*)/<span class="number">1024</span> <span class="keyword">as</span> <span class="built_in">decimal</span>(<span class="number">18</span>,<span class="number">2</span>) ) <span class="keyword">AS</span> avg_filesize</span><br><span class="line"><span class="keyword">FROM</span> tmp.hdfs_meta </span><br><span class="line"><span class="keyword">where</span> <span class="keyword">instr</span>(<span class="keyword">path</span>,<span class="string">'/'</span>,<span class="number">1</span>,<span class="number">4</span>)&gt;<span class="number">0</span></span><br><span class="line"><span class="comment">--and strleft(path, instr(path,'/',1,4)-1)='/user/hive/warehouse'</span></span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> basepath  </span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> file_nums <span class="keyword">desc</span>, avg_filesize </span><br><span class="line"><span class="keyword">limit</span> <span class="number">200</span></span><br></pre></td></tr></table></figure>
-<p><strong>总结</strong></p>
-<p>如上SQL的统计分析可以看到有三个比较重要的统计指标file_nums、blockcounts和avg_filesize。通过这三个指标进行小文件分析，进行如下分析：</p>
-<p>如果file_nums/blockcounts的值越大且avg_filesize越小则说明该HDFS或Hive表的小文件越多。</p>
-<p><strong>方法二、</strong></p>
-<p>使用Sqoop脚本将Hive元数据中关于Hive库和表的信息抽取的Hive中</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">sqoop import \</span><br><span class="line">-D mapred.job.queue.name=bf_yarn_pool.development \</span><br><span class="line">--connect "jdbc:mysql://10.0.20.107:3306/baofoo_hive_2" \</span><br><span class="line">--username cs_yangz \</span><br><span class="line">--password *** \</span><br><span class="line">--query 'select c.NAME,c.DB_LOCATION_URI,a.TBL_NAME,a.OWNER,a.TBL_TYPE,b.LOCATION from TBLS a,SDS b,DBS c where a.SD_ID=b.SD_ID and a.DB_ID=c.DB_ID and $CONDITIONS' \</span><br><span class="line">--fields-terminated-by ',' \</span><br><span class="line">--delete-target-dir \</span><br><span class="line">--hive-database default \</span><br><span class="line">--target-dir /tmp/hive_tables_temp \</span><br><span class="line">--hive-import \</span><br><span class="line">--hive-overwrite \</span><br><span class="line">--hive-table hive_tables_temp \</span><br><span class="line">--m 1</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/02/20/%E7%94%A8FsImage%E6%9F%A5%E6%89%BEhadoop%E9%9B%86%E7%BE%A4%E5%B0%8F%E6%96%87%E4%BB%B6/#more" rel="contents">
+              <a class="btn" href="/2021/04/27/chia%E6%8C%96%E7%9F%BF/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -921,7 +1085,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -989,7 +1153,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">171</span>
+          <span class="site-state-item-count">185</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1030,7 +1194,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

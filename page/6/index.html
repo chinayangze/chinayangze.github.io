@@ -209,7 +209,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/12/09/%E8%A7%A3%E5%86%B3freeipa%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/04/28/MongoDB6.0%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA(Centos7)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -223,7 +223,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/12/09/%E8%A7%A3%E5%86%B3freeipa%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F/" class="post-title-link" itemprop="url">解决freeipa证书过期</a>
+            <a href="/2023/04/28/MongoDB6.0%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA(Centos7)/" class="post-title-link" itemprop="url">MongoDB6.0集群搭建(Centos7)</a>
         </h1>
 
         <div class="post-meta">
@@ -233,7 +233,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-12-09 10:23:14" itemprop="dateCreated datePublished" datetime="2022-12-09T10:23:14+08:00">2022-12-09</time>
+              <time title="创建时间：2023-04-28 17:00:39" itemprop="dateCreated datePublished" datetime="2023-04-28T17:00:39+08:00">2023-04-28</time>
             </span>
 
           
@@ -247,20 +247,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>FreeIPA 服务器在重启后不会启动</h1>
-<p>参考   <a href="https://redhatlinux.guru/2020/10/09/freeipa-server-will-not-start-after-reboot/" target="_blank" rel="noopener">https://redhatlinux.guru/2020/10/09/freeipa-server-will-not-start-after-reboot/</a></p>
-<p><strong>原因 证书过期：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[root@freeipa ~]# ipa-getcert list </span><br><span class="line">Number of certificates and requests being tracked: 9.</span><br><span class="line">Request ID &#39;20190830074301&#39;:</span><br><span class="line">	status: CA_UNREACHABLE</span><br><span class="line">	ca-error: Server at https:&#x2F;&#x2F;freeipa.baofoo.cn&#x2F;ipa&#x2F;xml failed request, will retry: -504 (libcurl failed to execute the HTTP POST transaction, explaining:  Failed connect to freeipa.baofoo.cn:443; Connection refused).</span><br><span class="line">	stuck: no</span><br><span class="line">	key pair storage: type&#x3D;NSSDB,location&#x3D;&#39;&#x2F;etc&#x2F;dirsrv&#x2F;slapd-BAOFOO-CN&#39;,nickname&#x3D;&#39;Server-Cert&#39;,token&#x3D;&#39;NSS Certificate DB&#39;,pinfile&#x3D;&#39;&#x2F;etc&#x2F;dirsrv&#x2F;slapd-BAOFOO-CN&#x2F;pwdfile.txt&#39;</span><br><span class="line">	certificate: type&#x3D;NSSDB,location&#x3D;&#39;&#x2F;etc&#x2F;dirsrv&#x2F;slapd-BAOFOO-CN&#39;,nickname&#x3D;&#39;Server-Cert&#39;,token&#x3D;&#39;NSS Certificate DB&#39;</span><br><span class="line">	CA: IPA</span><br><span class="line">	issuer: CN&#x3D;Certificate Authority,O&#x3D;BAOFOO.CN</span><br><span class="line">	subject: CN&#x3D;freeipa.baofoo.cn,O&#x3D;BAOFOO.CN</span><br><span class="line">	expires: 2021-08-30 07:43:01 UTC</span><br><span class="line">	dns: freeipa.baofoo.cn</span><br><span class="line">	principal name: ldap&#x2F;freeipa.baofoo.cn@BAOFOO.CN</span><br><span class="line">	key usage: digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment</span><br><span class="line">	eku: id-kp-serverAuth,id-kp-clientAuth</span><br><span class="line">	pre-save command: </span><br><span class="line">	post-save command: &#x2F;usr&#x2F;libexec&#x2F;ipa&#x2F;certmonger&#x2F;restart_dirsrv BAOFOO-CN</span><br><span class="line">	track: yes</span><br><span class="line">	auto-renew: yes</span><br></pre></td></tr></table></figure>
-<p>问题<br>
-这更多是利基问题。但可能对其他人有用。我在家里有一个用于 DNS 的 FreeIPA 服务器设置。在简单的重新启动以向 VM 添加一些 RAM 后，服务器将无法启动。我收到如下错误。</p>
-<p>IPA 服务器错误</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status ipa</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">● ipa.service - Identity, Policy, Audit</span><br><span class="line">Loaded: loaded (&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;ipa.service; enabled; vendor preset: disabled)</span><br><span class="line">Active: failed (Result: exit-code) since Fri 2020-10-09 14:57:15 EDT; 1s ago</span><br><span class="line">Process: 1110 ExecStart&#x3D;&#x2F;usr&#x2F;sbin&#x2F;ipactl start (code&#x3D;exited, status&#x3D;1&#x2F;FAILURE)</span><br><span class="line">Main PID: 1110 (code&#x3D;exited, status&#x3D;1&#x2F;FAILURE)</span><br><span class="line"></span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Aborting ipactl</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting Directory Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting krb5kdc Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting kadmin Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting named Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local ipactl[1110]: Starting httpd Service</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: ipa.service: main process exited, code&#x3D;exited, status&#x3D;1&#x2F;FAILURE</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: Failed to start Identity, Policy, Audit.</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: Unit ipa.service entered failed state.</span><br><span class="line">Oct 09 14:57:15 ipasrv.home.local systemd[1]: ipa.service failed.</span><br></pre></td></tr></table></figure>
-<h5 id="Apache-服务错误">Apache 服务错误</h5>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status httpd -l</span><br></pre></td></tr></table></figure>
+          <h1>MongoDB6.0集群搭建(Centos7)</h1>
+<p>wget  <a href="https://downloads.mongodb.com/compass/mongosh-1.8.1-linux-x64.tgz" target="_blank" rel="noopener">https://downloads.mongodb.com/compass/mongosh-1.8.1-linux-x64.tgz</a></p>
+<p>wget <a href="https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-6.0.5.tgz" target="_blank" rel="noopener">https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-6.0.5.tgz</a></p>
+<p>参考   <a href="https://www.jianshu.com/p/21d33d6cb56c" target="_blank" rel="noopener">https://www.jianshu.com/p/21d33d6cb56c</a></p>
+<p><a href="https://blog.csdn.net/networken/article/details/115409367" target="_blank" rel="noopener">https://blog.csdn.net/networken/article/details/115409367</a></p>
+
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/12/09/%E8%A7%A3%E5%86%B3freeipa%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F/#more" rel="contents">
+              <a class="btn" href="/2023/04/28/MongoDB6.0%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA(Centos7)/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -284,7 +279,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/11/14/cdh%20%E5%AE%89%E8%A3%85Pheonix5.12/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/04/23/HBase%E5%B8%B8%E7%94%A8%E7%9A%84Filter/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -298,7 +293,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/11/14/cdh%20%E5%AE%89%E8%A3%85Pheonix5.12/" class="post-title-link" itemprop="url">cdh 安装Pheonix5.12</a>
+            <a href="/2023/04/23/HBase%E5%B8%B8%E7%94%A8%E7%9A%84Filter/" class="post-title-link" itemprop="url">HBase常用的Filter</a>
         </h1>
 
         <div class="post-meta">
@@ -308,7 +303,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-11-14 15:49:27" itemprop="dateCreated datePublished" datetime="2022-11-14T15:49:27+08:00">2022-11-14</time>
+              <time title="创建时间：2023-04-23 15:14:30" itemprop="dateCreated datePublished" datetime="2023-04-23T15:14:30+08:00">2023-04-23</time>
             </span>
 
           
@@ -322,20 +317,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>cdh 安装Pheonix5.12</h1>
-<p>Phoenix5.12-之安装部署（Hbase-2.1.1）<br>
-Phoenix与Hbase的版本兼容是很严格的，我们需要使用Phoenix去适配Hbase，有很严格的版本标准，具体的版本匹配如下图。</p>
-<p>具体版本的选择请查阅官网下载页面：<a href="https://phoenix.apache.org/download.html" target="_blank" rel="noopener">https://phoenix.apache.org/download.html</a></p>
-<h1>1 解压</h1>
-<p>tar -zxvf phoenix-hbase-2.1-5.1.2-bin.tar.gz -C /opt/module/</p>
-<h1>2 重新命名</h1>
-<p>mv phoenix-hbase-2.1-5.1.2-bin/ phoenix-hbase-2.1-5.1.2</p>
-<h1>3 将phoenix-server-hbase-2.1-5.1.2.jar拷贝到Hbase的Master和Slave节点的lib目录下</h1>
-<p>cp phoenix-server-hbase-2.1-5.1.2.jar …/hbase-2.1.1/lib/</p>
-<h1>4 配置环境变量 hbase和phoenix 在/etc/profile</h1>
+          <h1>HBase常用的Filter</h1>
+<p>简介：</p>
+<p>​    根据技术调研的过程可以明显的体会到hbase的存储方式和数据库的存储有着明显的区别，查询的方式也有着很大不同，HBase主要是通过这种filter来对数据进行筛选。同时对于数据的体量较大（10亿级别以上的数据数据量），检索和修改的场景较多时是比较适合使用hbase。</p>
+<p>HBase过滤器可以根据分为：列簇与列类型过滤器，行键过滤器，其他过滤器<br>
+HBase Filter 概览<br>
+查询hbase支持的filter 列表</p>
+<p>[<img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码">](javascript:void(0);)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">base(main):001:0&gt; show_filters</span><br><span class="line">DependentColumnFilter                                                                                                                                                  </span><br><span class="line">KeyOnlyFilter                                                                                                                                                          </span><br><span class="line">ColumnCountGetFilter                                                                                                                                                   </span><br><span class="line">SingleColumnValueFilter                                                                                                                                                </span><br><span class="line">PrefixFilter                                                                                                                                                           </span><br><span class="line">SingleColumnValueExcludeFilter                                                                                                                                         </span><br><span class="line">FirstKeyOnlyFilter                                                                                                                                                     </span><br><span class="line">ColumnRangeFilter                                                                                                                                                      </span><br><span class="line">ColumnValueFilter                                                                                                                                                      </span><br><span class="line">TimestampsFilter                                                                                                                                                       </span><br><span class="line">FamilyFilter                                                                                                                                                           </span><br><span class="line">QualifierFilter                                                                                                                                                        </span><br><span class="line">ColumnPrefixFilter                                                                                                                                                     </span><br><span class="line">RowFilter                                                                                                                                                              </span><br><span class="line">MultipleColumnPrefixFilter                                                                                                                                             </span><br><span class="line">InclusiveStopFilter                                                                                                                                                    </span><br><span class="line">PageFilter                                                                                                                                                             </span><br><span class="line">ValueFilter                                                                                                                                                            </span><br><span class="line">ColumnPaginationFilter                                                                                                                                                 </span><br><span class="line">Took 0.0033 seconds</span><br></pre></td></tr></table></figure>
+<p>[<img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码">](javascript:void(0);)</p>
+<p>HBase Filter 使用简单例子<br>
+行键过滤器<br>
+RowFilter:针对行键进行过滤</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scan &#39;test&#39;,FILTER&#x3D;&gt;&quot;RowFilter(&#x3D;,&#39;binaryprefix:row&#39;)&quot;</span><br></pre></td></tr></table></figure>
+<p>说明:把test表中rowkey 以row开头的数据查出来</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/11/14/cdh%20%E5%AE%89%E8%A3%85Pheonix5.12/#more" rel="contents">
+              <a class="btn" href="/2023/04/23/HBase%E5%B8%B8%E7%94%A8%E7%9A%84Filter/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -359,7 +357,7 @@ Phoenix与Hbase的版本兼容是很严格的，我们需要使用Phoenix去适�
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/11/12/Dbeaver%E8%BF%9E%E6%8E%A5phoenix/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/04/19/centos%E7%BB%91%E5%AE%9A%E8%99%9A%E6%8B%9FIP/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -373,7 +371,7 @@ Phoenix与Hbase的版本兼容是很严格的，我们需要使用Phoenix去适�
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/11/12/Dbeaver%E8%BF%9E%E6%8E%A5phoenix/" class="post-title-link" itemprop="url">Dbeaver连接phoenix</a>
+            <a href="/2023/04/19/centos%E7%BB%91%E5%AE%9A%E8%99%9A%E6%8B%9FIP/" class="post-title-link" itemprop="url">centos绑定虚拟IP</a>
         </h1>
 
         <div class="post-meta">
@@ -383,7 +381,7 @@ Phoenix与Hbase的版本兼容是很严格的，我们需要使用Phoenix去适�
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-11-12 17:10:16" itemprop="dateCreated datePublished" datetime="2022-11-12T17:10:16+08:00">2022-11-12</time>
+              <time title="创建时间：2023-04-19 14:13:50" itemprop="dateCreated datePublished" datetime="2023-04-19T14:13:50+08:00">2023-04-19</time>
             </span>
 
           
@@ -397,19 +395,16 @@ Phoenix与Hbase的版本兼容是很严格的，我们需要使用Phoenix去适�
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>Dbeaver连接phoenix</h1>
-<p>1.切换到/opt/cloudera/parcels/PHOENIX-5.0.0-cdh6.2.0.p0.1308267/lib/phoenix，下载</p>
-<p>phoenix-5.0.0-cdh6.2.0-client.jar这个jar包</p>
-<p>2.下载客户端配置</p>
-<p>里面有个phoenix-5.0.0-cdh6.2.0-client.jar下载下来</p>
-<p>3.执行下面命令:</p>
-<p>jar -uf phoenix-5.0.0-cdh6.2.0-client.jar hbase-site.xml 将hbase-site.xml添加到phoenix-5.0.0-cdh6.2.0-client.jar里</p>
-<p>4.打开Dbeaver，创建新链接-&gt;编辑驱动-&gt;添加文件(刚才的jar包)-&gt;找到类-&gt;确定</p>
-<p>5.填写连接信息，点击测试连接，成功！</p>
+          <p>配置虚拟IP</p>
+<p>/sbin/ifconfig bond0:2 172.20.192.241 netmask 255.255.255.0 up</p>
+<p>广播通知</p>
+<p>/sbin/arping -c 5 -U -I bond0 172.20.192.241 &gt;/dev/null 2&gt;&amp;1</p>
+<p>关闭虚拟IP</p>
+<p>/sbin/ifconfig bond0:2 172.20.192.241 netmask 255.255.255.0 down</p>
 
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/11/12/Dbeaver%E8%BF%9E%E6%8E%A5phoenix/#more" rel="contents">
+              <a class="btn" href="/2023/04/19/centos%E7%BB%91%E5%AE%9A%E8%99%9A%E6%8B%9FIP/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -433,7 +428,7 @@ Phoenix与Hbase的版本兼容是很严格的，我们需要使用Phoenix去适�
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/11/07/Docker%E8%AE%BE%E7%BD%AE%E5%AE%B9%E5%99%A8%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/04/19/Trino%20%E5%BC%80%E5%90%AF%E7%94%A8%E6%88%B7%E5%90%8D%E5%AF%86%E7%A0%81%E6%A0%A1%E9%AA%8C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -447,7 +442,7 @@ Phoenix与Hbase的版本兼容是很严格的，我们需要使用Phoenix去适�
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/11/07/Docker%E8%AE%BE%E7%BD%AE%E5%AE%B9%E5%99%A8%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF/" class="post-title-link" itemprop="url">Docker设置容器开机自启</a>
+            <a href="/2023/04/19/Trino%20%E5%BC%80%E5%90%AF%E7%94%A8%E6%88%B7%E5%90%8D%E5%AF%86%E7%A0%81%E6%A0%A1%E9%AA%8C/" class="post-title-link" itemprop="url">Trino 开启用户名密码校验</a>
         </h1>
 
         <div class="post-meta">
@@ -457,7 +452,7 @@ Phoenix与Hbase的版本兼容是很严格的，我们需要使用Phoenix去适�
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-11-07 10:36:26" itemprop="dateCreated datePublished" datetime="2022-11-07T10:36:26+08:00">2022-11-07</time>
+              <time title="创建时间：2023-04-19 13:46:26" itemprop="dateCreated datePublished" datetime="2023-04-19T13:46:26+08:00">2023-04-19</time>
             </span>
 
           
@@ -471,25 +466,19 @@ Phoenix与Hbase的版本兼容是很严格的，我们需要使用Phoenix去适�
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><strong>Docker设置容器开机自启</strong></p>
-<p>设置docker开机自启</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable docker</span><br></pre></td></tr></table></figure>
-<p>设置docker容器开机自启<br>
-创建docker容器时设置开机自启<br>
-#在使用docker run启动容器时，使用–restart参数来设置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --restart&#x3D;always --name imagesName</span><br></pre></td></tr></table></figure>
-<p>修改已创建的docker容器开机自启<br>
-#如果创建时未指定 --restart=always ,可通过update 命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker update --restart&#x3D;always imagesName</span><br></pre></td></tr></table></figure>
-<p>参数说明<br>
-  --restart具体参数值详细信息：</p>
-<p>no - 容器退出时，不重启容器；<br>
-on-failure - 只有在非0状态退出时才从新启动容器；<br>
-always - 无论退出状态是如何，都重启容器；</p>
-<p>还可以在使用on - failure策略时，指定Docker将尝试重新启动容器的最大次数。默认情况下，Docker将尝试永远重新启动容器。</p>
+          <p><a href="https://sslover.me/2022/03/15/trino-deploy-tutorials/" target="_blank" rel="noopener">https://sslover.me/2022/03/15/trino-deploy-tutorials/</a></p>
+<h4 id="开启-TLS-支持">开启 TLS 支持</h4>
+<p>当采用用户名/密码的方式进行认证时，Trino 强制要求我们使用 TLS，所以我们需要对其进行配置。</p>
+<p>首先我们需要创建 HTTPS 证书，由于是本地测试，所以我们直接自己签发一个。Trino 支持 PEM 文件和 JKS 文件，我们使用标准的 PEM 文件进行配置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 生成私钥</span><br><span class="line">[root@cdh192-150 ssl]# openssl genrsa -out server.key 2048</span><br><span class="line"># 生成 CSR </span><br><span class="line">[root@cdh192-150 ssl]# openssl req -new -key server.key -out server.csr</span><br><span class="line"># 自己派发证书</span><br><span class="line">[root@cdh192-150 ssl]# openssl x509 -req -days 36500 -in server.csr -signkey server.key -out server.crt</span><br><span class="line"># 生成 PEM 格式文件</span><br><span class="line">[root@cdh192-150 ssl]# cat server.key server.crt &gt; server.pem</span><br><span class="line"># 校验 PEM 文件</span><br><span class="line">[root@cdh192-150 ssl]# openssl rsa -in server.pem -check -noout</span><br><span class="line">[root@cdh192-150 ssl]# openssl x509 -in server.pem -text -noout</span><br></pre></td></tr></table></figure>
+<p>生成完证书后，在 <code>config.properties</code> 文件中添加如下配置即可开启 TLS 支持：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 开启 https</span><br><span class="line">http-server.https.enabled&#x3D;true</span><br><span class="line"># 指定 https 端口</span><br><span class="line">http-server.https.port&#x3D;8443</span><br><span class="line"># 指定证书文件</span><br><span class="line">http-server.https.keystore.path&#x3D;&#x2F;opt&#x2F;module&#x2F;trino-server-405&#x2F;etc&#x2F;ssl&#x2F;server.pem</span><br><span class="line"># 开启web-ui访问 </span><br><span class="line">http-server.authentication.allow-insecure-over-http&#x3D;true</span><br></pre></td></tr></table></figure>
+<p>最后修改 JDBC 连接地址，由于是自签证书，所以我们需要关闭证书校验：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jdbc:trino:&#x2F;&#x2F;127.0.0.1:8443?SSL&#x3D;true&amp;SSLVerification&#x3D;NONE</span><br></pre></td></tr></table></figure>
+<p>同理，CLI 命令修改为：</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/11/07/Docker%E8%AE%BE%E7%BD%AE%E5%AE%B9%E5%99%A8%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF/#more" rel="contents">
+              <a class="btn" href="/2023/04/19/Trino%20%E5%BC%80%E5%90%AF%E7%94%A8%E6%88%B7%E5%90%8D%E5%AF%86%E7%A0%81%E6%A0%A1%E9%AA%8C/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -513,7 +502,7 @@ always - 无论退出状态是如何，都重启容器；</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/10/28/jpsall%20xsync%E5%91%BD%E4%BB%A4%E8%84%9A%E6%9C%AC/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/04/18/win10%E5%A4%9A%E7%94%A8%E6%88%B7%E5%90%8C%E6%97%B6%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -527,7 +516,7 @@ always - 无论退出状态是如何，都重启容器；</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/10/28/jpsall%20xsync%E5%91%BD%E4%BB%A4%E8%84%9A%E6%9C%AC/" class="post-title-link" itemprop="url">jpsall xsync命令脚本</a>
+            <a href="/2023/04/18/win10%E5%A4%9A%E7%94%A8%E6%88%B7%E5%90%8C%E6%97%B6%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5/" class="post-title-link" itemprop="url">win10多用户同时远程连接</a>
         </h1>
 
         <div class="post-meta">
@@ -537,7 +526,7 @@ always - 无论退出状态是如何，都重启容器；</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-10-28 13:27:46" itemprop="dateCreated datePublished" datetime="2022-10-28T13:27:46+08:00">2022-10-28</time>
+              <time title="创建时间：2023-04-18 17:09:43" itemprop="dateCreated datePublished" datetime="2023-04-18T17:09:43+08:00">2023-04-18</time>
             </span>
 
           
@@ -551,15 +540,16 @@ always - 无论退出状态是如何，都重启容器；</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>vim  /usr/bin/xsync</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash">1. 判断参数个数</span></span><br><span class="line">if [ $# -lt 1 ]</span><br><span class="line">then</span><br><span class="line"> echo Not Enough Arguement!</span><br><span class="line"> exit;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">2. 遍历集群所有机器</span></span><br><span class="line">for host in usdp01 usdp02 usdp03</span><br><span class="line">do</span><br><span class="line"> echo ==================== $host ====================</span><br><span class="line"><span class="meta"> #</span><span class="bash">3. 遍历所有目录，挨个发送</span></span><br><span class="line"> for file in $@</span><br><span class="line"> do</span><br><span class="line"><span class="meta"> #</span><span class="bash">4. 判断文件是否存在</span></span><br><span class="line"> if [ -e $file ]</span><br><span class="line"> then</span><br><span class="line"><span class="meta"> #</span><span class="bash">5. 获取父目录</span></span><br><span class="line"> pdir=$(cd -P $(dirname $file); pwd)</span><br><span class="line"><span class="meta"> #</span><span class="bash">6. 获取当前文件的名称</span></span><br><span class="line"> fname=$(basename $file)</span><br><span class="line"> ssh $host "mkdir -p $pdir"</span><br><span class="line"> rsync -av $pdir/$fname $host:$pdir</span><br><span class="line"> else</span><br><span class="line"> echo $file does not exists!</span><br><span class="line"> fi</span><br><span class="line"> done</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-<p><strong><a href="http://jpsall.sh" target="_blank" rel="noopener">jpsall.sh</a> 脚本：</strong></p>
-<p>vim /usr/bin/jpsall</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行jps命令查询每台服务器上的节点状态</span></span><br><span class="line">echo ======================集群节点状态====================</span><br><span class="line"></span><br><span class="line">for i in usdp01 usdp02 usdp03</span><br><span class="line">do</span><br><span class="line">        echo ====================== $i ====================</span><br><span class="line">        ssh $i "/opt/module/jdk1.8.0_202/bin/jps"</span><br><span class="line">done</span><br><span class="line">echo ======================执行完毕====================</span><br></pre></td></tr></table></figure>
+          <h2 id="win10-解决多用户同时远程连接">win10 解决多用户同时远程连接</h2>
+<p>下载破解软件，用管理员身份运行</p>
+<p><a href="https://github.com/stascorp/rdpwrap" target="_blank" rel="noopener">https://github.com/stascorp/rdpwrap</a></p>
+<p>修改配置文件 ，从 <a href="https://github.com/sebaxakerhtc/rdpwrap.ini" target="_blank" rel="noopener">https://github.com/sebaxakerhtc/rdpwrap.ini</a> 下载</p>
+<p>C:\Program Files\RDP Wrapper\rdpwrap.ini</p>
+<p>重启服务器就可以了。</p>
 
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/10/28/jpsall%20xsync%E5%91%BD%E4%BB%A4%E8%84%9A%E6%9C%AC/#more" rel="contents">
+              <a class="btn" href="/2023/04/18/win10%E5%A4%9A%E7%94%A8%E6%88%B7%E5%90%8C%E6%97%B6%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -583,7 +573,7 @@ always - 无论退出状态是如何，都重启容器；</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/10/10/StartRocks%E8%A1%A5%E6%95%B0%E6%8D%AE/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/04/17/Alluxio%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -597,7 +587,7 @@ always - 无论退出状态是如何，都重启容器；</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/10/10/StartRocks%E8%A1%A5%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">StartRocks补数据</a>
+            <a href="/2023/04/17/Alluxio%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">Alluxio常用操作</a>
         </h1>
 
         <div class="post-meta">
@@ -607,7 +597,7 @@ always - 无论退出状态是如何，都重启容器；</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-10-10 17:25:50" itemprop="dateCreated datePublished" datetime="2022-10-10T17:25:50+08:00">2022-10-10</time>
+              <time title="创建时间：2023-04-17 14:02:57" itemprop="dateCreated datePublished" datetime="2023-04-17T14:02:57+08:00">2023-04-17</time>
             </span>
 
           
@@ -621,39 +611,21 @@ always - 无论退出状态是如何，都重启容器；</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>StartRocks补数据</h1>
-<h2 id="创建catalog">创建catalog</h2>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">CATALOG</span> hive_catalog0 </span><br><span class="line">PROPERTIES(</span><br><span class="line">  <span class="string">"type"</span>=<span class="string">"hive"</span>, </span><br><span class="line">  <span class="string">"hive.metastore.uris"</span>=<span class="string">"thrift://172.20.85.29:9083,thrift://172.20.85.29:9083"</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">SHOW</span> RESOURCES;</span><br><span class="line"></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">databases</span> <span class="keyword">from</span> hive_catalog0</span><br></pre></td></tr></table></figure>
-<h2 id="创建parquet文件格式的临时表">创建parquet文件格式的临时表</h2>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> PAY_TRADECENTER.T_TC_BASE_P </span><br><span class="line"> <span class="keyword">STORED</span> <span class="keyword">AS</span> parquet  </span><br><span class="line"> <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">SELECT</span>  *  <span class="keyword">from</span>  PAY_TRADECENTER.T_TC_BASE <span class="keyword">where</span> pk_day &gt;= <span class="string">'2022-07-16'</span> <span class="keyword">and</span>  pk_day &lt; <span class="string">'2022-08-17'</span></span><br></pre></td></tr></table></figure>
-<h2 id="导入数据">导入数据</h2>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> query_timeout = <span class="number">259200</span>;</span><br><span class="line"><span class="keyword">set</span> exec_mem_limit=<span class="number">21474836480</span>;</span><br><span class="line"><span class="keyword">SET</span> enable_insert_strict = <span class="literal">false</span>; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span>  <span class="keyword">into</span> PAY_TRADECENTER.<span class="string">`T_TC_BASE`</span> (CREATED_AT ,<span class="keyword">ID</span>, TRADE_NO, OUT_TRADE_NO, PRODUCT_TYPE, SUB_PRODUCT_TYPE, PRODUCT_CHANNEL, TRADE_CHANNEL, REQUEST_DATE, REQUEST_SYSTEM, TRADE_AMT, SERVICE_FEE, CCY, MERCHANT_NO, MERCHANT_TRADE_NO, ORIG_TRADE_NO, TRADE_FINISH_DATE, MEMO, EXTEND, SUBJECT, TRADE_STATUS, TRADE_FAIL_STATUS, TRADE_TYPE, REFUND_AMT, RESULT_CODE, RESULT_DESC, TRACE_LOG_ID, SETTLE_ACCOUNT_NO, SETTLE_ACCOUNT_TYPE, FEE_ACCOUNT_NO, FEE_ACCOUNT_TYPE, SUB_MERCHANT_ID, AGENT_NO, STORE_ID, EXTEND1, EXTEND2, EXTEND3, CREATED_BY, UPDATED_AT, UPDATED_BY, USER_ID, EXTEND4, EXTEND5, EXTEND6, TOTAL_ORDER_AMT, UNION_INFO)</span><br><span class="line"><span class="keyword">SELECT</span> CREATED_AT ,<span class="keyword">ID</span>, TRADE_NO, OUT_TRADE_NO, PRODUCT_TYPE, SUB_PRODUCT_TYPE, PRODUCT_CHANNEL, TRADE_CHANNEL, REQUEST_DATE, REQUEST_SYSTEM, TRADE_AMT, SERVICE_FEE, CCY, MERCHANT_NO, MERCHANT_TRADE_NO, ORIG_TRADE_NO, TRADE_FINISH_DATE, MEMO, EXTEND, SUBJECT, TRADE_STATUS, TRADE_FAIL_STATUS, TRADE_TYPE, REFUND_AMT, RESULT_CODE, RESULT_DESC, TRACE_LOG_ID, SETTLE_ACCOUNT_NO, SETTLE_ACCOUNT_TYPE, FEE_ACCOUNT_NO, FEE_ACCOUNT_TYPE, SUB_MERCHANT_ID, AGENT_NO, STORE_ID, EXTEND1, EXTEND2, EXTEND3, CREATED_BY, UPDATED_AT, UPDATED_BY, USER_ID, EXTEND4, EXTEND5, EXTEND6, TOTAL_ORDER_AMT, UNION_INFO</span><br><span class="line"><span class="keyword">FROM</span>  hive_catalog0.PAY_TRADECENTER.T_TC_BASE_P</span><br></pre></td></tr></table></figure>
-<h2 id="删除临时表">删除临时表</h2>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> PAY_TRADECENTER.T_TC_BASE_P</span><br></pre></td></tr></table></figure>
-<p>PAY_AGGREGATE        T_ORDER_EXTERNAL        CREATED_AT<br>
-PAY_BENEFIT        T_BIZ_CMD        CREATED_AT<br>
-PAY_BENEFIT        T_ORDER_BASE        CREATED_AT<br>
-PAY_BENEFIT        T_ORDER_BASE_BENEFIT        CREATED_AT<br>
-<s>PAY_GATEWAY        T_ACQ_AGGREGATE        CREATED_AT</s><br>
-<s>PAY_GATEWAY        T_ACQ_AGGREGATE_DYNAMIC        CREATED_AT</s><br>
-<s>PAY_GATEWAY        T_ACQ_NOTIFY        CREATED_AT</s><br>
-<s>PAY_GATEWAY        T_ACQ_REFUND        CREATED_AT</s><br>
-<s>PAY_GATEWAY        T_RISK_INFO        CREATED_AT</s><br>
-PAY_SETTLE        T_SETTLE_ORDER_ACQUIRING        TRADE_FINISH_DATE<br>
-PAY_SETTLE        T_SETTLE_ORDER_RE·FUND        TRADE_FINISH_DATE<br>
-PAY_TRADECENTER        T_BIZ_CMD        CREATED_AT<br>
-PAY_TRADECENTER        T_TC_ACCOUNT_TRANS        CREATED_AT<br>
-<s>PAY_TRADECENTER        T_TC_AGGREGATE_TRANS        CREATED_AT</s><br>
-<s>PAY_TRADECENTER        T_TC_BASE        CREATED_AT</s><br>
-<s>PAY_TRADECENTER        T_TC_CHANNEL_MSG        CREATED_AT</s><br>
-<s>PAY_TRADECENTER        T_TC_CHANNEL_TRANS        CREATED_AT</s><br>
-PAY_VERIFY        T_VERIFY_BANK_TRANS        VERIFY_DATE<br>
-PAY_VERIFY        T_VERIFY_CHANNEL_COST        VERIFY_DATE<br>
-PAY_VERIFY        T_VERIFY_CHANNEL_TRANS        VERIFY_DATE<br>
-PAY_VERIFY        T_VERIFY_RESULT        VERIFY_DATE</p>
+          <h2 id="Alluxio常用操作">Alluxio常用操作</h2>
+<h2 id="启动一个Alluxio集群">启动一个Alluxio集群</h2>
+<h3 id="格式化Alluxio">格式化Alluxio</h3>
+<p>在首次启动Alluxio之前，必须先格式化日志。</p>
+<blockquote>
+<p>格式化日记将删除Alluxio中的所有元数据。 但是，格式化不会涉及底层存储的数据。</p>
+</blockquote>
+<p>在master节点上，使用以下命令格式化Alluxio：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;bin&#x2F;alluxio formatMaster</span><br></pre></td></tr></table></figure>
+<h3 id="启动Alluxio">启动Alluxio</h3>
+<p>启动Alluxio集群，在master点上确保<code>conf/workers</code>文件中所有worker的主机名都是正确的。</p>
+<p>在master点上，运行以下命令启动Alluxio集群：</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/10/10/StartRocks%E8%A1%A5%E6%95%B0%E6%8D%AE/#more" rel="contents">
+              <a class="btn" href="/2023/04/17/Alluxio%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -677,7 +649,7 @@ PAY_VERIFY        T_VERIFY_RESULT        VERIFY_DATE</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/08/18/%E5%8F%96%E6%B6%88%E6%8E%89%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2mstsc%E9%A1%B6%E9%83%A8%EF%BC%88%E4%BE%A7%E9%9D%A2%EF%BC%89%E8%BF%9E%E6%8E%A5%E6%A0%8F/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/04/17/%E9%83%A8%E7%BD%B2Alluxio%E9%9B%86%E7%BE%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -691,7 +663,7 @@ PAY_VERIFY        T_VERIFY_RESULT        VERIFY_DATE</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/08/18/%E5%8F%96%E6%B6%88%E6%8E%89%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2mstsc%E9%A1%B6%E9%83%A8%EF%BC%88%E4%BE%A7%E9%9D%A2%EF%BC%89%E8%BF%9E%E6%8E%A5%E6%A0%8F/" class="post-title-link" itemprop="url">取消掉远程桌面mstsc顶部（侧面）连接栏</a>
+            <a href="/2023/04/17/%E9%83%A8%E7%BD%B2Alluxio%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">部署Alluxio集群</a>
         </h1>
 
         <div class="post-meta">
@@ -701,7 +673,7 @@ PAY_VERIFY        T_VERIFY_RESULT        VERIFY_DATE</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-08-18 08:54:52" itemprop="dateCreated datePublished" datetime="2022-08-18T08:54:52+08:00">2022-08-18</time>
+              <time title="创建时间：2023-04-17 11:02:06" itemprop="dateCreated datePublished" datetime="2023-04-17T11:02:06+08:00">2023-04-17</time>
             </span>
 
           
@@ -715,19 +687,33 @@ PAY_VERIFY        T_VERIFY_RESULT        VERIFY_DATE</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>取消掉远程桌面mstsc顶部（侧面）连接栏</p>
-<p>在进行mstsc远程桌面连接电脑或者虚拟机的时候，总是会出现一个连接栏。虽然点左边的图钉可以自动隐藏，但是每次鼠标滑到上面的时候，还是会冒出来，这个就有点闹心了。</p>
-<p>查了下相关资料，解决了，特写下相关教程；</p>
-<p>关闭步骤：在进行远程连接的时候，取消选择 显示-&gt;全屏显示时显示连接栏(B)。</p>
-<p>如果要退出远程连接的话，Ctrl+ Alt+ Home,在全屏模式下，激活连接栏，然后叉掉就好了。</p>
-<p>笔记本可能没有HOME键</p>
-<p>HOME键和左方向键共用，打开HOME的方法是FN + HOME<br>
-所有笔记本唤醒连接栏的方法就是<br>
-Ctrl+ Alt+ FN + Home</p>
-
+          <p>准备<br>
+下载文件：wget <a href="https://downloads.alluxio.io/downloads/files/2.9.2/alluxio-2.9.2-bin.tar.gz" target="_blank" rel="noopener">https://downloads.alluxio.io/downloads/files/2.9.2/alluxio-2.9.2-bin.tar.gz</a></p>
+<p>解压目录：/opt/servers/alluxio</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;downloads.alluxio.io&#x2F;downloads&#x2F;files&#x2F;2.9.2&#x2F;alluxio-2.9.2-bin.tar.gz</span><br><span class="line">tar -xzf alluxio-2.9.2-bin.tar.gz -C &#x2F;opt&#x2F;servers&#x2F;alluxio</span><br></pre></td></tr></table></figure>
+<p>创建目录：mkdir -p /mnt/ramdisk</p>
+<p>机器：10.0.21.190（master，worker）10.0.21.191（master，worker）10.0.21.192（worker）</p>
+<h2 id="HA-配置">HA 配置</h2>
+<p>搭建高可用集群前的准备:</p>
+<ul>
+<li>
+<p>①确保Zookeeper服务已经运行</p>
+</li>
+<li>
+<p>②一个单独安装的可靠的共享日志存储系统(可用HDFS或S3等系统)</p>
+</li>
+<li>
+<p>③这个配置针对Alluxio 2.x版本，不适用于1.x版本</p>
+</li>
+<li>
+<p>④需要事先创建好ramdisk挂载目录</p>
+</li>
+</ul>
+<p>配置hive alluxio文件系统：core-site.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">      &lt;name&gt;fs.alluxio.impl&lt;&#x2F;name&gt;</span><br><span class="line">      &lt;value&gt;alluxio.hadoop.FileSystem&lt;&#x2F;value&gt;</span><br><span class="line">      &lt;description&gt;The Alluxio FileSystem (Hadoop 1.x and 2.x)&lt;&#x2F;description&gt;</span><br><span class="line">  &lt;&#x2F;property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">      &lt;name&gt;fs.AbstractFileSystem.alluxio.impl&lt;&#x2F;name&gt;</span><br><span class="line">      &lt;value&gt;alluxio.hadoop.AlluxioFileSystem&lt;&#x2F;value&gt;</span><br><span class="line">      &lt;description&gt;The Alluxio AbstractFileSystem (Hadoop 2.x)&lt;&#x2F;description&gt;</span><br><span class="line">  &lt;&#x2F;property&gt;</span><br><span class="line">&lt;&#x2F;configuration&gt;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/08/18/%E5%8F%96%E6%B6%88%E6%8E%89%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2mstsc%E9%A1%B6%E9%83%A8%EF%BC%88%E4%BE%A7%E9%9D%A2%EF%BC%89%E8%BF%9E%E6%8E%A5%E6%A0%8F/#more" rel="contents">
+              <a class="btn" href="/2023/04/17/%E9%83%A8%E7%BD%B2Alluxio%E9%9B%86%E7%BE%A4/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -751,7 +737,7 @@ Ctrl+ Alt+ FN + Home</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/07/12/%E8%A7%A3%E5%86%B3root%E7%94%A8%E6%88%B7%E5%AF%B9HDFS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%93%8D%E4%BD%9C%E6%9D%83%E9%99%90%E4%B8%8D%E5%A4%9F%E9%97%AE%E9%A2%98/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/03/29/hbase%E7%9A%84master%E5%92%8Cregionserver%E7%9A%84jvm%E8%B0%83%E4%BC%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -765,7 +751,7 @@ Ctrl+ Alt+ FN + Home</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/07/12/%E8%A7%A3%E5%86%B3root%E7%94%A8%E6%88%B7%E5%AF%B9HDFS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%93%8D%E4%BD%9C%E6%9D%83%E9%99%90%E4%B8%8D%E5%A4%9F%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">解决root用户对HDFS文件系统操作权限不够问题</a>
+            <a href="/2023/03/29/hbase%E7%9A%84master%E5%92%8Cregionserver%E7%9A%84jvm%E8%B0%83%E4%BC%98/" class="post-title-link" itemprop="url">hbase的master和regionserver的jvm调优</a>
         </h1>
 
         <div class="post-meta">
@@ -775,7 +761,7 @@ Ctrl+ Alt+ FN + Home</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-07-12 10:46:40" itemprop="dateCreated datePublished" datetime="2022-07-12T10:46:40+08:00">2022-07-12</time>
+              <time title="创建时间：2023-03-29 14:27:58" itemprop="dateCreated datePublished" datetime="2023-03-29T14:27:58+08:00">2023-03-29</time>
             </span>
 
           
@@ -789,19 +775,12 @@ Ctrl+ Alt+ FN + Home</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>解决root用户对HDFS文件系统操作权限不够问题</h1>
-<p>HDFS文件系统的目录基本都属于supergroup用户组，所以就把用户添加到该用户组，即可解决很多权限问题。</p>
-<p>1、<strong>在namenode节点</strong>的Linux执行如下命令增加supergroup</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">groupadd supergroup</span><br></pre></td></tr></table></figure>
-<p>2、如将用户root增加到supergroup中</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">usermod -a -G supergroup root</span><br></pre></td></tr></table></figure>
-<p>3、同步系统的权限信息到HDFS文件系统</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u hdfs hdfs dfsadmin -refreshUserToGroupsMappings</span><br></pre></td></tr></table></figure>
-<p>4、查看属于supergroup用户组的用户</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep &#39;supergroup:&#39; &#x2F;etc&#x2F;group</span><br></pre></td></tr></table></figure>
+          <h1>hbase的master和regionserver的jvm调优</h1>
+<p><a href="https://blog.csdn.net/Robots_/article/details/112475758" target="_blank" rel="noopener">https://blog.csdn.net/Robots_/article/details/112475758</a></p>
+
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/07/12/%E8%A7%A3%E5%86%B3root%E7%94%A8%E6%88%B7%E5%AF%B9HDFS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%93%8D%E4%BD%9C%E6%9D%83%E9%99%90%E4%B8%8D%E5%A4%9F%E9%97%AE%E9%A2%98/#more" rel="contents">
+              <a class="btn" href="/2023/03/29/hbase%E7%9A%84master%E5%92%8Cregionserver%E7%9A%84jvm%E8%B0%83%E4%BC%98/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -825,7 +804,7 @@ Ctrl+ Alt+ FN + Home</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/05/30/Docker%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/03/21/Hbase%20Call%20queue%20is%20full%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90%E5%8F%8A%E8%A7%A3%E5%86%B3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -839,7 +818,7 @@ Ctrl+ Alt+ FN + Home</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/05/30/Docker%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="post-title-link" itemprop="url">Docker配置代理服务器</a>
+            <a href="/2023/03/21/Hbase%20Call%20queue%20is%20full%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90%E5%8F%8A%E8%A7%A3%E5%86%B3/" class="post-title-link" itemprop="url">Hbase Call queue is full问题分析及解决</a>
         </h1>
 
         <div class="post-meta">
@@ -849,7 +828,7 @@ Ctrl+ Alt+ FN + Home</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-05-30 17:24:57" itemprop="dateCreated datePublished" datetime="2022-05-30T17:24:57+08:00">2022-05-30</time>
+              <time title="创建时间：2023-03-21 13:30:00" itemprop="dateCreated datePublished" datetime="2023-03-21T13:30:00+08:00">2023-03-21</time>
             </span>
 
           
@@ -863,23 +842,12 @@ Ctrl+ Alt+ FN + Home</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>Docker配置代理服务器</h1>
-<h2 id="背景环境说明">背景环境说明</h2>
-<p>Docker环境安装在内网，只有一台公共的代理服务器能够上网，<br>
-一般的docker pull会无法下载镜像。</p>
-<p>新配置了代理服务器squid。（搭建squid代理服务器这里不讲，参考另一篇文章。不建议使用nginx坐正向代理，处理不了https。）<br>
-操作系统： Redhat 7.5 X86<br>
-内核: 3.10.0-862.el7.x86_64/docker 18.09<br>
-代理服务器： 10.1.1.1:10000</p>
-<h2 id="修改DockerService文件">修改DockerService文件</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;docker.service</span><br></pre></td></tr></table></figure>
-<p>在[Service]下面添加：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Service</span>]</span><br><span class="line">Environment=<span class="string">"HTTP_PROXY=http://10.1.1.1:10000"</span></span><br><span class="line">Environment=<span class="string">"HTTPS_PROXY=https://proxy.example.com:443"</span></span><br></pre></td></tr></table></figure>
-<h2 id="重启Docker服务">重启Docker服务</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl rstart docker </span><br><span class="line">systemctl <span class="built_in">enable</span> docker</span><br></pre></td></tr></table></figure>
+          <h1>Hbase Call queue is full问题分析及解决</h1>
+<p><a href="https://hijiazz.gitee.io/hbase-callqueue-isfull/" target="_blank" rel="noopener">https://hijiazz.gitee.io/hbase-callqueue-isfull/</a></p>
+
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/05/30/Docker%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8/#more" rel="contents">
+              <a class="btn" href="/2023/03/21/Hbase%20Call%20queue%20is%20full%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90%E5%8F%8A%E8%A7%A3%E5%86%B3/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -903,7 +871,7 @@ Ctrl+ Alt+ FN + Home</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2022/05/17/Linux%20%E9%98%B2%E6%AD%A2rm%E8%AF%AF%E5%88%A0%E6%96%87%E4%BB%B6%EF%BC%8C%E5%B0%86rm%E9%85%8D%E7%BD%AE%E6%88%90mv%E5%88%B0.trash/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/03/10/CDH%206.3.2%20%E9%9B%86%E6%88%90%20flink%201.14.6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -917,7 +885,7 @@ Ctrl+ Alt+ FN + Home</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/05/17/Linux%20%E9%98%B2%E6%AD%A2rm%E8%AF%AF%E5%88%A0%E6%96%87%E4%BB%B6%EF%BC%8C%E5%B0%86rm%E9%85%8D%E7%BD%AE%E6%88%90mv%E5%88%B0.trash/" class="post-title-link" itemprop="url">Linux 防止rm误删文件，将rm配置成mv到.trash</a>
+            <a href="/2023/03/10/CDH%206.3.2%20%E9%9B%86%E6%88%90%20flink%201.14.6/" class="post-title-link" itemprop="url">CDH 6.3.2 集成 flink 1.14.6</a>
         </h1>
 
         <div class="post-meta">
@@ -927,7 +895,7 @@ Ctrl+ Alt+ FN + Home</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-05-17 15:05:52" itemprop="dateCreated datePublished" datetime="2022-05-17T15:05:52+08:00">2022-05-17</time>
+              <time title="创建时间：2023-03-10 15:55:24" itemprop="dateCreated datePublished" datetime="2023-03-10T15:55:24+08:00">2023-03-10</time>
             </span>
 
           
@@ -941,19 +909,19 @@ Ctrl+ Alt+ FN + Home</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>Linux 防止rm误删文件，将rm配置成mv到.trash</h1>
-<p>今天在服务器上操作想删除文件来着，结果一直提示我mv: 正在访问&quot;/data0/.trash/&quot;: 没有那个文件或目录，原来是为了防止误删把rm命令改写了，这样删错了后果就不会很严重</p>
-<p>操作方法就是在~下的.bashrc或者.bash_profile文件加入如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~&#x2F;.trash</span><br><span class="line">alias rm&#x3D;trash  </span><br><span class="line">alias r&#x3D;trash  </span><br><span class="line">alias rl&#x3D;&#39;ls ~&#x2F;.trash&#39;</span><br><span class="line">alias ur&#x3D;undelfile</span><br><span class="line">undelfile()</span><br><span class="line">&#123;</span><br><span class="line">  mv -i ~&#x2F;.trash&#x2F;$@ .&#x2F;</span><br><span class="line">&#125;</span><br><span class="line">trash()</span><br><span class="line">&#123;</span><br><span class="line">  mv $@ ~&#x2F;.trash&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样删除的文件会出现在家目录下的.trash文件中。</p>
-<p>那么问题来了，如何删除.trash文件中的文件呢</p>
-<p>继续在之前的.bashrc中添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cleartrash()</span><br><span class="line">&#123;</span><br><span class="line">    read -p &quot;clear sure?[n]&quot; confirm</span><br><span class="line">    [ $confirm &#x3D;&#x3D; &#39;y&#39; ] || [ $confirm &#x3D;&#x3D; &#39;Y&#39; ]  &amp;&amp; &#x2F;usr&#x2F;bin&#x2F;rm -rf ~&#x2F;.trash&#x2F;*</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>清理回收站直接使用$cleartrash即可</p>
-
+          <h1>CDH 6.3.2 集成 flink 1.14.6</h1>
+<h1>制作Flink的parcel包和<a href="https://so.csdn.net/so/search?q=csd&amp;spm=1001.2101.3001.7020" target="_blank" rel="noopener">csd</a>文件</h1>
+<h2 id="1-下载制作脚本">1. 下载制作脚本</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 克隆源码</span><br><span class="line">git clone https:<span class="comment">//github.com/pkeropen/flink-parcel.git</span></span><br><span class="line">cd flink-parcel</span><br></pre></td></tr></table></figure>
+<h2 id="2-修改参数">2 修改参数</h2>
+<p>vim flink-parcel.properties</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#FLINK 下载地址</span></span><br><span class="line"><span class="attr">FLINK_URL</span>=<span class="string">https://archive.apache.org/dist/flink/flink-1.14.6/flink-1.14.6-bin-scala_2.12.tgz</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#flink版本号</span></span><br><span class="line"><span class="attr">FLINK_VERSION</span>=<span class="string">1.14.6</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#扩展版本号</span></span><br><span class="line"><span class="attr">EXTENS_VERSION</span>=<span class="string">BIN-SCALA_2.12</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#操作系统版本，以centos为例</span></span><br><span class="line"><span class="attr">OS_VERSION</span>=<span class="string">7</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#CDH 小版本</span></span><br><span class="line"><span class="attr">CDH_MIN_FULL</span>=<span class="string">5.13.1</span></span><br><span class="line"><span class="attr">CDH_MAX_FULL</span>=<span class="string">6.3.2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#CDH大版本</span></span><br><span class="line"><span class="attr">CDH_MIN</span>=<span class="string">5</span></span><br><span class="line"><span class="attr">CDH_MAX</span>=<span class="string">6</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-编译parcel">4 编译parcel</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 赋予执行权限</span><br><span class="line">chmod +x ./build.sh</span><br><span class="line"># 执行编译脚本</span><br><span class="line">./build.sh parcel</span><br></pre></td></tr></table></figure>
+<p>编译完会在flink-parcel项目根目录下生成_build文件夹</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/05/17/Linux%20%E9%98%B2%E6%AD%A2rm%E8%AF%AF%E5%88%A0%E6%96%87%E4%BB%B6%EF%BC%8C%E5%B0%86rm%E9%85%8D%E7%BD%AE%E6%88%90mv%E5%88%B0.trash/#more" rel="contents">
+              <a class="btn" href="/2023/03/10/CDH%206.3.2%20%E9%9B%86%E6%88%90%20flink%201.14.6/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -977,7 +945,7 @@ Ctrl+ Alt+ FN + Home</p>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1045,7 +1013,7 @@ Ctrl+ Alt+ FN + Home</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">171</span>
+          <span class="site-state-item-count">185</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1086,7 +1054,7 @@ Ctrl+ Alt+ FN + Home</p>
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://www.ask3.cn').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="小杨随笔">
+<meta property="og:type" content="website">
+<meta property="og:title" content="爱思考">
+<meta property="og:url" content="http://www.ask3.cn/page/3/index.html">
+<meta property="og:site_name" content="爱思考">
+<meta property="og:description" content="小杨随笔">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="datasir">
+<meta property="article:tag" content="爱思考">
+<meta property="article:tag" content="软件学习网">
+<meta property="article:tag" content="软件学习">
+<meta property="article:tag" content="hadoop">
+<meta property="article:tag" content="spark">
+<meta property="article:tag" content="hive">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="cdh">
+<meta property="article:tag" content="hbase">
+<meta property="article:tag" content="kudu">
+<meta property="article:tag" content="impala">
+<meta property="article:tag" content="flink">
+<meta property="article:tag" content="hdfs">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="presto">
+<meta property="article:tag" content="大数据运维">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.ask3.cn/page/3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: true,
+    isPost: false
+  };
+</script>
+
+  <title>爱思考</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">爱思考</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">分享知识，分享快乐</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/05/21/tidb%E5%A4%87%E4%BB%BD%E3%80%81%E8%BF%98%E5%8E%9F%E3%80%81cdc%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/21/tidb%E5%A4%87%E4%BB%BD%E3%80%81%E8%BF%98%E5%8E%9F%E3%80%81cdc%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5/" class="post-title-link" itemprop="url">tidb备份、还原、cdc实时同步</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-05-21 14:36:38" itemprop="dateCreated datePublished" datetime="2024-05-21T14:36:38+08:00">2024-05-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>tidb备份，还原，cdc实时同步</p>
+<h2 id="全量备份">全量备份</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#指定时间备份</span><br><span class="line">tiup br backup full --pd &quot;172.20.192.115:2379&quot; \</span><br><span class="line">--storage &quot;s3:&#x2F;&#x2F;tidb&#x2F;all20240520?access-key&#x3D;minioadmin&amp;secret-access-key&#x3D;***&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&quot; \</span><br><span class="line">--backupts&#x3D;&#39;2024&#x2F;05&#x2F;18 00:00:00&#39;</span><br></pre></td></tr></table></figure>
+<h2 id="增量备份">增量备份</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 获取上一次的备份时间戳</span><br><span class="line">tiup br validate decode --field&#x3D;&quot;end-version&quot; --storage &#39;s3:&#x2F;&#x2F;tidb&#x2F;all20240520?access-key&#x3D;minioadmin&amp;secret-access-key&#x3D;minioadmin&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&#39;| tail -n1</span><br><span class="line"></span><br><span class="line">tiup br backup full --pd &quot;172.20.192.115:2379&quot; \</span><br><span class="line">--storage &quot;s3:&#x2F;&#x2F;tidb&#x2F;add20240520?access-key&#x3D;minioadmin&amp;secret-access-key&#x3D;***&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&quot; \</span><br><span class="line">--lastbackupts&#x3D;&#39;449829037670400000&#39;</span><br></pre></td></tr></table></figure>
+<h2 id="cdc实时同步">cdc实时同步</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 获取上一次的备份时间戳</span><br><span class="line">tiup br validate decode --field&#x3D;&quot;end-version&quot; --storage &#39;s3:&#x2F;&#x2F;tidb&#x2F;all20240520?access-key&#x3D;minioadmin&amp;secret-access-key&#x3D;***&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&#39;| tail -n1</span><br><span class="line"></span><br><span class="line">tiup cdc cli changefeed create --server&#x3D;http:&#x2F;&#x2F;172.20.192.108:8300 --sink-uri&#x3D;&quot;mysql:&#x2F;&#x2F;root:***@172.20.192.233:32570&quot; --changefeed-id&#x3D;&quot;prod-to-k8s&quot; --start-ts&#x3D;&quot;449887328375668790&quot;</span><br></pre></td></tr></table></figure>
+<p>–  对于错误代码为 8138、8139 和 8140 的错误，可以通过设置 set @@tidb_enable_mutation_checker=0 跳过检查。<br>
+–  对于错误代码为 8141 的错误，可以通过设置 set @@tidb_txn_assertion_level=OFF 跳过检查。</p>
+<p>“error”: {<br>
+“time”: “2024-05-20T18:08:00.547340271+08:00”,<br>
+“addr”: “172.20.192.107:8300”,<br>
+“code”: “CDC:ErrChangefeedUnretryable”,<br>
+“message”: “[CDC:ErrMySQLTxnError]MySQL txn error: context deadline exceeded”<br>
+}</p>
+<p>tiup cdc cli changefeed create --server=http://172.20.192.107:8300 --sink-uri=“mysql://root:***@172.20.192.233:32570?max-txn-row=20” --changefeed-id=“prod-to-k8s” --start-ts=“449889998692417548”  --config /home/tidb/cdc-prod-to-k8s.toml</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/05/21/tidb%E5%A4%87%E4%BB%BD%E3%80%81%E8%BF%98%E5%8E%9F%E3%80%81cdc%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/05/16/TIDB%E6%90%AD%E5%BB%BA%E5%8F%8C%E9%9B%86%E7%BE%A4%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/16/TIDB%E6%90%AD%E5%BB%BA%E5%8F%8C%E9%9B%86%E7%BE%A4%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" class="post-title-link" itemprop="url">TIDB搭建双集群主从复制</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-05-16 14:03:25" itemprop="dateCreated datePublished" datetime="2024-05-16T14:03:25+08:00">2024-05-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>TIDB搭建双集群主从复制</h1>
+<p>官网参考文档</p>
+<p><a href="https://docs.pingcap.com/zh/tidb/v6.5/replicate-between-primary-and-secondary-clusters#%E6%90%AD%E5%BB%BA%E5%8F%8C%E9%9B%86%E7%BE%A4%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6" target="_blank" rel="noopener">https://docs.pingcap.com/zh/tidb/v6.5/replicate-between-primary-and-secondary-clusters#搭建双集群主从复制</a></p>
+<h1>TiCDC 安装部署与集群运维</h1>
+<p><a href="https://docs.pingcap.com/zh/tidb/v6.5/deploy-ticdc" target="_blank" rel="noopener">https://docs.pingcap.com/zh/tidb/v6.5/deploy-ticdc</a></p>
+<ol>
+<li>
+<p>备份数据。</p>
+<p>在上游集群中执行 BACKUP 语句备份数据：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MySQL [(none)]&gt; BACKUP DATABASE * TO '`s3://backup?access-key=minio&amp;secret-access-key=miniostorage&amp;endpoint=http://$&#123;HOST_IP&#125;:6060&amp;force-path-style=true`' RATE_LIMIT = 120 MB/SECOND;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+----------------------+----------+--------------------+---------------------+---------------------+</span><br><span class="line">| Destination          | Size     | BackupTS           | Queue Time          | Execution Time      |</span><br><span class="line">+----------------------+----------+--------------------+---------------------+---------------------+</span><br><span class="line">| local:&#x2F;&#x2F;&#x2F;tmp&#x2F;backup&#x2F; | 10315858 | 431434047157698561 | 2022-02-25 19:57:59 | 2022-02-25 19:57:59 |</span><br><span class="line">+----------------------+----------+--------------------+---------------------+---------------------+</span><br><span class="line">1 row in set (2.11 sec)</span><br></pre></td></tr></table></figure>
+<p>备份语句提交成功后，TiDB 会返回关于备份数据的元信息，这里需要重点关注 BackupTS，它意味着该时间点之前数据会被备份，后边的教程中，将使用 BackupTS 作为<strong>数据校验截止时间</strong>和 <strong>TiCDC 增量扫描的开始时间</strong>。</p>
+</li>
+<li>
+<p>恢复数据。</p>
+<p>在下游集群中执行 RESTORE 语句恢复数据：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; RESTORE DATABASE * FROM '`s3://backup?access-key=minio&amp;secret-access-key=miniostorage&amp;endpoint=http://$&#123;HOST_IP&#125;:6060&amp;force-path-style=true`';</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+----------------------+----------+--------------------+---------------------+---------------------+</span><br><span class="line">| Destination          | Size     | BackupTS           | Queue Time          | Execution Time      |</span><br><span class="line">+----------------------+----------+--------------------+---------------------+---------------------+</span><br><span class="line">| local:&#x2F;&#x2F;&#x2F;tmp&#x2F;backup&#x2F; | 10315858 | 431434141450371074 | 2022-02-25 20:03:59 | 2022-02-25 20:03:59 |</span><br><span class="line">+----------------------+----------+--------------------+---------------------+---------------------+</span><br><span class="line">1 row in set (41.85 sec)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>创建一个 TiCDC 同步任务，实时同步主集群数据到从集群</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tiup cdc cli changefeed create --server&#x3D;http:&#x2F;&#x2F;172.20.192.108:8300 --sink-uri&#x3D;&quot;mysql:&#x2F;&#x2F;root:Admi*@172.20.192.101:4000&quot; --changefeed-id&#x3D;&quot;upstream-to-downstream&quot; --start-ts&#x3D;&quot;445309452101091541&quot;</span><br></pre></td></tr></table></figure>
+<p>以上命令中：</p>
+<ul>
+<li><code>--server</code>：TiCDC 集群任意一节点的地址</li>
+<li><code>--sink-uri</code>：同步任务下游的地址</li>
+<li><code>--start-ts</code>：TiCDC 同步的起点，需要设置为实际的备份时间点（也就是<a href="https://docs.pingcap.com/zh/tidb/v6.5/replicate-between-primary-and-secondary-clusters#%E7%AC%AC-2-%E6%AD%A5%E8%BF%81%E7%A7%BB%E5%85%A8%E9%87%8F%E6%95%B0%E6%8D%AE" target="_blank" rel="noopener">第 2 步：迁移全量数据</a>提到的 BackupTS）</li>
+</ul>
+<p>使用 TiCDC 命令行工具来查看集群状态</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/05/16/TIDB%E6%90%AD%E5%BB%BA%E5%8F%8C%E9%9B%86%E7%BE%A4%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/05/16/%E6%BC%AB%E9%81%93%E4%BA%91%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Tidb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/16/%E6%BC%AB%E9%81%93%E4%BA%91%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Tidb/" class="post-title-link" itemprop="url">漫道云环境安装Tidb</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-05-16 09:23:51" itemprop="dateCreated datePublished" datetime="2024-05-16T09:23:51+08:00">2024-05-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>漫道云环境安装Tidb</p>
+<h3 id="安装-TiDB-Operator-CRDs">安装 TiDB Operator CRDs</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;pingcap&#x2F;tidb-operator&#x2F;v1.6.0-beta.1&#x2F;manifests&#x2F;crd.yaml</span><br></pre></td></tr></table></figure>
+<p>helm delete tidb-operator -n tidb-admin</p>
+<p>kubectl create namespace tidb-cluster &amp;&amp; \</p>
+<p>wget <a href="https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.0-beta.1/examples/advanced/tidb-cluster.yaml" target="_blank" rel="noopener">https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.0-beta.1/examples/advanced/tidb-cluster.yaml</a></p>
+<p>kubectl -n tidb-cluster apply -f  tidb-cluster.yaml</p>
+<p>kubectl -n tidb-cluster delete -f tidb-cluster.yaml</p>
+<p>wget <a href="https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.0-beta.1/examples/basic/tidb-dashboard.yaml" target="_blank" rel="noopener">https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.0-beta.1/examples/basic/tidb-dashboard.yaml</a></p>
+<p>kubectl -n tidb-cluster apply -f  tidb-dashboard.yaml</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/05/16/%E6%BC%AB%E9%81%93%E4%BA%91%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Tidb/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/04/28/tidb%20%E5%8D%87%E7%BA%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/28/tidb%20%E5%8D%87%E7%BA%A7/" class="post-title-link" itemprop="url">tidb 升级</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-28 17:30:32" itemprop="dateCreated datePublished" datetime="2024-04-28T17:30:32+08:00">2024-04-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>tidb 升级</p>
+<ol>
+<li>
+<p>先升级 TiUP 版本（建议 <code>tiup</code> 版本不低于 <code>1.11.3</code>）：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tiup update --self</span><br><span class="line">tiup --version</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>再升级 TiUP Cluster 版本（建议 <code>tiup cluster</code> 版本不低于 <code>1.11.3</code>）：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tiup update cluster</span><br><span class="line">tiup cluster --version</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tiup cluster check tidb-prod-101 --cluster</span><br></pre></td></tr></table></figure>
+<p>停止组件cdc</p>
+<p>tiup cluster stop tidb-prod -R cdc</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tiup cluster upgrade tidb-prod-101 v7.5.1</span><br></pre></td></tr></table></figure>
+<p>tiup cluster display tidb-prod-101</p>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/28/tidb%20%E5%8D%87%E7%BA%A7/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/04/17/Minio%20%E6%A8%A1%E6%8B%9F%E5%85%BC%E5%AE%B9%20S3%20%E7%9A%84%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/17/Minio%20%E6%A8%A1%E6%8B%9F%E5%85%BC%E5%AE%B9%20S3%20%E7%9A%84%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1/" class="post-title-link" itemprop="url">Minio 模拟兼容 S3 的存储服务</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-17 15:29:22" itemprop="dateCreated datePublished" datetime="2024-04-17T15:29:22+08:00">2024-04-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="搭建-MinIO-作为备份存储系统-，兼容S3">搭建 MinIO 作为备份存储系统 ，兼容S3</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;dl.min.io&#x2F;server&#x2F;minio&#x2F;release&#x2F;linux-amd64&#x2F;minio</span><br><span class="line">chmod +x minio</span><br><span class="line"></span><br><span class="line"># 配置访问 minio 的 access-key access-screct-id</span><br><span class="line"></span><br><span class="line">export HOST_IP&#x3D;&#39;172.20.192.151&#39; </span><br><span class="line">export MINIO_ROOT_USER&#x3D;&#39;minio&#39;</span><br><span class="line">export MINIO_ROOT_PASSWORD&#x3D;&#39;miniostorage&#39;</span><br><span class="line"></span><br><span class="line"># 创建数据目录,  其中 backup 为 bucket 的名称</span><br><span class="line"></span><br><span class="line">mkdir -p data&#x2F;backup</span><br><span class="line"></span><br><span class="line"># 启动 minio, 暴露端口在 6060</span><br><span class="line"></span><br><span class="line">&#x2F;opt&#x2F;module&#x2F;minio server &#x2F;opt&#x2F;module&#x2F;data --address :6060 &amp;</span><br></pre></td></tr></table></figure>
+<h2 id="单节点部署多磁盘">单节点部署多磁盘</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;opt&#x2F;module&#x2F;minio server --address :6060  &#x2F;dfs&#x2F;data1&#x2F;s3data &#x2F;dfs&#x2F;data2&#x2F;s3data &#x2F;dfs&#x2F;data3&#x2F;s3data &amp;</span><br></pre></td></tr></table></figure>
+<h2 id="备份-还原-TIDB数据">备份 还原 TIDB数据</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mycli -h172.20.192.70 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">BACKUP DATABASE test TO &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39; RATE_LIMIT &#x3D; 120 MB&#x2F;SECOND;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mycli -h172.20.192.115 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">mysql&gt; RESTORE DATABASE test FROM &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39;;</span><br></pre></td></tr></table></figure>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/17/Minio%20%E6%A8%A1%E6%8B%9F%E5%85%BC%E5%AE%B9%20S3%20%E7%9A%84%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/04/17/Nginx%20%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%20Nginx%20+%20Keepalived/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/17/Nginx%20%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%20Nginx%20+%20Keepalived/" class="post-title-link" itemprop="url">Nginx 高可用集群解决方案 Nginx + Keepalived</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-17 10:44:24" itemprop="dateCreated datePublished" datetime="2024-04-17T10:44:24+08:00">2024-04-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Nginx-高可用集群解决方案-Nginx-Keepalived">Nginx 高可用集群解决方案 Nginx + Keepalived</h2>
+<ol>
+<li>
+<p>修改 vim /opt/nginx/nginx.conf</p>
+</li>
+<li>
+<p>重启容器</p>
+</li>
+</ol>
+<p>docker restart 1f163b3a620a</p>
+<p>172.20.192.151</p>
+<p>172.20.192.152</p>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/17/Nginx%20%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%20Nginx%20+%20Keepalived/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/04/09/%E4%BD%BF%E7%94%A8Yarn%E6%A0%87%E7%AD%BE%E6%9C%BA%E5%88%B6%E5%AE%9E%E7%8E%B0%E4%BB%BB%E5%8A%A1%E8%B5%84%E6%BA%90%E9%9A%94%E7%A6%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/09/%E4%BD%BF%E7%94%A8Yarn%E6%A0%87%E7%AD%BE%E6%9C%BA%E5%88%B6%E5%AE%9E%E7%8E%B0%E4%BB%BB%E5%8A%A1%E8%B5%84%E6%BA%90%E9%9A%94%E7%A6%BB/" class="post-title-link" itemprop="url">使用Yarn标签机制实现任务资源隔离</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-09 10:39:01" itemprop="dateCreated datePublished" datetime="2024-04-09T10:39:01+08:00">2024-04-09</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>使用Yarn标签机制实现任务资源隔离</h1>
+<p>官网参考地址：  <a href="https://docs.cloudera.com/runtime/7.2.0/yarn-allocate-resources/topics/yarn-configuring-node-labels.html" target="_blank" rel="noopener">https://docs.cloudera.com/runtime/7.2.0/yarn-allocate-resources/topics/yarn-configuring-node-labels.html</a></p>
+<p>参考地址： <a href="https://zhuanlan.zhihu.com/p/674882366" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/674882366</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@bigdata-1 ~]# sudo -u hdfs hadoop fs -mkdir -p &#x2F;yarn&#x2F;node-labels</span><br><span class="line">[root@bigdata-1 ~]# sudo -u hdfs hadoop fs -chown -R yarn:yarn &#x2F;yarn</span><br><span class="line">[root@bigdata-1 ~]# sudo -u hdfs hadoop fs -chmod -R 700 &#x2F;yarn</span><br><span class="line">[root@bigdata-1 ~]# hadoop fs -ls &#x2F;yarn</span><br></pre></td></tr></table></figure>
+<p>YARN Service Advanced Configuration Snippet (Safety Valve) for yarn-site.xml</p>
+<p>add the following:</p>
+<ul>
+<li>
+<p>Set the following property to enable Node Labels:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Name: yarn.node-labels.enabled</span><br><span class="line">Value: true</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Set the following property to reference the HDFS node label directory</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Name: yarn.node-labels.fs-store.root-dir</span><br><span class="line">Value: hdfs:&#x2F;&#x2F;:&#x2F;</span><br></pre></td></tr></table></figure>
+<p>For example,</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Name: yarn.node-labels.fs-store.root-dir</span><br><span class="line">Value: hdfs:&#x2F;&#x2F;node-1.example.com:8020&#x2F;yarn&#x2F;node-labels&#x2F;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="使用命令方式给yarn集群添加标签"><strong>使用命令方式给yarn集群添加标签</strong></h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u yarn yarn rmadmin -addToClusterNodeLabels &quot;x(exclusive&#x3D;true),y(exclusive&#x3D;false)&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>使用命令方式节点关联标签：</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/09/%E4%BD%BF%E7%94%A8Yarn%E6%A0%87%E7%AD%BE%E6%9C%BA%E5%88%B6%E5%AE%9E%E7%8E%B0%E4%BB%BB%E5%8A%A1%E8%B5%84%E6%BA%90%E9%9A%94%E7%A6%BB/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/04/03/Apache%20Kyuubi%20on%20CDH%20%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/03/Apache%20Kyuubi%20on%20CDH%20%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">Apache Kyuubi on CDH 部署</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-03 17:51:10" itemprop="dateCreated datePublished" datetime="2024-04-03T17:51:10+08:00">2024-04-03</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>Apache Kyuubi on CDH 部署</h1>
+<p><a href="https://shmily-qjj.top/ee1c2df4/" target="_blank" rel="noopener">https://shmily-qjj.top/ee1c2df4/</a></p>
+<h1>Apache Kyuubi on Spark 在 CDH 上的深度实践</h1>
+<p><a href="https://www.slidestalk.com/openLooKeng/22" target="_blank" rel="noopener">https://www.slidestalk.com/openLooKeng/22</a></p>
+<p>vi  <a href="http://kyuubi-env.sh" target="_blank" rel="noopener">kyuubi-env.sh</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk1.8.0_181-cloudera</span><br><span class="line">export SPARK_HOME&#x3D;&#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;spark3</span><br><span class="line">export FLINK_HOME&#x3D;&#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;FLINK</span><br><span class="line">export HIVE_HOME&#x3D;&#x2F;opt&#x2F;cloudera&#x2F;parcels&#x2F;CDH&#x2F;lib&#x2F;hive</span><br><span class="line">export HADOOP_CONF_DIR&#x3D;&#x2F;etc&#x2F;hadoop&#x2F;conf</span><br><span class="line">export YARN_CONF_DIR&#x3D;&#x2F;etc&#x2F;hadoop&#x2F;conf</span><br><span class="line">export KYUUBI_JAVA_OPTS&#x3D;&quot;-Xmx10g -XX:+UnlockDiagnosticVMOptions -XX:ParGCCardsPerStrideChunk&#x3D;4096 -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:CMSInitiatingOccupancyFraction&#x3D;70 -XX:+UseCMSInitiatingOccupancyOnly -XX:+CMSClassUnloadingEnabled </span><br><span class="line">-XX:+CMSParallelRemarkEnabled -XX:+UseCondCardMark -XX:MaxDirectMemorySize&#x3D;1024m  -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath&#x3D;.&#x2F;logs -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintTenuringDistribution -Xloggc:.&#x2F;logs&#x2F;kyuubi-server-gc-%t.log -XX:+Us</span><br><span class="line">eGCLogFileRotation -XX:NumberOfGCLogFiles&#x3D;10 -XX:GCLogFileSize&#x3D;5M -XX:NewRatio&#x3D;3 -XX:MetaspaceSize&#x3D;512m&quot;</span><br></pre></td></tr></table></figure>
+<p>vi  conf/kyuubi-defaults.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">kyuubi.frontend.bind.host                10.0.0.1</span><br><span class="line">kyuubi.frontend.protocols                THRIFT_BINARY</span><br><span class="line">kyuubi.frontend.thrift.binary.bind.port  10009</span><br><span class="line">#</span><br><span class="line"># kyuubi.engine.type                       SPARK_SQL</span><br><span class="line"># kyuubi.engine.share.level                USER</span><br><span class="line"># kyuubi.session.engine.initialize.timeout PT3M</span><br><span class="line">#</span><br><span class="line">kyuubi.ha.addresses                      zk1:2181,zk2:2181,zk3:2181</span><br><span class="line">kyuubi.ha.namespace                      kyuubi</span><br><span class="line"></span><br><span class="line"># 不指定 spark就是local模式运行了</span><br><span class="line">spark.master&#x3D;yarn</span><br><span class="line">spark.submit.deployMode&#x3D;cluster</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">kyuubi.authentication&#x3D;LDAP</span><br><span class="line">kyuubi.authentication.ldap.baseDN&#x3D;dc&#x3D;org</span><br><span class="line">kyuubi.authentication.ldap.domain&#x3D;apache.org</span><br><span class="line">kyuubi.authentication.ldap.binddn&#x3D;uid&#x3D;kyuubi,OU&#x3D;Users,DC&#x3D;apache,DC&#x3D;org</span><br><span class="line">kyuubi.authentication.ldap.bindpw&#x3D;kyuubi123123</span><br><span class="line">kyuubi.authentication.ldap.url&#x3D;ldap:&#x2F;&#x2F;hostname.com:389&#x2F;</span><br></pre></td></tr></table></figure>
+<h3 id="重启">重启</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">注意 ：kyuubi 停止的时候   spark on yarn的  kyuubi_application  并没有停掉，   需要在yarn里kill，  这样重启  才能加载新加入的jar包和新的配置文件。</span><br><span class="line"></span><br><span class="line">sudo -u hdfs bin&#x2F;kyuubi start</span><br><span class="line">sudo -u hdfs bin&#x2F;kyuubi stop</span><br><span class="line">sudo -u hdfs bin&#x2F;kyuubi restart</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/03/Apache%20Kyuubi%20on%20CDH%20%E9%83%A8%E7%BD%B2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/04/03/CDH6.3.2%20%E5%8D%87%E7%BA%A7%20Spark3.3.0%20%E7%89%88%E6%9C%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/03/CDH6.3.2%20%E5%8D%87%E7%BA%A7%20Spark3.3.0%20%E7%89%88%E6%9C%AC/" class="post-title-link" itemprop="url">CDH6.3.2 升级 Spark3.3.0 版本</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-03 16:34:34" itemprop="dateCreated datePublished" datetime="2024-04-03T16:34:34+08:00">2024-04-03</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>CDH6.3.2 升级 Spark3.3.0 版本</h1>
+<p><a href="https://juejin.cn/post/7140053569431928845" target="_blank" rel="noopener">https://juejin.cn/post/7140053569431928845</a></p>
+<p>根据上面的文档进行部署  还有下列操作需要补充</p>
+<p>上传到要部署 spark3 的客户端机器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf spark-3.3.0-bin-3.0.0-cdh6.3.2.tgz -C /opt/cloudera/parcels/CDH/lib</span><br><span class="line">cd /opt/cloudera/parcels/CDH/lib</span><br><span class="line">mv spark-3.3.0-bin-3.0.0-cdh6.3.2/ spark3</span><br></pre></td></tr></table></figure>
+<h3 id="配置-conf">配置 conf</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">shell复制代码cd /opt/cloudera/parcels/CDH/lib/spark3/conf</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 开启日志</span></span></span><br><span class="line">mv log4j2.properties.template log4j2.properties</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># spark-defaults.conf 配置</span></span></span><br><span class="line">cp /opt/cloudera/parcels/CDH/lib/spark/conf/spark-defaults.conf ./</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 修改 spark-defaults.conf</span></span><br><span class="line">vim /opt/cloudera/parcels/CDH/lib/spark3/conf/spark-defaults.conf</span><br><span class="line">删除 spark.extraListeners、spark.sql.queryExecutionListeners、spark.yarn.jars</span><br><span class="line">添加 spark.yarn.jars=hdfs://ns1/user/spark/3versionJars/*</span><br><span class="line"></span><br><span class="line">hadoop fs -mkdir -p /spark/3versionJars</span><br><span class="line">cd /opt/cloudera/parcels/CDH/lib/spark3/jars</span><br><span class="line">hadoop fs -put *.jar hdfs://ns1/user/spark/3versionJars</span><br></pre></td></tr></table></figure>
+<h2 id="优化设置">优化设置</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">spark.kryoserializer.buffer.max 512m</span><br><span class="line">spark.serializer org.apache.spark.serializer.KryoSerializer</span><br><span class="line">spark.authenticate false   （关闭数据块传输服务SASL加密认证）</span><br><span class="line">spark.io.encryption.enabled false   （关闭I&#x2F;O加密）</span><br><span class="line">spark.network.crypto.enabled false  （关闭基于AES算法的RPC加密）</span><br><span class="line">spark.shuffle.service.enabled true  （启用外部ShuffleService提高Shuffle稳定性）</span><br><span class="line">spark.shuffle.service.port 7337  （这个外部ShuffleService由YarnNodeManager提供，默认端口7337）</span><br><span class="line">spark.shuffle.useOldFetchProtocol true  （兼容旧的Shuffle协议避免报错）</span><br><span class="line">spark.sql.cbo.enabled true  (启用CBO基于代价的优化-代替RBO基于规则的优化-Optimizer)</span><br><span class="line">spark.sql.cbo.starSchemaDetection true  （星型模型探测，判断列是否是表的主键）</span><br><span class="line">spark.sql.datetime.java8API.enabled false</span><br><span class="line">spark.sql.sources.partitionOverwriteMode dynamic </span><br><span class="line">spark.sql.orc.mergeSchema true  （ORC格式Schema加载时从所有数据文件收集）</span><br><span class="line">spark.sql.parquet.mergeSchema false (根据情况设置，我们集群大多数都是parquet，从所有文件收集Schema会影响性能，所以从随机一个Parquet文件收集Schema)</span><br><span class="line">spark.sql.parquet.writeLegacyFormat true  （兼容旧集群）</span><br><span class="line">spark.sql.autoBroadcastJoinThreshold 1048576  （当前仅支持运行了ANALYZE TABLE &lt;tableName&gt; COMPUTE STATISTICS noscan的Hive Metastore表，以及直接在数据文件上计算统计信息的基于文件的数据源表）</span><br><span class="line">spark.sql.adaptive.enabled true   （Spark AQE[adaptive query execution]启用，AQE的优势：执行计划可动态调整、调整的依据是中间结果的精确统计信息）</span><br><span class="line">spark.sql.adaptive.forceApply false</span><br><span class="line">spark.sql.adaptive.logLevel info</span><br><span class="line">spark.sql.adaptive.advisoryPartitionSizeInBytes 256m  （倾斜数据分区拆分，小数据分区合并优化时，建议的分区大小，与spark.sql.adaptive.shuffle.targetPostShuffleInputSize含义相同）</span><br><span class="line">spark.sql.adaptive.coalescePartitions.enabled true  （是否开启合并小数据分区默认开启，调优策略之一）</span><br><span class="line">spark.sql.adaptive.coalescePartitions.minPartitionSize 1m  （合并后最小的分区大小）</span><br><span class="line">spark.sql.adaptive.coalescePartitions.initialPartitionNum 1024  （合并前的初始分区数）</span><br><span class="line">spark.sql.adaptive.fetchShuffleBlocksInBatch true  （是否批量拉取blocks,而不是一个个的去取，给同一个map任务一次性批量拉取blocks可以减少io 提高性能）</span><br><span class="line">spark.sql.adaptive.localShuffleReader.enabled true （不需要Shuffle操作时，使用LocalShuffleReader，例如将SortMergeJoin转为BrocastJoin）</span><br><span class="line">spark.sql.adaptive.skewJoin.enabled true   （Spark会通过拆分的方式自动处理Join过程中有数据倾斜的分区）</span><br><span class="line">spark.sql.adaptive.skewJoin.skewedPartitionThresholdInBytes 128m</span><br><span class="line">spark.sql.adaptive.skewJoin.skewedPartitionFactor 5  （判断倾斜的条件：分区大小大于所有分区大小中位数的5倍，且大于spark.sql.adaptive.skewJoin.skewedPartitionThresholdInBytes的值）</span><br></pre></td></tr></table></figure>
+<p>将 CDH 集群的 <a href="http://spark-env.sh" target="_blank" rel="noopener">spark-env.sh</a> 复制到 /opt/cloudera/parcels/CDH/lib/spark3/conf 下:</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/03/CDH6.3.2%20%E5%8D%87%E7%BA%A7%20Spark3.3.0%20%E7%89%88%E6%9C%AC/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/04/02/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%B1%87%E6%80%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="datasir">
+      <meta itemprop="description" content="小杨随笔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱思考">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/02/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%B1%87%E6%80%BB/" class="post-title-link" itemprop="url">大数据平台常见异常处理汇总</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-02 13:51:47" itemprop="dateCreated datePublished" datetime="2024-04-02T13:51:47+08:00">2024-04-02</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>HiveMetaStore状态不良导DDLSQL耗时200s以上</p>
+<p>HMS进程报错：hive metastore server Failed to sync requested HMS notifications up to the event ID xxx</p>
+<p>原因分析：查看sentry异常CounterWait源码发现传递的id比currentid大导致一直等待超时，超时时间默认为200s（<a href="http://sentry.notification.sync.timeout.ms" target="_blank" rel="noopener">sentry.notification.sync.timeout.ms</a>）。 开启了hdfs-sentry acl同步后，hdfs，sentry，HMS三者间权限同步的消息处理。当突然大批量的目录权限消息需要处理，后台线程处理不过来，消息积压滞后就会出现这个异常。这个异常不影响集群使用，只是会导致create，drop table慢需要等200s，这样等待也是为了追上最新的id。我们这次同时出现了HMS参与同步消息处理的线程被异常退出，导致sentry的sentry_hms_notification_id表数据一直没更新，需要重启HMS。如果积压了太多消息，让它慢慢消费处理需要的时间太长，可能一直追不上，这时可以选择丢掉这些消息。</p>
+<p>解决：</p>
+<p>①可以通过设置sentry.notification.sync.timeout.ms参数调小超时时间，减小等待时间，积压不多的话可以让它自行消费处理掉。</p>
+<p>②丢掉未处理的消息，在sentry的sentry_hms_notification_id表中插入一条最大值(等于当前消息的id，从notification_sequence表中获取) ，重启sentry服务。（notification_log 表存储了消息日志信息）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT * from  NOTIFICATION_SEQUENCE</span><br><span class="line">insert into SENTRY_HMS_NOTIFICATION_ID VALUES (14094172);</span><br></pre></td></tr></table></figure>
+<p>Hive开启自动获取表上次访问时间(lastAccessTime)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;hive.security.authorization.sqlstd.confwhitelist.append&lt;&#x2F;name&gt;</span><br><span class="line">   &lt;value&gt;hive\.exec\.pre\.hooks&lt;&#x2F;value&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;hive.exec.pre.hooks&lt;&#x2F;name&gt;</span><br><span class="line">  &lt;value&gt;org.apache.hadoop.hive.ql.hooks.UpdateInputAccessTimeHook$PreExec&lt;&#x2F;value&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="Spark">Spark</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/02/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%B1%87%E6%80%BB/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+  </div>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="datasir"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">datasir</p>
+  <div class="site-description" itemprop="description">小杨随笔</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">185</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="http://106.54.147.3:3002/" title="ChatGPT → http:&#x2F;&#x2F;106.54.147.3:3002" rel="noopener" target="_blank"><i class="fa fa-fw fa-ChatGPT"></i>ChatGPT</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:info@ask3.cn" title="E-Mail → mailto:info@ask3.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备13036234号-3 </a>
+      <img src="/images/beian.png" style="display: inline-block;">
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">datasir</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

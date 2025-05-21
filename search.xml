@@ -1,25 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>用户无法在yarn集群上提交任务</title>
-    <url>/2024/06/17/%E7%94%A8%E6%88%B7%E6%97%A0%E6%B3%95%E5%9C%A8yarn%E9%9B%86%E7%BE%A4%E4%B8%8A%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1/</url>
-    <content><![CDATA[<p>用户无法在yarn集群上提交任务</p>
-<p><strong>解决方案:</strong></p>
-<p>关闭所有的ResourceManager进程</p>
-<p>通过zk客户端查看</p>
-<p>sh /opt/cloudera/parcels/CDH/lib/zookeeper/bin/zkCli.sh</p>
-<p>ls /rmstore/ZKRMStateRoot/RMAppRoot 目录下</p>
-<p>不为空则使用该命令 rmr  /rmstore/ZKRMStateRoot/RMAppRoot 删除目录文件</p>
-<p>删除完再启动ResourceManager恢复正常<br>
-此种方式是将ZK中需要RM恢复的任务清空实现的，即RM不恢复正在运行的任务，会导致集群正在运行的任务停止</p>
-<p>原文链接：<a href="https://blog.csdn.net/anguoan/article/details/128613672" target="_blank" rel="noopener">https://blog.csdn.net/anguoan/article/details/128613672</a></p>
+    <title>oms升级</title>
+    <url>/2025/05/16/oms%E5%8D%87%E7%BA%A7/</url>
+    <content><![CDATA[<p>oms升级</p>
+<p>备份数据库</p>
+<p>sudo docker stop ${CONTAINER_NAME}</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo docker stop oms_4.2.8</span><br></pre></td></tr></table></figure>
+<ol>
+<li>
+<p>登录配置文件中的 CM 心跳库，删除数据库中部分无用记录，节省备份时间。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 登录配置文件中的 CM 心跳库</span></span><br><span class="line">mysql -h172.20.85.200 -P3306 -uscm -p -D_cm_hb</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除无用的记录</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> heatbeat_sequence 用于汇报心跳，获取自增 ID</span></span><br><span class="line">delete from heatbeat_sequence where id &lt; (select max(id) from heatbeat_sequence);</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>执行下述命令，手工备份 rm、cm 和 cm_hb 库为 SQL 文件，并确认各文件的大小不为 0。</p>
+<p>多地域场景下，各地域的 cm_hb 库均需要备份。例如有两个地域，则需要备份 4 个库：rm、cm、cm_hb1 和 cm_hb2。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mysqldump -h172.20.85.200 -P3306 -uscm -p --triggers=false _cm_hb &gt; /home/admin/_cm_hb.sql</span><br><span class="line">mysqldump -h172.20.85.200 -P3306 -uscm -p --triggers=false _cm &gt; /home/admin/_cm.sql</span><br><span class="line">mysqldump -h172.20.85.200 -P3306 -uscm -p --triggers=false _cm_hb_pbx &gt; /home/admin/_cm_hb_pbx.sql</span><br><span class="line">mysqldump -h172.20.85.200 -P3306 -uscm -p --triggers=false _rm &gt; /home/admin/_rm.sql</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>加载下载的 OMS 社区版安装包至 Docker 容器的本地镜像仓库</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker load -i oms_4.2.9-ce.tar.gz</span><br></pre></td></tr></table></figure>
+<p>启动 OMS 社区版 V4.2.9-CE 新容器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run -dit --net host \</span><br><span class="line">-v &#x2F;opt&#x2F;oms&#x2F;config.yaml:&#x2F;home&#x2F;admin&#x2F;conf&#x2F;config.yaml \</span><br><span class="line">-v &#x2F;opt&#x2F;oms&#x2F;oms_logs:&#x2F;home&#x2F;admin&#x2F;logs \</span><br><span class="line">-v &#x2F;opt&#x2F;oms&#x2F;oms_store:&#x2F;home&#x2F;ds&#x2F;store \</span><br><span class="line">-v &#x2F;opt&#x2F;oms&#x2F;oms_run:&#x2F;home&#x2F;ds&#x2F;run \</span><br><span class="line">-e OMS_HOST_IP&#x3D;192.168.192.10 \</span><br><span class="line">-e IS_UPGRADE&#x3D;true \</span><br><span class="line">--privileged&#x3D;true \</span><br><span class="line">--pids-limit -1 \</span><br><span class="line">--ulimit nproc&#x3D;65535:65535 \</span><br><span class="line">--name oms_4.2.9 \</span><br><span class="line">068e4f2ed46e</span><br></pre></td></tr></table></figure>
+<p>当同一地域下多个节点的配置文件（主要是 <code>cm_nodes</code>）相同时，一个地域只需要执行一次 <code>docker_init.sh</code></p>
+<p>进入新容器。在 <code>root</code> 目录下，执行元数据初始化操作</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker exec -it oms_4.2.9 bash </span><br><span class="line"></span><br><span class="line">sleep 300</span><br><span class="line">bash &#x2F;root&#x2F;docker_init.sh</span><br></pre></td></tr></table></figure>
+<p>系统参数要优化一下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sysctl -w  net.ipv4.tcp_tw_recycle&#x3D;0</span><br><span class="line">sysctl -w  net.ipv4.tcp_tw_reuse&#x3D;0</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>centos7.9 yum安装mysql </title>
+    <url>/2025/03/14/centos7.9%20yum%E5%AE%89%E8%A3%85mysql%20/</url>
+    <content><![CDATA[<p>wget -O /etc/yum.repos.d/CentOS-Base.repo <a href="https://mirrors.aliyun.com/repo/Centos-7.repo" target="_blank" rel="noopener">https://mirrors.aliyun.com/repo/Centos-7.repo</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;dev.mysql.com&#x2F;get&#x2F;mysql57-community-release-el7-11.noarch.rpm</span><br><span class="line">sudo rpm -ivh mysql57-community-release-el7-11.noarch.rpm</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 停止服务并卸载</span><br><span class="line">sudo systemctl stop mysqld</span><br><span class="line">sudo yum remove mysql-community-server mysql-community-client</span><br><span class="line">sudo rm -rf &#x2F;var&#x2F;lib&#x2F;mysql &#x2F;etc&#x2F;my.cnf &#x2F;var&#x2F;log&#x2F;mysqld.log</span><br><span class="line"></span><br><span class="line"># 清理残留依赖</span><br><span class="line">sudo yum autoremove</span><br><span class="line"></span><br><span class="line"># 重新安装</span><br><span class="line">sudo yum install mysql-community-server mysql-community-client</span><br><span class="line">sudo systemctl start mysqld</span><br><span class="line"></span><br><span class="line"># 获取临时 root 密码</span><br><span class="line">sudo grep &#39;temporary password&#39; &#x2F;var&#x2F;log&#x2F;mysqld.log</span><br><span class="line"></span><br><span class="line">mysql -h localhost -u root -p</span><br><span class="line">mysql&gt;alter user root@localhost identified by &#39;****&#39;;</span><br><span class="line">mysql&gt;uninstall plugin validate_password;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget  https:&#x2F;&#x2F;ftpmirror.your.org&#x2F;pub&#x2F;percona&#x2F;percona&#x2F;yum&#x2F;release&#x2F;7&#x2F;os&#x2F;x86_64&#x2F;percona-xtrabackup-24-2.4.29-1.el7.x86_64.rpm</span><br><span class="line">yum install percona-xtrabackup-24-2.4.29-1.el7.x86_64.rpm</span><br><span class="line"></span><br><span class="line">wget https:&#x2F;&#x2F;docs-tencentdb-1256569818.cos.ap-guangzhou.myqcloud.com&#x2F;qpress-11-linux-x64.tar</span><br><span class="line">tar xvf qpress-11-linux-x64.tar</span><br><span class="line">mv qpress &#x2F;usr&#x2F;bin</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">登陆 10.0.18.90</span><br><span class="line"></span><br><span class="line">sudo su -</span><br><span class="line"></span><br><span class="line">scp -P2222 &#x2F;sour_backup&#x2F;backupSet&#x2F;mysql&#x2F;10.0.20.202&#x2F;2025-03-05_03-00-02&#x2F;2025-03-05_03-00-02&#x2F;stream_backup_2025-03-05_03-00-02 10.0.25.14:&#x2F;data&#x2F;mysql&#x2F;recovery</span><br><span class="line"></span><br><span class="line">xbstream --verbose --parallel&#x3D;4 --extract &lt; &#x2F;data&#x2F;mysql&#x2F;recovery&#x2F;stream_backup_2025-03-05_03-00-02 --directory &#x2F;data&#x2F;mysql&#x2F;recovery&#x2F; &gt; &#x2F;data&#x2F;recovery&#x2F;destream.log </span><br><span class="line"></span><br><span class="line"># xtrabackup --parallel&#x3D;4 --decompress --remove-original --target-dir&#x3D;&#x2F;data&#x2F;mysql&#x2F;recovery&#x2F; &gt; &#x2F;data&#x2F;recovery&#x2F;decompress.log</span><br><span class="line">xtrabackup --decompress --parallel&#x3D;4 --decrypt&#x3D;AES256 --encrypt-key&#x3D;&quot;lk92tBpEfn0nn88mBDt0%y8fPO0y%wuX&quot; --target-dir&#x3D;&#x2F;data&#x2F;mysql&#x2F;recovery&#x2F; --remove-original &gt; &#x2F;data&#x2F;recovery&#x2F;decompress.log</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">xtrabackup --use-memory&#x3D;1024MB --prepare --target-dir&#x3D;&#x2F;data&#x2F;mysql&#x2F;recovery&#x2F; &gt; &#x2F;data&#x2F;recovery&#x2F;prepare_redo_only.log</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">rm -rf &#x2F;data&#x2F;mysql&#x2F;mysqldata&#x2F;*</span><br><span class="line"></span><br><span class="line">mkdir -p &#x2F;data&#x2F;mysql&#x2F;mysqldata&#x2F;&#123;binlog,innodb_log,innodb_ts,innodb_undo,log,mydata,tmpdir,sock,relaylog&#125;</span><br><span class="line"></span><br><span class="line"># xtrabackup --defaults-file&#x3D;&#x2F;etc&#x2F;my.cnf --move-back --target-dir&#x3D;&#x2F;data&#x2F;mysql&#x2F;recovery&#x2F;</span><br><span class="line">xtrabackup --defaults-file&#x3D;&#x2F;etc&#x2F;my.cnf --copy-back --target-dir&#x3D;&#x2F;data&#x2F;mysql&#x2F;recovery&#x2F;  </span><br><span class="line"></span><br><span class="line">touch &#x2F;data&#x2F;mysql&#x2F;mysqldata&#x2F;log&#x2F;error.log</span><br><span class="line">chown -R mysql.mysql &#x2F;data</span><br><span class="line">chmod -R 775 &#x2F;data</span><br><span class="line"></span><br><span class="line">systemctl start mysql</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>obdiag使用</title>
+    <url>/2025/02/24/obdiag%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<p>官方文档：<a href="https://www.oceanbase.com/docs/common-obdiag-cn-1000000001491140" target="_blank" rel="noopener">https://www.oceanbase.com/docs/common-obdiag-cn-1000000001491140</a></p>
+<p>obdiag安装</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum-config-manager --add-repo https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;oceanbase&#x2F;OceanBase.repo</span><br><span class="line">sudo yum install -y oceanbase-diagnostic-tool</span><br><span class="line">sh &#x2F;usr&#x2F;local&#x2F;oceanbase-diagnostic-tool&#x2F;init.sh</span><br></pre></td></tr></table></figure>
+<h3 id="用户侧配置文件">用户侧配置文件</h3>
+<p>用户侧配置文件可通过 <code>obdiag config &lt;option&gt;</code> 命令快速生成或者直接编辑配置文件，文件的默认路径是 <code>~/.obdiag/config.yml</code>，其样板文件位于 <code>~/.obdiag/example</code>。</p>
+<p>obdiag config -h &lt;db_host&gt; -u &lt;sys_user&gt; [-p password] [-P port]</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">obdiag config -h192.168.81.31 -uroot@sys -p&#39;***&#39; -P2881</span><br></pre></td></tr></table></figure>
+<h2 id="check-命令组">check 命令组</h2>
+<h3 id="总览">总览</h3>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 列出所有巡检套餐</span></span><br><span class="line">obdiag check list</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 全量巡检 (最常用)</span></span><br><span class="line">obdiag check run</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 列存POC检查</span></span><br><span class="line">obdiag check --cases=column_storage_poc</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> obproxy 版本检查</span></span><br><span class="line">obdiag check --obproxy_cases=proxy</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 部署环境检查</span></span><br><span class="line">obdiag check --cases=build_before</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行 sysbench 时的巡检任务集合</span></span><br><span class="line">obdiag check --cases=sysbench_run</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行 sysbench 前的巡检任务集合</span></span><br><span class="line">obdiag check --cases=sysbench_free</span><br></pre></td></tr></table></figure>]]></content>
+  </entry>
+  <entry>
+    <title>部署 OceanBase 集群环境</title>
+    <url>/2025/02/06/%E9%83%A8%E7%BD%B2%20OceanBase%20%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83/</url>
+    <content><![CDATA[<h2 id="部署-OceanBase-集群环境">部署 OceanBase 集群环境</h2>
+<p><strong>磁盘初始化</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">umount &#x2F;dfs&#x2F;data&#123;1..8&#125;</span><br><span class="line"></span><br><span class="line">pvcreate &#x2F;dev&#x2F;nvme&#123;0..7&#125;n1 -y</span><br><span class="line"></span><br><span class="line">vgcreate &#x2F;dev&#x2F;obvg &#x2F;dev&#x2F;nvme0n1 &#x2F;dev&#x2F;nvme1n1 &#x2F;dev&#x2F;nvme2n1 &#x2F;dev&#x2F;nvme3n1 &#x2F;dev&#x2F;nvme4n1 &#x2F;dev&#x2F;nvme5n1 &#x2F;dev&#x2F;nvme6n1 &#x2F;dev&#x2F;nvme7n1 </span><br><span class="line"></span><br><span class="line"># 日志盘 ，内存的三倍</span><br><span class="line">lvcreate -n ob-log -L 3096G obvg --stripes&#x3D;6 --stripesize&#x3D;128</span><br><span class="line">lvcreate -n ob-data -l 100%Free obvg --stripes&#x3D;6 --stripesize&#x3D;1024</span><br><span class="line"></span><br><span class="line">mkfs.ext4 &#x2F;dev&#x2F;obvg&#x2F;ob-log -O 64bit   </span><br><span class="line">mkfs.xfs &#x2F;dev&#x2F;obvg&#x2F;ob-data </span><br><span class="line"></span><br><span class="line">mkdir -p &#x2F;data&#x2F;&#123;1,log1&#125;  &amp;&amp; chmod -R 755 &#x2F;data</span><br><span class="line">vi &#x2F;etc&#x2F;fstab</span><br><span class="line">&#x2F;*写入*&#x2F;</span><br><span class="line">&#x2F;dev&#x2F;obvg&#x2F;ob-data &#x2F;data&#x2F;1        xfs    defaults,noatime,nodiratime    0  0</span><br><span class="line">&#x2F;dev&#x2F;obvg&#x2F;ob-log  &#x2F;data&#x2F;log1      ext4    defaults,noatime,nodiratime,nodelalloc,barrier&#x3D;0     0  0</span><br><span class="line">mount -a</span><br></pre></td></tr></table></figure>
+<h3 id="问题：-OBD-4300：x-x-x-x-failed-to-query-java-version-you-may-not-have-java-installed">问题：  OBD-4300：x.x.x.x: failed to query java version, you may not have java installed</h3>
+<p>解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ln -s &#x2F;usr&#x2F;java&#x2F;jdk1.8.0_181-cloudera&#x2F;bin&#x2F;java  &#x2F;usr&#x2F;bin&#x2F;java</span><br></pre></td></tr></table></figure>
+<h3 id="在线部署">在线部署</h3>
+<p>当您选择在线部署时，可以参考本节命令在中控机上安装 OBD。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[admin@test001 ~]$ sudo yum install -y yum-utils</span><br><span class="line">[admin@test001 ~]$ sudo yum-config-manager --add-repo https://mirrors.aliyun.com/oceanbase/OceanBase.repo</span><br><span class="line">[admin@test001 ~]$ sudo yum install -y ob-deploy</span><br><span class="line">[admin@test001 ~]$ source /etc/profile.d/obd.sh</span><br></pre></td></tr></table></figure>
+<h3 id="步骤二：使用白屏部署-OceanBase-数据库">步骤二：使用白屏部署 OceanBase 数据库</h3>
+<ol>
+<li>
+<p>命令行执行 <code>obd web</code> 命令启动白屏界面，根据输出地址登录白屏界面并单击 <strong>开启体验之旅</strong> 开始部署。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[admin@test001 ~]$ obd web</span><br><span class="line">start OBD WEB in 0.0.0.0:8680</span><br><span class="line">please open http://172.xx.xxx.233:8680</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="OBD-一键测试">OBD 一键测试</h2>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum-config-manager --add-repo https://mirrors.aliyun.com/oceanbase/OceanBase.repo</span><br><span class="line">sudo yum install obtpch</span><br><span class="line">sudo ln -s /usr/tpc-h-tools/tpc-h-tools/ /usr/local/</span><br><span class="line">obd test tpch myoceanbase --test-server 10.0.19.191 --tenant=ocp -s 100 --remote-tbl-dir=/tmp/tpch100</span><br><span class="line"></span><br><span class="line">obd test tpch myoceanbase --tenant=ocp  --test-only</span><br></pre></td></tr></table></figure>
+<h3 id="注意">注意</h3>
+<ul>
+<li>OBD 运行 tpch，详细参数介绍请参考 <a href="https://www.oceanbase.com/docs/community-obd-cn-10000000001031935" target="_blank" rel="noopener">obd test tpch</a>。</li>
+<li>在本例中，大幅参数使用的是默认参数，在用户场景下，可以根据自己的具体情况做一些参数上的调整。例如，在本例中使用的集群名为 <code>myoceanbase</code>，租户名是 <code>ocp</code>。</li>
+<li>-s 100  自动生成测试数据的规模，单位：G。</li>
+</ul>
+<h2 id="使用-OBD">使用 OBD</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">obd cluster list</span><br><span class="line">obd cluster restart myoceanbase</span><br><span class="line">查看集群列表</span><br><span class="line">obd cluster list</span><br><span class="line"></span><br><span class="line"># 查看集群状态，以部署名为 myoceanbase 为例</span><br><span class="line">obd cluster display myoceanbase</span><br><span class="line"></span><br><span class="line"># 停止运行中的集群，以部署名为 myoceanbase 为例</span><br><span class="line">obd cluster stop myoceanbase</span><br><span class="line"></span><br><span class="line"># 销毁已部署的集群，以部署名为 myoceanbase 为例</span><br><span class="line">obd cluster destroy myoceanbase</span><br><span class="line"></span><br><span class="line">obd cluster autodeploy</span><br><span class="line"></span><br><span class="line">obd cluster deploy</span><br><span class="line">obd cluster start</span><br><span class="line">obd cluster stop</span><br><span class="line">obd cluster reload</span><br><span class="line">obd cluster upgrade</span><br><span class="line">obd cluster edit-config  myoceanbase</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">部署集群</span><br><span class="line">obd cluster deploy myoceanbase -c config.yaml</span><br><span class="line"># 启动集群</span><br><span class="line">obd cluster start myoceanbase</span><br><span class="line"></span><br><span class="line"># 重启集群组件</span><br><span class="line">obd cluster stop bx_ocp -c ocp-server-ce --wp</span><br><span class="line">obd cluster start bx_ocp -c ocp-server-ce --wp</span><br><span class="line">obd cluster restart bx_ocp -c oceanbase-ce --wp</span><br><span class="line"></span><br><span class="line">obd cluster restart bx_ocp --wp</span><br></pre></td></tr></table></figure>
+<p><strong>导入数据</strong></p>
+<p>并小于 2倍租户CPU就行</p>
+<p>bin/obloader -hxx.xx.xx.xx -P端口 -u用户名 -t租户名 -D数据库名 -p --table ‘*’ --par --external-data --file-suffix ‘.tbl’ -f /data/0/xxx/tpch/100g_data/ --truncate-table --thread 32 --rpc-port 11208 --direct --parallel 32</p>
+<p>t_history_trans_ethereum.ctrl</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">lang&#x3D;java</span><br><span class="line">(</span><br><span class="line">address &quot;none&quot; map(1),</span><br><span class="line">hash &quot;none&quot; map(3),</span><br><span class="line">pk_hex &quot;none&quot; map(2),</span><br><span class="line">hash_code &quot;none&quot; map(4),</span><br><span class="line">reorg &quot;none&quot; map(5),</span><br><span class="line">chain &quot;none&quot; map(6),</span><br><span class="line">block_number &quot;none&quot; map(7),</span><br><span class="line">block_timestamp &quot;none&quot; map(8),</span><br><span class="line">transaction_type &quot;none&quot; map(9),</span><br><span class="line">transaction_index &quot;none&quot; map(10),</span><br><span class="line">nonce &quot;none&quot; map(11),</span><br><span class="line">receipt_status &quot;none&quot; map(12),</span><br><span class="line">from_address &quot;none&quot; map(13),</span><br><span class="line">to_address &quot;none&quot; map(14),</span><br><span class="line">value &quot;none&quot; map(15),</span><br><span class="line">price &quot;none&quot; map(16),</span><br><span class="line">amount &quot;none&quot; map(17),</span><br><span class="line">function_code &quot;none&quot; map(18),</span><br><span class="line">action &quot;none&quot; map(19),</span><br><span class="line">gas_used &quot;none&quot; map(20),</span><br><span class="line">gas_price &quot;none&quot; map(21),</span><br><span class="line">transaction_fee &quot;none&quot; map(22)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>– 先单个文件测试， 并指定控制文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bin&#x2F;obloader -h172.20.192.146 -P2881 -uroot -tbf -Daddress -p --table &#39;t_history_trans_ethereum&#39; --par --external-data -f &#x2F;dfs&#x2F;data3&#x2F;data-source-dir&#x2F;part-04999-cb9f741d-fb71-4423-9890-9ed42da9270d-c000.snappy.parquet --ctl-path &#x2F;home&#x2F;hadoop&#x2F;controls</span><br></pre></td></tr></table></figure>
+<p>– 开启旁路，从hdfs批量导入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bin&#x2F;obloader -h172.20.192.146 -P2881 -uroot -tbf -Daddress -p --table &#39;t_history_trans_bsc&#39; --par --external-data  --file-regular-expression &#39;.*\.parquet&#39; --file-suffix &#39;.parquet&#39; -f &#x2F;dfs&#x2F;data3&#x2F;data-source-dir --storage-uri &#39;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;hive&#x2F;warehouse&#x2F;test.db&#x2F;history_bsc&#x2F;?hdfs-site-file&#x3D;&#x2F;dfs&#x2F;data3&#x2F;data-source-dir&#x2F;hadoop-conf&#x2F;hdfs-site.xml&amp;core-site-file&#x3D;&#x2F;dfs&#x2F;data3&#x2F;data-source-dir&#x2F;hadoop-conf&#x2F;core-site.xml&#39; --rpc-port 2882 --direct --thread 64 --parallel 16</span><br></pre></td></tr></table></figure>
+<p><strong>obdiag</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">source &#x2F;usr&#x2F;local&#x2F;oceanbase-diagnostic-tool&#x2F;init.sh</span><br><span class="line">obdiag check    -- 一键巡检</span><br><span class="line">obdiag analyze log --since 30m</span><br><span class="line">obdiag analyze flt_trace --flt_trace_id 00060d0f-aa35-8aec-3195-f6c9eb13b800</span><br></pre></td></tr></table></figure>
+<h1><a href="https://ask.oceanbase.com/t/topic/35609528" target="_blank" rel="noopener">OCP 告警通知ocp_monagent 进程停止，怎么调大可用内存？</a></h1>
+<p>可以到主机上黑屏调大ocp_monagent进程的内存限制，修改方法：</p>
+<ul>
+<li>
+<p>针对 3.2.x ~ 4.2.0 版本的ocp-agent：</p>
+<ul>
+<li>修改ocp_agent/conf/agentd.yaml 中 ocp_monagent 下的 “memoryQuota” 参数，默认是2048MB，可以根据QPS和主机内存使用情况适当调大；</li>
+<li>重启ocp_agent后生效；</li>
+<li><strong>需要注意</strong> ：重装ocp_agent后，之前修改的内存限制会被重置，需要按照以上方式重新修改一次；</li>
+</ul>
+</li>
+<li>
+<p>针对 4.2.1 及其之后版本的ocp-agent：</p>
+<ul>
+<li>可以执行 /home/admin/ocp_agent/bin/ocp_agentctl config -u monagent.limit.memory.quota=2048MB 命令修改ocp_monagent进程内存限制的参数值，monagent.limit.memory.quota 默认值是2048MB；</li>
+<li>重启ocp_agent后生效；</li>
+<li>该方法重装ocp-agent后不需要再次修改；</li>
+</ul>
+</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>trino连接Starrocks</title>
+    <url>/2024/12/23/trino%E8%BF%9E%E6%8E%A5Starrocks/</url>
+    <content><![CDATA[<h1>trino连接Starrocks</h1>
+<p>#不设置这个参数，trino 任何表都不看到。如果设置这个参数，全部表就都出来了</p>
+<p><strong>set</strong> <strong>global</strong> enable_groupby_use_output_alias=<strong>true</strong>;</p>
+<p>starrocks.propertes</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">connector.name&#x3D;mysql </span><br><span class="line">connection-url&#x3D;jdbc:mysql:&#x2F;&#x2F;172.20.15.101:9030 </span><br><span class="line">connection-user&#x3D;tx_hadoop_rw </span><br><span class="line">connection-password&#x3D;**** </span><br><span class="line">case-insensitive-name-matching&#x3D;true</span><br></pre></td></tr></table></figure>
+<p>在starrocks客户端执行以下命令</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">set global enable_groupby_use_output_alias&#x3D;true;</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>oms使用</title>
+    <url>/2024/12/19/oms%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<p>oms使用</p>
+<p>官网文档： <a href="https://www.oceanbase.com/docs/community-oms-cn-1000000001456771" target="_blank" rel="noopener">https://www.oceanbase.com/docs/community-oms-cn-1000000001456771</a></p>
+<p>开启时序数据库时，8088端口冲突了，需要改一下。</p>
+<p>注意：跨机房网络commit问题</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget  https:&#x2F;&#x2F;obbusiness-private.oss-cn-shanghai.aliyuncs.com&#x2F;download-center&#x2F;opensource&#x2F;oms&#x2F;4.2.6_CE&#x2F;oms_4.2.6-ce.tar.gz</span><br><span class="line"></span><br><span class="line">docker load -i oms_4.2.6-ce.tar.gz </span><br><span class="line"></span><br><span class="line">docker images</span><br><span class="line"></span><br><span class="line">sudo docker run -d --net host --name oms-config-tool 04b873b7c52f bash &amp;&amp; sudo docker cp oms-config-tool:&#x2F;root&#x2F;docker_remote_deploy.sh . &amp;&amp; sudo docker rm -f oms-config-tool</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">bash docker_remote_deploy.sh -o &lt;OMS 容器挂载目录&gt; -i &lt;本机 IP 地址&gt; -d &lt;OMS_IMAGE&gt;</span><br><span class="line"></span><br><span class="line">bash docker_remote_deploy.sh -o &#x2F;opt&#x2F;oms -i 192.168.81.79 -d 04b873b7c52f</span><br></pre></td></tr></table></figure>
+<p>mysql的  log_slave_updates 开启， 同步前查看binlog是否有延迟</p>
+<p>mysql2store.useGtid=false</p>
+<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2024/11/image-20241122113639437.png" alt="image-20241122113639437"></p>
+<p>jvm修改    -Xms20480m -Xmx20480m -Xmn10240m</p>
+<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2024/11/image-20241122113753543.png" alt="image-20241122113753543"></p>
+<p>多地域单节点  不需要vip</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">机房1</span><br><span class="line"> - 192.168.81.78</span><br><span class="line">机房2</span><br><span class="line"> - 172.20.85.99</span><br></pre></td></tr></table></figure>
+<p>现在单地域多节点的缩容,比如 ABCD，变成ACD</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. 修改ACD的 yaml的cm_node,去掉B节点，执行docker_init.sh</span><br><span class="line">2. 修改cm 库中的表 location_cm、host 和 resource_group， rm 数据库中的表 cluster_info</span><br></pre></td></tr></table></figure>
+<h2 id="使用限制">使用限制</h2>
+<ul>
+<li>无论是单个地域还是多个地域，只能存在一套 InfluxDB，不支持配置多套不同的 InfluxDB。</li>
+<li>OMS 社区版多节点场景下，所有节点均要配置同一个 InfluxDB。</li>
+</ul>
+<p>登陆docker容器查看服务错误日志：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;home&#x2F;admin&#x2F;logs&#x2F;supervisor</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>OMS 社区版支持源端和目标端的字段数量不一致。全量迁移或增量同步过程中，如果报错源端表字段在目标端中不存在，您可以更新 <strong>full-Import</strong> 或 <strong>Incr-Sync</strong> 组件的参数 <code>ignoreRedunantColumnsReplicate</code> 为 <code>true</code> 后，恢复数据迁移任务的运行。</p>
+</li>
+<li>
+<p>source.ignoreDdl = false</p>
+</li>
+<li>
+<p>Coordinator.allowRecordTypes</p>
+</li>
+<li></li>
+</ul>
+<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2024/11/image-20241129112510948.png" alt="image-20241129112510948"></p>
+<p>“DELETE,INSERT,UPDATE,DDL”</p>
+<h3 id="oms已经有2个地域了，还需要再加一个地域。请问这个如何操作？">oms已经有2个地域了，还需要再加一个地域。请问这个如何操作？</h3>
+<p>官网帮助   <a href="https://www.oceanbase.com/docs/community-oms-cn-1000000001456767" target="_blank" rel="noopener">https://www.oceanbase.com/docs/community-oms-cn-1000000001456767</a></p>
+<p>vi  /opt/oms/config.yaml</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># OMS 元数据库信息</span><br><span class="line">oms_meta_host: 172.20.85.200</span><br><span class="line">oms_meta_port: 3306</span><br><span class="line">oms_meta_user: scm</span><br><span class="line">oms_meta_password: ****</span><br><span class="line"></span><br><span class="line"># 用户可以自定义以下三个数据库的名称，OMS 社区版部署时会在元信息库中创建出这三个数据库</span><br><span class="line">drc_rm_db: _rm</span><br><span class="line">drc_cm_db: _cm</span><br><span class="line">drc_cm_heartbeat_db: _cm_hb</span><br><span class="line"></span><br><span class="line"># OMS 社区版集群配置</span><br><span class="line"># 下述参数填写扩容地域的配置</span><br><span class="line">cm_url: http:&#x2F;&#x2F;192.168.192.11:8088</span><br><span class="line">cm_location: 3</span><br><span class="line">cm_region: nh</span><br><span class="line">cm_region_cn: 南汇</span><br><span class="line">cm_is_default: true</span><br><span class="line">cm_nodes:</span><br><span class="line"> - 192.168.192.11</span><br><span class="line"></span><br><span class="line"># 时序数据库配置,默认占用了8088端口，需要改一下端口</span><br><span class="line"># 默认值为 false。如果您需要开启指标汇报功能，请设置为 true</span><br><span class="line">tsdb_enabled: true </span><br><span class="line"># 当 tsdb_enabled 为 true 时，请取消下述参数的注释并根据实际情况填写</span><br><span class="line">tsdb_service: &#39;INFLUXDB&#39;</span><br><span class="line">tsdb_url: &#39;172.20.85.99:8086&#39;</span><br><span class="line">tsdb_username: root</span><br><span class="line">tsdb_password: &#39;***&#39;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">docker run -dit --net host \</span><br><span class="line">-v &#x2F;opt&#x2F;oms&#x2F;config.yaml:&#x2F;home&#x2F;admin&#x2F;conf&#x2F;config.yaml \</span><br><span class="line">-v &#x2F;opt&#x2F;oms&#x2F;oms_logs:&#x2F;home&#x2F;admin&#x2F;logs \</span><br><span class="line">-v &#x2F;opt&#x2F;oms&#x2F;oms_store:&#x2F;home&#x2F;ds&#x2F;store \</span><br><span class="line">-v &#x2F;opt&#x2F;oms&#x2F;oms_run:&#x2F;home&#x2F;ds&#x2F;run \</span><br><span class="line">-e OMS_HOST_IP&#x3D;192.168.192.11 \</span><br><span class="line">--privileged&#x3D;true \</span><br><span class="line">--pids-limit -1 \</span><br><span class="line">--ulimit nproc&#x3D;65535:65535 \</span><br><span class="line">--name oms_4.2.6 \</span><br><span class="line">04b873b7c52f</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">docker exec -it  oms_4.2.6 bash</span><br></pre></td></tr></table></figure>
 ]]></content>
   </entry>
   <entry>
     <title>cloudcanl 2.2.4 安装部署</title>
-    <url>/2024/05/29/cloudcanl%202.2.4%20%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/</url>
+    <url>/2024/12/18/cloudcanl%202.2.4%20%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/</url>
     <content><![CDATA[<p>cloudcanl 2.2.4 安装部署</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo yum update</span><br><span class="line">sudo yum -y install epel-release</span><br><span class="line"># base util</span><br><span class="line"></span><br><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum install -y lsof</span><br><span class="line">sudo yum install -y bc</span><br><span class="line">sudo yum install -y p7zip p7zip-plugins</span><br><span class="line"></span><br><span class="line"># install docker</span><br><span class="line"></span><br><span class="line">sudo yum-config-manager --add-repo https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br><span class="line">sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</span><br><span class="line">sudo systemctl start docker</span><br><span class="line">systemctl enable docker</span><br><span class="line">sudo wget &quot;https:&#x2F;&#x2F;pc.clougence.com&#x2F;docker-compose-1.28.3&quot; -O &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br><span class="line">sudo chmod +x &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br><span class="line"></span><br><span class="line"># check</span><br><span class="line"></span><br><span class="line">docker -v</span><br><span class="line">docker-compose version</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo yum update</span><br><span class="line">sudo yum -y install epel-release</span><br><span class="line"># base util</span><br><span class="line"></span><br><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum install -y lsof</span><br><span class="line">sudo yum install -y bc</span><br><span class="line">sudo yum install -y p7zip p7zip-plugins</span><br><span class="line"></span><br><span class="line"># install docker</span><br><span class="line"></span><br><span class="line">sudo yum-config-manager --add-repo https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br><span class="line">sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</span><br><span class="line"></span><br><span class="line">#修改存储路径</span><br><span class="line">vim &#x2F;etc&#x2F;docker&#x2F;daemon.json</span><br><span class="line"></span><br><span class="line">sudo systemctl start docker</span><br><span class="line">systemctl enable docker</span><br><span class="line">sudo wget &quot;https:&#x2F;&#x2F;pc.clougence.com&#x2F;docker-compose-1.28.3&quot; -O &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br><span class="line">sudo chmod +x &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br><span class="line"></span><br><span class="line"># check</span><br><span class="line"></span><br><span class="line">docker -v</span><br><span class="line">docker-compose version</span><br></pre></td></tr></table></figure>
 <h2 id="系统准备">系统准备</h2>
 <p>clougence用户ulimit上限调整为102400</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi  &#x2F;etc&#x2F;security&#x2F;limits.d&#x2F;20-nproc.conf</span><br><span class="line">## 调节clougence用户的资源限制</span><br></pre></td></tr></table></figure>
@@ -68,6 +223,293 @@
 <p>java.lang.OutOfMemoryError: Java heap space  错误处理</p>
 <p>进入容器，临时修改任务的内存大小</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker exec -it cloudcanal-sidecar sh</span><br><span class="line">vi &#x2F;home&#x2F;clougence&#x2F;cloudcanal&#x2F;cloudcanal&#x2F;bin&#x2F;startTask.sh</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>hive数据库限制容量</title>
+    <url>/2024/12/17/hive%E6%95%B0%E6%8D%AE%E5%BA%93%E9%99%90%E5%88%B6%E5%AE%B9%E9%87%8F/</url>
+    <content><![CDATA[<p>hive数据库限制容量</p>
+<p>操作前<br>
+检查是否需要扩容配额<br>
+sudo su - hdfs<br>
+hdfs dfs -count -q -h /user/hive/warehouse/yz.db<br>
+操作过程<br>
+实施<br>
+sudo -u hdfs hdfs dfsadmin -setSpaceQuota 40G /user/hive/warehouse/yz.db<br>
+操作后<br>
+验证<br>
+hdfs dfs -count -q -h /user/hive/warehouse/yz.db</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>obd 接管集群</title>
+    <url>/2024/12/04/obd%20%E6%8E%A5%E7%AE%A1%E9%9B%86%E7%BE%A4/</url>
+    <content><![CDATA[<p>obd 接管集群</p>
+<p>用obd cluster takeover 接管集群</p>
+<p>这个接管需要目标集群obshell服务（ocs）是否没开启</p>
+<p>ps -ef|grep  obshell</p>
+<p>开启方式  端口默认是2886<br>
+./bin/obshell agent start --ip $ip --port $port</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">su - obuser</span><br><span class="line"></span><br><span class="line">export OB_ROOT_PASSWORD&#x3D;&quot;pwd&quot;</span><br><span class="line"></span><br><span class="line">&#x2F;home&#x2F;obuser&#x2F;baofu&#x2F;oceanbase&#x2F;bin&#x2F;obshell agent start --ip 10.0.22.172 -P 2886</span><br><span class="line"></span><br><span class="line">obd cluster takeover baofu -h10.0.22.170 -P2881 -p*****  --ssh-user&#x3D;obuser --ssh-password&#x3D;obuser</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>解决Hive创建文件数过多的问题</title>
+    <url>/2024/12/03/%E8%A7%A3%E5%86%B3Hive%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6%E6%95%B0%E8%BF%87%E5%A4%9A%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1>解决Hive创建文件数过多的问题</h1>
+<p><strong>用  DISTRIBUTE BY ;</strong></p>
+<p>参考帮助    <a href="https://www.cnblogs.com/wcwen1990/p/7600161.html" target="_blank" rel="noopener">https://www.cnblogs.com/wcwen1990/p/7600161.html</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> insert overwrite table test partition(dt)</span><br><span class="line">select * from iteblog_tmp</span><br><span class="line"> DISTRIBUTE BY dt;</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>centos7安装influxdb</title>
+    <url>/2024/11/29/centos7%E5%AE%89%E8%A3%85influxdb/</url>
+    <content><![CDATA[<h1>centos7安装influxdb</h1>
+<p>更改存储路径时，记得给路径权限， 不然数据写不进</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@cdh85-99 influxdb]# chown influxdb:influxdb -R data&#x2F; </span><br><span class="line">[root@cdh85-99 influxdb]# chown influxdb:influxdb -R wal</span><br></pre></td></tr></table></figure>
+<p><a href="https://blog.csdn.net/tongzidane/article/details/131850118" target="_blank" rel="noopener">https://blog.csdn.net/tongzidane/article/details/131850118</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>ocp升级</title>
+    <url>/2024/11/13/ocp%E5%8D%87%E7%BA%A7/</url>
+    <content><![CDATA[<h3 id="ocp升级">ocp升级</h3>
+<p>要在obd服务器上操作：</p>
+<ol>
+<li>
+<p>登录 OBD 宿主机。</p>
+</li>
+<li>
+<p>执行如下命令，使环境变量生效。</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;obbusiness-private.oss-cn-shanghai.aliyuncs.com&#x2F;download-center&#x2F;opensource&#x2F;oceanbase-all-in-one&#x2F;7&#x2F;x86_64&#x2F;oceanbase-all-in-one-4.3.3.1_20241023.el7.x86_64.tar.gz</span><br><span class="line"></span><br><span class="line">tar -xzvf oceanbase-all-in-one-4.3.3.1_20241023.el7.x86_64.tar.gz</span><br><span class="line"></span><br><span class="line">cd oceanbase-all-in-one&#x2F;bin &amp;&amp; bash install.sh</span><br><span class="line"></span><br><span class="line">source ~&#x2F;.oceanbase-all-in-one&#x2F;bin&#x2F;env.sh</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>执行 <code>obd web upgrade</code> ，在返回信息中获取升级向导页面的 IP 地址。   （升级的地址不一定是ocp-server的地址）</li>
+</ol>
+<p>数据库升级软件包目录：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;home&#x2F;root&#x2F;software&#x2F;sys-package</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>爱可生数据管理平台测试</title>
+    <url>/2024/10/18/%E7%88%B1%E5%8F%AF%E7%94%9F%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<p>yum install -y sudo vi less which wget net-tools fontconfig libaio hwloc libpciaccess lsof perl-Data-Dumper perl lz4 libunwind libev zstd</p>
+<p>把包上传到10.0.19.151  上然后执行  tar -zxvf dmpother.tar.gz -C /data/umc/components/  就可以了</p>
+<p>/opt/mysql/base/5.7.25/bin/mysql -uroot -p -P3306 -h10.0.19.151 #mysql-jfdfh6 #10.0.19.151:3306 #mysql-g001</p>
+<p>mysql-g003<br>
+caZgcDQG-85lJS=@</p>
+<p>mysql-g002<br>
+vjE$v-+h2PJq4OCe</p>
+<p>mysql-g001<br>
+_qx%Xc$$+X-934$*</p>
+<p>mysql-g004</p>
+<p>HiqxgHl0ho@#_=Xw</p>
+<p><a href="https://www.cnblogs.com/f-ck-need-u/p/9279703.html" target="_blank" rel="noopener">https://www.cnblogs.com/f-ck-need-u/p/9279703.html</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sysbench --mysql-host&#x3D;10.0.19.47 \</span><br><span class="line">         --mysql-port&#x3D;3306 \</span><br><span class="line">         --mysql-user&#x3D;yangze \</span><br><span class="line">         --mysql-password&#x3D;yangze \</span><br><span class="line">         &#x2F;usr&#x2F;share&#x2F;sysbench&#x2F;oltp_common.lua \</span><br><span class="line">         --tables&#x3D;2 \</span><br><span class="line">         --table_size&#x3D;50000000 \</span><br><span class="line">         prepare</span><br><span class="line">         </span><br><span class="line">sysbench --mysql-host&#x3D;10.0.19.47 \</span><br><span class="line">         --mysql-port&#x3D;3306 \</span><br><span class="line">         --mysql-user&#x3D;yangze \</span><br><span class="line">         --mysql-password&#x3D;yangze \</span><br><span class="line">         &#x2F;usr&#x2F;share&#x2F;sysbench&#x2F;oltp_common.lua \</span><br><span class="line">         --tables&#x3D;2 \</span><br><span class="line">         cleanup</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>Yarn ResourceManager HA 故障转移问题定位</title>
+    <url>/2024/08/28/Yarn%20ResourceManager%20HA%20%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/</url>
+    <content><![CDATA[<h1>Yarn ResourceManager HA 故障转移问题定位</h1>
+<p>用户无法在yarn集群上提交任务</p>
+<p><strong>解决方案:</strong></p>
+<p>关闭所有的ResourceManager进程</p>
+<p>通过zk客户端查看</p>
+<p>sh /opt/cloudera/parcels/CDH/lib/zookeeper/bin/zkCli.sh</p>
+<p>ls /rmstore/ZKRMStateRoot/RMAppRoot 目录下</p>
+<p>不为空则使用该命令 rmr  /rmstore/ZKRMStateRoot/RMAppRoot 删除目录文件</p>
+<p>删除完再启动ResourceManager恢复正常<br>
+此种方式是将ZK中需要RM恢复的任务清空实现的，即RM不恢复正在运行的任务，会导致集群正在运行的任务停止</p>
+<p>原文链接：<a href="https://blog.csdn.net/anguoan/article/details/128613672" target="_blank" rel="noopener">https://blog.csdn.net/anguoan/article/details/128613672</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>用户无法在yarn集群上提交任务</title>
+    <url>/2024/08/28/%E7%94%A8%E6%88%B7%E6%97%A0%E6%B3%95%E5%9C%A8yarn%E9%9B%86%E7%BE%A4%E4%B8%8A%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1/</url>
+    <content><![CDATA[<h1>Yarn ResourceManager HA 故障转移问题定位</h1>
+<p>用户无法在yarn集群上提交任务</p>
+<p><strong>解决方案:</strong></p>
+<p>关闭所有的ResourceManager进程</p>
+<p>通过zk客户端查看</p>
+<p>sh /opt/cloudera/parcels/CDH/lib/zookeeper/bin/zkCli.sh</p>
+<p>ls /rmstore/ZKRMStateRoot/RMAppRoot 目录下</p>
+<p>不为空则使用该命令 rmr  /rmstore/ZKRMStateRoot/RMAppRoot 删除目录文件</p>
+<p>删除完再启动ResourceManager恢复正常<br>
+此种方式是将ZK中需要RM恢复的任务清空实现的，即RM不恢复正在运行的任务，会导致集群正在运行的任务停止</p>
+<p>原文链接：<a href="https://blog.csdn.net/anguoan/article/details/128613672" target="_blank" rel="noopener">https://blog.csdn.net/anguoan/article/details/128613672</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>SR日常运维</title>
+    <url>/2024/08/19/SR%E6%97%A5%E5%B8%B8%E8%BF%90%E7%BB%B4/</url>
+    <content><![CDATA[<h2 id="1-发生-“close-index-channel-failed”-和-“too-many-tablet-versions”-错误应该如何处理？">1. 发生 “close index channel failed” 和 “too many tablet versions” 错误应该如何处理？</h2>
+<p>上述报错是因为导入频率太快，数据没能及时合并 (Compaction) ，从而导致版本数超过支持的最大未合并版本数。默认支持的最大未合并版本数为 1000。可以通过如下方法解决上述报错：</p>
+<ul>
+<li>
+<p>增大单次导入的数据量，降低导入频率。</p>
+</li>
+<li>
+<p>修改 BE 配置文件 <strong>be.conf</strong> 中相关参数的配置，以加快 Compaction：</p>
+<ul>
+<li>
+<p>对于明细表、聚合表和更新表，可以适当调大 <code>cumulative_compaction_num_threads_per_disk</code>、<code>base_compaction_num_threads_per_disk</code> 和 <code>cumulative_compaction_check_interval_seconds</code> 的值。例如：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cumulative_compaction_num_threads_per_disk &#x3D; 4</span><br><span class="line">base_compaction_num_threads_per_disk &#x3D; 2</span><br><span class="line">cumulative_compaction_check_interval_seconds &#x3D; 2</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>对于主键表，可以适当调大 <code>update_compaction_num_threads_per_disk</code> 的值。适当调小 <code>update_compaction_per_tablet_min_interval_seconds</code> 的值。</p>
+</li>
+</ul>
+<p>修改完成后，需要观察内存和 I/O，确保内存和 I/O 正常。</p>
+</li>
+</ul>
+<p>curl -XPOST <a href="http://172.20.85.188:8040/api/update_config?tablet_max_versions=10000" target="_blank" rel="noopener">http://172.20.85.188:8040/api/update_config?tablet_max_versions=10000</a></p>
+<p>动态修改分桶是生效的</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER TABLE BAOFOO_CM_V2.cm_entry_asy_ma SET (&quot;dynamic_partition.buckets&quot; &#x3D; &quot;9&quot;)</span><br></pre></td></tr></table></figure>
+<p>动态修改分区周期是生效的，</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER TABLE test_db.&#96;yq_protocol_payment_order2&#96; SET (&quot;dynamic_partition.time_unit&quot; &#x3D; &quot;month&quot;);</span><br><span class="line"></span><br><span class="line">ALTER TABLE test_db.&#96;yq_protocol_payment_order2&#96; SET (&quot;dynamic_partition.enable&quot; &#x3D; &quot;false&quot;);</span><br><span class="line">ALTER TABLE test_db.&#96;yq_protocol_payment_order2&#96; ADD PARTITIONS START (&quot;2022-01-10&quot;) END (&quot;2025-01-01&quot;) EVERY (interval 1 month);</span><br><span class="line">ALTER TABLE test_db.&#96;yq_protocol_payment_order2&#96; SET (&quot;dynamic_partition.enable&quot; &#x3D; &quot;true&quot;);</span><br></pre></td></tr></table></figure>
+<p>START (“2022-01-10”) END (“2025-01-01”) EVERY (interval 1 month)  这种方式添加分区要<strong>注意周期的结束时间</strong></p>
+<p><strong>但是要注意结束的周期， 必须手动补全缺失的分区</strong></p>
+<p>例如  按小时分区改成按天分区，就会丢失15:00 到24点的分区</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PARTITION p2024081914 VALUES [(&quot;2024-08-19 14:00:00&quot;), (&quot;2024-08-19 15:00:00&quot;)),</span><br><span class="line">PARTITION p20240820 VALUES [(&quot;2024-08-20 00:00:00&quot;), (&quot;2024-08-21 00:00:00&quot;)))</span><br></pre></td></tr></table></figure>
+<p>#小时到天是有问题的<br>
+#天到周没有问题，</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PARTITION p20240817 VALUES [(&#39;2024-08-17 00:00:00&#39;), (&#39;2024-08-18 00:00:00&#39;)),</span><br><span class="line">PARTITION p2024_34 VALUES [(&#39;2024-08-19 00:00:00&#39;), (&#39;2024-08-26 00:00:00&#39;)),</span><br><span class="line">PARTITION p2024_35 VALUES [(&#39;2024-08-26 00:00:00&#39;), (&#39;2024-09-02 00:00:00&#39;)))</span><br></pre></td></tr></table></figure>
+<p>2.3版本不支持小时和年分区</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>starRocks副本数修改</title>
+    <url>/2024/08/19/starRocks%E5%89%AF%E6%9C%AC%E6%95%B0%E4%BF%AE%E6%94%B9/</url>
+    <content><![CDATA[<p>前面提到过，我们可以为分区设置单独的存储策略，比如增加分区时使用新的副本数：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER TABLE starrocks.table07</span><br><span class="line">ADD PARTITION p20210313 VALUES LESS THAN (&quot;2021-03-14&quot;)</span><br><span class="line">(&quot;replication_num&quot;&#x3D;&quot;1&quot;);</span><br></pre></td></tr></table></figure>
+<p>修改分区副本数：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER TABLE starrocks.table07</span><br><span class="line">MODIFY PARTITION p20210313 SET(&quot;replication_num&quot;&#x3D;&quot;2&quot;);</span><br></pre></td></tr></table></figure>
+<p>修改表的默认副本数量，新建分区副本数量默认使用此值：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER TABLE starrocks.table07</span><br><span class="line">SET (&quot;default.replication_num&quot; &#x3D; &quot;2&quot;);</span><br></pre></td></tr></table></figure>
+<p>修改单分区表的实际副本数量（只限单分区表）：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER TABLE starrocks.table06</span><br><span class="line">SET (&quot;replication_num&quot; &#x3D; &quot;1&quot;);</span><br></pre></td></tr></table></figure>
+<p>修改表所有分区的副本数：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER TABLE starrocks.table01</span><br><span class="line">MODIFY PARTITION(*)</span><br><span class="line">SET (&quot;replication_num&quot; &#x3D; &quot;3&quot;);</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>CDH 5.13升级到5.16</title>
+    <url>/2024/08/08/CDH%205.13%E5%8D%87%E7%BA%A7%E5%88%B05.16/</url>
+    <content><![CDATA[<h1>CDH 5.13升级到5.16</h1>
+<p>本篇章节主要介绍如何从CDH 5.13升级到5.16版本，此步骤也可以借鉴用来作其他CDH版本升级的指导。</p>
+<p>首先，准备CDH 5.16的安装包，包括CM 5.16的rpm包，及CDH 5.16的parcel包。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;parcel包</span><br><span class="line">-rw-r--r-- 1 root root 2132782197 Oct 14 16:01 CDH-5.16.2-1.cdh5.16.2.p0.8-el7.parcel </span><br><span class="line">-rw-r--r-- 1 root root         41 Oct 14 16:01 CDH-5.16.2-1.cdh5.16.2.p0.8-el7.parcel.sha </span><br><span class="line">&#x2F;&#x2F;CM安装包</span><br><span class="line">cloudera-manager-agent-5.16.2-1.cm5162.p0.7.el7.x86_64.rpm     </span><br><span class="line">cloudera-manager-server-5.16.2-1.cm5162.p0.7.el7.x86_64.rpm       </span><br><span class="line">cloudera-manager-daemons-5.16.2-1.cm5162.p0.7.el7.x86_64.rpm   </span><br><span class="line">cloudera-manager-server-db-2-5.16.2-1.cm5162.p0.7.el7.x86_64.rpm  repodata</span><br></pre></td></tr></table></figure>
+<p>配置临时http服务及本地yum源<br>
+进入到cm rpm安装包所在的目录，执行命令</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install -y createrepo</span><br><span class="line">createrepo .</span><br><span class="line">python -m SimpleHTTPServer 8900 &amp;</span><br></pre></td></tr></table></figure>
+<p>，启动http服务监听，端口为8900<br>
+配置本地yum源，添加cm_local.repo文件到/etc/yum.repos.d/目录下，内容如下，</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[cm_local] </span><br><span class="line">name&#x3D;cm_local </span><br><span class="line">baseurl&#x3D;http:&#x2F;&#x2F;192.168.81.50:8900&#x2F; </span><br><span class="line">enabled&#x3D;1 </span><br><span class="line">gpgcheck&#x3D;0</span><br></pre></td></tr></table></figure>
+<p>将此文件复制到集群每个节点</p>
+<p>停止所有节点的Hadoop服务及cm server及cm agent服务<br>
+从7180网页中停止Hadoop集群服务<br>
+使用以下命令停止cm server及agent服务</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">service cloudera-scm-server stop</span><br><span class="line">service cloudera-scm-agent stop</span><br></pre></td></tr></table></figure>
+<p>升级Cloudera Manager服务<br>
+在CM server节点升级以下服务<br>
+cloudera-manager-server<br>
+cloudera-manager-daemons<br>
+cloudera-manager-agent<br>
+在CM agent节点升级以下服务<br>
+cloudera-manager-daemons<br>
+cloudera-manager-agent<br>
+执行命令如下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum upgrade cloudera-manager-server cloudera-manager-daemons cloudera-manager-agent</span><br></pre></td></tr></table></figure>
+<p>注：如果CM后台元数据库使用独立的mysql，则不用考虑升级元数据。如果是使用自带的postgresql，则也需要升级，执行yum upgrade cloudera-manager-server-db-2</p>
+<p>启动CM服务</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">service cloudera-scm-server start</span><br><span class="line">service cloudera-scm-agent start</span><br></pre></td></tr></table></figure>
+<p>升级CDH<br>
+将5.16的parcel包复制到CM server所在的节点对应的parcel-repo目录下，并重启cm server</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cp * &#x2F;opt&#x2F;cloudera&#x2F;parcel-repo&#x2F; </span><br><span class="line">service cloudera-scm-server restart</span><br></pre></td></tr></table></figure>
+<p>停止老版本服务，激活并启动新版本parcel<br>
+通过7180网页，选择主机-&gt;Parcel，停止老版本服务，激活并启动新版本parcel</p>
+<p>启动Hadoop服务<br>
+通过以上步骤，CM及Hadoop应用都升级好了，此时可以启动Hadoop服务。</p>
+<p>注意： spark2要用  SPARK2-2.4.0.cloudera2-1.cdh5.13.3.p0.1041012-el7.parcel</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">scp -r  &#x2F;etc&#x2F;cloudera-scm-server&#x2F; &#x2F;opt&#x2F;cm_bak&#x2F;cloudera-scm-server</span><br><span class="line">scp -r &#x2F;etc&#x2F;cloudera-scm-agent&#x2F; &#x2F;opt&#x2F;cm_bak&#x2F;cloudera-scm-agent </span><br><span class="line"></span><br><span class="line">yum list |grep  cloudera-manager-server cloudera-manager-daemons cloudera-manager-agent </span><br><span class="line"></span><br><span class="line">ansible cdh81 -m shell -a &quot;src&#x3D;&#x2F;etc&#x2F;yum.repos.d&#x2F;cm_local.repo  dest&#x3D;&#x2F;etc&#x2F;yum.repos.d&#x2F;cm_local.repo&quot;</span><br><span class="line"></span><br><span class="line">ansible newhost -m shell -a &quot;src&#x3D;&#x2F;etc&#x2F;krb5.conf  dest&#x3D;&#x2F;etc&#x2F;krb5.conf&quot;</span><br><span class="line"></span><br><span class="line">ansible cdh81 -m shell -a &quot;service cloudera-scm-agent stop&quot;</span><br><span class="line"></span><br><span class="line">ansible cdh81 -m shell -a &quot;yum list |grep cloudera&quot;</span><br><span class="line">ansible cdh81 -m shell -a &quot;yum -y upgrade cloudera-manager-server cloudera-manager-daemons cloudera-manager-agent &quot;</span><br><span class="line">ansible cdh81 -m shell -a &quot;service cloudera-scm-agent start&quot;</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>starRocks部署</title>
+    <url>/2024/07/29/starRocks%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<p>[clickhouse]<br>
+172.20.85.[111:113]<br>
+172.20.85.[138:142]</p>
+<p>[fe]<br>
+172.20.85.[111:113]</p>
+<p>[be]<br>
+172.20.85.[138:142]</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible clickhouse -m copy -a &quot;src&#x3D;&#x2F;root&#x2F;.bashrc dest&#x3D;&#x2F;root&#x2F;.bashrc &quot;</span><br><span class="line">ansible clickhouse -m shell -a &quot;java -version  &quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ansible clickhouse -m shell -a <span class="string">"yum install -y rsync  "</span></span><br><span class="line">ansible clickhouse  -m synchronize  -a <span class="string">"src=/opt/module/StarRocks dest=/opt/module/"</span>  </span><br><span class="line">ansible clickhouse -m shell -a <span class="string">" ls /opt/module/StarRocks "</span></span><br></pre></td></tr></table></figure>
+<h2 id="fe部署">fe部署</h2>
+<p>第一次启动需指定–helper参数，后续再启动无需指定此参数<br>
+sh /opt/module/StarRocks/fe/bin/start_fe.sh --helper 172.20.85.111:9010 --daemon</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;fe&#x2F;bin&#x2F;stop_fe.sh &quot;</span><br><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;fe&#x2F;bin&#x2F;start_fe.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql -h 127.0.0.1 -P9030 -uroot -p</span><br><span class="line">mysql&gt; SHOW PROC '/frontends'\G</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"172.20.85.112:9010"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"172.20.85.142:9010"</span>;</span><br><span class="line"><span class="comment"># ALTER SYSTEM DROP FOLLOWER "172.20.85.142:9010";</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> OBSERVER <span class="string">"172.20.85.113:9010"</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="be-部署">be 部署</h2>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql&gt; SHOW PROC '/backends'\G</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh85-138:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh85-139:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh85-140:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh85-141:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh85-142:9050"</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible be -m shell -a &quot; &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;be&#x2F;bin&#x2F;stop_be.sh &quot;</span><br><span class="line">ansible be -m shell -a &quot; &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;be&#x2F;bin&#x2F;start_be.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<p>如添加过程出现错误，需要通过以下命令将该 BE 节点从集群移除。</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">mysql&gt; ALTER SYSTEM decommission BACKEND "host:port";</span><br></pre></td></tr></table></figure>
+<h2 id="监控">监控</h2>
+<p>wget <a href="https://github.com/prometheus/prometheus/releases/download/v2.29.1/prometheus-2.29.1.linux-amd64.tar.gz" target="_blank" rel="noopener">https://github.com/prometheus/prometheus/releases/download/v2.29.1/prometheus-2.29.1.linux-amd64.tar.gz</a><br>
+tar -xf prometheus-2.29.1.linux-amd64.tar.gz -C /usr/local/</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">'StarRocks_Cluster01'</span> <span class="comment"># 每一个集群称之为一个job，可以自定义名字作为StarRocks集群名</span></span><br><span class="line">  <span class="attr">metrics_path:</span> <span class="string">'/metrics'</span>    <span class="comment"># 指定获取监控项目的Restful Api</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">static_configs:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['cdh85-111:8030','cdh85-112:8030','cdh85-113:8030']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">group:</span> <span class="string">fe</span> <span class="comment"># 这里配置了 fe 的 group，该 group 中包含了 3 个 Frontends</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['cdh85-138:8040',</span> <span class="string">'cdh85-139:8040'</span><span class="string">,</span> <span class="string">'cdh85-140:8040'</span><span class="string">,'cdh85-141:8040','cdh85-142:8040']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">group:</span> <span class="string">be</span> <span class="comment"># 这里配置了 be 的 group，该 group 中包含了 5 个 Backends</span></span><br></pre></td></tr></table></figure>
+<h2 id="权限">权限</h2>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建用户</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> dba_starRocks@<span class="string">'%'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'dba_starRocks'</span>;</span><br><span class="line"></span><br><span class="line">给权限</span><br><span class="line"></span><br><span class="line"><span class="keyword">GRANT</span> SELECT_PRIV,LOAD_PRIV,ALTER_PRIV,CREATE_PRIV,DROP_PRIV <span class="keyword">ON</span> *.*  <span class="keyword">TO</span> dba_starRocks;</span><br><span class="line"></span><br><span class="line">取消权限</span><br><span class="line"><span class="keyword">REVOKE</span> LOAD_PRIV,ALTER_PRIV,CREATE_PRIV,DROP_PRIV <span class="keyword">ON</span> *.*  <span class="keyword">FROM</span>  dba_starRocks;</span><br><span class="line"></span><br><span class="line">查看权限</span><br><span class="line"><span class="keyword">SHOW</span> <span class="keyword">GRANTS</span> <span class="keyword">FOR</span> dba_starRocks</span><br></pre></td></tr></table></figure>
+<h2 id="测试环境">测试环境</h2>
+<p>[sr]<br>
+10.0.19.[156:158]</p>
+<h3 id="fe-重启">fe 重启</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible sr -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;fe&#x2F;bin&#x2F;stop_fe.sh &quot;</span><br><span class="line">ansible sr -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;fe&#x2F;bin&#x2F;start_fe.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<h3 id="be重启">be重启</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible sr -m shell -a &quot;sh  &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;be&#x2F;bin&#x2F;stop_be.sh &quot;</span><br><span class="line">ansible sr -m shell -a &quot;sh  &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;be&#x2F;bin&#x2F;start_be.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
+<h2 id="hive外部表">hive外部表</h2>
+<p>需要把hdfs-site.xml文件 放到be和fe的conf目录里  并重启</p>
+<p>遇到权限问题  修改 hadoop_env.sh</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export HADOOP_USER_NAME&#x3D;hdfs</span><br></pre></td></tr></table></figure>
+<h2 id="手动升级">手动升级</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">\cp -r &#x2F;opt&#x2F;module&#x2F;StarRocks-2.3.0-rc01&#x2F;apache_hdfs_broker &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;apache_hdfs_broker&#x2F;..&#x2F;</span><br></pre></td></tr></table></figure>
+<h2 id="监控-2">监控</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible be -m shell -a &quot; netstat -nap |grep 9050 &quot;</span><br></pre></td></tr></table></figure>
+<h2 id="supervisord守护进程">supervisord守护进程</h2>
+<p>/etc/supervisord.d/StartRocks.ini</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[program:be]</span><br><span class="line">process_name&#x3D;%(program_name)s                        ;进程名称</span><br><span class="line">directory&#x3D;&#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;be                   ;工作目录be所在路径</span><br><span class="line">command&#x3D;sh &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;be&#x2F;bin&#x2F;start_be.sh  ;运行的命令be的启动sh命令</span><br><span class="line">autostart&#x3D;true                                       ;是否随supervisor自动开启</span><br><span class="line">autorestart&#x3D;true                                     ;是否在挂了之后重启，意外关闭后会重启，比如kill掉</span><br><span class="line">user&#x3D;root                                            ;用户</span><br><span class="line">numprocs&#x3D;1                                           ;进程数 如果需要同时启动多个进程，进程名称需要不一样</span><br><span class="line">startretries&#x3D;3                                       ;启动重试次数</span><br><span class="line">stopasgroup&#x3D;true                                     ;是否停止子进程</span><br><span class="line">killasgroup&#x3D;true                                     ;是否杀死子进程</span><br><span class="line">startsecs&#x3D;5                                          ;启动5秒后，如果还是运行状态才认为进程已经启动</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">supervisorctl status        &#x2F;&#x2F;查看所有进程的状态</span><br><span class="line">supervisorctl stop be       &#x2F;&#x2F;停止</span><br><span class="line">supervisorctl start be      &#x2F;&#x2F;启动</span><br><span class="line">supervisorctl restart be    &#x2F;&#x2F;重启</span><br><span class="line">supervisorctl update be     &#x2F;&#x2F;配置文件修改后使用该命令加载新的配置</span><br><span class="line">supervisorctl reload        &#x2F;&#x2F;重新启动配置中的所有程序</span><br></pre></td></tr></table></figure>
+<h1>官网升级</h1>
+<p><strong>升级 BE 前的准备</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#为了避免 BE 重启期间不必要的 Tablet 修复，进而影响升级后的集群性能，建议在升级前先在 FE Leader 上执行如下命令以禁用 Tablet 调度功能，</span></span><br><span class="line">&gt; mysql -h 127.0.0.1 -P9030 -uroot -p</span><br><span class="line"></span><br><span class="line">admin <span class="keyword">set</span> frontend config (<span class="string">"max_scheduling_tablets"</span>=<span class="string">"0"</span>);</span><br><span class="line">admin <span class="keyword">set</span> frontend config (<span class="string">"disable_balance"</span>=<span class="string">"true"</span>);</span><br><span class="line">admin <span class="keyword">set</span> frontend config (<span class="string">"disable_colocate_balance"</span>=<span class="string">"true"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在所有 BE 重启升级完成后，通过 show backends 命令确认所有 BE 的 Alive 状态为 true 后，启用 Tablet 调度功能，</span></span><br><span class="line"></span><br><span class="line">admin <span class="keyword">set</span> frontend config (<span class="string">"max_scheduling_tablets"</span>=<span class="string">"10000"</span>);</span><br><span class="line">admin <span class="keyword">set</span> frontend config (<span class="string">"disable_balance"</span>=<span class="string">"false"</span>);</span><br><span class="line">admin <span class="keyword">set</span> frontend config (<span class="string">"disable_colocate_balance"</span>=<span class="string">"false"</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>升级</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">scp StarRocks-2.5.0-rc03.tar.gz usdp05:/opt/module/</span><br><span class="line"><span class="meta">#</span><span class="bash">ansible clickhouse  -m copy  -a <span class="string">"src=/opt/module/StarRocks-2.5.0-rc03.tar.gz dest=/opt/module/"</span></span></span><br><span class="line"></span><br><span class="line">cd /opt/module</span><br><span class="line">tar -zxvf StarRocks-2.3.18.tar.gz </span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 升级 BE 节点</span></span><br><span class="line">supervisorctl stop starrocks_be</span><br><span class="line">cd /opt/module/StarRocks/be</span><br><span class="line">sh bin/stop_be.sh</span><br><span class="line">rm -rf lib.bak &amp;&amp; mv lib lib.bak </span><br><span class="line">rm -rf bin.bak &amp;&amp; mv bin bin.bak</span><br><span class="line">cp -r /opt/module/StarRocks-2.3.18/be/lib .</span><br><span class="line">cp -r /opt/module/StarRocks-2.3.18/be/bin .</span><br><span class="line">ps aux | grep starrocks_be</span><br><span class="line">supervisorctl start starrocks_be</span><br><span class="line">ps aux | grep starrocks_be</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 升级 FE 节点</span></span><br><span class="line">supervisorctl stop starrocks_fe</span><br><span class="line">cd /opt/module/StarRocks/fe</span><br><span class="line">rm -rf meta.bak/ &amp;&amp; cp -r meta meta.bak</span><br><span class="line">rm -rf lib.bak &amp;&amp; mv lib lib.bak </span><br><span class="line">rm -rf bin.bak &amp;&amp; mv bin bin.bak</span><br><span class="line">rm -rf spark-dpp.bak &amp;&amp; mv spark-dpp spark-dpp.bak</span><br><span class="line">cp -r /opt/module/StarRocks-2.3.18/fe/lib .</span><br><span class="line">cp -r /opt/module/StarRocks-2.3.18/fe/bin .</span><br><span class="line">cp -r /opt/module/StarRocks-2.3.18/fe/spark-dpp .</span><br><span class="line">supervisorctl start starrocks_fe</span><br><span class="line"><span class="meta">#</span><span class="bash"> sh bin/start_fe.sh --daemon</span></span><br><span class="line">ps aux | grep StarRocksFE</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 升级 Broker</span></span><br><span class="line">cd /opt/module/StarRocks/apache_hdfs_broker</span><br><span class="line">rm -rf lib.bak &amp;&amp; mv lib lib.bak </span><br><span class="line">rm -rf bin.bak &amp;&amp; mv bin bin.bak</span><br><span class="line">cp -r /opt/module/StarRocks-2.5.0-rc03/apache_hdfs_broker/lib  .   </span><br><span class="line">cp -r /opt/module/StarRocks-2.5.0-rc03/apache_hdfs_broker/bin  .</span><br><span class="line">sh bin.bak/stop_broker.sh</span><br><span class="line">sh bin/start_broker.sh --daemon</span><br></pre></td></tr></table></figure>
+<h3 id="批量操作">批量操作</h3>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ansible sr -m shell -a " sh /opt/module/StarRocks/be/bin/stop_be.sh "</span><br><span class="line">ansible sr -m shell -a " sh /opt/module/StarRocks/be/bin/start_be.sh --daemon "</span><br><span class="line"></span><br><span class="line">ansible sr -m shell -a "supervisorctl status "</span><br><span class="line">ansible sr -m shell -a "supervisorctl start starrocks_be"</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ansible sr -m shell -a " sh /opt/module/StarRocks/fe/bin/stop_fe.sh "</span><br><span class="line">ansible sr -m shell -a " sh /opt/module/StarRocks/fe/bin/start_fe.sh --daemon "</span><br><span class="line"></span><br><span class="line">ansible sr -m shell -a "supervisorctl status "</span><br><span class="line">ansible sr -m shell -a "supervisorctl start starrocks_fe"</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">supervisorctl start starrocks_broker</span><br></pre></td></tr></table></figure>
+<h2 id="扩缩容-BE-集群">扩缩容 BE 集群</h2>
+<h2 id="系统优化">系统优化</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot; #创建数据文件目录&quot;</span><br><span class="line"> for i in &#123;1..10&#125; ;do mkdir &#x2F;dfs&#x2F;data$i -p;done</span><br><span class="line"> for i in &#123;a..j&#125;;do &#x2F;usr&#x2F;sbin&#x2F;mkfs.xfs &#x2F;dev&#x2F;sd$i;done</span><br><span class="line"> echo -e &quot;&#x2F;dev&#x2F;sda	&#x2F;dfs&#x2F;data10     xfs	defaults	0 0</span><br><span class="line"> &#x2F;dev&#x2F;sdb	&#x2F;dfs&#x2F;data1     xfs	defaults	0 0</span><br><span class="line"> &#x2F;dev&#x2F;sdc	&#x2F;dfs&#x2F;data2     xfs	defaults	0 0</span><br><span class="line"> &#x2F;dev&#x2F;sdd	&#x2F;dfs&#x2F;data3     xfs	defaults	0 0</span><br><span class="line"> &#x2F;dev&#x2F;sde	&#x2F;dfs&#x2F;data4     xfs	defaults	0 0</span><br><span class="line"> &#x2F;dev&#x2F;sdf	&#x2F;dfs&#x2F;data5     xfs	defaults	0 0</span><br><span class="line"> &#x2F;dev&#x2F;sdg	&#x2F;dfs&#x2F;data6     xfs	defaults	0 0</span><br><span class="line"> &#x2F;dev&#x2F;sdh	&#x2F;dfs&#x2F;data7     xfs	defaults	0 0</span><br><span class="line"> &#x2F;dev&#x2F;sdi	&#x2F;dfs&#x2F;data8     xfs	defaults	0 0</span><br><span class="line"> &#x2F;dev&#x2F;sdj	&#x2F;dfs&#x2F;data9     xfs	defaults	0 0&quot;  &gt;&gt; &#x2F;etc&#x2F;fstab</span><br><span class="line"> mount -a</span><br><span class="line"> </span><br><span class="line">--修改主机名</span><br><span class="line">hostnamectl set-hostname cdh85-234</span><br><span class="line">-- 关闭交换区</span><br><span class="line">sudo vim &#x2F;etc&#x2F;sysctl.conf    </span><br><span class="line">vm.swappiness &#x3D; 0   </span><br><span class="line">-- 允许内存超配</span><br><span class="line">sudo vim &#x2F;etc&#x2F;sysctl.conf </span><br><span class="line">vm.overcommit_memory &#x3D; 1</span><br><span class="line">-- 关闭透明大页</span><br><span class="line">vim &#x2F;etc&#x2F;default&#x2F;grub   # 找到 GRUB_CMDLINE_LINUX 字段所在一行，在末尾添加 transparent_hugepage&#x3D;madvise    GRUB_CMDLINE_LINUX&#x3D;&quot;..其他参数... transparent_hugepage&#x3D;madvise&quot;  </span><br><span class="line">-- cpupower设置performance</span><br><span class="line">cpupower frequency-set -g performance</span><br><span class="line">--在溢出时中止 TCP</span><br><span class="line">sudo vim &#x2F;etc&#x2F;sysctl.conf   </span><br><span class="line">net.ipv4.tcp_abort_on_overflow &#x3D; 1 </span><br><span class="line">-- 关闭内核错误生成的文件</span><br><span class="line">sudo vim &#x2F;etc&#x2F;sysctl.conf   </span><br><span class="line">kernel.core_pattern &#x3D; |&#x2F;bin&#x2F;false</span><br><span class="line"></span><br><span class="line">-- 设置最大文件打开数</span><br><span class="line">ansible newhost  -m copy  -a &quot;src&#x3D;&#x2F;etc&#x2F;security&#x2F;limits.conf dest&#x3D;&#x2F;etc&#x2F;security&#x2F;limits.conf&quot;</span><br><span class="line">ansible newhost  -m copy  -a &quot;src&#x3D;&#x2F;etc&#x2F;systemd&#x2F;system.conf dest&#x3D;&#x2F;etc&#x2F;systemd&#x2F;system.conf&quot;</span><br><span class="line">ansible newhost  -m copy  -a &quot;src&#x3D;&#x2F;etc&#x2F;security&#x2F;limits.d&#x2F;20-nproc.conf dest&#x3D;&#x2F;etc&#x2F;security&#x2F;limits.d&#x2F;20-nproc.conf&quot;</span><br><span class="line"></span><br><span class="line">ansible newhost -m copy  -a &quot;src&#x3D;&#x2F;etc&#x2F;sysctl.conf dest&#x3D;&#x2F;etc&#x2F;sysctl.conf &quot;</span><br><span class="line">ansible newhost  -m copy  -a &quot;src&#x3D;&#x2F;etc&#x2F;hosts dest&#x3D;&#x2F;etc&#x2F;hosts&quot;</span><br><span class="line">ansible newhost  -m copy  -a &quot;src&#x3D;&#x2F;etc&#x2F;profile dest&#x3D;&#x2F;etc&#x2F;profile&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible newhost -m shell -a &quot;mkdir &#x2F;opt&#x2F;module&#x2F; &quot;</span><br><span class="line">ansible be  -m copy  -a &quot;src&#x3D;&#x2F;opt&#x2F;module&#x2F;StarRocks-2.3.18.tar.gz dest&#x3D;&#x2F;opt&#x2F;module&#x2F;StarRocks-2.3.18.tar.gz&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">ansible newhost -m copy  -a &quot;src&#x3D;&#x2F;root&#x2F;supervisor-4.2.5.tar.gz dest&#x3D;&#x2F;tmp&#x2F;&quot;</span><br><span class="line">ansible newhost -m shell -a &quot;tar -zxvf &#x2F;tmp&#x2F;supervisor-4.2.5.tar.gz  &quot;</span><br><span class="line">ansible newhost -m shell -a &quot;yum install python-setuptools -y &quot;</span><br><span class="line">ansible newhost -m shell -a &quot;cd supervisor-4.2.5 &amp;&amp;  python setup.py install&quot;</span><br><span class="line">ansible newhost -m shell -a &quot;mkdir &#x2F;etc&#x2F;supervisor &quot;</span><br><span class="line">ansible newhost -m copy -a &quot;src&#x3D;&#x2F;etc&#x2F;supervisor&#x2F;supervisord.conf dest&#x3D;&#x2F;etc&#x2F;supervisor&#x2F;&quot;</span><br><span class="line">ansible newhost -m copy -a &quot;src&#x3D;&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;supervisord-4.2.5.service dest&#x3D;&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;&quot;</span><br><span class="line">ansible newhost -m shell -a &quot;systemctl enable supervisord-4.2.5.service&quot;</span><br><span class="line">ansible newhost -m shell -a &quot;systemctl is-enabled supervisord-4.2.5.service&quot;</span><br><span class="line">ansible newhost -m shell -a &quot;mkdir &#x2F;etc&#x2F;supervisord.d&#x2F;&quot;</span><br><span class="line">scp cdh85-189:&#x2F;etc&#x2F;supervisord.d&#x2F;starrocks_be.ini &#x2F;tmp&#x2F;</span><br><span class="line">ansible be -m copy -a &quot;src&#x3D;&#x2F;tmp&#x2F;starrocks_be.ini dest&#x3D;&#x2F;etc&#x2F;supervisord.d&#x2F;&quot;</span><br><span class="line">ansible newhost -m shell -a &quot;systemctl start supervisord-4.2.5.service&quot;</span><br><span class="line">ansible newhost -m shell -a &quot;systemctl status supervisord-4.2.5.service&quot;</span><br><span class="line">ansible newhost -m shell -a &quot;supervisorctl status all&quot;</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>在vim保存时获得sudo权限</title>
+    <url>/2024/07/05/%E5%9C%A8vim%E4%BF%9D%E5%AD%98%E6%97%B6%E8%8E%B7%E5%BE%97sudo%E6%9D%83%E9%99%90/</url>
+    <content><![CDATA[<h1>在vim保存时获得sudo权限</h1>
+<p>在维护线上服务的时候，经常要编辑一些不属于操作用户的文件，就是只有r权限的那种，每次保存都会提示read only。只能先记下来改了什么，然后再退出，然后 sudo vim 再做保存。</p>
+<p>下面的命令可以不退出vim进程，直接用<a href="https://so.csdn.net/so/search?q=vim%E5%91%BD%E4%BB%A4&amp;spm=1001.2101.3001.7020" target="_blank" rel="noopener">vim命令</a>获取sudo权限，然后直接保存文件。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">:w !  sudo  tee  %</span><br></pre></td></tr></table></figure>
+<p>命令:w !{cmd}，让 vim 执行一个外部命令{cmd}，然后把当前缓冲区的内容从 stdin 传入。</p>
+<p>tee 是一个把 stdin 保存到文件的小工具。</p>
+<p>而 %，是vim当中一个只读寄存器的名字，总保存着当前编辑文件的文件路径。</p>
+<p>所以执行这个命令，就相当于从vim外部修改了当前编辑的文件。</p>
+<p>执行<code>:w !</code> <code>sudo</code> <code>tee</code> %后，会提示输入密码，之后再选择重新加载文件，即可看到保存后的文件</p>
 ]]></content>
   </entry>
   <entry>
@@ -221,32 +663,6 @@
 <p>docker restart 1f163b3a620a</p>
 <p>172.20.192.151</p>
 <p>172.20.192.152</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>SR日常运维</title>
-    <url>/2024/04/17/SR%E6%97%A5%E5%B8%B8%E8%BF%90%E7%BB%B4/</url>
-    <content><![CDATA[<h2 id="1-发生-“close-index-channel-failed”-和-“too-many-tablet-versions”-错误应该如何处理？">1. 发生 “close index channel failed” 和 “too many tablet versions” 错误应该如何处理？</h2>
-<p>上述报错是因为导入频率太快，数据没能及时合并 (Compaction) ，从而导致版本数超过支持的最大未合并版本数。默认支持的最大未合并版本数为 1000。可以通过如下方法解决上述报错：</p>
-<ul>
-<li>
-<p>增大单次导入的数据量，降低导入频率。</p>
-</li>
-<li>
-<p>修改 BE 配置文件 <strong>be.conf</strong> 中相关参数的配置，以加快 Compaction：</p>
-<ul>
-<li>
-<p>对于明细表、聚合表和更新表，可以适当调大 <code>cumulative_compaction_num_threads_per_disk</code>、<code>base_compaction_num_threads_per_disk</code> 和 <code>cumulative_compaction_check_interval_seconds</code> 的值。例如：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cumulative_compaction_num_threads_per_disk &#x3D; 4</span><br><span class="line">base_compaction_num_threads_per_disk &#x3D; 2</span><br><span class="line">cumulative_compaction_check_interval_seconds &#x3D; 2</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>对于主键表，可以适当调大 <code>update_compaction_num_threads_per_disk</code> 的值。适当调小 <code>update_compaction_per_tablet_min_interval_seconds</code> 的值。</p>
-</li>
-</ul>
-<p>修改完成后，需要观察内存和 I/O，确保内存和 I/O 正常。</p>
-</li>
-</ul>
-<p>curl -XPOST <a href="http://172.20.85.188:8040/api/update_config?tablet_max_versions=10000" target="_blank" rel="noopener">http://172.20.85.188:8040/api/update_config?tablet_max_versions=10000</a></p>
 ]]></content>
   </entry>
   <entry>
@@ -632,48 +1048,6 @@ sudo sysctl --system</p>
 ]]></content>
   </entry>
   <entry>
-    <title>部署 OceanBase 集群环境</title>
-    <url>/2024/01/26/%E9%83%A8%E7%BD%B2%20OceanBase%20%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83/</url>
-    <content><![CDATA[<h2 id="部署-OceanBase-集群环境">部署 OceanBase 集群环境</h2>
-<p><strong>磁盘初始化</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">umount &#x2F;dfs&#x2F;data&#123;1..8&#125;</span><br><span class="line"></span><br><span class="line">pvcreate &#x2F;dev&#x2F;nvme&#123;0..7&#125;n1 -y</span><br><span class="line"></span><br><span class="line">vgcreate &#x2F;dev&#x2F;obvg &#x2F;dev&#x2F;nvme0n1 &#x2F;dev&#x2F;nvme1n1 &#x2F;dev&#x2F;nvme2n1 &#x2F;dev&#x2F;nvme3n1 &#x2F;dev&#x2F;nvme4n1 &#x2F;dev&#x2F;nvme5n1 &#x2F;dev&#x2F;nvme6n1 &#x2F;dev&#x2F;nvme7n1 </span><br><span class="line"></span><br><span class="line"># 日志盘 ，内存的三倍</span><br><span class="line">lvcreate -n ob-log -L 3096G obvg --stripes&#x3D;6 --stripesize&#x3D;128</span><br><span class="line">lvcreate -n ob-data -l 100%Free obvg --stripes&#x3D;6 --stripesize&#x3D;1024</span><br><span class="line"></span><br><span class="line">mkfs.ext4 &#x2F;dev&#x2F;obvg&#x2F;ob-log -O 64bit   </span><br><span class="line">mkfs.xfs &#x2F;dev&#x2F;obvg&#x2F;ob-data </span><br><span class="line"></span><br><span class="line">mkdir -p &#x2F;data&#x2F;&#123;1,log1&#125;  &amp;&amp; chmod -R 755 &#x2F;data</span><br><span class="line">vi &#x2F;etc&#x2F;fstab</span><br><span class="line">&#x2F;*写入*&#x2F;</span><br><span class="line">&#x2F;dev&#x2F;obvg&#x2F;ob-data &#x2F;data&#x2F;1        xfs    defaults,noatime,nodiratime    0  0</span><br><span class="line">&#x2F;dev&#x2F;obvg&#x2F;ob-log  &#x2F;data&#x2F;log1      ext4    defaults,noatime,nodiratime,nodelalloc,barrier&#x3D;0     0  0</span><br><span class="line">mount -a</span><br></pre></td></tr></table></figure>
-<h3 id="问题：-OBD-4300：x-x-x-x-failed-to-query-java-version-you-may-not-have-java-installed">问题：  OBD-4300：x.x.x.x: failed to query java version, you may not have java installed</h3>
-<p>解决方法：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ln -s &#x2F;usr&#x2F;java&#x2F;jdk1.8.0_181-cloudera&#x2F;bin&#x2F;java  &#x2F;usr&#x2F;bin&#x2F;java</span><br></pre></td></tr></table></figure>
-<h3 id="在线部署">在线部署</h3>
-<p>当您选择在线部署时，可以参考本节命令在中控机上安装 OBD。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[admin@test001 ~]$ sudo yum install -y yum-utils</span><br><span class="line">[admin@test001 ~]$ sudo yum-config-manager --add-repo https://mirrors.aliyun.com/oceanbase/OceanBase.repo</span><br><span class="line">[admin@test001 ~]$ sudo yum install -y ob-deploy</span><br><span class="line">[admin@test001 ~]$ source /etc/profile.d/obd.sh</span><br></pre></td></tr></table></figure>
-<h3 id="步骤二：使用白屏部署-OceanBase-数据库">步骤二：使用白屏部署 OceanBase 数据库</h3>
-<ol>
-<li>
-<p>命令行执行 <code>obd web</code> 命令启动白屏界面，根据输出地址登录白屏界面并单击 <strong>开启体验之旅</strong> 开始部署。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[admin@test001 ~]$ obd web</span><br><span class="line">start OBD WEB in 0.0.0.0:8680</span><br><span class="line">please open http://172.xx.xxx.233:8680</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="OBD-一键测试">OBD 一键测试</h2>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum-config-manager --add-repo https://mirrors.aliyun.com/oceanbase/OceanBase.repo</span><br><span class="line">sudo yum install obtpch</span><br><span class="line">sudo ln -s /usr/tpc-h-tools/tpc-h-tools/ /usr/local/</span><br><span class="line">obd test tpch myoceanbase --test-server 10.0.19.191 --tenant=ocp -s 100 --remote-tbl-dir=/tmp/tpch100</span><br><span class="line"></span><br><span class="line">obd test tpch myoceanbase --tenant=ocp  --test-only</span><br></pre></td></tr></table></figure>
-<h3 id="注意">注意</h3>
-<ul>
-<li>OBD 运行 tpch，详细参数介绍请参考 <a href="https://www.oceanbase.com/docs/community-obd-cn-10000000001031935" target="_blank" rel="noopener">obd test tpch</a>。</li>
-<li>在本例中，大幅参数使用的是默认参数，在用户场景下，可以根据自己的具体情况做一些参数上的调整。例如，在本例中使用的集群名为 <code>myoceanbase</code>，租户名是 <code>ocp</code>。</li>
-<li>-s 100  自动生成测试数据的规模，单位：G。</li>
-</ul>
-<h2 id="使用-OBD">使用 OBD</h2>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">obd cluster list</span><br><span class="line">obd cluster restart myoceanbase</span><br><span class="line">查看集群列表</span><br><span class="line">obd cluster list</span><br><span class="line"></span><br><span class="line"># 查看集群状态，以部署名为 myoceanbase 为例</span><br><span class="line">obd cluster display myoceanbase</span><br><span class="line"></span><br><span class="line"># 停止运行中的集群，以部署名为 myoceanbase 为例</span><br><span class="line">obd cluster stop myoceanbase</span><br><span class="line"></span><br><span class="line"># 销毁已部署的集群，以部署名为 myoceanbase 为例</span><br><span class="line">obd cluster destroy myoceanbase</span><br><span class="line"></span><br><span class="line">obd cluster autodeploy</span><br><span class="line"></span><br><span class="line">obd cluster deploy</span><br><span class="line">obd cluster start</span><br><span class="line">obd cluster stop</span><br><span class="line">obd cluster reload</span><br><span class="line">obd cluster upgrade</span><br><span class="line">obd cluster edit-config  myoceanbase</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">部署集群</span><br><span class="line">obd cluster deploy myoceanbase -c config.yaml</span><br><span class="line"># 启动集群</span><br><span class="line">obd cluster start myoceanbase</span><br><span class="line"></span><br><span class="line"># 重启集群组件</span><br><span class="line">obd cluster stop myocp -c ocp-server-ce --wp</span><br><span class="line">obd cluster start myocp -c ocp-server-ce --wp</span><br><span class="line">obd cluster restart myocp -c oceanbase-ce --wp</span><br></pre></td></tr></table></figure>
-<p><strong>导入数据</strong></p>
-<p>并小于 2倍租户CPU就行</p>
-<p>bin/obloader -hxx.xx.xx.xx -P端口 -u用户名 -t租户名 -D数据库名 -p --table ‘*’ --par --external-data --file-suffix ‘.tbl’ -f /data/0/xxx/tpch/100g_data/ --truncate-table --thread 32 --rpc-port 11208 --direct --parallel 32</p>
-<p>t_history_trans_ethereum.ctrl</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">lang&#x3D;java</span><br><span class="line">(</span><br><span class="line">address &quot;none&quot; map(1),</span><br><span class="line">hash &quot;none&quot; map(3),</span><br><span class="line">pk_hex &quot;none&quot; map(2),</span><br><span class="line">hash_code &quot;none&quot; map(4),</span><br><span class="line">reorg &quot;none&quot; map(5),</span><br><span class="line">chain &quot;none&quot; map(6),</span><br><span class="line">block_number &quot;none&quot; map(7),</span><br><span class="line">block_timestamp &quot;none&quot; map(8),</span><br><span class="line">transaction_type &quot;none&quot; map(9),</span><br><span class="line">transaction_index &quot;none&quot; map(10),</span><br><span class="line">nonce &quot;none&quot; map(11),</span><br><span class="line">receipt_status &quot;none&quot; map(12),</span><br><span class="line">from_address &quot;none&quot; map(13),</span><br><span class="line">to_address &quot;none&quot; map(14),</span><br><span class="line">value &quot;none&quot; map(15),</span><br><span class="line">price &quot;none&quot; map(16),</span><br><span class="line">amount &quot;none&quot; map(17),</span><br><span class="line">function_code &quot;none&quot; map(18),</span><br><span class="line">action &quot;none&quot; map(19),</span><br><span class="line">gas_used &quot;none&quot; map(20),</span><br><span class="line">gas_price &quot;none&quot; map(21),</span><br><span class="line">transaction_fee &quot;none&quot; map(22)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-<p>– 先单个文件测试， 并指定控制文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bin&#x2F;obloader -h172.20.192.146 -P2881 -uroot -tbf -Daddress -p --table &#39;t_history_trans_ethereum&#39; --par --external-data -f &#x2F;dfs&#x2F;data3&#x2F;data-source-dir&#x2F;part-04999-cb9f741d-fb71-4423-9890-9ed42da9270d-c000.snappy.parquet --ctl-path &#x2F;home&#x2F;hadoop&#x2F;controls</span><br></pre></td></tr></table></figure>
-<p>– 开启旁路，从hdfs批量导入</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bin&#x2F;obloader -h172.20.192.146 -P2881 -uroot -tbf -Daddress -p --table &#39;t_history_trans_bsc&#39; --par --external-data  --file-regular-expression &#39;.*\.parquet&#39; --file-suffix &#39;.parquet&#39; -f &#x2F;dfs&#x2F;data3&#x2F;data-source-dir --storage-uri &#39;hdfs:&#x2F;&#x2F;ns1&#x2F;user&#x2F;hive&#x2F;warehouse&#x2F;test.db&#x2F;history_bsc&#x2F;?hdfs-site-file&#x3D;&#x2F;dfs&#x2F;data3&#x2F;data-source-dir&#x2F;hadoop-conf&#x2F;hdfs-site.xml&amp;core-site-file&#x3D;&#x2F;dfs&#x2F;data3&#x2F;data-source-dir&#x2F;hadoop-conf&#x2F;core-site.xml&#39; --rpc-port 2882 --direct --thread 64 --parallel 16</span><br></pre></td></tr></table></figure>
-<p><strong>obdiag</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">source &#x2F;usr&#x2F;local&#x2F;oceanbase-diagnostic-tool&#x2F;init.sh</span><br><span class="line">obdiag check    -- 一键巡检</span><br><span class="line">obdiag analyze log --since 30m</span><br><span class="line">obdiag analyze flt_trace --flt_trace_id 00060d0f-aa35-8aec-3195-f6c9eb13b800</span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
     <title>tidb部署</title>
     <url>/2023/11/02/tidb%E9%83%A8%E7%BD%B2/</url>
     <content><![CDATA[<p>新建用户</p>
@@ -856,21 +1230,6 @@ sudo sysctl --system</p>
     <url>/2023/07/05/cloudcanal%E7%9B%91%E6%8E%A7%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>cloudcanal监控配置</p>
 <p>mysql -uclougence -h127.0.0.1 -P25000 -p123456</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>starRocks副本数修改</title>
-    <url>/2023/06/29/starRocks%E5%89%AF%E6%9C%AC%E6%95%B0%E4%BF%AE%E6%94%B9/</url>
-    <content><![CDATA[<p>前面提到过，我们可以为分区设置单独的存储策略，比如增加分区时使用新的副本数：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER TABLE starrocks.table07</span><br><span class="line">ADD PARTITION p20210313 VALUES LESS THAN (&quot;2021-03-14&quot;)</span><br><span class="line">(&quot;replication_num&quot;&#x3D;&quot;1&quot;);</span><br></pre></td></tr></table></figure>
-<p>修改分区副本数：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER TABLE starrocks.table07</span><br><span class="line">MODIFY PARTITION p20210313 SET(&quot;replication_num&quot;&#x3D;&quot;2&quot;);</span><br></pre></td></tr></table></figure>
-<p>修改表的默认副本数量，新建分区副本数量默认使用此值：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER TABLE starrocks.table07</span><br><span class="line">SET (&quot;default.replication_num&quot; &#x3D; &quot;2&quot;);</span><br></pre></td></tr></table></figure>
-<p>修改单分区表的实际副本数量（只限单分区表）：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER TABLE starrocks.table06</span><br><span class="line">SET (&quot;replication_num&quot; &#x3D; &quot;1&quot;);</span><br></pre></td></tr></table></figure>
-<p>修改表所有分区的副本数：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER TABLE starrocks.table01</span><br><span class="line">MODIFY PARTITION(*)</span><br><span class="line">SET (&quot;replication_num&quot; &#x3D; &quot;3&quot;);</span><br></pre></td></tr></table></figure>
 ]]></content>
   </entry>
   <entry>
@@ -1201,62 +1560,6 @@ RowFilter:针对行键进行过滤</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo chmod 770 alluxio_data</span><br></pre></td></tr></table></figure>
 <p>3、修改配置文件</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">alluxio.worker.tieredstore.levels&#x3D;2</span><br><span class="line">alluxio.worker.tieredstore.level0.alias&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.path&#x3D;&#x2F;mnt&#x2F;ramdisk</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.mediumtype&#x3D;MEM</span><br><span class="line">alluxio.worker.tieredstore.level0.dirs.quota&#x3D;1GB</span><br><span class="line"></span><br><span class="line">alluxio.worker.tieredstore.level1.alias&#x3D;HDD</span><br><span class="line">alluxio.worker.tieredstore.level1.dirs.path&#x3D;&#x2F;mnt&#x2F;alluxio_data</span><br><span class="line">alluxio.worker.tieredstore.level1.dirs.mediumtype&#x3D;HDD</span><br><span class="line">alluxio.worker.tieredstore.level1.dirs.quota&#x3D;50GB</span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
-    <title>starRocks部署</title>
-    <url>/2023/03/30/starRocks%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[<p>[clickhouse]<br>
-172.20.85.[111:113]<br>
-172.20.85.[138:142]</p>
-<p>[fe]<br>
-172.20.85.[111:113]</p>
-<p>[be]<br>
-172.20.85.[138:142]</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible clickhouse -m copy -a &quot;src&#x3D;&#x2F;root&#x2F;.bashrc dest&#x3D;&#x2F;root&#x2F;.bashrc &quot;</span><br><span class="line">ansible clickhouse -m shell -a &quot;java -version  &quot;</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ansible clickhouse -m shell -a <span class="string">"yum install -y rsync  "</span></span><br><span class="line">ansible clickhouse  -m synchronize  -a <span class="string">"src=/opt/module/StarRocks dest=/opt/module/"</span>  </span><br><span class="line">ansible clickhouse -m shell -a <span class="string">" ls /opt/module/StarRocks "</span></span><br></pre></td></tr></table></figure>
-<h2 id="fe部署">fe部署</h2>
-<p>第一次启动需指定–helper参数，后续再启动无需指定此参数<br>
-sh /opt/module/StarRocks/fe/bin/start_fe.sh --helper 172.20.85.111:9010 --daemon</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;fe&#x2F;bin&#x2F;stop_fe.sh &quot;</span><br><span class="line">ansible fe -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;fe&#x2F;bin&#x2F;start_fe.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql -h 127.0.0.1 -P9030 -uroot -p</span><br><span class="line">mysql&gt; SHOW PROC '/frontends'\G</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"172.20.85.112:9010"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> FOLLOWER <span class="string">"172.20.85.142:9010"</span>;</span><br><span class="line"><span class="comment"># ALTER SYSTEM DROP FOLLOWER "172.20.85.142:9010";</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> OBSERVER <span class="string">"172.20.85.113:9010"</span>;</span><br></pre></td></tr></table></figure>
-<h2 id="be-部署">be 部署</h2>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql&gt; SHOW PROC '/backends'\G</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh85-138:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh85-139:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh85-140:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh85-141:9050"</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">ADD</span> BACKEND <span class="string">"cdh85-142:9050"</span>;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible be -m shell -a &quot; &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;be&#x2F;bin&#x2F;stop_be.sh &quot;</span><br><span class="line">ansible be -m shell -a &quot; &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;be&#x2F;bin&#x2F;start_be.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
-<p>如添加过程出现错误，需要通过以下命令将该 BE 节点从集群移除。</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">mysql&gt; ALTER SYSTEM decommission BACKEND "host:port";</span><br></pre></td></tr></table></figure>
-<h2 id="监控">监控</h2>
-<p>wget <a href="https://github.com/prometheus/prometheus/releases/download/v2.29.1/prometheus-2.29.1.linux-amd64.tar.gz" target="_blank" rel="noopener">https://github.com/prometheus/prometheus/releases/download/v2.29.1/prometheus-2.29.1.linux-amd64.tar.gz</a><br>
-tar -xf prometheus-2.29.1.linux-amd64.tar.gz -C /usr/local/</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">'StarRocks_Cluster01'</span> <span class="comment"># 每一个集群称之为一个job，可以自定义名字作为StarRocks集群名</span></span><br><span class="line">  <span class="attr">metrics_path:</span> <span class="string">'/metrics'</span>    <span class="comment"># 指定获取监控项目的Restful Api</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">static_configs:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['cdh85-111:8030','cdh85-112:8030','cdh85-113:8030']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">group:</span> <span class="string">fe</span> <span class="comment"># 这里配置了 fe 的 group，该 group 中包含了 3 个 Frontends</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['cdh85-138:8040',</span> <span class="string">'cdh85-139:8040'</span><span class="string">,</span> <span class="string">'cdh85-140:8040'</span><span class="string">,'cdh85-141:8040','cdh85-142:8040']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">group:</span> <span class="string">be</span> <span class="comment"># 这里配置了 be 的 group，该 group 中包含了 5 个 Backends</span></span><br></pre></td></tr></table></figure>
-<h2 id="权限">权限</h2>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建用户</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> dba_starRocks@<span class="string">'%'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'dba_starRocks'</span>;</span><br><span class="line"></span><br><span class="line">给权限</span><br><span class="line"></span><br><span class="line"><span class="keyword">GRANT</span> SELECT_PRIV,LOAD_PRIV,ALTER_PRIV,CREATE_PRIV,DROP_PRIV <span class="keyword">ON</span> *.*  <span class="keyword">TO</span> dba_starRocks;</span><br><span class="line"></span><br><span class="line">取消权限</span><br><span class="line"><span class="keyword">REVOKE</span> LOAD_PRIV,ALTER_PRIV,CREATE_PRIV,DROP_PRIV <span class="keyword">ON</span> *.*  <span class="keyword">FROM</span>  dba_starRocks;</span><br><span class="line"></span><br><span class="line">查看权限</span><br><span class="line"><span class="keyword">SHOW</span> <span class="keyword">GRANTS</span> <span class="keyword">FOR</span> dba_starRocks</span><br></pre></td></tr></table></figure>
-<h2 id="测试环境">测试环境</h2>
-<p>[sr]<br>
-10.0.19.[156:158]</p>
-<h3 id="fe-重启">fe 重启</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible sr -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;fe&#x2F;bin&#x2F;stop_fe.sh &quot;</span><br><span class="line">ansible sr -m shell -a &quot; sh &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;fe&#x2F;bin&#x2F;start_fe.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
-<h3 id="be重启">be重启</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible sr -m shell -a &quot;sh  &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;be&#x2F;bin&#x2F;stop_be.sh &quot;</span><br><span class="line">ansible sr -m shell -a &quot;sh  &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;be&#x2F;bin&#x2F;start_be.sh --daemon &quot;</span><br></pre></td></tr></table></figure>
-<h2 id="hive外部表">hive外部表</h2>
-<p>需要把hdfs-site.xml文件 放到be和fe的conf目录里  并重启</p>
-<p>遇到权限问题  修改 hadoop_env.sh</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export HADOOP_USER_NAME&#x3D;hdfs</span><br></pre></td></tr></table></figure>
-<h2 id="手动升级">手动升级</h2>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">\cp -r &#x2F;opt&#x2F;module&#x2F;StarRocks-2.3.0-rc01&#x2F;apache_hdfs_broker &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;apache_hdfs_broker&#x2F;..&#x2F;</span><br></pre></td></tr></table></figure>
-<h2 id="监控-2">监控</h2>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ansible be -m shell -a &quot; netstat -nap |grep 9050 &quot;</span><br></pre></td></tr></table></figure>
-<h2 id="supervisord守护进程">supervisord守护进程</h2>
-<p>/etc/supervisord.d/StartRocks.ini</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[program:be]</span><br><span class="line">process_name&#x3D;%(program_name)s                        ;进程名称</span><br><span class="line">directory&#x3D;&#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;be                   ;工作目录be所在路径</span><br><span class="line">command&#x3D;sh &#x2F;opt&#x2F;module&#x2F;StarRocks&#x2F;be&#x2F;bin&#x2F;start_be.sh  ;运行的命令be的启动sh命令</span><br><span class="line">autostart&#x3D;true                                       ;是否随supervisor自动开启</span><br><span class="line">autorestart&#x3D;true                                     ;是否在挂了之后重启，意外关闭后会重启，比如kill掉</span><br><span class="line">user&#x3D;root                                            ;用户</span><br><span class="line">numprocs&#x3D;1                                           ;进程数 如果需要同时启动多个进程，进程名称需要不一样</span><br><span class="line">startretries&#x3D;3                                       ;启动重试次数</span><br><span class="line">stopasgroup&#x3D;true                                     ;是否停止子进程</span><br><span class="line">killasgroup&#x3D;true                                     ;是否杀死子进程</span><br><span class="line">startsecs&#x3D;5                                          ;启动5秒后，如果还是运行状态才认为进程已经启动</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">supervisorctl status        &#x2F;&#x2F;查看所有进程的状态</span><br><span class="line">supervisorctl stop be       &#x2F;&#x2F;停止</span><br><span class="line">supervisorctl start be      &#x2F;&#x2F;启动</span><br><span class="line">supervisorctl restart be    &#x2F;&#x2F;重启</span><br><span class="line">supervisorctl update be     &#x2F;&#x2F;配置文件修改后使用该命令加载新的配置</span><br><span class="line">supervisorctl reload        &#x2F;&#x2F;重新启动配置中的所有程序</span><br></pre></td></tr></table></figure>
-<h1>官网升级</h1>
-<p><strong>升级 BE 前的准备</strong></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#为了避免 BE 重启期间不必要的 Tablet 修复，进而影响升级后的集群性能，建议在升级前先在 FE Leader 上执行如下命令以禁用 Tablet 调度功能，</span></span><br><span class="line">&gt; mysql -h 127.0.0.1 -P9030 -uroot -p</span><br><span class="line"></span><br><span class="line">admin <span class="keyword">set</span> frontend config (<span class="string">"max_scheduling_tablets"</span>=<span class="string">"0"</span>);</span><br><span class="line">admin <span class="keyword">set</span> frontend config (<span class="string">"disable_balance"</span>=<span class="string">"true"</span>);</span><br><span class="line">admin <span class="keyword">set</span> frontend config (<span class="string">"disable_colocate_balance"</span>=<span class="string">"true"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在所有 BE 重启升级完成后，通过 show backends 命令确认所有 BE 的 Alive 状态为 true 后，启用 Tablet 调度功能，</span></span><br><span class="line"></span><br><span class="line">admin <span class="keyword">set</span> frontend config (<span class="string">"max_scheduling_tablets"</span>=<span class="string">"2000"</span>);</span><br><span class="line">admin <span class="keyword">set</span> frontend config (<span class="string">"disable_balance"</span>=<span class="string">"false"</span>);</span><br><span class="line">admin <span class="keyword">set</span> frontend config (<span class="string">"disable_colocate_balance"</span>=<span class="string">"false"</span>);</span><br></pre></td></tr></table></figure>
-<p><strong>升级</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">scp StarRocks-2.5.0-rc03.tar.gz usdp05:/opt/module/</span><br><span class="line"><span class="meta">#</span><span class="bash">ansible clickhouse  -m copy  -a <span class="string">"src=/opt/module/StarRocks-2.5.0-rc03.tar.gz dest=/opt/module/"</span></span></span><br><span class="line"></span><br><span class="line">cd /opt/module</span><br><span class="line">tar -zxvf StarRocks-2.5.0-rc03.tar.gz </span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 升级 BE 节点</span></span><br><span class="line">cd /opt/module/StarRocks/be</span><br><span class="line">rm -rf lib.bak &amp;&amp; mv lib lib.bak </span><br><span class="line">rm -rf bin.bak &amp;&amp; mv bin bin.bak</span><br><span class="line">cp -r /opt/module/StarRocks-2.5.0-rc03/be/lib .</span><br><span class="line">cp -r /opt/module/StarRocks-2.5.0-rc03/be/bin .</span><br><span class="line">sh bin.bak/stop_be.sh</span><br><span class="line">sh bin/start_be.sh --daemon</span><br><span class="line">ps aux | grep starrocks_be</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 升级 FE 节点</span></span><br><span class="line">cd /opt/module/StarRocks/fe</span><br><span class="line">rm -rf lib.bak &amp;&amp; mv lib lib.bak </span><br><span class="line">rm -rf bin.bak &amp;&amp; mv bin bin.bak</span><br><span class="line">cp -r /opt/module/StarRocks-2.5.0-rc03/fe/lib .</span><br><span class="line">cp -r /opt/module/StarRocks-2.5.0-rc03/fe/bin .</span><br><span class="line">sh bin.bak/stop_fe.sh</span><br><span class="line">sh bin/start_fe.sh --daemon</span><br><span class="line">ps aux | grep StarRocksFE</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 升级 Broker</span></span><br><span class="line">cd /opt/module/StarRocks/apache_hdfs_broker</span><br><span class="line">rm -rf lib.bak &amp;&amp; mv lib lib.bak </span><br><span class="line">rm -rf bin.bak &amp;&amp; mv bin bin.bak</span><br><span class="line">cp -r /opt/module/StarRocks-2.5.0-rc03/apache_hdfs_broker/lib  .   </span><br><span class="line">cp -r /opt/module/StarRocks-2.5.0-rc03/apache_hdfs_broker/bin  .</span><br><span class="line">sh bin.bak/stop_broker.sh</span><br><span class="line">sh bin/start_broker.sh --daemon</span><br></pre></td></tr></table></figure>
-<h3 id="批量操作">批量操作</h3>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ansible sr -m shell -a " sh /opt/module/StarRocks/be/bin/stop_be.sh "</span><br><span class="line">ansible sr -m shell -a " sh /opt/module/StarRocks/be/bin/start_be.sh --daemon "</span><br><span class="line"></span><br><span class="line">ansible sr -m shell -a "supervisorctl status "</span><br><span class="line">ansible sr -m shell -a "supervisorctl start starrocks_be"</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ansible sr -m shell -a " sh /opt/module/StarRocks/fe/bin/stop_fe.sh "</span><br><span class="line">ansible sr -m shell -a " sh /opt/module/StarRocks/fe/bin/start_fe.sh --daemon "</span><br><span class="line"></span><br><span class="line">ansible sr -m shell -a "supervisorctl status "</span><br><span class="line">ansible sr -m shell -a "supervisorctl start starrocks_fe"</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">supervisorctl start starrocks_broker</span><br></pre></td></tr></table></figure>
 ]]></content>
   </entry>
   <entry>

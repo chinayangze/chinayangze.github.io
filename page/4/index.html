@@ -209,7 +209,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/07/05/cloudcanal%E7%9B%91%E6%8E%A7%E9%85%8D%E7%BD%AE/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/03/26/%E4%BB%8E%20TiDB%20%E9%9B%86%E7%BE%A4%E8%BF%81%E7%A7%BB%E6%95%B0%E6%8D%AE%E8%87%B3%E5%8F%A6%E4%B8%80%20TiDB%20%E9%9B%86%E7%BE%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -223,7 +223,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2023/07/05/cloudcanal%E7%9B%91%E6%8E%A7%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">cloudcanal监控配置</a>
+            <a href="/2024/03/26/%E4%BB%8E%20TiDB%20%E9%9B%86%E7%BE%A4%E8%BF%81%E7%A7%BB%E6%95%B0%E6%8D%AE%E8%87%B3%E5%8F%A6%E4%B8%80%20TiDB%20%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">从 TiDB 集群迁移数据至另一 TiDB 集群</a>
         </h1>
 
         <div class="post-meta">
@@ -233,7 +233,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-07-05 10:42:46" itemprop="dateCreated datePublished" datetime="2023-07-05T10:42:46+08:00">2023-07-05</time>
+              <time title="创建时间：2024-03-26 17:10:10" itemprop="dateCreated datePublished" datetime="2024-03-26T17:10:10+08:00">2024-03-26</time>
             </span>
 
           
@@ -247,12 +247,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>cloudcanal监控配置</p>
-<p>mysql -uclougence -h127.0.0.1 -P25000 -p123456</p>
-
+          <h2 id="迁移全量数据">迁移全量数据</h2>
+<p>关闭 GC。</p>
+<p>为了保证增量迁移过程中新写入的数据不丢失，在开始备份之前，需要关闭上游集群的垃圾回收 (GC) 机制，以确保系统不再清理历史数据。</p>
+<p>执行如下命令关闭 GC：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MySQL [test]&gt; SET GLOBAL tidb_gc_enable=FALSE;</span><br></pre></td></tr></table></figure>
+<p>备份数据。</p>
+<p>在上游集群中执行 BACKUP 语句备份数据：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MySQL [(none)]&gt; BACKUP DATABASE * TO 's3://backup?access-key=minio&amp;secret-access-key=miniostorage&amp;endpoint=http://$&#123;HOST_IP&#125;:6060&amp;force-path-style=true' RATE_LIMIT = 120 MB/SECOND;</span><br></pre></td></tr></table></figure>
+<p>备份语句提交成功后，TiDB 会返回关于备份数据的元信息，这里需要重点关注 BackupTS，它意味着该时间点之前数据会被备份，后边的教程中，将使用 BackupTS 作为<strong>数据校验截止时间</strong>和 <strong>TiCDC 增量扫描的开始时间</strong>。</p>
+<p>恢复数据。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/07/05/cloudcanal%E7%9B%91%E6%8E%A7%E9%85%8D%E7%BD%AE/#more" rel="contents">
+              <a class="btn" href="/2024/03/26/%E4%BB%8E%20TiDB%20%E9%9B%86%E7%BE%A4%E8%BF%81%E7%A7%BB%E6%95%B0%E6%8D%AE%E8%87%B3%E5%8F%A6%E4%B8%80%20TiDB%20%E9%9B%86%E7%BE%A4/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -276,7 +283,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/06/29/starRocks%E5%89%AF%E6%9C%AC%E6%95%B0%E4%BF%AE%E6%94%B9/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/03/26/tidb%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -290,7 +297,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2023/06/29/starRocks%E5%89%AF%E6%9C%AC%E6%95%B0%E4%BF%AE%E6%94%B9/" class="post-title-link" itemprop="url">starRocks副本数修改</a>
+            <a href="/2024/03/26/tidb%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">tidb常用操作</a>
         </h1>
 
         <div class="post-meta">
@@ -300,7 +307,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-06-29 14:46:08" itemprop="dateCreated datePublished" datetime="2023-06-29T14:46:08+08:00">2023-06-29</time>
+              <time title="创建时间：2024-03-26 16:33:46" itemprop="dateCreated datePublished" datetime="2024-03-26T16:33:46+08:00">2024-03-26</time>
             </span>
 
           
@@ -314,19 +321,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>前面提到过，我们可以为分区设置单独的存储策略，比如增加分区时使用新的副本数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE starrocks.table07</span><br><span class="line">ADD PARTITION p20210313 VALUES LESS THAN (&quot;2021-03-14&quot;)</span><br><span class="line">(&quot;replication_num&quot;&#x3D;&quot;1&quot;);</span><br></pre></td></tr></table></figure>
-<p>修改分区副本数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE starrocks.table07</span><br><span class="line">MODIFY PARTITION p20210313 SET(&quot;replication_num&quot;&#x3D;&quot;2&quot;);</span><br></pre></td></tr></table></figure>
-<p>修改表的默认副本数量，新建分区副本数量默认使用此值：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE starrocks.table07</span><br><span class="line">SET (&quot;default.replication_num&quot; &#x3D; &quot;2&quot;);</span><br></pre></td></tr></table></figure>
-<p>修改单分区表的实际副本数量（只限单分区表）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE starrocks.table06</span><br><span class="line">SET (&quot;replication_num&quot; &#x3D; &quot;1&quot;);</span><br></pre></td></tr></table></figure>
-<p>修改表所有分区的副本数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE starrocks.table01</span><br><span class="line">MODIFY PARTITION(*)</span><br><span class="line">SET (&quot;replication_num&quot; &#x3D; &quot;3&quot;);</span><br></pre></td></tr></table></figure>
+          <p>tidb常用操作</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">tiup cluster deploy tidb-test-v1 v6.5.2 ./topology.yaml --user root -p</span><br><span class="line">tiup cluster list</span><br><span class="line">tiup cluster clean tidb-test-v1 --all</span><br><span class="line"><span class="meta">#</span><span class="bash"> tiup cluster destroy tidb-test-v1</span></span><br><span class="line">tiup cluster start tidb-test-v1 --init</span><br><span class="line">tiup cluster display tidb-prod</span><br><span class="line">tiup cluster stop tidb-test-v1</span><br><span class="line">tiup cluster restart tidb-test-v1 </span><br><span class="line">tiup cluster edit-config tidb-test-v1 </span><br><span class="line">tiup cluster check tidb-test-v1 scale-out.yml --cluster --user root -p</span><br><span class="line">tiup cluster check tidb-test-v1 scale-out.yml --cluster --apply --user root -p</span><br><span class="line">tiup cluster scale-out tidb-test-v1 scale-out.yml --user root -p</span><br><span class="line">tiup ctl:v6.5.2 pd -u http://172.20.192.70:2379 store limit all engine tiflash 200 add-peer</span><br><span class="line">-- 如果你使用 TiUP 部署，可以用 tiup ctl:v&lt;CLUSTER_VERSION&gt; pd 代替 pd-ctl -u &lt;pd_ip:pd_port&gt; 命令。</span><br><span class="line">tiup ctl:v6.5.2 pd store</span><br><span class="line">tiup ctl:v6.5.2 pd -u http://172.20.192.70:2379 store limit store id 8487838  220 add-peer</span><br><span class="line">tiup ctl:v6.5.2 pd -i -u http://172.20.192.70:2379</span><br><span class="line">tiup cluster restart tidb-test-v1 -N 172.20.192.74:9090</span><br><span class="line">tiup cluster reload tidb-test-v1</span><br><span class="line">tiup install bench</span><br><span class="line">tiup diag config clinic.token eyJrIjoicFpJaDJ1a042ZjQ0a2E2NyIsInUiOjYwMywiaWQiOjU3Nn0=</span><br><span class="line">tiup diag collect tidb-test-v1</span><br></pre></td></tr></table></figure>
+<h3 id="备份与恢复">备份与恢复</h3>
+<p>如果是 BR 备份，还原之后是同名的；<br>
+dumplings 备份的话，可以在还原的时候指定 route 来设置要恢复到的数据库。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mycli -h172.20.192.70 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">BACKUP DATABASE test TO &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39; RATE_LIMIT &#x3D; 120 MB&#x2F;SECOND;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mycli -h172.20.192.115 -P4000 -uroot</span><br><span class="line"></span><br><span class="line">mysql&gt; RESTORE DATABASE test FROM &#39;s3:&#x2F;&#x2F;backup?access-key&#x3D;minio&amp;secret-access-key&#x3D;miniostorage&amp;endpoint&#x3D;http:&#x2F;&#x2F;172.20.192.151:6060&amp;force-path-style&#x3D;true&#39;;</span><br></pre></td></tr></table></figure>
+<h4 id="不停机升级">不停机升级</h4>
+<p>tiup cluster upgrade tidb-prod v6.5.3</p>
+<p>重启grafana</p>
+<p>tiup cluster restart tidb-prod -R grafana</p>
+<h2 id="备份">备份</h2>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/06/29/starRocks%E5%89%AF%E6%9C%AC%E6%95%B0%E4%BF%AE%E6%94%B9/#more" rel="contents">
+              <a class="btn" href="/2024/03/26/tidb%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -350,7 +358,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/06/25/mycli%E5%AE%89%E8%A3%85/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/03/20/k8s-1.23.17%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -364,7 +372,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2023/06/25/mycli%E5%AE%89%E8%A3%85/" class="post-title-link" itemprop="url">mycli安装</a>
+            <a href="/2024/03/20/k8s-1.23.17%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85/" class="post-title-link" itemprop="url">k8s-1.23.17离线安装</a>
         </h1>
 
         <div class="post-meta">
@@ -374,7 +382,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-06-25 11:01:01" itemprop="dateCreated datePublished" datetime="2023-06-25T11:01:01+08:00">2023-06-25</time>
+              <time title="创建时间：2024-03-20 14:24:14" itemprop="dateCreated datePublished" datetime="2024-03-20T14:24:14+08:00">2024-03-20</time>
             </span>
 
           
@@ -388,15 +396,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Linux Centos7安装python3.7  <a href="https://blog.csdn.net/fen_fen/article/details/123520752" target="_blank" rel="noopener">https://blog.csdn.net/fen_fen/article/details/123520752</a></p>
-<p>pip3 install mycli</p>
-<p>设置环境变量</p>
-<p>vim  ~/.bash_profile</p>
-<p>export PATH=/usr/local/python3/bin:$PATH</p>
-
+          <p><strong>k8s-1.23.17离线安装</strong></p>
+<h1>环境设置centos-7.9</h1>
+<p>init_env.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">sudo modprobe br_netfilter</span><br><span class="line">lsmod | grep br_netfilter</span><br><span class="line"></span><br><span class="line">cat&lt;&lt;EOF&gt; &#x2F;etc&#x2F;sysctl.d&#x2F;k8s.conf</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables &#x3D; 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables  &#x3D; 1</span><br><span class="line">net.ipv4.ip_forward                 &#x3D; 1</span><br><span class="line">EOF</span><br><span class="line">sysctl --system</span><br><span class="line">systemctl stop firewalld</span><br><span class="line">systemctl disable firewalld.service</span><br><span class="line"></span><br><span class="line">sed -i &#39;$acloudeon  ALL&#x3D;(ALL)  NOPASSWD: NOPASSWD: ALL&#39; &#x2F;etc&#x2F;sudoers</span><br><span class="line"></span><br><span class="line">swapoff -a</span><br><span class="line">sed -i &#39;s&#x2F;.*swap.*&#x2F;#&amp;&#x2F;&#39; &#x2F;etc&#x2F;fstab</span><br></pre></td></tr></table></figure>
+<h1>安装docker</h1>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">tar -xvf rpm_docker_20.10.24.tar</span><br><span class="line">yum localinstall docker&#x2F;* -y</span><br><span class="line">systemctl start docker</span><br><span class="line">sudo cat &gt; &#x2F;etc&#x2F;docker&#x2F;daemon.json &lt;&lt;EOF</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [</span><br><span class="line">     &quot;https:&#x2F;&#x2F;5il73zj3.mirror.aliyuncs.com&quot;,</span><br><span class="line">     &quot;https:&#x2F;&#x2F;docker.mirrors.ustc.edu.cn&quot;,</span><br><span class="line">     &quot;https:&#x2F;&#x2F;registry.docker-cn.com&quot;</span><br><span class="line">  ],</span><br><span class="line">  &quot;insecure-registries&quot;: [&quot;dockerhub.baofu.com&quot;],</span><br><span class="line">  &quot;exec-opts&quot;: [&quot;native.cgroupdriver&#x3D;systemd&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br><span class="line">systemctl enable docker.service</span><br><span class="line">systemctl status docker</span><br><span class="line">docker -v</span><br><span class="line">docker info|grep &quot;Cgroup Driver&quot;</span><br><span class="line">docker load &lt; images_k8s_core_1.23.17.tar</span><br><span class="line">docker load &lt; images_k8s_cni_flannel_0.15.0.tar</span><br><span class="line">docker load &lt; images_k8s_dashboard_v2.5.1.tar</span><br></pre></td></tr></table></figure>
+<h1>安装k8s</h1>
+<h2 id="主节点">主节点</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">tar -xvf rpm_k8s_1.23.17.tar</span><br><span class="line">yum localinstall k8s&#x2F;* -y</span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl start kubelet</span><br><span class="line">systemctl enable kubelet</span><br><span class="line">kubeadm init \</span><br><span class="line">--image-repository&#x3D;registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers \</span><br><span class="line">--kubernetes-version&#x3D;v1.23.17 \</span><br><span class="line">--pod-network-cidr&#x3D;10.244.0.0&#x2F;16</span><br><span class="line">mkdir -p $HOME&#x2F;.kube</span><br><span class="line">cp -i &#x2F;etc&#x2F;kubernetes&#x2F;admin.conf $HOME&#x2F;.kube&#x2F;config</span><br><span class="line">chown $(id -u):$(id -g) $HOME&#x2F;.kube&#x2F;config</span><br><span class="line">kubectl apply -f kube-flannel.yml</span><br></pre></td></tr></table></figure>
+<h2 id="工作节点">工作节点</h2>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/06/25/mycli%E5%AE%89%E8%A3%85/#more" rel="contents">
+              <a class="btn" href="/2024/03/20/k8s-1.23.17%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -420,7 +432,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/05/08/trino%E9%9B%86%E7%BE%A4%E4%BC%98%E5%8C%96/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/03/20/%E5%AE%89%E8%A3%85%20K8s%20%E9%9B%86%E7%BE%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -434,7 +446,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2023/05/08/trino%E9%9B%86%E7%BE%A4%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">trino集群优化</a>
+            <a href="/2024/03/20/%E5%AE%89%E8%A3%85%20K8s%20%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">安装 K8s 集群</a>
         </h1>
 
         <div class="post-meta">
@@ -444,7 +456,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-05-08 13:54:57" itemprop="dateCreated datePublished" datetime="2023-05-08T13:54:57+08:00">2023-05-08</time>
+              <time title="创建时间：2024-03-20 08:59:54" itemprop="dateCreated datePublished" datetime="2024-03-20T08:59:54+08:00">2024-03-20</time>
             </span>
 
           
@@ -458,16 +470,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>trino集群优化</p>
-<p><a href="https://www.cnblogs.com/erlou96/p/16878170.html" target="_blank" rel="noopener">https://www.cnblogs.com/erlou96/p/16878170.html</a></p>
-<h2 id="config-properties">config.properties</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">coordinator&#x3D;true</span><br><span class="line">node-scheduler.include-coordinator&#x3D;true</span><br><span class="line">http-server.http.port&#x3D;8089</span><br><span class="line">#query.max-total-memory-per-node&#x3D;2GB</span><br><span class="line">discovery-server.enabled&#x3D;true</span><br><span class="line">discovery.uri&#x3D;http:&#x2F;&#x2F;cdh192-147.hadoop.xy:8089</span><br><span class="line"></span><br><span class="line">#禁用保留池  (新版本已经删除了)</span><br><span class="line">#experimental.reserved-pool-enabled&#x3D;false</span><br><span class="line">#在单个 worker 上面可以使用的最大的user memory值 （默认JVM max memory * 0.1）调整到 JVM max memory * 0.25</span><br><span class="line">#query.max-memory-per-node&#x3D;100GB</span><br><span class="line">#单个Query在单个Worker上允许的最大user memory + system memory 调整到 JVM max memory * 0.4</span><br><span class="line">#query.max-total-memory-per-node&#x3D;16GB</span><br><span class="line">#这个内存主要是第三方库的内存分配，无法统计跟踪。 （默认JVM max memory * 0.3）调整到 JVM max memory * 0.2</span><br><span class="line">#memory.heap-headroom-per-node&#x3D;8GB</span><br><span class="line">#单个查询在所有任务调度的节点上瞬间最大能用的内存（单个查询的峰值内存） 调整到 &lt;&#x3D; query.max-total-memory-per-node * workers * 0.8</span><br><span class="line">query.max-memory&#x3D;300GB</span><br><span class="line">#当presto集群发生OOM时的内存保护策略，配置 total-reservation 是kill 掉占用内存最大的任务</span><br><span class="line">query.low-memory-killer.policy&#x3D;total-reservation</span><br><span class="line"></span><br><span class="line">#延长等待时间</span><br><span class="line">exchange.http-client.request-timeout&#x3D;10s</span><br><span class="line">#从其他Presto节点获取数据的线程数。较高的值可以提高大型群集或具有很高并发性的群集的性能(默认值：25)</span><br><span class="line">exchange.client-threads&#x3D;128</span><br><span class="line">exchange.http-client.idle-timeout &#x3D; 10s</span><br><span class="line">#并行运算符（例如联接和聚合）的默认本地并发性。较低的值对于同时运行许多查询的集群更好（默认值：16，必须是2的幂次）</span><br><span class="line">task.concurrency&#x3D;2</span><br><span class="line">task.max-worker-threads&#x3D;256</span><br><span class="line">#可以创建用于处理HTTP响应的最大线程数。在具有大量并发查询的群集上或在具有数百或数千个工作程序的群集上，可以调高（默认值:100）</span><br><span class="line">task.http-response-threads&#x3D;2000</span><br><span class="line">join-distribution-type&#x3D;AUTOMATIC</span><br><span class="line">node-scheduler.max-splits-per-node&#x3D;2000</span><br><span class="line">query.max-stage-count&#x3D;4000</span><br><span class="line"></span><br><span class="line">#自动kill运行时长超过20分钟的sql（代替脚本kill任务，让presto 自动管理）：</span><br><span class="line">query.max-run-time&#x3D;1200s</span><br><span class="line">#解决新版本 remote too large 报错 </span><br><span class="line">exchange.http-client.max-content-length&#x3D;128MB</span><br><span class="line">node-manager.http-client.max-content-length&#x3D;64MB</span><br></pre></td></tr></table></figure>
-<h2 id="jvm-config">jvm.config</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-Xmx1024G</span><br><span class="line">-Xms1024G</span><br><span class="line">-XX:+UseG1GC</span><br><span class="line">-XX:+ExplicitGCInvokesConcurrent</span><br><span class="line">-XX:+HeapDumpOnOutOfMemoryError</span><br><span class="line">-XX:+UseGCOverheadLimit</span><br><span class="line">-XX:OnOutOfMemoryError&#x3D;kill -9 %p</span><br><span class="line">-DHADOOP_USER_NAME&#x3D;hdfs</span><br><span class="line">-Duser.timezone&#x3D;Asia&#x2F;Shanghai</span><br><span class="line">-Djdk.attach.allowAttachSelf&#x3D;true</span><br><span class="line">-XX:G1ReservePercent&#x3D;15</span><br><span class="line">-XX:InitiatingHeapOccupancyPercent&#x3D;40</span><br><span class="line">-XX:ConcGCThreads&#x3D;8</span><br></pre></td></tr></table></figure>
+          <h1>安装 K8s 集群</h1>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#注意系统内核升级到5.4 及以上。</span><br><span class="line"></span><br><span class="line">rpm --import https:&#x2F;&#x2F;www.elrepo.org&#x2F;RPM-GPG-KEY-elrepo.org</span><br><span class="line">yum install https:&#x2F;&#x2F;www.elrepo.org&#x2F;elrepo-release-7.el7.elrepo.noarch.rpm</span><br><span class="line">yum --enablerepo&#x3D;elrepo-kernel install kernel-ml</span><br><span class="line">grub2-set-default 0</span><br><span class="line">reboot</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">VERSION&#x3D;&#96;curl -s https:&#x2F;&#x2F;api.github.com&#x2F;repos&#x2F;labring&#x2F;sealos&#x2F;releases&#x2F;latest | grep -oE &#39;&quot;tag_name&quot;: &quot;[^&quot;]+&quot;&#39; | head -n1 | cut -d&#39;&quot;&#39; -f4&#96;</span><br><span class="line"></span><br><span class="line">wget https:&#x2F;&#x2F;mirror.ghproxy.com&#x2F;https:&#x2F;&#x2F;github.com&#x2F;labring&#x2F;sealos&#x2F;releases&#x2F;download&#x2F;$&#123;VERSION&#125;&#x2F;sealos_$&#123;VERSION#v&#125;_linux_amd64.tar.gz \</span><br><span class="line">  &amp;&amp; tar zxvf sealos_$&#123;VERSION#v&#125;_linux_amd64.tar.gz sealos &amp;&amp; chmod +x sealos &amp;&amp; mv sealos &#x2F;usr&#x2F;bin</span><br><span class="line"></span><br><span class="line">#注意 master的cpu数量要大于1</span><br><span class="line">sealos run registry.cn-shanghai.aliyuncs.com&#x2F;labring&#x2F;kubernetes:v1.27.7 registry.cn-shanghai.aliyuncs.com&#x2F;labring&#x2F;helm:v3.9.4 registry.cn-shanghai.aliyuncs.com&#x2F;labring&#x2F;cilium:v1.13.4 \</span><br><span class="line">     --masters 10.6.59.131,10.6.59.132,10.6.59.133 \</span><br><span class="line">     --nodes 10.6.59.134,10.6.59.135 -p &quot;2haolou@64&quot;</span><br><span class="line">	 </span><br><span class="line">#要求hostname每个节点不一样	 </span><br><span class="line">hostnamectl set-hostname node1	 </span><br><span class="line"></span><br><span class="line">#重置集群</span><br><span class="line">sealos reset</span><br></pre></td></tr></table></figure>
 
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/05/08/trino%E9%9B%86%E7%BE%A4%E4%BC%98%E5%8C%96/#more" rel="contents">
+              <a class="btn" href="/2024/03/20/%E5%AE%89%E8%A3%85%20K8s%20%E9%9B%86%E7%BE%A4/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -491,7 +499,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/05/08/%E9%9B%86%E6%88%90Flink%20HistoryServer%E8%87%B3CDH/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/03/19/k8s%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E8%AF%A6%E7%BB%86%E7%89%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -505,7 +513,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2023/05/08/%E9%9B%86%E6%88%90Flink%20HistoryServer%E8%87%B3CDH/" class="post-title-link" itemprop="url">集成Flink HistoryServer至CDH</a>
+            <a href="/2024/03/19/k8s%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E8%AF%A6%E7%BB%86%E7%89%88/" class="post-title-link" itemprop="url">k8s高可用集群搭建-详细版</a>
         </h1>
 
         <div class="post-meta">
@@ -515,7 +523,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-05-08 13:54:39" itemprop="dateCreated datePublished" datetime="2023-05-08T13:54:39+08:00">2023-05-08</time>
+              <time title="创建时间：2024-03-19 15:45:35" itemprop="dateCreated datePublished" datetime="2024-03-19T15:45:35+08:00">2024-03-19</time>
             </span>
 
           
@@ -529,19 +537,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>集成Flink HistoryServer至CDH</h1>
-<p>参考 <a href="https://blog.csdn.net/guiyifei/article/details/109325980" target="_blank" rel="noopener">https://blog.csdn.net/guiyifei/article/details/109325980</a></p>
-<h1>制作Flink的parcel包和<a href="https://so.csdn.net/so/search?q=csd&amp;spm=1001.2101.3001.7020" target="_blank" rel="noopener">csd</a>文件</h1>
-<h2 id="1-下载制作脚本">1. 下载制作脚本</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;EvenGui&#x2F;flink-parcel-master</span><br><span class="line"></span><br><span class="line">cd flink-parcel-master</span><br></pre></td></tr></table></figure>
-<h2 id="修改参数vim-flink-parcel-properties">修改参数vim flink-parcel.properties</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#FLINk 下载地址</span><br><span class="line">FLINK_URL&#x3D;  &#x2F;opt&#x2F;soft&#x2F;flink-1.14.6-bin-scala_2.12.tgz</span><br><span class="line"></span><br><span class="line">#flink版本号</span><br><span class="line">FLINK_VERSION&#x3D;1.14.6</span><br><span class="line"></span><br><span class="line">#扩展版本号</span><br><span class="line">EXTENS_VERSION&#x3D;BIN-SCALA_2.12</span><br><span class="line"></span><br><span class="line">#操作系统版本，以centos为例</span><br><span class="line">OS_VERSION&#x3D;7</span><br><span class="line"></span><br><span class="line">#CDH 小版本</span><br><span class="line">CDH_MIN_FULL&#x3D;5.13.1</span><br><span class="line">CDH_MAX_FULL&#x3D;6.3.2</span><br><span class="line"></span><br><span class="line">#CDH大版本</span><br><span class="line">CDH_MIN&#x3D;5</span><br><span class="line">CDH_MAX&#x3D;6</span><br></pre></td></tr></table></figure>
-<h2 id="编译parcel">编译parcel</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh build.sh parcel</span><br></pre></td></tr></table></figure>
-<p>./FLINK-1.14.6-BIN-SCALA_2.12/lib/flink/bin/start-scala-shell.sh does not exist.</p>
+          <p><strong>k8s高可用集群搭建-详细版</strong></p>
+<h1>环境</h1>
+<p>系统: CenterOS 7.9</p>
+<p>docker: 20.10.24</p>
+<p>k8s: 1.23.17</p>
+<h1>目标</h1>
+<p>3个master节点、LoadBalancer、一个work节点</p>
+<p>172.23.80.241 master1</p>
+<p>172.23.80.242 master2</p>
+<p>172.23.80.243 master3</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/05/08/%E9%9B%86%E6%88%90Flink%20HistoryServer%E8%87%B3CDH/#more" rel="contents">
+              <a class="btn" href="/2024/03/19/k8s%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E8%AF%A6%E7%BB%86%E7%89%88/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -565,7 +573,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/04/28/MongoDB6.0%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA(Centos7)/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/02/27/%E6%8C%82%E8%BD%BD%E8%99%9A%E6%8B%9FIP/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -579,7 +587,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2023/04/28/MongoDB6.0%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA(Centos7)/" class="post-title-link" itemprop="url">MongoDB6.0集群搭建(Centos7)</a>
+            <a href="/2024/02/27/%E6%8C%82%E8%BD%BD%E8%99%9A%E6%8B%9FIP/" class="post-title-link" itemprop="url">挂载虚拟IP</a>
         </h1>
 
         <div class="post-meta">
@@ -589,7 +597,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-04-28 17:00:39" itemprop="dateCreated datePublished" datetime="2023-04-28T17:00:39+08:00">2023-04-28</time>
+              <time title="创建时间：2024-02-27 11:00:23" itemprop="dateCreated datePublished" datetime="2024-02-27T11:00:23+08:00">2024-02-27</time>
             </span>
 
           
@@ -603,15 +611,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>MongoDB6.0集群搭建(Centos7)</h1>
-<p>wget  <a href="https://downloads.mongodb.com/compass/mongosh-1.8.1-linux-x64.tgz" target="_blank" rel="noopener">https://downloads.mongodb.com/compass/mongosh-1.8.1-linux-x64.tgz</a></p>
-<p>wget <a href="https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-6.0.5.tgz" target="_blank" rel="noopener">https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-6.0.5.tgz</a></p>
-<p>参考   <a href="https://www.jianshu.com/p/21d33d6cb56c" target="_blank" rel="noopener">https://www.jianshu.com/p/21d33d6cb56c</a></p>
-<p><a href="https://blog.csdn.net/networken/article/details/115409367" target="_blank" rel="noopener">https://blog.csdn.net/networken/article/details/115409367</a></p>
+          <p>在200-223上关闭VIP：<br>
+/sbin/ifconfig bond0:1 192.168.192.1 netmask 255.255.255.0 down</p>
+<p>在200-223上启动VIP：<br>
+/sbin/ifconfig bond0:1 192.168.192.1 netmask 255.255.255.0 up</p>
+<p>/sbin/arping  -c 5 -U -I bond0 192.168.192.1 &gt;/dev/null 2&gt;&amp;1</p>
+<p>bond0:1  这是个别名</p>
 
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/04/28/MongoDB6.0%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA(Centos7)/#more" rel="contents">
+              <a class="btn" href="/2024/02/27/%E6%8C%82%E8%BD%BD%E8%99%9A%E6%8B%9FIP/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -635,7 +644,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/04/23/HBase%E5%B8%B8%E7%94%A8%E7%9A%84Filter/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/02/01/%E4%BD%BF%E7%94%A8%20Kubekey%E4%B8%80%E9%94%AE%20%E7%A6%BB%E7%BA%BF%20%E5%9C%A8%E7%BA%BF%20%E9%83%A8%E7%BD%B2%20kubernetes%20%E9%9B%86%E7%BE%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -649,7 +658,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2023/04/23/HBase%E5%B8%B8%E7%94%A8%E7%9A%84Filter/" class="post-title-link" itemprop="url">HBase常用的Filter</a>
+            <a href="/2024/02/01/%E4%BD%BF%E7%94%A8%20Kubekey%E4%B8%80%E9%94%AE%20%E7%A6%BB%E7%BA%BF%20%E5%9C%A8%E7%BA%BF%20%E9%83%A8%E7%BD%B2%20kubernetes%20%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">使用 Kubekey一键 离线 在线 部署 kubernetes 集群</a>
         </h1>
 
         <div class="post-meta">
@@ -659,7 +668,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-04-23 15:14:30" itemprop="dateCreated datePublished" datetime="2023-04-23T15:14:30+08:00">2023-04-23</time>
+              <time title="创建时间：2024-02-01 17:47:21" itemprop="dateCreated datePublished" datetime="2024-02-01T17:47:21+08:00">2024-02-01</time>
             </span>
 
           
@@ -673,23 +682,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>HBase常用的Filter</h1>
-<p>简介：</p>
-<p>​    根据技术调研的过程可以明显的体会到hbase的存储方式和数据库的存储有着明显的区别，查询的方式也有着很大不同，HBase主要是通过这种filter来对数据进行筛选。同时对于数据的体量较大（10亿级别以上的数据数据量），检索和修改的场景较多时是比较适合使用hbase。</p>
-<p>HBase过滤器可以根据分为：列簇与列类型过滤器，行键过滤器，其他过滤器<br>
-HBase Filter 概览<br>
-查询hbase支持的filter 列表</p>
-<p>[<img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码">](javascript:void(0);)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">base(main):001:0&gt; show_filters</span><br><span class="line">DependentColumnFilter                                                                                                                                                  </span><br><span class="line">KeyOnlyFilter                                                                                                                                                          </span><br><span class="line">ColumnCountGetFilter                                                                                                                                                   </span><br><span class="line">SingleColumnValueFilter                                                                                                                                                </span><br><span class="line">PrefixFilter                                                                                                                                                           </span><br><span class="line">SingleColumnValueExcludeFilter                                                                                                                                         </span><br><span class="line">FirstKeyOnlyFilter                                                                                                                                                     </span><br><span class="line">ColumnRangeFilter                                                                                                                                                      </span><br><span class="line">ColumnValueFilter                                                                                                                                                      </span><br><span class="line">TimestampsFilter                                                                                                                                                       </span><br><span class="line">FamilyFilter                                                                                                                                                           </span><br><span class="line">QualifierFilter                                                                                                                                                        </span><br><span class="line">ColumnPrefixFilter                                                                                                                                                     </span><br><span class="line">RowFilter                                                                                                                                                              </span><br><span class="line">MultipleColumnPrefixFilter                                                                                                                                             </span><br><span class="line">InclusiveStopFilter                                                                                                                                                    </span><br><span class="line">PageFilter                                                                                                                                                             </span><br><span class="line">ValueFilter                                                                                                                                                            </span><br><span class="line">ColumnPaginationFilter                                                                                                                                                 </span><br><span class="line">Took 0.0033 seconds</span><br></pre></td></tr></table></figure>
-<p>[<img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码">](javascript:void(0);)</p>
-<p>HBase Filter 使用简单例子<br>
-行键过滤器<br>
-RowFilter:针对行键进行过滤</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scan &#39;test&#39;,FILTER&#x3D;&gt;&quot;RowFilter(&#x3D;,&#39;binaryprefix:row&#39;)&quot;</span><br></pre></td></tr></table></figure>
-<p>说明:把test表中rowkey 以row开头的数据查出来</p>
+          <h1>使用 Kubekey 一键 离线/在线 部署 kubernetes 集群</h1>
+<p>在线部署：</p>
+<p>创建配置文件</p>
+<p>./kk create config --with-kubesphere</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">./kk  init os -f ./config-sample.yaml  <span class="comment"># 初始化集群机器，此操作会安装系统依赖，开启lpvs模块等。前提是确保对应node的网络通畅。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 选择中文区下载(访问 GitHub 受限时使用)</span></span><br><span class="line"><span class="built_in">export</span> KKZONE=cn</span><br><span class="line"></span><br><span class="line">./kk  create cluster -f ./config-sample.yaml  <span class="comment"># 创建集群</span></span><br></pre></td></tr></table></figure>
+
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/04/23/HBase%E5%B8%B8%E7%94%A8%E7%9A%84Filter/#more" rel="contents">
+              <a class="btn" href="/2024/02/01/%E4%BD%BF%E7%94%A8%20Kubekey%E4%B8%80%E9%94%AE%20%E7%A6%BB%E7%BA%BF%20%E5%9C%A8%E7%BA%BF%20%E9%83%A8%E7%BD%B2%20kubernetes%20%E9%9B%86%E7%BE%A4/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -713,7 +714,7 @@ RowFilter:针对行键进行过滤</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/04/19/centos%E7%BB%91%E5%AE%9A%E8%99%9A%E6%8B%9FIP/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/01/29/oblogproxy%20%E9%83%A8%E7%BD%B2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -727,7 +728,7 @@ RowFilter:针对行键进行过滤</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2023/04/19/centos%E7%BB%91%E5%AE%9A%E8%99%9A%E6%8B%9FIP/" class="post-title-link" itemprop="url">centos绑定虚拟IP</a>
+            <a href="/2024/01/29/oblogproxy%20%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">oblogproxy 部署</a>
         </h1>
 
         <div class="post-meta">
@@ -737,7 +738,7 @@ RowFilter:针对行键进行过滤</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-04-19 14:13:50" itemprop="dateCreated datePublished" datetime="2023-04-19T14:13:50+08:00">2023-04-19</time>
+              <time title="创建时间：2024-01-29 13:33:16" itemprop="dateCreated datePublished" datetime="2024-01-29T13:33:16+08:00">2024-01-29</time>
             </span>
 
           
@@ -751,16 +752,12 @@ RowFilter:针对行键进行过滤</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>配置虚拟IP</p>
-<p>/sbin/ifconfig bond0:2 172.20.192.241 netmask 255.255.255.0 up</p>
-<p>广播通知</p>
-<p>/sbin/arping -c 5 -U -I bond0 172.20.192.241 &gt;/dev/null 2&gt;&amp;1</p>
-<p>关闭虚拟IP</p>
-<p>/sbin/ifconfig bond0:2 172.20.192.241 netmask 255.255.255.0 down</p>
+          <p>oblogproxy 部署</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> wget https:&#x2F;&#x2F;obbusiness-private.oss-cn-shanghai.aliyuncs.com&#x2F;download-center&#x2F;opensource&#x2F;oblogproxy&#x2F;v2.0.0_BP1&#x2F;oblogproxy-2.0.0-101000012023121819.el7.x86_64.rpm</span><br><span class="line"></span><br><span class="line">  rpm -i oblogproxy-2.0.0-101000012023121819.el7.x86_64.rpm </span><br><span class="line">  </span><br><span class="line"> cd &#x2F;usr&#x2F;local&#x2F;oblogproxy&#x2F;</span><br><span class="line"></span><br><span class="line">配置文件添加ob集群系统的用户名和密码</span><br><span class="line">  vim conf&#x2F;conf.json  </span><br><span class="line">  &quot;ob_sys_username&quot;: &quot;&quot;,</span><br><span class="line">  &quot;ob_sys_password&quot;: &quot;&quot;,</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  srun.sh start</span><br></pre></td></tr></table></figure>
 
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/04/19/centos%E7%BB%91%E5%AE%9A%E8%99%9A%E6%8B%9FIP/#more" rel="contents">
+              <a class="btn" href="/2024/01/29/oblogproxy%20%E9%83%A8%E7%BD%B2/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -784,7 +781,7 @@ RowFilter:针对行键进行过滤</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/04/19/Trino%20%E5%BC%80%E5%90%AF%E7%94%A8%E6%88%B7%E5%90%8D%E5%AF%86%E7%A0%81%E6%A0%A1%E9%AA%8C/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2024/01/26/%E4%BD%BF%E7%94%A8%E5%9B%BE%E5%BD%A2%E5%8C%96%E7%95%8C%E9%9D%A2%E9%83%A8%E7%BD%B2%20OCP/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -798,7 +795,7 @@ RowFilter:针对行键进行过滤</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2023/04/19/Trino%20%E5%BC%80%E5%90%AF%E7%94%A8%E6%88%B7%E5%90%8D%E5%AF%86%E7%A0%81%E6%A0%A1%E9%AA%8C/" class="post-title-link" itemprop="url">Trino 开启用户名密码校验</a>
+            <a href="/2024/01/26/%E4%BD%BF%E7%94%A8%E5%9B%BE%E5%BD%A2%E5%8C%96%E7%95%8C%E9%9D%A2%E9%83%A8%E7%BD%B2%20OCP/" class="post-title-link" itemprop="url">使用图形化界面部署 OCP</a>
         </h1>
 
         <div class="post-meta">
@@ -808,7 +805,7 @@ RowFilter:针对行键进行过滤</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-04-19 13:46:26" itemprop="dateCreated datePublished" datetime="2023-04-19T13:46:26+08:00">2023-04-19</time>
+              <time title="创建时间：2024-01-26 17:53:35" itemprop="dateCreated datePublished" datetime="2024-01-26T17:53:35+08:00">2024-01-26</time>
             </span>
 
           
@@ -822,19 +819,49 @@ RowFilter:针对行键进行过滤</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><a href="https://sslover.me/2022/03/15/trino-deploy-tutorials/" target="_blank" rel="noopener">https://sslover.me/2022/03/15/trino-deploy-tutorials/</a></p>
-<h4 id="开启-TLS-支持">开启 TLS 支持</h4>
-<p>当采用用户名/密码的方式进行认证时，Trino 强制要求我们使用 TLS，所以我们需要对其进行配置。</p>
-<p>首先我们需要创建 HTTPS 证书，由于是本地测试，所以我们直接自己签发一个。Trino 支持 PEM 文件和 JKS 文件，我们使用标准的 PEM 文件进行配置。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 生成私钥</span><br><span class="line">[root@cdh192-150 ssl]# openssl genrsa -out server.key 2048</span><br><span class="line"># 生成 CSR </span><br><span class="line">[root@cdh192-150 ssl]# openssl req -new -key server.key -out server.csr</span><br><span class="line"># 自己派发证书</span><br><span class="line">[root@cdh192-150 ssl]# openssl x509 -req -days 36500 -in server.csr -signkey server.key -out server.crt</span><br><span class="line"># 生成 PEM 格式文件</span><br><span class="line">[root@cdh192-150 ssl]# cat server.key server.crt &gt; server.pem</span><br><span class="line"># 校验 PEM 文件</span><br><span class="line">[root@cdh192-150 ssl]# openssl rsa -in server.pem -check -noout</span><br><span class="line">[root@cdh192-150 ssl]# openssl x509 -in server.pem -text -noout</span><br></pre></td></tr></table></figure>
-<p>生成完证书后，在 <code>config.properties</code> 文件中添加如下配置即可开启 TLS 支持：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 开启 https</span><br><span class="line">http-server.https.enabled&#x3D;true</span><br><span class="line"># 指定 https 端口</span><br><span class="line">http-server.https.port&#x3D;8443</span><br><span class="line"># 指定证书文件</span><br><span class="line">http-server.https.keystore.path&#x3D;&#x2F;opt&#x2F;module&#x2F;trino-server-405&#x2F;etc&#x2F;ssl&#x2F;server.pem</span><br><span class="line"># 开启web-ui访问 </span><br><span class="line">http-server.authentication.allow-insecure-over-http&#x3D;true</span><br></pre></td></tr></table></figure>
-<p>最后修改 JDBC 连接地址，由于是自签证书，所以我们需要关闭证书校验：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jdbc:trino:&#x2F;&#x2F;127.0.0.1:8443?SSL&#x3D;true&amp;SSLVerification&#x3D;NONE</span><br></pre></td></tr></table></figure>
-<p>同理，CLI 命令修改为：</p>
+          <p>ocp部署</p>
+<h1>使用图形化界面部署 OCP</h1>
+<p><a href="https://www.oceanbase.com/docs/common-ocp-1000000000368849" target="_blank" rel="noopener">https://www.oceanbase.com/docs/common-ocp-1000000000368849</a></p>
+<h2 id="注意事项">注意事项</h2>
+<h3 id="1-注意要更改一下datafile-size大小，-不然会占满磁盘">1.<strong>注意要更改一下datafile_size大小， 不然会占满磁盘</strong></h3>
+<ul>
+<li>
+<p><code>datafile_size</code> 与 <code>datafile_disk_percentage</code> 均可以用来设置数据文件占用的磁盘空间，您可以选择其中任意一项进行配置。其他情况下：</p>
+<ul>
+<li>如果两个配置项均已配置，即 <code>datafile_size</code> 与 <code>datafile_disk_percentage</code> 同时配置为非 0 的值，则以 <code>datafile_size</code> 设置的值为准。</li>
+<li>如果两个配置项均未配置，即 <code>datafile_size</code> 的值为 <code>OM</code> 且 <code>datafile_disk_percentage</code> 的值为 <code>0</code>，则系统会根据日志和数据是否共用同一磁盘来自动计算数据文件占用其所在磁盘总空间的百分比，即：
+<ul>
+<li>如果日志和数据共用同一磁盘，则数据文件占用其所在磁盘总空间的百分比为 60%。</li>
+<li>如果日志和数据独占磁盘时，则数据文件占用其所在磁盘总空间的百分比为 90%。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>配置 <code>datafile_maxsize</code> 时，其值需要大于当前数据文件占用的磁盘空间大小 <code>datafile_size</code>（或 <code>datafile_disk_percentage</code>），如果设置的值小于当前数据文件占用的磁盘空间大小，则不会触发自动扩容。</p>
+</li>
+<li>
+<p>如果 <code>datafile_maxsize</code> 的值超过了当前磁盘的最大可用空间，则以实际磁盘的可用大小作为最大值。</p>
+</li>
+<li>
+<p>对于 <code>datafile_next</code>：</p>
+<ul>
+<li>
+<p>当 <code>datafile_next</code> 设置为小于或等于 <code>1G</code> 的值时，<code>datafile_next</code> 的取值为 <code>min (1G, datafile_maxsize * 10%)</code>。</p>
+</li>
+<li>
+<p>当 <code>datafile_next</code> 设置为大于 <code>1G</code> 的值时，<code>datafile_next</code> 的取值为 <code>min ( datafile_next, 磁盘剩余空间)</code>。</p>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">datafile_size  100G</span><br><span class="line">datafile_maxsize 100G</span><br><span class="line">log_disk_size 200G</span><br></pre></td></tr></table></figure>
+<p><img src="https://ask3.oss-cn-hangzhou.aliyuncs.com/img/md/2024/01/image-20240125171731578.png" alt="image-20240125171731578"></p>
+<p>2.<strong>如果安装的不对，用命令删除集群，重新安装</strong></p>
+<p>obd cluster destroy myoceanbase</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/04/19/Trino%20%E5%BC%80%E5%90%AF%E7%94%A8%E6%88%B7%E5%90%8D%E5%AF%86%E7%A0%81%E6%A0%A1%E9%AA%8C/#more" rel="contents">
+              <a class="btn" href="/2024/01/26/%E4%BD%BF%E7%94%A8%E5%9B%BE%E5%BD%A2%E5%8C%96%E7%95%8C%E9%9D%A2%E9%83%A8%E7%BD%B2%20OCP/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -858,7 +885,7 @@ RowFilter:针对行键进行过滤</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/04/18/win10%E5%A4%9A%E7%94%A8%E6%88%B7%E5%90%8C%E6%97%B6%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5/">
+    <link itemprop="mainEntityOfPage" href="http://www.ask3.cn/2023/11/02/tidb%E9%83%A8%E7%BD%B2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -872,7 +899,7 @@ RowFilter:针对行键进行过滤</p>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2023/04/18/win10%E5%A4%9A%E7%94%A8%E6%88%B7%E5%90%8C%E6%97%B6%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5/" class="post-title-link" itemprop="url">win10多用户同时远程连接</a>
+            <a href="/2023/11/02/tidb%E9%83%A8%E7%BD%B2/" class="post-title-link" itemprop="url">tidb部署</a>
         </h1>
 
         <div class="post-meta">
@@ -882,7 +909,7 @@ RowFilter:针对行键进行过滤</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-04-18 17:09:43" itemprop="dateCreated datePublished" datetime="2023-04-18T17:09:43+08:00">2023-04-18</time>
+              <time title="创建时间：2023-11-02 10:51:26" itemprop="dateCreated datePublished" datetime="2023-11-02T10:51:26+08:00">2023-11-02</time>
             </span>
 
           
@@ -896,16 +923,50 @@ RowFilter:针对行键进行过滤</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="win10-解决多用户同时远程连接">win10 解决多用户同时远程连接</h2>
-<p>下载破解软件，用管理员身份运行</p>
-<p><a href="https://github.com/stascorp/rdpwrap" target="_blank" rel="noopener">https://github.com/stascorp/rdpwrap</a></p>
-<p>修改配置文件 ，从 <a href="https://github.com/sebaxakerhtc/rdpwrap.ini" target="_blank" rel="noopener">https://github.com/sebaxakerhtc/rdpwrap.ini</a> 下载</p>
-<p>C:\Program Files\RDP Wrapper\rdpwrap.ini</p>
-<p>重启服务器就可以了。</p>
-
+          <p>新建用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">useradd tidb</span><br><span class="line">su - tidb</span><br></pre></td></tr></table></figure>
+<h2 id="在中控机上部署-TiUP-组件">在中控机上部署 TiUP 组件</h2>
+<p>在中控机上部署 TiUP 组件有两种方式：在线部署和离线部署。</p>
+<h3 id="在线部署">在线部署</h3>
+<p>以普通用户身份登录中控机。以 <code>tidb</code> 用户为例，后续安装 TiUP 及集群管理操作均通过该用户完成：</p>
+<ol>
+<li>
+<p>执行如下命令安装 TiUP 工具：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --proto <span class="string">'=https'</span> --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>按如下步骤设置 TiUP 环境变量：</p>
+<ol>
+<li>
+<p>重新声明全局环境变量：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> .bash_profile</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>确认 TiUP 工具是否安装：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span> tiup</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li>
+<p>安装 TiUP cluster 组件：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tiup cluster</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>如果已经安装，则更新 TiUP cluster 组件至最新版本：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tiup update --self &amp;&amp; tiup update cluster</span><br></pre></td></tr></table></figure>
+<p>预期输出 <code>“Update successfully!”</code> 字样。</p>
+</li>
+<li>
+<p>验证当前 TiUP cluster 版本信息。执行如下命令查看 TiUP cluster 组件版本：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tiup --binary cluster</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="优化系统配置">优化系统配置</h2>
+<p>vim /etc/sysctl.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">net.ipv4.tcp_tw_recycle &#x3D; 0</span><br><span class="line">net.ipv4.tcp_syncookies &#x3D; 0</span><br><span class="line">net.core.somaxconn &#x3D; 32768</span><br><span class="line">vm.swappiness &#x3D; 0</span><br><span class="line">vm.overcommit_memory &#x3D; 0</span><br><span class="line">fs.file-max &#x3D; 1000000</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/04/18/win10%E5%A4%9A%E7%94%A8%E6%88%B7%E5%90%8C%E6%97%B6%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5/#more" rel="contents">
+              <a class="btn" href="/2023/11/02/tidb%E9%83%A8%E7%BD%B2/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -929,7 +990,7 @@ RowFilter:针对行键进行过滤</p>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -997,7 +1058,7 @@ RowFilter:针对行键进行过滤</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">171</span>
+          <span class="site-state-item-count">185</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1038,7 +1099,7 @@ RowFilter:针对行键进行过滤</p>
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
